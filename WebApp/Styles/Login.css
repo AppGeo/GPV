@@ -1,0 +1,51 @@
+﻿/* Copyright 2012 Applied Geographics, Inc.  Licensed under the Apache License, Version 2.0 http://www.apache.org/licenses/LICENSE-2.0 */
+
+body
+{
+  overflow: hidden;
+}
+
+div
+{
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+}
+
+#pnlHeader
+{
+  bottom: auto;
+}
+
+#pnlContent
+{
+  left: 8px;
+  right: 8px;
+  min-width: 930px;
+}
+
+.TextBox
+{
+  width: 100px;
+  margin-left: 5px;
+}
+
+.LoginButton
+{
+  width: 60px;
+  font-weight: bold;
+  margin-right: 30px;
+}
+
+.Error
+{
+  color: #800000;
+}
+
+#pnlFooter
+{
+  top: auto;
+  bottom: 0px;
+}

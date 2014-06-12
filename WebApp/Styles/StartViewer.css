@@ -1,0 +1,110 @@
+﻿/* Copyright 2012 Applied Geographics, Inc.  Licensed under the Apache License, Version 2.0 http://www.apache.org/licenses/LICENSE-2.0 */
+
+body
+{
+  overflow: hidden;
+}
+
+div
+{
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+}
+
+#pnlHeader
+{
+  bottom: auto;
+}
+
+#pnlContent
+{
+  left: 8px;
+  right: 8px;
+  min-width: 930px;
+}
+
+#labMessage
+{
+  position: absolute;
+  left: 10px;
+  top: 10px;
+}
+
+#pnlApplications
+{
+  position: absolute;
+  left: 25px;
+  top: 35px;
+  bottom: 25px;
+  width: 742px;
+}
+
+#grdApplications
+{
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 722px;
+}
+
+#grdApplications th
+{
+  font-weight: bold;
+  color: #404040;
+  padding-bottom: 5px;
+}
+
+#grdApplications td a
+{
+  color: blue;
+  text-decoration: none;
+}
+
+#grdApplications td a:hover
+{
+  color: blue;
+  text-decoration: underline;
+}
+
+.DataGridScroll
+{
+  border: solid 1px #606060;
+  background-color: #F0F0F0;
+  overflow: auto;
+}
+
+.DataGrid
+{
+  empty-cells: show;
+}
+
+.DataGridHeader, .DataGridRow
+{
+  background-color: white;
+}
+
+.DataGrid td
+{
+  text-align: left;
+  vertical-align: top;
+  padding-left: 3px;
+  padding-right: 3px;
+  padding-bottom: 2px;
+  padding-top: 2px;
+  border-right: solid 1px #D0D0D0;
+}
+
+.DataGridHeader td
+{
+  color: #404040;
+  font-weight: bold;
+}
+
+#pnlFooter
+{
+  top: auto;
+  bottom: 0px;
+}

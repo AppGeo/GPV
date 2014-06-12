@@ -1,0 +1,179 @@
+﻿/*  Copyright 2012 Applied Geographics, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
+body
+{
+  overflow: hidden;
+}
+
+div
+{
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+}
+
+div.Button, div.Button.Disabled:hover
+{
+  left: auto;
+  right: auto;
+  bottom: auto;
+  width: 23px;
+  height: 22px;
+  background-image: url(../Images/UI/Icons.png);
+  background-position: 0px 24px;
+  background-repeat: no-repeat;
+  border: solid 1px transparent;
+  cursor: default;
+  behavior: url(Styles/PIE.htc);
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+
+div.Button:hover
+{
+  border-left: solid 1px White;
+  border-top: solid 1px White;
+  border-right: solid 1px Gray;
+  border-bottom: solid 1px Gray;
+  cursor: pointer;
+}
+
+div.Button.Selected, div.Button.Selected:hover
+{
+  border-left: solid 1px Gray;
+  border-top: solid 1px Gray;
+  border-right: solid 1px White;
+  border-bottom: solid 1px White;
+  cursor: default;
+}
+
+.DataGrid
+{
+  empty-cells: show;
+}
+
+.DataGrid thead tr, .DataGridRow
+{
+  background-color: white;
+}
+
+.DataGridRow:hover, .DataGridRowAlternate:hover
+{
+  background-color: #FFFFC8;
+}
+
+.DataGridRowSelect, .DataGridRowSelect:hover
+{
+  background-color: yellow;
+}
+
+.DataGrid th, .DataGrid td
+{
+  padding-left: 3px;
+  padding-right: 3px;
+  padding-bottom: 2px;
+  padding-top: 2px;
+  border-right: solid 1px #D0D0D0;
+  white-space: nowrap;
+}
+
+.DataGrid th
+{
+  color: #404040;
+  font-weight: bold;
+}
+
+
+.Resizer
+{
+  z-index: 4;
+  behavior: url(Styles/PIE.htc);
+  background-color: rgba(0, 0, 0, 0);
+  -pie-background: rgba(0, 0, 0, 0);
+}
+
+.Resizer.Main
+{
+  left: 16px;
+  right: 16px;
+  width: auto;
+  cursor: e-resize;
+}
+
+.Resizer.Function
+{
+  height: auto;
+  cursor: n-resize;
+}
+
+#pnlHeader
+{
+  bottom: auto;
+}
+
+#pnlContent
+{
+  left: 8px;
+  right: 8px;
+  min-width: 930px;
+}
+
+#pnlMapSizer
+{
+  right: 382px;
+  min-width: 548px;
+}
+
+#contentDivider
+{
+  left: auto;
+  top: 26px;
+  right: 374px;
+  bottom: 8px;
+  width: 8px;
+  cursor: e-resize;
+  z-index: 3;
+}
+
+#pnlFunctionSizer
+{
+  left: auto;
+  width: 374px;
+  min-width: 374px;
+}
+
+#pnlFunctionTabs
+{
+  left: 12px;
+  right: 12px;
+  bottom: auto;
+  height: 19px;
+  overflow: hidden;
+}
+
+#pnlFunction
+{
+  top: 18px;
+}
+
+#pnlFooter
+{
+  top: auto;
+  bottom: 0px;
+}

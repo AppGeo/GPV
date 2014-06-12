@@ -1,0 +1,1 @@
+﻿Directory for storing text to be shown on printable PDF output.

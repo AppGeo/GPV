@@ -1,0 +1,123 @@
+﻿/*  Copyright 2012 Applied Geographics, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
+#pnlQuerySizer
+{
+  bottom: auto;
+  height: 250px;
+  min-height: 212px;
+}
+
+#selectionDivider
+{
+  left: 8px;
+  right: 8px;
+  top: 250px;
+  bottom: auto;
+  height: 8px;
+  cursor: n-resize;
+  z-index: 3;
+}
+
+#pnlDataSizer
+{
+  top: 258px;
+  min-height: 212px;
+}
+
+#optSelect
+{
+  background-position: -816px 0px;  /* Select.gif */
+}
+
+#optSelect.Disabled
+{
+  background-position: -840px 0px;  /* SelectDisable.gif */
+}
+
+#cmdSelectView
+{
+  background-position: -864px 0px;  /* SelectView.gif */
+}
+
+#cmdSelectView.Disabled
+{
+  background-position: -888px 0px;  /* SelectViewDisable.gif */
+}
+
+#cmdClearSelection
+{
+  background-position: -24px 0px;  /* Clear.gif */
+}
+
+#pnlQueryGrid
+{
+  left: 10px;
+  top: 80px;
+  right: 10px;
+  bottom: 20px;
+  border: solid 1px #606060;
+  background-color: #F0F0F0;
+  overflow: auto;
+}
+
+#pnlQueryCommand
+{
+  left: 10px;
+  bottom: 6px;
+  top: auto;
+  height: 11px;
+}
+
+#pnlDataTabs
+{
+  left: 12px;
+  right: 12px;
+  bottom: auto;
+  height: 19px;
+  overflow: hidden;
+}
+
+#pnlData
+{
+  top: 18px;
+}
+
+#pnlDataList
+{
+  left: 10px;
+  top: 17px;
+  right: 10px;
+  bottom: 10px;
+  border: solid 1px #606060;
+  background-color: White;
+  overflow: auto;
+}
+
+#pnlDataList .DataList
+{
+  left: 10px;
+  top: 10px;
+  right: 30px;
+}
+
+#cmdDataPrint
+{
+  left: auto;
+  bottom: auto;
+  right: 12px;
+  top: 2px;
+  text-align: right;
+}

@@ -1,0 +1,368 @@
+--
+--  © 2004-2009, Applied Geographics, Inc.  All rights reserved.
+--
+--  GPV31_Oracle_AddConstraints.sql
+--
+--  Adds primary key, foreign key and unique constraints to the GPV v3.1 configuration tables.  You can
+--  set the prefix for the table names by changing the value in the "prefix varchar2(10)" line below.
+--
+
+DECLARE 
+  prefix varchar2(10):= 'GPV31';
+
+BEGIN
+
+-- add primary key and unique constraints
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'Application ADD ' ||
+  'CONSTRAINT PK_' || prefix || 'Application PRIMARY KEY ' ||
+  '(' ||
+  '  ApplicationID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'ApplicationMapTab ADD ' ||
+  'CONSTRAINT ' || prefix || 'ApplicationMapTabUnique UNIQUE ' ||
+  '(' ||
+  '  ApplicationID,' ||
+  '  MapTabID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'ApplicationMarkupCategory ADD ' ||
+  'CONSTRAINT ' || prefix || 'AppMarkupCategoryUnique UNIQUE ' ||
+  '(' ||
+  '  ApplicationID,' ||
+  '  CategoryID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'ApplicationPrintTemplate ADD ' ||
+  'CONSTRAINT ' || prefix || 'AppPrintTemplateUnique UNIQUE ' ||
+  '(' ||
+  '  ApplicationID,' ||
+  '  TemplateID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'Connection ADD ' ||
+  'CONSTRAINT PK_' || prefix || 'Connection PRIMARY KEY' ||
+  '(' ||
+  '  ConnectionID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'DataTab ADD ' ||
+  'CONSTRAINT PK_' || prefix || 'DataTab PRIMARY KEY' ||
+  '(' ||
+  '  DataTabID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'ExternalMap ADD ' ||
+  'CONSTRAINT PK_' || prefix || 'ExternalMap PRIMARY KEY' ||
+  '(' ||
+  '  DisplayName' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'Layer ADD ' ||
+  'CONSTRAINT PK_' || prefix || 'Layer PRIMARY KEY ' ||
+  '(' ||
+  '  LayerID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'LayerFunction ADD ' ||
+  'CONSTRAINT ' || prefix || 'LayerFunctionUnique UNIQUE ' ||
+  '(' ||
+  '  LayerID,' ||
+  '  Function' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'LayerProximity ADD ' ||
+  'CONSTRAINT ' || prefix || 'LayerProximityUnique UNIQUE ' ||
+  '(' ||
+  '  LayerID,' ||
+  '  ProximityID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'Level ADD ' ||
+  'CONSTRAINT PK_' || prefix || 'Level PRIMARY KEY ' ||
+  '(' ||
+  '  ZoneLevelID,' ||
+  '  LevelID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'MapTab ADD ' ||
+  'CONSTRAINT PK_' || prefix || 'MapTab PRIMARY KEY ' ||
+  '(' ||
+  '  MapTabID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'MapTabLayer ADD ' ||
+  'CONSTRAINT ' || prefix || 'MapTabLayerUnique UNIQUE ' ||
+  '(' ||
+  '  MapTabID,' ||
+  '  LayerID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'Markup ADD ' ||
+  'CONSTRAINT PK_' || prefix || 'Markup PRIMARY KEY ' ||
+  '(' ||
+  '  MarkupID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'MarkupCategory ADD ' ||
+  'CONSTRAINT PK_' || prefix || 'MarkupCategory PRIMARY KEY ' ||
+  '(' ||
+  '  CategoryID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'MarkupGroup ADD ' ||
+  'CONSTRAINT PK_' || prefix || 'MarkupGroup PRIMARY KEY ' ||
+  '(' ||
+  '  GroupID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'PrintTemplate ADD ' ||
+  'CONSTRAINT PK_' || prefix || 'PrintTemplate PRIMARY KEY ' ||
+  '(' ||
+  '  TemplateID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'PrintTemplateContent ADD ' ||
+  'CONSTRAINT ' || prefix || 'PrintTempContUnique UNIQUE ' ||
+  '(' ||
+  '  TemplateID,' ||
+  '  SequenceNo' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'Proximity ADD ' ||
+  'CONSTRAINT PK_' || prefix || 'Proximity PRIMARY KEY ' ||
+  '(' ||
+  '  ProximityID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'Query ADD ' ||
+  'CONSTRAINT PK_' || prefix || 'Query PRIMARY KEY ' ||
+  '(' ||
+  '  QueryID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'SavedState ADD ' ||
+  'CONSTRAINT PK_' || prefix || 'SavedState PRIMARY KEY ' ||
+  '(' ||
+  '  StateID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'Zone ADD ' ||
+  'CONSTRAINT PK_' || prefix || 'Zone PRIMARY KEY ' ||
+  '(' ||
+  '  ZoneLevelID,' ||
+  '  ZoneID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'ZoneLevel ADD ' ||
+  'CONSTRAINT PK_' || prefix || 'ZoneLevel PRIMARY KEY ' ||
+  '(' ||
+  '  ZoneLevelID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'ZoneLevelCombo ADD ' ||
+  'CONSTRAINT ' || prefix || 'ZoneLevelComboUnique UNIQUE ' ||
+  '(' ||
+  '  ZoneLevelID,' ||
+  '  ZoneID,' ||
+  '  LevelID' ||
+  ')';
+
+-- add foreign key constraints
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'Application ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'App_ZoneLev FOREIGN KEY ' ||
+  '(' ||
+  '  ZoneLevelID' ||
+  ') REFERENCES ' || prefix || 'ZoneLevel (' ||
+  '  ZoneLevelID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'ApplicationMapTab ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'AppMapTab_App FOREIGN KEY ' ||
+  '(' ||
+  '  ApplicationID' ||
+  ') REFERENCES ' || prefix || 'Application (' ||
+  '  ApplicationID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'ApplicationMapTab ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'AppMapTab_MapTab FOREIGN KEY ' ||
+  '(' ||
+  '  MapTabID' ||
+  ') REFERENCES ' || prefix || 'MapTab (' ||
+  '  MapTabID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'ApplicationMarkupCategory ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'AppMarkCat_App FOREIGN KEY ' ||
+  '(' ||
+  '  ApplicationID' ||
+  ') REFERENCES ' || prefix || 'Application (' ||
+  '  ApplicationID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'ApplicationMarkupCategory ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'AppMarkCat_MarkCat FOREIGN KEY ' ||
+  '(' ||
+  '  CategoryID' ||
+  ') REFERENCES ' || prefix || 'MarkupCategory (' ||
+  '  CategoryID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'ApplicationPrintTemplate ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'AppPrint_App FOREIGN KEY ' ||
+  '(' ||
+  '  ApplicationID' ||
+  ') REFERENCES ' || prefix || 'Application (' ||
+  '  ApplicationID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'ApplicationPrintTemplate ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'AppPrint_Print FOREIGN KEY ' ||
+  '(' ||
+  '  TemplateID' ||
+  ') REFERENCES ' || prefix || 'PrintTemplate (' ||
+  '  TemplateID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'DataTab ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'DataTab_Layer FOREIGN KEY ' ||
+  '(' ||
+  '  LayerID' ||
+  ') REFERENCES ' || prefix || 'Layer (' ||
+  '  LayerID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'DataTab ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'DataTab_Conn FOREIGN KEY ' ||
+  '(' ||
+  '  ConnectionID' ||
+  ') REFERENCES ' || prefix || 'Connection (' ||
+  '  ConnectionID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'LayerFunction ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'LayFunc_Layer FOREIGN KEY ' ||
+  '(' ||
+  '  LayerID' ||
+  ') REFERENCES ' || prefix || 'Layer (' ||
+  '  LayerID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'LayerFunction ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'LayFunc_Conn FOREIGN KEY ' ||
+  '(' ||
+  '  ConnectionID' ||
+  ') REFERENCES ' || prefix || 'Connection (' ||
+  '  ConnectionID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'LayerProximity ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'LayerProx_Layer FOREIGN KEY ' ||
+  '(' ||
+  '  LayerID' ||
+  ') REFERENCES ' || prefix || 'Layer (' ||
+  '  LayerID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'LayerProximity ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'LayerProx_Prox FOREIGN KEY ' ||
+  '(' ||
+  '  ProximityID' ||
+  ') REFERENCES ' || prefix || 'Proximity (' ||
+  '  ProximityID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'Level ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'Lev_ZoneLev FOREIGN KEY ' ||
+  '(' ||
+  '  ZoneLevelID' ||
+  ') REFERENCES ' || prefix || 'ZoneLevel (' ||
+  '  ZoneLevelID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'MapTabLayer ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'MapTabLayer_Layer FOREIGN KEY ' ||
+  '(' ||
+  '  LayerID' ||
+  ') REFERENCES ' || prefix || 'Layer (' ||
+  '  LayerID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'MapTabLayer ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'MapTabLayer_MapTab FOREIGN KEY ' ||
+  '(' ||
+  '  MapTabID' ||
+  ') REFERENCES ' || prefix || 'MapTab (' ||
+  '  MapTabID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'Markup ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'Mark_MarkGroup FOREIGN KEY ' ||
+  '(' ||
+  '  GroupID' ||
+  ') REFERENCES ' || prefix || 'MarkupGroup (' ||
+  '  GroupID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'MarkupGroup ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'MarkGroup_MarkCat FOREIGN KEY ' ||
+  '(' ||
+  '  CategoryID' ||
+  ') REFERENCES ' || prefix || 'MarkupCategory (' ||
+  '  CategoryID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'PrintTemplateContent ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'PrintCont_Print FOREIGN KEY ' ||
+  '(' ||
+  '  TemplateID' ||
+  ') REFERENCES ' || prefix || 'PrintTemplate (' ||
+  '  TemplateID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'Query ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'Query_Layer FOREIGN KEY ' ||
+  '(' ||
+  '  LayerID' ||
+  ') REFERENCES ' || prefix || 'Layer (' ||
+  '  LayerID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'Query ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'Query_Conn FOREIGN KEY ' ||
+  '(' ||
+  '  ConnectionID' ||
+  ') REFERENCES ' || prefix || 'Connection (' ||
+  '  ConnectionID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'Zone ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'Zone_ZoneLev FOREIGN KEY ' ||
+  '(' ||
+  '  ZoneLevelID' ||
+  ') REFERENCES ' || prefix || 'ZoneLevel (' ||
+  '  ZoneLevelID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'ZoneLevelCombo ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'ZoneLevCombo_Zone FOREIGN KEY ' ||
+  '(' ||
+  '  ZoneLevelID, ZoneID' ||
+  ') REFERENCES ' || prefix || 'Zone (' ||
+  '  ZoneLevelID, ZoneID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'ZoneLevelCombo ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'ZoneLevCombo_Lev FOREIGN KEY ' ||
+  '(' ||
+  '  ZoneLevelID, LevelID' ||
+  ') REFERENCES ' || prefix || 'Level (' ||
+  '  ZoneLevelID, LevelID' ||
+  ')';
+
+END;
+/
+

@@ -1,0 +1,60 @@
+<%-- 
+  Copyright 2012 Applied Geographics, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+--%>
+
+<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="Admin_MasterPage" %>
+<%@ Register TagPrefix="uc1" TagName="Footer" Src="../Footer.ascx" %>
+<%@ Register TagPrefix="uc1" TagName="Header" Src="../Header.ascx" %>
+
+<!DOCTYPE html>
+
+<html>
+<head id="head" runat="server">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GPV Administration</title>
+  <link href="../Styles/Common.css" type="text/css" rel="stylesheet" />
+  <link href="../Styles/Customize.css" type="text/css" rel="stylesheet" />
+  <link href="../Styles/Tab.css" type="text/css" rel="stylesheet" />
+  <link href="Styles/Admin.css" type="text/css" rel="Stylesheet" />
+  <script type="text/javascript" src="../Scripts/jquery-1.7.2.min.js"></script>
+  <script type="text/javascript" src="Scripts/Admin.js"></script>
+</head>
+<body>
+  <div id="pnlBody">
+    <div id="pnlHeader"><uc1:Header id="Header1" runat="server" /></div>
+    <form id="form1" runat="server">
+      <div id="pnlContent">
+        <div id="pnlTitle">GPV Administration</div>
+        <div id="pnlTabs" class="TabPanel">
+          <asp:LinkButton ID="optTabApplications" runat="server" CssClass="Tab Normal" PostBackUrl="Applications.aspx">Applications</asp:LinkButton>
+          <asp:LinkButton ID="optTabDownloadMarkup" runat="server" CssClass="Tab Normal" PostBackUrl="DownloadMarkup.aspx">Download Markup</asp:LinkButton>
+          <asp:LinkButton ID="optTabTestStoredProcs" runat="server" CssClass="Tab Normal" PostBackUrl="TestStoredProcs.aspx">Test Stored Procs</asp:LinkButton>
+          <asp:LinkButton ID="optTabCheckConfiguration" runat="server" CssClass="Tab Normal" PostBackUrl="CheckConfiguration.aspx">Check Configuration</asp:LinkButton>
+          <asp:LinkButton ID="optTabShowDeactivated" runat="server" CssClass="Tab Normal" PostBackUrl="ShowDeactivated.aspx">Show Deactivated</asp:LinkButton>
+        </div>
+        <div id="pnlMain" class="MainPanel">
+          <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+          </asp:ContentPlaceHolder>
+        </div>
+        <div id="pnlReload" class="MainPanel">
+          <div id="cmdReloadConfiguration" class="CommandLink">Reload Configuration</div>
+          <div id="labRefreshing" style="display: none">Reloading, please wait ...</div> 
+        </div>
+      </div>
+    </form>
+    <div id="pnlFooter"><uc1:Footer id="Footer1" runat="server" /></div>
+  </div>
+</body>
+</html>

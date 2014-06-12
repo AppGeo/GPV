@@ -1,0 +1,1 @@
+﻿Directory for storing images to be displayed in the wiki documentation.

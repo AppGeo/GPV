@@ -1,0 +1,1 @@
+﻿Directory for storing images to be shown on printable PDF output.

@@ -1,0 +1,22 @@
+﻿/* Copyright 2012 Applied Geographics, Inc.  Licensed under the Apache License, Version 2.0 http://www.apache.org/licenses/LICENSE-2.0 */
+
+div, select, img, input, label
+{
+  position: absolute;
+}
+
+.Label
+{
+  left: 20px;
+  width: 112px; 
+  height: 17px; 
+  text-align: right
+}
+
+#pnlMain
+{
+  left: 8px;
+  top: 8px;
+  width: 480px;
+  height: 154px;
+}

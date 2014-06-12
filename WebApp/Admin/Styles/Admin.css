@@ -1,0 +1,180 @@
+﻿/* Copyright 2012 Applied Geographics, Inc.  Licensed under the Apache License, Version 2.0 http://www.apache.org/licenses/LICENSE-2.0 */
+
+body
+{
+  overflow: hidden;
+}
+
+div
+{
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+}
+
+#pnlHeader
+{
+  bottom: auto;
+}
+
+#pnlContent
+{
+  left: 8px;
+  right: 8px;
+  min-width: 930px;
+}
+
+#pnlTitle
+{
+  font-weight: bold;
+  font-size: 13px;
+  left: 28px;
+  top: -2px;
+}
+
+#pnlTabs
+{
+  left: 200px;
+  top: 0px;
+  right: 0px;
+  bottom: auto;
+  height: 19px;
+}
+
+#pnlMain
+{
+  left: 0px;
+  top: 18px;
+  right: 0px;
+  bottom: 36px;
+}
+
+#pnlReload
+{
+  left: 0px;
+  top: auto;
+  right: 0px;
+  bottom: 0px;
+  height: 28px;
+}
+
+#pnlFooter
+{
+  top: auto;
+  bottom: 0px;
+}
+
+#pnlApplications
+{
+  left: 20px;
+  top: 20px;
+  right: auto;
+  bottom: 20px;
+  width: 801px;
+}
+
+#pnlTestStoredProcs, #pnlCheckConfiguration, #pnlShowDeactivated
+{
+  left: 20px;
+  top: 20px;
+  right: 20px;
+  bottom: 20px;
+}
+
+#pnlStoredProcsScroll
+{
+  left: 0px;
+  top: 20px;
+  right: auto;
+  bottom: 0px;
+  width: 678px;
+}
+
+.DataGridScroll
+{
+  border: solid 1px #606060;
+  background-color: #F0F0F0;
+  overflow: auto;
+}
+
+.DataGrid
+{
+  empty-cells: show;
+}
+
+.DataGridHeader, .DataGridRow
+{
+  background-color: white;
+}
+
+.DataGrid td
+{
+  vertical-align: top;
+  padding-left: 3px;
+  padding-right: 3px;
+  padding-bottom: 2px;
+  padding-top: 2px;
+  border-right: solid 1px #D0D0D0;
+}
+
+.DataGridHeader td
+{
+  color: #404040;
+  font-weight: bold;
+}
+
+#pnlCheckConfigScroll, #pnlShowDeactivatedScroll
+{
+  left: 0px;
+  top: 20px;
+  right: 0px;
+  bottom: 0px;
+  border: solid 1px #606060;
+  background-color: White;
+  overflow: auto;
+}
+
+.Report
+{
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  right: 20px;
+  bottom: auto;
+}
+
+.ReportHeader td, .ReportRow td, .ReportLayout td
+{
+  padding-left: 3px;
+  padding-right: 3px;
+  padding-bottom: 1px;
+  padding-top: 1px;
+  white-space: nowrap;
+}
+
+.ReportHeader
+{
+  padding-bottom: 2px;
+  padding-top: 2px;
+  background-color: #F0F0F0;
+}
+
+.ReportHeader:hover
+{
+  cursor: pointer;
+}
+
+#cmdReloadConfiguration
+{
+  left: 20px;
+  top: 7px;
+}
+
+#labRefreshing
+{
+  left: 180px;
+  top: 7px;
+}
+

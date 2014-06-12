@@ -1,0 +1,119 @@
+﻿/*  Copyright 2012 Applied Geographics, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
+#pnlLegendContent
+{
+  width: 100%;
+  height: 100%;
+}
+
+#cmdRefreshMap
+{
+ left: 10px;
+ top: 2px;
+ right: auto;
+ bottom: auto;
+}
+
+#pnlLegendScroll
+{
+  left: 10px;
+  top: 18px;
+  right: 10px;
+  bottom: 10px;
+  border: solid 1px #606060;
+  background-color: White;
+  overflow: auto; 
+}
+
+.LegendTop
+{
+  left: 8px;
+  top: 10px;
+}
+
+.LegendEntry, .LegendHeader, .LegendContent, .LegendClass
+{
+  position: relative;
+}
+
+.LegendExpander, .LegendVisibility, .LegendSwatch
+{
+  display: inline-block;
+}
+
+.LegendExpander, .LegendVisibility, .LegendName, .LegendSwatch, .LegendClassName
+{
+  vertical-align: middle;
+}
+
+.LegendEntry
+{
+}
+
+.LegendHeader
+{
+  margin-bottom: 4px;
+}
+
+.LegendExpander
+{
+  margin-right: 5px;
+  background-image: url(../Images/UI/Expand.png);
+  width: 11px;
+  height: 11px;
+}
+
+.LegendExpander.Expanded
+{
+  background-position: -11px 0px;
+}
+
+.LegendExpander.Collapsed
+{
+  background-position: 0px 0px;
+}
+
+.LegendExpander.Empty
+{
+  background-image: none;
+}
+
+.LegendVisibility
+{
+  width: 14px;
+  height: 14px;
+  margin-top: 1px;
+  margin-right: 5px;
+}
+
+.LegendContent
+{
+  margin-left: 15px;
+  margin-bottom: 4px;
+}
+
+.LegendClass
+{
+  margin-bottom: 1px;
+}
+
+.LegendSwatch
+{
+  border: none;
+  margin-left: 10px;
+  margin-right: 4px;
+}
+

@@ -1,0 +1,1 @@
+﻿Directory for storing custom images to be displayed the GPV header or footer.

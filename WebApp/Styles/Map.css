@@ -1,0 +1,168 @@
+﻿/*  Copyright 2012 Applied Geographics, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
+#pnlMapTabs
+{
+  left: 12px;
+  right: 12px;
+  bottom: auto;
+  height: 19px;
+  overflow: hidden;
+}
+
+#pnlMap
+{
+  top: 18px;
+}
+
+#cmdFullView
+{
+  left: 0px;
+  background-position: -600px 0px;  /* FullView.gif */
+}
+
+#cmdZoomPrevious
+{
+  left: 26px;
+  background-position: 0px 0px;  /* Back.gif */
+}
+
+#cmdZoomSelect
+{
+  left: 52px;
+  background-position: -936px 0px;  /* ZoomSelected.gif */
+}
+
+#optZoomIn
+{
+  left: 78px;
+  background-position: -912px 0px;  /* ZoomIn.gif */
+}
+
+#optPan
+{
+  left: 104px;
+  background-position: -768px 0px;  /* Pan.gif */
+}
+
+#cmdPrint
+{
+  right: 156px;
+  background-position: -792px 0px;  /* Print.gif */
+}
+
+#cmdEmail
+{
+  right: 130px;
+  background-position: -576px 0px;  /* Email.gif */
+}
+
+#optIdentify
+{
+  right: 104px;
+  background-position: -648px 0px;  /* Identify.gif */
+}
+
+#optCoordinates
+{
+  right: 78px;
+  background-position: -120px 0px;  /* Coordinates.gif */
+}
+
+#cmdClearGraphics
+{
+  right: 52px;
+  background-position: -48px 0px;  /* ClearGraphics.gif */
+}
+
+#optMeasureArea
+{
+  right: 26px;
+  background-position: -696px 0px;  /* MeasureArea.gif */
+}
+
+#optMeasureLine
+{
+  right: 0px;
+  background-position: -672px 0px;  /* Measure.gif */
+}
+
+#mapMain
+{
+  left: 10px;
+  top: 54px;
+  right: 10px;
+  bottom: 26px;
+  border: solid 1px #606060;
+  background-color: White;  
+  overflow: hidden;
+}
+
+.VersionText
+{
+  font-size: 9px;
+}
+
+#waitClock
+{
+  left: 16px;
+  top: 62px;
+  right: auto;
+  bottom: auto;
+  width: 60px;
+  height: 60px;
+  background-image: url(../Images/UI/WaitClock.png);
+  display: none;
+}
+
+#pnlScaleBar
+{
+  left: 23px;
+  bottom: 41px;
+  right: auto;
+  top: auto;
+  width: 116px;
+  height: 35px;
+}
+
+#pnlScaleBarBackground
+{
+  width: 100%;
+  height: 100%;
+  behavior: url(Styles/PIE.htc);
+  background-color: rgba(255, 255, 255, 0.8);
+  -pie-background: rgba(255, 255, 255, 0.8);
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+}
+
+#scaleBar
+{
+  left: 10px;
+  top: 10px;
+  right: 10px;
+  bottom: auto;
+  height: 4px;
+  background-color: #404040;
+}
+
+#scaleBarText
+{
+  top: 16px;
+  text-align: center;
+  font-weight: bold;
+  color: #404040;
+}

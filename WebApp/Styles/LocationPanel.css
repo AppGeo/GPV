@@ -1,0 +1,107 @@
+﻿/*  Copyright 2012 Applied Geographics, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
+#pnlOverviewSizer
+{
+  bottom: auto;
+  height: 250px;
+  min-height: 212px;
+}
+
+#locationDivider
+{
+  left: 8px;
+  right: 8px;
+  top: 250px;
+  bottom: auto;
+  height: 8px;
+  cursor: n-resize;
+  z-index: 3;
+}
+
+#pnlZoneLevelSizer
+{
+  top: auto;
+  top: 258px;
+  min-height : 212px;
+}
+
+#mapOverview
+{
+  left: 10px;
+  top: 10px;
+  right: 10px;
+  bottom: 10px;
+  border: solid 1px #606060;
+  background-color: White;  
+  overflow: hidden;
+}
+
+#pnlZoneLevelTabs
+{
+  left: 12px;
+  right: 12px;
+  bottom: auto;
+  height: 19px;
+  overflow: hidden;
+}
+
+#pnlZoneLevel
+{
+  top: 18px;
+}
+
+#pnlZoneLevelControl
+{
+  left: 10px;
+  top: 4px;
+}
+
+#pnlZoneLevelScroll
+{
+  left: 10px;
+  top: 22px;
+  right: 10px;
+  bottom: 10px;
+  border: solid 1px #606060;
+  background-color: White;
+  overflow: auto; 
+}
+
+.ZoneLevelTable
+{
+  position: relative;
+  margin-left: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.ZoneLevelTable td
+{
+  vertical-align: top;
+  padding-bottom: 2px;
+}
+
+.ZoneLevelTable td.Value, .ZoneLevelTable th.Value
+{
+  text-align: right;
+  padding-right: 15px;
+  width: 52px;
+}
+
+.ZoneLevelTable th
+{
+  padding-bottom: 6px;
+}

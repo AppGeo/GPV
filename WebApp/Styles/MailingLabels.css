@@ -1,0 +1,48 @@
+﻿/* Copyright 2012 Applied Geographics, Inc.  Licensed under the Apache License, Version 2.0 http://www.apache.org/licenses/LICENSE-2.0 */
+
+div, select, img, input
+{
+  position: absolute;
+}
+
+.Label
+{
+  left: 20px;
+  width: 112px; 
+  height: 17px; 
+  text-align: right
+}
+
+.PrintDirection
+{
+  width : 41px; 
+  height: 54px;
+}
+
+#pnlMain
+{
+  left: 8px;
+  top: 8px;
+  width: 310px;
+  height: 295px;
+}
+
+#optPrintAcross
+{
+  background-image: url(../Images/MailingLabels/LabelsAcross.gif);
+}
+
+#optPrintAcross.Selected
+{
+  background-image: url(../Images/MailingLabels/LabelsAcrossSelect.gif);
+}
+
+#optPrintDown
+{
+  background-image: url(../Images/MailingLabels/LabelsDown.gif);
+}
+
+#optPrintDown.Selected
+{
+  background-image: url(../Images/MailingLabels/LabelsDownSelect.gif);
+}

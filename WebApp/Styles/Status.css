@@ -1,0 +1,84 @@
+﻿/* Copyright 2012 Applied Geographics, Inc.  Licensed under the Apache License, Version 2.0 http://www.apache.org/licenses/LICENSE-2.0 */
+
+body
+{
+  overflow: hidden;
+}
+
+div
+{
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+}
+
+#pnlHeader
+{
+  bottom: auto;
+}
+
+#pnlContent
+{
+  left: 8px;
+  right: 8px;
+  min-width: 930px;
+}
+
+#labMessage
+{
+  position: absolute;
+  left: 10px;
+  top: 10px;
+}
+
+#pnlMapServices
+{
+  position: absolute;
+  left: 25px;
+  top: 35px;
+  width: 742px;
+  height: 348px;
+  overflow: auto;
+}
+
+#grdMapservices
+{
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 722px;
+}
+
+#grdMapservices th
+{
+  font-weight: bold;
+  color: #404040;
+  padding-bottom: 5px;
+}
+
+#grdMapservices td
+{
+  text-align: left;
+  vertical-align: top;
+  padding-bottom: 2px;
+}
+
+#grdMapservices td a
+{
+  color: blue;
+  text-decoration: none;
+}
+
+#grdMapservices td a:hover
+{
+  color: blue;
+  text-decoration: underline;
+}
+
+#pnlFooter
+{
+  top: auto;
+  bottom: 0px;
+}
