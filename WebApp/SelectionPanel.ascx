@@ -19,15 +19,15 @@
 
 <div id="pnlQuerySizer">
   <div id="pnlQuery" class="MainPanel">
-    <gpv:Div ID="optSelect" runat="server" CssClass="Button MapTool" Style="left: 10px; top: 3px" ToolTip="Select Features" />
-    <div id="cmdSelectView" class="Button" style="left: 10px; top: 28px" title="Select All in View"></div>
-    <div id="cmdClearSelection" class="Button" style="left: 10px; top: 53px" title="Clear Selection"></div>
-    <div style="left: 38px; top: 8px; right: 8px; bottom: auto">
+    <gpv:Div ID="optSelect" runat="server" CssClass="Button MapTool" Style="left: 6px; top: 2px" ToolTip="Select Features" />
+    <div id="cmdSelectView" class="Button" style="left: 6px; top: 27px" title="Select All in View"></div>
+    <div id="cmdClearSelection" class="Button" style="left: 6px; top: 52px" title="Clear Selection"></div>
+    <div style="left: 38px; top: 4px; right: 8px; bottom: auto">
       <gpv:Select ID="ddlAction" runat="server" CssClass="Input" Style="position: absolute; width: 60%" ToolTip="Action to perform with the Select Features tool to the left" />
       <gpv:Select ID="ddlTargetLayer" runat="server" CssClass="Input" Style="position: absolute; left: 61%; width: 39%" ToolTip="Target layer containing features of interest" />
-      <gpv:Select ID="ddlProximity" runat="server" CssClass="Input" Style="position: absolute; top: 22px; width: 60%" ToolTip="Proximity of target features to selection features" />
-      <gpv:Select ID="ddlSelectionLayer" runat="server" CssClass="Input" Style="position: absolute; left: 61%; top: 22px; width: 39%" ToolTip="Selection layer with features that will help find target features" />
-      <gpv:Select ID="ddlQuery" runat="server" CssClass="Input" Style="position: absolute; top: 44px; width: 100%" ToolTip="Filter which lists only those features meeting certain criteria" />
+      <gpv:Select ID="ddlProximity" runat="server" CssClass="Input" Style="position: absolute; top: 24px; width: 60%" ToolTip="Proximity of target features to selection features" />
+      <gpv:Select ID="ddlSelectionLayer" runat="server" CssClass="Input" Style="position: absolute; left: 61%; top: 24px; width: 39%" ToolTip="Selection layer with features that will help find target features" />
+      <gpv:Select ID="ddlQuery" runat="server" CssClass="Input" Style="position: absolute; top: 49px; width: 100%" ToolTip="Filter which lists only those features meeting certain criteria" />
     </div>
     <div id="pnlQueryGrid">
       <table id="grdQuery" class="DataGrid"></table>

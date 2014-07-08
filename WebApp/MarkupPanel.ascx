@@ -35,24 +35,24 @@
   <gpv:Input type="checkbox" id="chkMarkupLock" runat="server" disabled="disabled" style="position: absolute; left: 315px; top: 73px; display: none" />
   <gpv:Label id="labMarkupLock" runat="server" for="chkMarkupLock" style="position: absolute; left: 335px; top: 76px; display: none">Lock</gpv:Label>
 
-  <gpv:Div id="optDrawPoint" runat="server" CssClass="Button MapTool Disabled" style="left: 19px; top: 107px" Title="Draw Point"></gpv:Div>
-  <gpv:Div id="optDrawLine" runat="server" CssClass="Button MapTool Disabled" style="left: 44px; top: 107px" Title="Draw Line"></gpv:Div>
-  <gpv:Div id="optDrawPolygon" runat="server" CssClass="Button MapTool Disabled" style="left: 69px; top: 107px" Title="Draw Polygon"></gpv:Div>
-  <gpv:Div id="optDrawCircle" runat="server" CssClass="Button MapTool Disabled" style="left: 94px; top: 107px" Title="Draw Circle"></gpv:Div>
-  <gpv:Div id="optDrawCoordinates" runat="server" CssClass="Button MapTool Disabled" style="left: 130px; top: 107px" Title="Draw Coordinates"></gpv:Div>
-  <gpv:Div id="optDrawLength" runat="server" CssClass="Button MapTool Disabled" style="left: 155px; top: 107px" Title="Draw Measured Length"></gpv:Div>
-  <gpv:Div id="optDrawArea" runat="server" CssClass="Button MapTool Disabled" style="left: 180px; top: 107px" Title="Draw Measured Area"></gpv:Div>
-  <gpv:Div id="optDeleteMarkup" runat="server" CssClass="Button MapTool Disabled" style="left: 219px; top: 107px" Title="Delete Markup"></gpv:Div>
-  <gpv:Div id="optColorPicker" runat="server" CssClass="Button MapTool Disabled" style="left: 244px; top: 107px" Title="Pick Color"></gpv:Div>
-  <gpv:Div id="optPaintBucket" runat="server" CssClass="Button MapTool Disabled" style="left: 269px; top: 107px" Title="Fill With Color"></gpv:Div>
-  <div id="cmdMarkupColor" class="Button Disabled Color" style="left: 307px; top: 107px; background-color: #808080" title="Markup Color"></div>
+  <gpv:Div id="optDrawPoint" runat="server" CssClass="Button MapTool Disabled" style="left: 13px; top: 104px" Title="Draw Point"></gpv:Div>
+  <gpv:Div id="optDrawLine" runat="server" CssClass="Button MapTool Disabled" style="left: 41px; top: 104px" Title="Draw Line"></gpv:Div>
+  <gpv:Div id="optDrawPolygon" runat="server" CssClass="Button MapTool Disabled" style="left: 69px; top: 104px" Title="Draw Polygon"></gpv:Div>
+  <gpv:Div id="optDrawCircle" runat="server" CssClass="Button MapTool Disabled" style="left: 97px; top: 104px" Title="Draw Circle"></gpv:Div>
+  <gpv:Div id="optDrawCoordinates" runat="server" CssClass="Button MapTool Disabled" style="left: 125px; top: 104px" Title="Draw Coordinates"></gpv:Div>
+  <gpv:Div id="optDrawLength" runat="server" CssClass="Button MapTool Disabled" style="left: 153px; top: 104px" Title="Draw Measured Length"></gpv:Div>
+  <gpv:Div id="optDrawArea" runat="server" CssClass="Button MapTool Disabled" style="left: 181px; top: 104px" Title="Draw Measured Area"></gpv:Div>
+  <gpv:Div id="optDeleteMarkup" runat="server" CssClass="Button MapTool Disabled" style="left: 218px; top: 104px" Title="Delete Markup"></gpv:Div>
+  <gpv:Div id="optColorPicker" runat="server" CssClass="Button MapTool Disabled" style="left: 246px; top: 104px" Title="Pick Color"></gpv:Div>
+  <gpv:Div id="optPaintBucket" runat="server" CssClass="Button MapTool Disabled" style="left: 274px; top: 104px" Title="Fill With Color"></gpv:Div>
+  <div id="cmdMarkupColor" class="Button Disabled Color" style="left: 317px; top: 104px; background-color: #808080" title="Markup Color"></div>
 
-  <gpv:Div id="optDrawText" runat="server" CssClass="Button MapTool Disabled" style="left: 19px; top: 133px" Title="Draw Text"></gpv:Div>
+  <gpv:Div id="optDrawText" runat="server" CssClass="Button MapTool Disabled" style="left: 13px; top: 133px" Title="Draw Text"></gpv:Div>
   <div style="left: 40px; top: 138px; right: auto; bottom: auto; width: 32px; text-align: right">Text</div>
   <input type="text" id="tboMarkupText" class="Input" style="position: absolute; left: 75px; top: 134px; width: 169px; cursor: default" disabled="disabled" />
   <input type="checkbox" id="chkTextGlow" style="position: absolute; left: 253px; top: 134px" />
   <div style="left: 274px; top: 138px; right: auto; bottom: auto">Glow</div>
-  <div id="cmdTextGlowColor" class="Button Disabled Color" style="left: 307px; top: 133px; background-color: #808080" title="Text Glow Color"></div>
+  <div id="cmdTextGlowColor" class="Button Disabled Color" style="left: 317px; top: 133px; background-color: #808080" title="Text Glow Color"></div>
 
   <div id="pnlMarkupGrid">
     <table id="grdMarkup" class="DataGrid"></table>

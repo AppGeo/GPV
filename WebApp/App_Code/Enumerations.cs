@@ -48,9 +48,10 @@ public enum FunctionTab
   None = 0,
 	Legend = 1,
 	Selection = 2,
-	Markup = 4,
-	Location = 8,
-	All = 15
+  Search = 4,
+	Markup = 8,
+	Location = 16,
+	All = 31
 }
 
 public enum CheckMode

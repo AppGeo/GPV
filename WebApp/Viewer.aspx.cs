@@ -119,6 +119,18 @@ public partial class Viewer : CustomStyledPage
         }
       }
 
+      if ((_appState.FunctionTabs & FunctionTab.Search) == FunctionTab.Search)
+      {
+        tabSearch.Style["display"] = "block";
+        //ucSearchPanel.Initialize(launchParams);
+
+        if (_appState.ActiveFunctionTab == FunctionTab.Search)
+        {
+          pnlSearch.Style["display"] = "block";
+          tabSearch.Attributes["class"] = "Tab Selected";
+        }
+      }
+
       if ((_appState.FunctionTabs & FunctionTab.Legend) == FunctionTab.Legend)
       {
         tabLegend.Style["display"] = "block";

@@ -136,14 +136,14 @@ a.VersionText
 
 .MainPanel, .Tab, .ColorSelector
 {
-  border-left: solid 1px #919581;
-  border-top: solid 1px #919581;
-  border-right: solid 1px #919581;
+  border-left: solid 1px #DCDEDA;
+  border-top: solid 1px #DCDEDA;
+  border-right: solid 1px #DCDEDA;
 }
 
 .MainPanel, .ColorSelector
 {
-  border-bottom: solid 1px #919581;
+  border-bottom: solid 1px #DCDEDA;
 }
 
 /* border color of text boxes and drop down lists */

@@ -33,7 +33,11 @@
   top: 18px;
   right: 10px;
   bottom: 10px;
-  border: solid 1px #606060;
+  border: solid 1px #C9C9C9;
+   behavior: url(Styles/PIE.htc);
+  -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15);
+  -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.15);
+  box-shadow: 0 1px 1px rgba(0,0,0,0.15);
   background-color: White;
   overflow: auto; 
 }

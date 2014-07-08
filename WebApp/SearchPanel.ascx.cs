@@ -16,25 +16,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
-public static class Version
+public partial class SearchPanel : System.Web.UI.UserControl
 {
-  public const int Major = 4;
-  public const int Minor = 1;
-  public const int BugFix = 0;
-
-  public const string Release = "alpha";
-  public const int Number = 1;
-
-  public static new string ToString()
+  protected void Page_Load(object sender, EventArgs e)
   {
-    string release = Release;
-    
-    if (!(release.ToLower().StartsWith("prod")))
-    {
-      release = String.Format("{0} {1}", release, Number);
-    }
 
-    return String.Format("{0}.{1}.{2} ({3})", Major, Minor, BugFix, release);
   }
 }

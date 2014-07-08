@@ -30,7 +30,7 @@ public partial class Configuration
   {
     get
     {
-      return new string[] {"ZoneLevel", "Application", "Connection", "MapTab", "Layer", "DataTab", "Query", "Proximity", 
+      return new string[] {"ZoneLevel", "Application", "Connection", "MapTab", "Layer", "DataTab", "Query", "Search", "SearchCriteria", "Proximity", 
 				"ApplicationMapTab", "MapTabLayer", "LayerFunction", "LayerProximity", "PrintTemplate", 
 				"PrintTemplateContent", "ApplicationPrintTemplate", "MarkupCategory", "ApplicationMarkupCategory", 
         "Zone", "Level", "ZoneLevelCombo", "MailingLabel", "ExternalMap"};
@@ -169,6 +169,16 @@ public partial class Configuration
     foreach (Configuration.DataTabRow dataTab in DataTab.Where(o => o.IsActiveNull() || o.Active != 1))
     {
       dataTab.Active = 0;
+    }
+
+    foreach (Configuration.SearchRow search in Search.Where(o => o.IsActiveNull() || o.Active != 1))
+    {
+      search.Active = 0;
+    }
+
+    foreach (Configuration.SearchCriteriaRow searchCriteria in SearchCriteria.Where(o => o.IsActiveNull() || o.Active != 1))
+    {
+      searchCriteria.Active = 0;
     }
 
     foreach (Configuration.LayerFunctionRow layerFunction in LayerFunction.Where(o => o.IsActiveNull() || o.Active != 1))
@@ -585,7 +595,7 @@ public partial class Configuration
         {
           if (!validFunctionTabs.Contains(tab) || ((tab == "all" || tab == "none") && tabs.Length > 1))
           {
-            application.ValidationError = "The function tabs must be 'all', 'none', or any combination of 'selection', 'legend', 'location' and 'markup' separated by commas if set";
+            application.ValidationError = "The function tabs must be 'all', 'none', or any combination of 'selection', 'search', 'legend', 'location' and 'markup' separated by commas if set";
             break;
           }
         }
@@ -1366,6 +1376,43 @@ public partial class Configuration
     }
 
     return newErrorsFound;
+  }
+
+  private bool ValidateSearches()
+  { 
+    bool newErrorsFound = false;
+
+    // each search
+    //TAMC I think I need to add more here.
+
+    foreach (Configuration.SearchRow search in Search.Where(o => o.IsValidationErrorNull()))
+    {
+      // must point to a valid layer
+
+      if (!search.LayerRow.IsValidationErrorNull())
+      {
+        search.ValidationError = "Is not contained in a valid layer";
+      }
+
+      // which has a key field
+
+      else if (search.LayerRow.IsKeyFieldNull())
+      {
+        search.ValidationError = "A key field must be provided by the layer";
+      }
+
+      // and at least one valid data tab
+
+      else if (!search.LayerRow.GetDataTabRows().Any(o => o.IsValidationErrorNull()))
+      {
+        search.ValidationError = "Layer does not contain any valid data tabs";
+      }
+
+      newErrorsFound = newErrorsFound || !search.IsValidationErrorNull();
+    }
+
+    return newErrorsFound;
+
   }
 
   private bool ValidateQueries()

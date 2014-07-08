@@ -18,6 +18,7 @@
 <%@ Register TagPrefix="uc1" TagName="Footer" Src="Footer.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="Header" Src="Header.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="SelectionPanel" Src="SelectionPanel.ascx" %>
+<%@ Register TagPrefix="uc1" TagName="SearchPanel" Src="SearchPanel.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="LegendPanel" Src="LegendPanel.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="LocationPanel" Src="LocationPanel.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="MarkupPanel" Src="MarkupPanel.ascx" %>
@@ -53,7 +54,7 @@
               ft
             </div>
           </div>
-          <div style="left: 10px; top: 28px; right: 10px; height: 25px">
+          <div style="left: 10px; top: 25px; right: 10px; height: 25px">
             <div id="cmdFullView" class="Button" title="Full View"></div>
             <div id="cmdZoomPrevious" class="Button" title="Back to Previous Extent"></div>
             <div id="cmdZoomSelect" class="Button" title="Zoom to Selected Features"></div>
@@ -105,6 +106,7 @@
         <div id="pnlFunctionTabs" class="TabPanel">
           <div class="TabScroll">
             <div id="tabSelection" runat="server" class="Tab Normal" style="display: none">Selection</div>
+            <div id="tabSearch" runat="server" class="Tab Normal" style="display: none">Search</div>
             <div id="tabLegend" runat="server" class="Tab Normal" style="display: none">Legend</div>
             <div id="tabLocation" runat="server" class="Tab Normal" style="display: none">Location</div>
             <div id="tabMarkup" runat="server" class="Tab Normal" style="display: none">Markup</div>
@@ -113,6 +115,9 @@
         <div id="pnlFunction">
           <div id="pnlSelection" runat="server" class="FunctionPanel" style="display: none">
             <uc1:SelectionPanel ID="ucSelectionPanel" runat="server" />
+          </div>
+          <div id="pnlSearch" runat="server" class="FunctionPanel" style="display: none">
+            <uc1:SearchPanel ID="ucSearchPanel" runat="server" />
           </div>
           <div id="pnlLegend" runat="server" class="MainPanel FunctionPanel" style="display: none">
             <uc1:LegendPanel ID="ucLegendPanel" runat="server" />

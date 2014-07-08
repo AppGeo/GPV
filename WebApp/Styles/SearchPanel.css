@@ -13,68 +13,57 @@
  *  limitations under the License.
  */
 
-#pnlQuerySizer
+#pnlSearchSizer
 {
   bottom: auto;
-  height: 250px;
+  height: 450px;
   min-height: 212px;
 }
 
-#selectionDivider
+#searchCriteriaDivider, #searchDivider
 {
   left: 8px;
   right: 8px;
-  top: 250px;
   bottom: auto;
   height: 8px;
   cursor: n-resize;
   z-index: 3;
 }
 
-#pnlDataSizer
+#searchCriteriaDivider 
 {
-  top: 258px;
+  top: 200px;
+}
+
+#searchDivider
+{
+  top: 450px;
+}
+
+#pnlSearchCriteriaSizer
+{
+  bottom: auto;
+  height: 200px;
+  min-height: 106px;
+}
+
+#pnlSearchGridSizer {
+  top: 208px;
+  min-height: 106px;
+}
+
+#pnlSearchDataSizer
+{
+  top: 458px;
   min-height: 212px;
 }
-
-#optSelect
+#pnlSearchCriteria
 {
-  background-position: -813px 3px;  /* Select.gif */
-  behavior: url(Styles/PIE.htc);
-  border-radius: 2px 2px 0px 0px;
-  -webkit-border-radius: 2px 2px 0px 0px;
-  -moz-border-radius: 2px 2px 0px 0px;
+  padding: 5px;
 }
-
-#optSelect.Disabled
+#pnlSearchGrid
 {
-  background-position: -837px 3px;  /* SelectDisable.gif */
-}
-
-#cmdSelectView
-{
-  background-position: -861px 3px;  /* SelectView.gif */
-}
-
-#cmdSelectView.Disabled
-{
-  background-position: -885px 3px;  /* SelectViewDisable.gif */
-}
-
-#cmdClearSelection
-{
-  background-position: -21px 3px;  /* Clear.gif */
-  behavior: url(Styles/PIE.htc);
-  border-radius: 0px 0px 2px 2px;
-  -webkit-border-radius: 0px 0px 2px 2px;
-  -moz-border-radius: 0px 0px 2px 2px;
-}
-
-#pnlQueryGrid
-{
-  left: 10px;
-  top: 80px;
-  right: 10px;
+  top: 10px;
   bottom: 20px;
   border: solid 1px #C9C9C9;
    behavior: url(Styles/PIE.htc);
@@ -85,15 +74,7 @@
   overflow: auto;
 }
 
-#pnlQueryCommand
-{
-  left: 10px;
-  bottom: 6px;
-  top: auto;
-  height: 11px;
-}
-
-#pnlDataTabs
+#pnlSearchDataTabs
 {
   left: 12px;
   right: 12px;
@@ -102,12 +83,12 @@
   overflow: hidden;
 }
 
-#pnlData
+#pnlSearchData
 {
   top: 18px;
 }
 
-#pnlDataList
+#pnlSearchDataList
 {
   left: 10px;
   top: 17px;
