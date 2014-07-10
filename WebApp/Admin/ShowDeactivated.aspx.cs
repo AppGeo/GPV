@@ -53,6 +53,8 @@ public partial class Admin_ShowDeactivated : CustomStyledPage
     WriteReportBlock(config.PrintTemplateContent, "TemplateID", "SequenceNo");
     WriteReportBlock(config.Proximity, "ProximityID", null);
     WriteReportBlock(config.Query, "QueryID", "LayerID");
+    WriteReportBlock(config.Search, "SearchID", "LayerID");
+    WriteReportBlock(config.SearchCriteria, "SearchCriteriaID", "SearchID");
     WriteReportBlock(config.Zone, "ZoneID", "ZoneLevelID");
     WriteReportBlock(config.ZoneLevel, "ZoneLevelID", null);
     WriteReportBlock(config.ZoneLevelCombo, "ZoneID,LevelID", "ZoneLevelID");

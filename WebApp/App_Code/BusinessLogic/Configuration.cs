@@ -93,7 +93,7 @@ public partial class Configuration
     return config;
   }
 
-  public static int GetParameterCount(OleDbCommand command)
+  public static int GetParameterCount(OleDbCommand command, bool isSearch)
   {
     int c = -1;
 
@@ -107,7 +107,8 @@ public partial class Configuration
 
           for (int n = 1; n <= i; ++n)
           {
-            testCommand.Parameters.AddWithValue(n.ToString(), "0");
+            string testValue = isSearch && i == 1 ? "1 = 0" : "0";
+            testCommand.Parameters.AddWithValue(n.ToString(), testValue);
           }
 
           using (OleDbDataReader reader = testCommand.ExecuteReader())
@@ -314,6 +315,16 @@ public partial class Configuration
       proximity.Active = 0;
     }
 
+    foreach (Configuration.SearchRow search in Search.Where(o => o.LayerRow.Active == 0 || (!o.IsConnectionIDNull() && o.ConnectionRow.Active == 0)))
+    {
+      search.Active = 0;
+    }
+
+    foreach (Configuration.SearchCriteriaRow searchCriteria in SearchCriteria.Where(o => o.SearchRow.Active == 0 || (!o.IsConnectionIDNull() && o.ConnectionRow.Active == 0)))
+    {
+      searchCriteria.Active = 0;
+    }
+
     foreach (Configuration.ApplicationMarkupCategoryRow applicationMarkupCategory in ApplicationMarkupCategory.Where(o => o.ApplicationRow.Active == 0 || o.MarkupCategoryRow.Active == 0))
     {
       applicationMarkupCategory.Active = 0;
@@ -422,15 +433,17 @@ public partial class Configuration
     ValidateDataSources();
     ValidateMapServices();
 
+    ValidateZoneLevels();
+
     // for interrelated configuration elements, one element may become
     // invalid if another one does, so iterate through the validation
     // of these until no new validation errors are found
 
-    ValidateZoneLevels();
-    bool newErrorsFound = ValidateApplications();
+    bool newErrorsFound = false;
 
     do
     {
+      newErrorsFound = ValidateApplications();
       newErrorsFound = ValidateApplicationMapTabs() || newErrorsFound;
       newErrorsFound = ValidateMapTabs() || newErrorsFound;
       newErrorsFound = ValidateMapTabLayers() || newErrorsFound;
@@ -440,16 +453,21 @@ public partial class Configuration
       newErrorsFound = ValidateLayerFunctions() || newErrorsFound;
       newErrorsFound = ValidateDataTabs() || newErrorsFound;
       newErrorsFound = ValidateQueries() || newErrorsFound;
+      newErrorsFound = ValidateSearches() || newErrorsFound;
+      newErrorsFound = ValidateSearchCriteria() || newErrorsFound;
 
       if (newErrorsFound)
       {
+        newErrorsFound = ValidateSearches() || newErrorsFound;
+        newErrorsFound = ValidateQueries() || newErrorsFound;
         newErrorsFound = ValidateDataTabs() || newErrorsFound;
-        newErrorsFound = ValidateLayerProximities();
+        newErrorsFound = ValidateLayerFunctions() || newErrorsFound;
+        newErrorsFound = ValidateProximities() || newErrorsFound;
+        newErrorsFound = ValidateLayerProximities() || newErrorsFound;
         newErrorsFound = ValidateLayers() || newErrorsFound;
         newErrorsFound = ValidateMapTabLayers() || newErrorsFound;
         newErrorsFound = ValidateMapTabs() || newErrorsFound;
         newErrorsFound = ValidateApplicationMapTabs() || newErrorsFound;
-        newErrorsFound = ValidateApplications() || newErrorsFound;
       }
     }
     while (newErrorsFound);
@@ -795,6 +813,71 @@ public partial class Configuration
             {
               query.ValidationError = "Stored procedure does not return a MapID column";
             }
+          }
+        }
+      }
+    }
+
+    // === Search ===
+
+    foreach (Configuration.SearchRow search in Search.Where(o => o.IsValidationErrorNull()))
+    {
+      if (!search.IsConnectionIDNull() && !search.ConnectionRow.IsValidationErrorNull())
+      {
+        search.ValidationError = "Does not use a valid database connection";
+      }
+      else
+      {
+        using (OleDbCommand command = search.GetDatabaseCommand())
+        {
+          if (command == null)
+          {
+            search.ValidationError = "Stored procedure does not exist or is inaccessible";
+          }
+          else
+          {
+            OleDbDataReader reader = null;
+            bool hasMapId = false;
+
+            try
+            {
+              using (reader = command.ExecuteReader())
+              {
+                hasMapId = reader.GetOrdinal("MapID") >= 0;
+              }
+            }
+            catch { }
+
+            command.Connection.Dispose();
+
+            if (!hasMapId)
+            {
+              search.ValidationError = "Stored procedure does not return a MapID column";
+            }
+          }
+        }
+      }
+    }
+
+    // === SearchCriteria ===
+
+    foreach (Configuration.SearchCriteriaRow searchCriteria in SearchCriteria.Where(o => !o.IsStoredProcNull() && o.IsValidationErrorNull()))
+    {
+      if (!searchCriteria.IsConnectionIDNull() && !searchCriteria.ConnectionRow.IsValidationErrorNull())
+      {
+        searchCriteria.ValidationError = "Does not use a valid database connection";
+      }
+      else
+      {
+        using (OleDbCommand command = searchCriteria.GetDatabaseCommand())
+        {
+          if (command != null)
+          {
+            command.Connection.Dispose();
+          }
+          else
+          {
+            searchCriteria.ValidationError = "Stored procedure does not exist or is inaccessible";
           }
         }
       }
@@ -1378,43 +1461,6 @@ public partial class Configuration
     return newErrorsFound;
   }
 
-  private bool ValidateSearches()
-  { 
-    bool newErrorsFound = false;
-
-    // each search
-    //TAMC I think I need to add more here.
-
-    foreach (Configuration.SearchRow search in Search.Where(o => o.IsValidationErrorNull()))
-    {
-      // must point to a valid layer
-
-      if (!search.LayerRow.IsValidationErrorNull())
-      {
-        search.ValidationError = "Is not contained in a valid layer";
-      }
-
-      // which has a key field
-
-      else if (search.LayerRow.IsKeyFieldNull())
-      {
-        search.ValidationError = "A key field must be provided by the layer";
-      }
-
-      // and at least one valid data tab
-
-      else if (!search.LayerRow.GetDataTabRows().Any(o => o.IsValidationErrorNull()))
-      {
-        search.ValidationError = "Layer does not contain any valid data tabs";
-      }
-
-      newErrorsFound = newErrorsFound || !search.IsValidationErrorNull();
-    }
-
-    return newErrorsFound;
-
-  }
-
   private bool ValidateQueries()
   {
     bool newErrorsFound = false;
@@ -1445,6 +1491,65 @@ public partial class Configuration
       }
 
       newErrorsFound = newErrorsFound || !query.IsValidationErrorNull();
+    }
+
+    return newErrorsFound;
+  }
+
+  private bool ValidateSearchCriteria()
+  {
+    string[] validTypes = new string[] { "autocomplete", "between", "lookup", "numeric", "text" };
+    string[] procedureTypes = new string[] { "autocomplete", "lookup" };
+
+    bool newErrorsFound = false;
+
+    // each search criteria
+
+    foreach (Configuration.SearchCriteriaRow searchCriteria in SearchCriteria.Where(o => o.IsValidationErrorNull()))
+    {
+      // must have a valid type
+
+      if (!validTypes.Contains(searchCriteria.SearchCriteriaType.ToLower()))
+      {
+        searchCriteria.ValidationError = "Unknown content type: " + searchCriteria.SearchCriteriaType;
+      }
+
+      // must have a stored procedure when type is "autocomplete" or "lookup"
+
+      if (procedureTypes.Contains(searchCriteria.SearchCriteriaType.ToLower()) && searchCriteria.IsStoredProcNull())
+      {
+        searchCriteria.ValidationError = "No store procedure specified for criteria type " + searchCriteria.SearchCriteriaType;
+      }
+
+      newErrorsFound = newErrorsFound || !searchCriteria.IsValidationErrorNull();
+    }
+
+    return newErrorsFound;
+  }
+
+  private bool ValidateSearches()
+  {
+    bool newErrorsFound = false;
+
+    // each search
+
+    foreach (Configuration.SearchRow search in Search.Where(o => o.IsValidationErrorNull()))
+    {
+      // must point to a valid layer
+
+      if (!search.LayerRow.IsValidationErrorNull())
+      {
+        search.ValidationError = "Is not contained in a valid layer";
+      }
+
+      // must contain at least one valid search criteria
+
+      if (!search.GetSearchCriteriaRows().Any(o => o.IsValidationErrorNull()))
+      {
+        search.ValidationError = "Does not contain any valid search criteria";
+      }
+
+      newErrorsFound = newErrorsFound || !search.IsValidationErrorNull();
     }
 
     return newErrorsFound;

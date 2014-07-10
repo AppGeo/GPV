@@ -40,7 +40,7 @@ public partial class Configuration
 
         if (IsParameterCountNull())
         {
-          ParameterCount = Configuration.GetParameterCount(command);
+          ParameterCount = Configuration.GetParameterCount(command, false);
         }
 
         if (ParameterCount >= 0)
@@ -56,36 +56,5 @@ public partial class Configuration
 
       return null;
     }
-
-    //TAMC what should I be sending back here 
-    public SearchCriteriaIdentifier ToIdentifier()
-    {
-      return new SearchCriteriaIdentifier(SearchID, DisplayName);
-    }
-
-    public Dictionary<String, Object> ToJsonData()
-    {
-      Dictionary<String, Object> jsonData = new Dictionary<String, Object>();
-      jsonData.Add("name", DisplayName);
-      jsonData.Add("sequenceNo", SequenceNo);
-      return jsonData;
-    }
-  }
-}
-
-public class SearchCriteriaIdentifier : IComparable<SearchCriteriaIdentifier>
-{
-  public string Key = null;
-  public string Name = null;
-
-  public SearchCriteriaIdentifier(string key, string name)
-  {
-    Key = key;
-    Name = name;
-  }
-
-  public int CompareTo(SearchCriteriaIdentifier other)
-  {
-    return Key.CompareTo(other.Key);
   }
 }

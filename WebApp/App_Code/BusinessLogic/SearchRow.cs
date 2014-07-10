@@ -40,12 +40,14 @@ public partial class Configuration
 
         if (IsParameterCountNull())
         {
-          ParameterCount = Configuration.GetParameterCount(command);
+          ParameterCount = Configuration.GetParameterCount(command, true);
         }
 
         if (ParameterCount >= 0)
         {
-          for (int i = 1; i <= ParameterCount; ++i)
+          command.Parameters.AddWithValue("1", "1 = 0");
+
+          for (int i = 2; i <= ParameterCount; ++i)
           {
             command.Parameters.AddWithValue(i.ToString(), "0");
           }
@@ -57,11 +59,6 @@ public partial class Configuration
       return null;
     }
 
-    public SearchIdentifier ToIdentifier()
-    {
-      return new SearchIdentifier(SearchID, DisplayName);
-    }
-
     public Dictionary<String, Object> ToJsonData()
     {
       Dictionary<String, Object> jsonData = new Dictionary<String, Object>();
@@ -69,22 +66,5 @@ public partial class Configuration
       jsonData.Add("sequenceNo", SequenceNo);
       return jsonData;
     }
-  }
-}
-
-public class SearchIdentifier : IComparable<SearchIdentifier>
-{
-  public string Key = null;
-  public string Name = null;
-
-  public SearchIdentifier(string key, string name)
-  {
-    Key = key;
-    Name = name;
-  }
-
-  public int CompareTo(SearchIdentifier other)
-  {
-    return Key.CompareTo(other.Key);
   }
 }

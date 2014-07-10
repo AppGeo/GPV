@@ -74,11 +74,11 @@ public partial class Admin_CheckConfiguration : CustomStyledPage
       errorCount += WriteReportBlock(config.PrintTemplateContent, "TemplateID", "SequenceNo");
       errorCount += WriteReportBlock(config.Proximity, "ProximityID", null);
       errorCount += WriteReportBlock(config.Query, "QueryID", "LayerID");
+      errorCount += WriteReportBlock(config.Search, "SearchID", "LayerID");
+      errorCount += WriteReportBlock(config.SearchCriteria, "SearchCriteriaID", "SearchID");
       errorCount += WriteReportBlock(config.Zone, "ZoneID", "ZoneLevelID");
       errorCount += WriteReportBlock(config.ZoneLevel, "ZoneLevelID", null);
       errorCount += WriteReportBlock(config.ZoneLevelCombo, "ZoneID,LevelID", "ZoneLevelID");
-      errorCount += WriteReportBlock(config.Search, "SearchID", "LayerID");
-      errorCount += WriteReportBlock(config.SearchCriteria, "SearchCriteriaID", "SearchID");
 
       labMessage.InnerText = errorCount == 0 ? "No errors found" : errorCount == 1 ? "1 error found" : String.Format("{0} errors found", errorCount);
 

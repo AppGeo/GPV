@@ -54,6 +54,7 @@ public partial class Configuration
       List<String> proximityIDs = Configuration.Proximity.Where(o => !o.IsIsDefaultNull() && o.IsDefault == 1).Select(o => o.ProximityID).ToList();
       List<String> queryIDs = new List<String>();
       List<String> dataTabIDs = new List<String>();
+      List<String> searchIDs = new List<String>();
 
       foreach (LayerRow layer in Configuration.Layer.Where(o => layerIDs.Contains(o.LayerID)))
       {
@@ -61,6 +62,7 @@ public partial class Configuration
         proximityIDs.AddRange((string[])layerData["proximity"]);
         queryIDs.AddRange((string[])layerData["query"]);
         dataTabIDs.AddRange((string[])layerData["dataTab"]);
+        searchIDs.AddRange((string[])layerData["search"]);
 
         layers.Add(layer.LayerID, layerData);
       }
@@ -89,6 +91,14 @@ public partial class Configuration
         dataTabs.Add(dataTab.DataTabID, dataTab.ToJsonData());
       }
 
+      searchIDs = searchIDs.Distinct().ToList();
+      Dictionary<String, Object> searches = new Dictionary<String, Object>();
+
+      foreach (SearchRow search in Configuration.Search.Where(o => searchIDs.Contains(o.SearchID)))
+      {
+        searches.Add(search.SearchID, search.ToJsonData());
+      }
+
       Dictionary<String, Object> jsonData = new Dictionary<String, Object>();
       jsonData.Add("fullExtent", GetFullExtentEnvelope().ToArray());
       jsonData.Add("mapTab", mapTabs);
@@ -96,6 +106,7 @@ public partial class Configuration
       jsonData.Add("proximity", proximities);
       jsonData.Add("query", queries);
       jsonData.Add("dataTab", dataTabs);
+      jsonData.Add("search", searches);
 
       JavaScriptSerializer serializer = new JavaScriptSerializer();
       return serializer.Serialize(jsonData);
