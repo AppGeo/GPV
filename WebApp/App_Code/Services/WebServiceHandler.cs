@@ -158,11 +158,7 @@ public class WebServiceHandler : IHttpHandler
       Response.Write(serializer.Serialize(obj));
       Response.End();
     }
-    catch
-    {
-      Response.StatusCode = 500;
-      Response.End();
-    }
+    catch { }
   }
 
   protected void ReturnNotFound()
