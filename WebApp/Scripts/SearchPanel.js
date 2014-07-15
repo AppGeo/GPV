@@ -22,7 +22,7 @@ var GPV = (function (gpv) {
 
     // =====  controls  =====
 
-    var $ddlSearches = $("#ddlSearches").on("change", searchChanged);
+    var $ddlSearch = $("#ddlSearches").on("change", searchChanged);
 
     // =====  component events
     
@@ -31,14 +31,20 @@ var GPV = (function (gpv) {
     // =====  private functions  =====
 
     function fillSearches() {
-      var changed = gpv.loadOptions($ddlSearches, config.mapTab[appState.MapTab].search);
+      var changed = gpv.loadOptions($ddlSearch, config.mapTab[appState.MapTab].search);
 
       if (changed) {
-        searchChanged()
+        searchChanged();
       }
     }
 
     function searchChanged() {
+      var $search = $container.find("#pnlSearchScroll .Search").hide();
+      var $opt = $ddlSearch.find("option:selected");
+
+      if ($opt.length) {
+        $search.filter("[data-search='" + $opt.val() + "']").show();
+      }
       // show the criteria for the selected search
       // clear the results grid
     }

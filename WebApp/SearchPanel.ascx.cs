@@ -60,7 +60,7 @@ public partial class SearchPanel : System.Web.UI.UserControl
       {
         // add UI elements for this criterion
         HtmlGenericControl searchCriteria = new HtmlGenericControl("div");
-        search.Attributes["data-criteria"] = searchCriteriaRow.SearchCriteriaID;
+        searchCriteria.Attributes["data-criteria"] = searchCriteriaRow.SearchCriteriaID;
 
         HtmlGenericControl searchLabel = new HtmlGenericControl("span");
         searchLabel.InnerText = searchCriteriaRow.DisplayName;
