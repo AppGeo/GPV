@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2014 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -21,8 +21,58 @@ using System.Web.UI.WebControls;
 
 public partial class SearchPanel : System.Web.UI.UserControl
 {
-  protected void Page_Load(object sender, EventArgs e)
+  public void Initialize(Configuration config, AppState appState, Configuration.ApplicationRow application)
   {
+    // find all searches for this application
 
+    List<Configuration.SearchRow> searches = new List<Configuration.SearchRow>();
+
+    foreach (Configuration.ApplicationMapTabRow appMapTabRow in application.GetApplicationMapTabRows())
+    {
+      Configuration.MapTabRow mapTabRow = appMapTabRow.MapTabRow;
+
+      foreach (Configuration.MapTabLayerRow mapTabLayerRow in mapTabRow.GetMapTabLayerRows().Where(o => !o.IsAllowTargetNull() && o.AllowTarget == 1))
+      {
+        Configuration.LayerRow layerRow = mapTabLayerRow.LayerRow;
+
+        foreach (Configuration.SearchRow searchRow in layerRow.GetSearchRows())
+        {
+          if (!searches.Any(o => o.SearchID == searchRow.SearchID))
+          {
+            searches.Add(searchRow);
+          }
+        }
+      }
+    }
+
+    // generate the search interfaces
+
+    foreach (Configuration.SearchRow searchRow in searches.OrderBy(o => o.SequenceNo))
+    {
+      // create the panel for this search
+
+      foreach (Configuration.SearchCriteriaRow searchCriteriaRow in searchRow.GetSearchCriteriaRows().OrderBy(o => o.SequenceNo))
+      {
+        // add UI elements for this criterion
+
+        switch (searchCriteriaRow.SearchCriteriaType)
+        {
+          case "autocomplete":
+            break;
+
+          case "between":
+            break;
+
+          case "lookup":
+            break;
+
+          case "numeric":
+            break;
+
+          case "text":
+            break;
+        }
+      }
+    }
   }
 }
