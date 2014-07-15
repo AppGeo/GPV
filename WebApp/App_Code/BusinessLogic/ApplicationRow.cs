@@ -39,12 +39,14 @@ public partial class Configuration
     {
       Dictionary<String, Object> mapTabs = new Dictionary<String, Object>();
       List<String> layerIDs = new List<String>();
+      List<String> searchIDs = new List<String>();
 
       foreach (MapTabRow mapTab in GetApplicationMapTabRows().Select(o => o.MapTabRow))
       {
         Dictionary<String, Object> mapTabData = mapTab.ToJsonData();
         layerIDs.AddRange((string[])mapTabData["target"]);
         layerIDs.AddRange((string[])mapTabData["selection"]);
+        searchIDs.AddRange((string[])mapTabData["search"]);
 
         mapTabs.Add(mapTab.MapTabID, mapTabData);
       }
@@ -54,7 +56,6 @@ public partial class Configuration
       List<String> proximityIDs = Configuration.Proximity.Where(o => !o.IsIsDefaultNull() && o.IsDefault == 1).Select(o => o.ProximityID).ToList();
       List<String> queryIDs = new List<String>();
       List<String> dataTabIDs = new List<String>();
-      List<String> searchIDs = new List<String>();
 
       foreach (LayerRow layer in Configuration.Layer.Where(o => layerIDs.Contains(o.LayerID)))
       {
@@ -62,7 +63,6 @@ public partial class Configuration
         proximityIDs.AddRange((string[])layerData["proximity"]);
         queryIDs.AddRange((string[])layerData["query"]);
         dataTabIDs.AddRange((string[])layerData["dataTab"]);
-        searchIDs.AddRange((string[])layerData["search"]);
 
         layers.Add(layer.LayerID, layerData);
       }

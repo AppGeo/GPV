@@ -80,9 +80,17 @@ public partial class Configuration
       IEnumerable<MapTabLayerRow> targetMapTabLayers = mapTabLayers.Where(o => !o.IsAllowTargetNull() && o.AllowTarget > 0).OrderBy(o => o, new MapTabLayerComparer(CompareMode.Target));
       IEnumerable<MapTabLayerRow> selectionMapTabLayers = mapTabLayers.Where(o => !o.IsAllowSelectionNull() && o.AllowSelection > 0).OrderBy(o => o, new MapTabLayerComparer(CompareMode.Selection));
 
+      List<SearchRow> searches = new List<SearchRow>();
+
+      foreach (LayerRow layer in mapTabLayers.Where(o => !o.IsAllowTargetNull() && o.AllowTarget > 0).Select(o => o.LayerRow))
+      {
+        searches.AddRange(layer.GetSearchRows());
+      }
+
       Dictionary<String, Object> jsonData = new Dictionary<String, Object>();
       jsonData.Add("target", targetMapTabLayers.Select(o => o.LayerID).ToArray());
       jsonData.Add("selection", selectionMapTabLayers.Select(o => o.LayerID).ToArray());
+      jsonData.Add("search", searches.Distinct().Select(o => o.SearchID).ToArray());
       return jsonData;
     }
 

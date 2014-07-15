@@ -40,6 +40,7 @@ public class MinifiedScriptsHandler : IHttpHandler
       new ScriptItem("Scripts/Selection.js", true, true),
       new ScriptItem("Scripts/WaitClock.js", true, true),
       new ScriptItem("Scripts/ZoomBar.js", true, true),
+      new ScriptItem("Scripts/SearchPanel.js", true, true),
       new ScriptItem("Scripts/SelectionPanel.js", true, true),
       new ScriptItem("Scripts/LegendPanel.js", true, true),
       new ScriptItem("Scripts/LocationPanel.js", true, true),

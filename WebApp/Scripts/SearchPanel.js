@@ -18,43 +18,37 @@ var GPV = (function (gpv) {
     var $container = $("#pnlSearch");
     var config = gpv.configuration;
     var appState = gpv.appState;
+    var service = "Services/SearchPanel.ashx";
 
-    var $ddlSearches = $("#ddlSearches").on("change", searchesChanged);
+    // =====  controls  =====
 
+    var $ddlSearches = $("#ddlSearches").on("change", searchChanged);
 
-    function fillSearches(initializing) {
-      //var changed = loadOptions($ddlSearches, config.mapTab[appState.MapTab].target) && !initializing;
+    // =====  component events
+    
+    gpv.on("viewer", "mapTabChanged", fillSearches);
 
-      //if (initializing) {
-      //  syncAppState($ddlSearches, "Search");
-      //}
-      //else if (changed) {
-      //  searchesChanged();
-      //}
+    // =====  private functions  =====
 
-      //return changed;
+    function fillSearches() {
+      var changed = gpv.loadOptions($ddlSearches, config.mapTab[appState.MapTab].search);
+
+      if (changed) {
+        searchChanged()
+      }
     }
 
-    function loadOptions($target, list) {
-      var previous = $target.val();
-      var changed = previous || list.length;
-      $target.empty();
-
-      $.each(list, function () {
-        var same = this.id == previous;
-        changed = changed && !same;
-        $("<option/>").val(this.id).text(this.name).prop("selected", same).appendTo($target);
-      });
-
-      return changed;
+    function searchChanged() {
+      // show the criteria for the selected search
+      // clear the results grid
     }
 
-    function searchesChanged(e) {
-    }
+    // =====  public interface  =====
 
-    function initialize() {
-      fillSearches(true);
-    }
+    gpv.searchPanel = {
+    };
+
+    fillSearches();
   });
 
   return gpv;

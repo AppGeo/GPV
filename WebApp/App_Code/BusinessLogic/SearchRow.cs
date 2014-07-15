@@ -63,6 +63,7 @@ public partial class Configuration
     {
       Dictionary<String, Object> jsonData = new Dictionary<String, Object>();
       jsonData.Add("name", DisplayName);
+      jsonData.Add("layer", LayerID);
       jsonData.Add("sequenceNo", SequenceNo);
       return jsonData;
     }

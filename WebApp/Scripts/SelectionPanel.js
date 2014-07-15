@@ -214,7 +214,7 @@ var GPV = (function (gpv) {
         }
       }
 
-      var changed = loadOptions($ddlAction, list);
+      var changed = gpv.loadOptions($ddlAction, list);
 
       if (initializing) {
         syncAppState($ddlAction, "Action");
@@ -258,7 +258,7 @@ var GPV = (function (gpv) {
       var isFindNear = appState.TargetLayer && action.findNearest1 <= appState.Action && appState.Action <= action.findNearest5;
       var list = isFindAll ? config.layer[appState.TargetLayer].proximity : isFindNear ? [{ id: "", name: "nearest to the selected"}] : [];
 
-      var changed = loadOptions($ddlProximity, list);
+      var changed = gpv.loadOptions($ddlProximity, list);
 
       if (initializing) {
         syncAppState($ddlProximity, "Proximity");
@@ -272,7 +272,7 @@ var GPV = (function (gpv) {
 
     function fillQuery(initializing) {
       var list = appState.TargetLayer ? config.layer[appState.TargetLayer].query : [];
-      var changed = loadOptions($ddlQuery, list);
+      var changed = gpv.loadOptions($ddlQuery, list);
 
       if (initializing) {
         syncAppState($ddlQuery, "Query");
@@ -286,7 +286,7 @@ var GPV = (function (gpv) {
 
     function fillSelectionLayer(initializing) {
       var list = appState.Action == action.select || !appState.TargetLayer ? [] : config.mapTab[appState.MapTab].selection;
-      var changed = loadOptions($ddlSelectionLayer, list);
+      var changed = gpv.loadOptions($ddlSelectionLayer, list);
 
       if (initializing) {
         syncAppState($ddlSelectionLayer, "SelectionLayer");
@@ -299,7 +299,7 @@ var GPV = (function (gpv) {
     }
 
     function fillTargetLayer(initializing) {
-      var changed = loadOptions($ddlTargetLayer, config.mapTab[appState.MapTab].target) && !initializing;
+      var changed = gpv.loadOptions($ddlTargetLayer, config.mapTab[appState.MapTab].target) && !initializing;
 
       if (initializing) {
         syncAppState($ddlTargetLayer, "TargetLayer");
@@ -323,20 +323,6 @@ var GPV = (function (gpv) {
       fillQuery(true);
       setDataTabs();
       fillDataList();
-    }
-
-    function loadOptions($target, list) {
-      var previous = $target.val();
-      var changed = previous || list.length;
-      $target.empty();
-
-      $.each(list, function () {
-        var same = this.id == previous;
-        changed = changed && !same;
-        $("<option/>").val(this.id).text(this.name).prop("selected", same).appendTo($target);
-      });
-
-      return changed;
     }
 
     function mapShape(e, geo) {

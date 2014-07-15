@@ -20,7 +20,7 @@ var GPV = (function (gpv) {
 
     // add IDs to proximities, queries and data tabs from keys
 
-    $.each([config.proximity, config.query, config.dataTab], function () {
+    $.each([config.proximity, config.query, config.dataTab, config.search], function () {
       $.each(this, function (k, v) {
         v.id = k;
       });
@@ -47,7 +47,7 @@ var GPV = (function (gpv) {
       sortByProperty(layer.dataTab, "sequenceNo");
     })
 
-    // make map tabs directly reference layers
+    // make map tabs directly reference layers and searches
 
     $.each(config.mapTab, function (i, mapTab) {
       $.each(["target", "selection"], function (i, type) {
@@ -55,6 +55,17 @@ var GPV = (function (gpv) {
           return config.layer[layerID];
         });
       });
+
+      mapTab.search = $.map(mapTab.search, function (searchID) {
+        return config.search[searchID];
+      });
+      sortByProperty(mapTab.search, "sequenceNo");
+    });
+
+    // make searches directly reference layers
+
+    $.each(config.search, function (searchID, search) {
+      search.layer = config.layer[search.layer];
     });
 
     function sortByProperty(array, prop) {

@@ -91,7 +91,6 @@ public partial class Configuration
       jsonData.Add("proximity", proximityIDs);
       jsonData.Add("query", GetQueryRows().Select(o => o.QueryID).ToArray());
       jsonData.Add("dataTab", GetDataTabRows().Select(o => o.DataTabID).ToArray());
-      jsonData.Add("search", GetSearchRows().Select(o => o.SearchID).ToArray());
       return jsonData;
     }
   }
