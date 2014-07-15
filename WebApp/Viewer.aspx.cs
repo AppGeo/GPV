@@ -110,7 +110,7 @@ public partial class Viewer : CustomStyledPage
       if ((_appState.FunctionTabs & FunctionTab.Search) == FunctionTab.Search)
       {
         tabSearch.Style["display"] = "block";
-        //ucSearchPanel.Initialize(launchParams);
+        ucSearchPanel.Initialize(application);
 
         if (_appState.ActiveFunctionTab == FunctionTab.Search)
         {
@@ -1289,6 +1289,10 @@ public partial class Viewer : CustomStyledPage
       if ((_appState.FunctionTabs & FunctionTab.Selection) == FunctionTab.Selection)
       {
         _appState.ActiveFunctionTab = FunctionTab.Selection;
+      }
+      else if ((_appState.FunctionTabs & FunctionTab.Search) == FunctionTab.Search)
+      {
+        _appState.ActiveFunctionTab = FunctionTab.Search;
       }
       else if ((_appState.FunctionTabs & FunctionTab.Legend) == FunctionTab.Legend)
       {

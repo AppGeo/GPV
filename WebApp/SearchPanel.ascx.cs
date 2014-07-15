@@ -21,7 +21,7 @@ using System.Web.UI.WebControls;
 
 public partial class SearchPanel : System.Web.UI.UserControl
 {
-  public void Initialize(Configuration config, AppState appState, Configuration.ApplicationRow application)
+  public void Initialize(Configuration.ApplicationRow application)
   {
     // find all searches for this application
 
@@ -47,7 +47,7 @@ public partial class SearchPanel : System.Web.UI.UserControl
 
     // generate the search interfaces
 
-    foreach (Configuration.SearchRow searchRow in searches.OrderBy(o => o.SequenceNo))
+    foreach (Configuration.SearchRow searchRow in searches)
     {
       // create the panel for this search
 
