@@ -17,26 +17,19 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeFile="SearchPanel.ascx.cs" Inherits="SearchPanel" %>
 <%@ Register TagPrefix="gpv" Assembly="App_Code" Namespace="GPV" %>
 
-<div id="pnlSearchSizer">
-    <div id="pnlSearchCriteriaSizer">
-      <div id="pnlSearchCriteria" class="MainPanel">
-      <gpv:Select ID="ddlSearches" runat="server" CssClass="Input" Style="position: absolute; width: 60%" ToolTip="Choose a search to perform" />
-      </div>
-    </div>
-    <div id="pnlSearchGridSizer">
-      <div id="pnlSearchGrid" class="MainPanel">
-        <table id="grdSearch" class="DataGrid"></table>
-      </div>
-    </div>
+<div id="pnlSearchCriteriaSizer">
+  <div id="pnlSearchCriteria" class="MainPanel">
+    <gpv:Select ID="ddlSearches" runat="server" CssClass="Input" Style="position: absolute; width: 60%" ToolTip="Choose a search to perform" />
   </div>
-<div id="pnlSearchDataSizer">
-  <div id="pnlSearchDataTabs" class="TabPanel">
-    <div id="pnlSearchDataTabScroll" class="TabScroll"></div>
+  <div id="cmdSearch" class="CommandLink Disabled" style="position: absolute; top: auto; bottom: 5px; left: 10px; z-index: 2;">Search</div>
+</div>
+<div id="pnlSearchGridSizer" class="MainPanel">
+  <div id="pnlSearchGrid">
+    <table id="grdSearch" class="DataGrid"></table>
   </div>
-  <div id="pnlSearchData" class="MainPanel">
-    <div id="cmdSearchDataPrint" class="CommandLink Disabled">Print</div>
-    <div id="pnlSearchDataList"></div>
+  <div id="pnlSearchCommand">
+    <div id="cmdShowOnMap" class="CommandLink Disabled" style="position: absolute; left: 10px;">Show on Map</div>
+    <div id="cmdShowAllOnMap" class="CommandLink Disabled" style="position: absolute; left: 100px;">Show All on Map</div>
   </div>
 </div>
-<div id="searchCriteriaDivider"></div>
 <div id="searchDivider"></div>

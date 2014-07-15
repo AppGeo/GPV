@@ -107,18 +107,6 @@ public partial class Viewer : CustomStyledPage
     }
     else
     {
-      if ((_appState.FunctionTabs & FunctionTab.Selection) == FunctionTab.Selection)
-      {
-        tabSelection.Style["display"] = "block";
-        ucSelectionPanel.Initialize(launchParams);
-
-        if (_appState.ActiveFunctionTab == FunctionTab.Selection)
-        {
-          pnlSelection.Style["display"] = "block";
-          tabSelection.Attributes["class"] = "Tab Selected";
-        }
-      }
-
       if ((_appState.FunctionTabs & FunctionTab.Search) == FunctionTab.Search)
       {
         tabSearch.Style["display"] = "block";
@@ -128,6 +116,18 @@ public partial class Viewer : CustomStyledPage
         {
           pnlSearch.Style["display"] = "block";
           tabSearch.Attributes["class"] = "Tab Selected";
+        }
+      } 
+      
+      if ((_appState.FunctionTabs & FunctionTab.Selection) == FunctionTab.Selection)
+      {
+        tabSelection.Style["display"] = "block";
+        ucSelectionPanel.Initialize(launchParams);
+
+        if (_appState.ActiveFunctionTab == FunctionTab.Selection)
+        {
+          pnlSelection.Style["display"] = "block";
+          tabSelection.Attributes["class"] = "Tab Selected";
         }
       }
 

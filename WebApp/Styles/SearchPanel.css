@@ -13,14 +13,7 @@
  *  limitations under the License.
  */
 
-#pnlSearchSizer
-{
-  bottom: auto;
-  height: 450px;
-  min-height: 212px;
-}
-
-#searchCriteriaDivider, #searchDivider
+#searchDivider
 {
   left: 8px;
   right: 8px;
@@ -28,16 +21,7 @@
   height: 8px;
   cursor: n-resize;
   z-index: 3;
-}
-
-#searchCriteriaDivider 
-{
   top: 200px;
-}
-
-#searchDivider
-{
-  top: 450px;
 }
 
 #pnlSearchCriteriaSizer
@@ -48,15 +32,10 @@
 }
 
 #pnlSearchGridSizer {
-  top: 208px;
+  top: 210px;
   min-height: 106px;
 }
 
-#pnlSearchDataSizer
-{
-  top: 458px;
-  min-height: 212px;
-}
 #pnlSearchCriteria
 {
   padding: 5px;
@@ -64,6 +43,8 @@
 #pnlSearchGrid
 {
   top: 10px;
+  left: 10px;
+  right: 10px;
   bottom: 20px;
   border: solid 1px #C9C9C9;
    behavior: url(Styles/PIE.htc);
@@ -74,47 +55,11 @@
   overflow: auto;
 }
 
-#pnlSearchDataTabs
-{
-  left: 12px;
-  right: 12px;
-  bottom: auto;
-  height: 19px;
-  overflow: hidden;
-}
-
-#pnlSearchData
-{
-  top: 18px;
-}
-
-#pnlSearchDataList
+#pnlSearchCommand 
 {
   left: 10px;
-  top: 17px;
-  right: 10px;
-  bottom: 10px;
-  border: solid 1px #C9C9C9;
-   behavior: url(Styles/PIE.htc);
-  -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15);
-  -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.15);
-  box-shadow: 0 1px 1px rgba(0,0,0,0.15);
-  background-color: White;
-  overflow: auto;
+  bottom: 6px;
+  top: auto;
+  height: 11px;
 }
 
-#pnlDataList .DataList
-{
-  left: 10px;
-  top: 10px;
-  right: 30px;
-}
-
-#cmdDataPrint
-{
-  left: auto;
-  bottom: auto;
-  right: 12px;
-  top: 2px;
-  text-align: right;
-}
