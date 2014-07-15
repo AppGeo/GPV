@@ -1542,6 +1542,13 @@ public partial class Configuration
         search.ValidationError = "Is not contained in a valid layer";
       }
 
+      // which has at least one valid query
+
+      else if (!search.LayerRow.GetQueryRows().Any(o => o.IsValidationErrorNull()))
+      {
+        search.ValidationError = "Layer does not contain any valid queries";
+      }
+
       // must contain at least one valid search criteria
 
       if (!search.GetSearchCriteriaRows().Any(o => o.IsValidationErrorNull()))
