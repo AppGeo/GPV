@@ -21,6 +21,7 @@
   <div id="pnlSearchCriteria" class="MainPanel">
     <gpv:Select ID="ddlSearches" runat="server" CssClass="Input" Style="position: absolute; width: 60%" ToolTip="Choose a search to perform" />
   </div>
+  <gpv:Div id="pnlSearchScroll" runat="server" />
   <div id="cmdSearch" class="CommandLink Disabled" style="position: absolute; top: auto; bottom: 5px; left: 10px; z-index: 2;">Search</div>
 </div>
 <div id="pnlSearchGridSizer" class="MainPanel">

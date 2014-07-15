@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 public partial class SearchPanel : System.Web.UI.UserControl
@@ -49,30 +50,70 @@ public partial class SearchPanel : System.Web.UI.UserControl
 
     foreach (Configuration.SearchRow searchRow in searches)
     {
+
       // create the panel for this search
+      HtmlGenericControl search = new HtmlGenericControl("div");
+      search.Attributes["data-search"] = searchRow.SearchID;
+      search.Attributes["class"] = "Search";
 
       foreach (Configuration.SearchCriteriaRow searchCriteriaRow in searchRow.GetSearchCriteriaRows().OrderBy(o => o.SequenceNo))
       {
         // add UI elements for this criterion
+        HtmlGenericControl searchCriteria = new HtmlGenericControl("div");
+        search.Attributes["data-criteria"] = searchCriteriaRow.SearchCriteriaID;
+
+        HtmlGenericControl searchLabel = new HtmlGenericControl("span");
+        searchLabel.InnerText = searchCriteriaRow.DisplayName;
+        searchCriteria.Controls.Add(searchLabel);
+        searchLabel.Attributes["class"] = "SearchLabel";
+
+        HtmlGenericControl searchInput = new HtmlGenericControl("span");
+        searchCriteria.Controls.Add(searchInput);
+
 
         switch (searchCriteriaRow.SearchCriteriaType)
         {
           case "autocomplete":
+            HtmlInputText autoComplete = new HtmlInputText("text");
+            searchInput.Controls.Add(autoComplete);
+            autoComplete.Attributes["class"] = "autocomplete";
             break;
 
           case "between":
+            HtmlInputText minValue = new HtmlInputText("text");
+            HtmlInputText maxValue = new HtmlInputText("text");
+            HtmlGenericControl betweenText = new HtmlGenericControl("span");
+            betweenText.InnerText = " - ";
+            searchInput.Controls.Add(minValue);
+            searchInput.Controls.Add(betweenText);
+            searchInput.Controls.Add(maxValue);
             break;
 
           case "lookup":
+            
+            HtmlSelect select = new HtmlSelect();
+            searchInput.Controls.Add(select);
+            select.Attributes["class"] = "select";
             break;
 
           case "numeric":
+            
+            HtmlInputText numeric = new HtmlInputText("text");
+            searchInput.Controls.Add(numeric);
+            numeric.Attributes["class"] = "numeric";
             break;
 
           case "text":
+            HtmlInputText text = new HtmlInputText("text");
+            searchInput.Controls.Add(text);
+            text.Attributes["class"] = "text";
             break;
         }
+
+        search.Controls.Add(searchCriteria);
       }
+      pnlSearchScroll.Controls.Add(search);
+
     }
   }
 }
