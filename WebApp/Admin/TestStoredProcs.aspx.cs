@@ -83,12 +83,11 @@ public partial class Admin_TestStoredProcs : CustomStyledPage
       reportTable.Columns.Add("StoredProc", typeof(string));
       reportTable.Columns.Add("Time", typeof(int));
       reportTable.Columns.Add("Status", typeof(string));
-      reportTable.Columns.Add("IsSearch", typeof(bool));
 
       DataColumn[] uniqueColumns = new DataColumn[] { reportTable.Columns["ConnectionID"], reportTable.Columns["StoredProc"] };
       reportTable.Constraints.Add(new UniqueConstraint(uniqueColumns));
 
-      foreach (DataTable sourceTable in new DataTable[] { config.LayerFunction, config.DataTab, config.Query, config.Search, config.SearchCriteria })
+      foreach (DataTable sourceTable in new DataTable[] { config.LayerFunction, config.DataTab, config.Query, config.SearchCriteria })
       {
         foreach (DataRow sourceRow in sourceTable.Rows)
         {
@@ -104,7 +103,6 @@ public partial class Admin_TestStoredProcs : CustomStyledPage
             }
 
             row["StoredProc"] = sourceRow["StoredProc"];
-            row["IsSearch"] = sourceTable == config.Search;
 
             try
             {
@@ -136,7 +134,6 @@ public partial class Admin_TestStoredProcs : CustomStyledPage
         if (row.IsNull("Status"))
         {
           int executionTime = -1;
-          bool isSearch = (bool)row["IsSearch"];
 
           for (int i = 0; i <= 5; ++i)
           {
@@ -146,7 +143,7 @@ public partial class Admin_TestStoredProcs : CustomStyledPage
 
               for (int n = 1; n <= i; ++n)
               {
-                string testValue = isSearch && n == 1 ? "1 = 0" : "0";
+                string testValue = "0";
                 command.Parameters.AddWithValue(n.ToString(), testValue);
               }
 

@@ -35,7 +35,7 @@ public partial class Configuration
 
       if (connection != null)
       {
-        OleDbCommand command = new OleDbCommand(StoredProc, connection);
+        OleDbCommand command = new OleDbCommand(SelectStatement, connection);
         command.CommandType = CommandType.StoredProcedure;
 
         if (IsParameterCountNull())
