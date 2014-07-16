@@ -55,6 +55,7 @@ public partial class SearchPanel : System.Web.UI.UserControl
       HtmlGenericControl search = new HtmlGenericControl("div");
       search.Attributes["data-search"] = searchRow.SearchID;
       search.Attributes["class"] = "search";
+      search.Style["display"] = "none";
 
       foreach (Configuration.SearchCriteriaRow searchCriteriaRow in searchRow.GetSearchCriteriaRows().OrderBy(o => o.SequenceNo))
       {

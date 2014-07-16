@@ -39,7 +39,7 @@ var GPV = (function (gpv) {
     }
 
     function searchChanged() {
-      var $search = $container.find("#pnlSearchScroll .Search").hide();
+      var $search = $container.find("#pnlSearchScroll .search").hide();
       var $opt = $ddlSearch.find("option:selected");
 
       if ($opt.length) {
