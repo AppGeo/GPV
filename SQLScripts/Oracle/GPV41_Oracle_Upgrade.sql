@@ -1,0 +1,92 @@
+--
+--  Copyright 2014 Applied Geographics, Inc.
+--
+--  Licensed under the Apache License, Version 2.0 (the "License");
+--  you may not use this file except in compliance with the License.
+--  You may obtain a copy of the License at
+--
+--      http://www.apache.org/licenses/LICENSE-2.0
+
+--  Unless required by applicable law or agreed to in writing, software
+--  distributed under the License is distributed on an "AS IS" BASIS,
+--  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--  See the License for the specific language governing permissions and
+--  limitations under the License.
+--
+--  GPV41_Oracle_Upgrade.sql
+--
+--  Creates the GPV v4.1 configuration tables from an existing set of GPV v3.1 tables.
+--  Set the prefixes for both sets of table names by changing the values in the "prefix31 varchar2(10)" 
+--  and "prefix41 varchar2(10)" lines below.  Make sure to run GPV41_Oracle_AddConstraints.sql 
+--  using the v4.1 prefix to create the necessary constraints on the v4.1 tables.
+--
+
+DECLARE 
+  prefix31 varchar2(10):= 'GPV31';
+  prefix41 varchar2(10):= 'GPV41';
+
+BEGIN 
+
+-- copy tables
+
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'Application AS SELECT * FROM ' || prefix31 || 'Application';
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'ApplicationMapTab AS SELECT * FROM ' || prefix31 || 'ApplicationMapTab';
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'ApplicationMarkupCategory AS SELECT * FROM ' || prefix31 || 'ApplicationMarkupCategory';
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'ApplicationPrintTemplate AS SELECT * FROM ' || prefix31 || 'ApplicationPrintTemplate';
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'Connection AS SELECT * FROM ' || prefix31 || 'Connection';
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'DataTab AS SELECT * FROM ' || prefix31 || 'DataTab';
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'ExternalMap AS SELECT * FROM ' || prefix31 || 'ExternalMap';
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'Layer AS SELECT * FROM ' || prefix31 || 'Layer';
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'LayerFunction AS SELECT * FROM ' || prefix31 || 'LayerFunction';
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'LayerProximity AS SELECT * FROM ' || prefix31 || 'LayerProximity';
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'Level AS SELECT * FROM ' || prefix31 || 'Level';
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'MailingLabel AS SELECT * FROM ' || prefix31 || 'MailingLabel';
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'MapTab AS SELECT * FROM ' || prefix31 || 'MapTab';
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'MapTabLayer AS SELECT * FROM ' || prefix31 || 'MapTabLayer';
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'Markup AS SELECT * FROM ' || prefix31 || 'Markup';
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'MarkupCategory AS SELECT * FROM ' || prefix31 || 'MarkupCategory';
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'MarkupGroup AS SELECT * FROM ' || prefix31 || 'MarkupGroup';
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'MarkupSequence AS SELECT * FROM ' || prefix31 || 'MarkupSequence';
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'PrintTemplate AS SELECT * FROM ' || prefix31 || 'PrintTemplate';
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'PrintTemplateContent AS SELECT * FROM ' || prefix31 || 'PrintTemplateContent';
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'Proximity AS SELECT * FROM ' || prefix31 || 'Proximity';
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'Query AS SELECT * FROM ' || prefix31 || 'Query';
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'SavedState AS SELECT * FROM ' || prefix31 || 'SavedState';
+
+-- create GPVSearch
+
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'Search (' ||
+  'SearchID varchar2(50) NOT NULL,' ||
+  'LayerID varchar2(50) NOT NULL,' ||
+  'DisplayName varchar2(50) NOT NULL,' ||
+  'ConnectionID varchar2(50),' ||
+  'SelectStatement varchar2(2000) NOT NULL,' ||
+  'SequenceNo number(2) NOT NULL,' ||
+  'AuthorizedRoles varchar2(200),' ||
+  'Active number(1) default 1' ||
+')';
+
+-- create GPVSearchCriteria
+
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'SearchCriteria (' ||
+  'SearchCriteriaID varchar2(50) NOT NULL,' ||
+  'SearchID varchar2(50) NOT NULL,' ||
+  'DisplayName varchar2(50) NOT NULL,' ||
+  'ColumnName varchar2(50) NOT NULL,' ||
+  'SearchCriteriaType varchar2(50) NOT NULL,' ||
+  'ConnectionID varchar2(50),' ||
+  'StoredProc varchar2(100),' ||
+  'SequenceNo number(2) NOT NULL,' ||
+  'Active number(1) default 1' ||
+')';
+
+-- copy tables
+
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'UsageTracking AS SELECT * FROM ' || prefix31 || 'UsageTracking';
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'User AS SELECT * FROM ' || prefix31 || 'User';
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'Zone AS SELECT * FROM ' || prefix31 || 'Zone';
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'ZoneLevel AS SELECT * FROM ' || prefix31 || 'ZoneLevel';
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'ZoneLevelCombo AS SELECT * FROM ' || prefix31 || 'ZoneLevelCombo';
+
+END;
+/

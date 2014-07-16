@@ -1,14 +1,26 @@
 --
---  © 2004-2009, Applied Geographics, Inc.  All rights reserved.
+--  Copyright 2014 Applied Geographics, Inc.
 --
---  GPV31_Oracle_Create.sql
+--  Licensed under the Apache License, Version 2.0 (the "License");
+--  you may not use this file except in compliance with the License.
+--  You may obtain a copy of the License at
 --
---  Creates the GPV v3.1 configuration tables.  You can set the prefix for the table names by changing 
+--      http://www.apache.org/licenses/LICENSE-2.0
+
+--  Unless required by applicable law or agreed to in writing, software
+--  distributed under the License is distributed on an "AS IS" BASIS,
+--  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--  See the License for the specific language governing permissions and
+--  limitations under the License.
+--
+--  GPV41_Oracle_Create.sql
+--
+--  Creates the GPV v4.1 configuration tables.  You can set the prefix for the table names by changing 
 --  the value in the "prefix varchar2(10)" line below.  Make sure to run the follow scripts after this
 --  one using the same prefix:
 --
---    GPV31_Oracle_AddConstraints.sql - to create the necessary constraints
---    GPV31_Oracle_LoadMailingLabels.sql - to load the mailing labels table
+--    GPV41_Oracle_AddConstraints.sql - to create the necessary constraints
+--    GPV41_Oracle_LoadMailingLabels.sql - to load the mailing labels table
 --
 
 
@@ -17,7 +29,7 @@
 SET define off
 
 DECLARE 
-  prefix varchar2(10):= 'GPV31';
+  prefix varchar2(10):= 'GPV41';
 
 BEGIN
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'Application (' ||
@@ -258,6 +270,29 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'SavedState (' ||
   'DateCreated date NOT NULL,' ||
   'DateLastAccessed date NOT NULL,' ||
   'State nclob NOT NULL' ||
+')';
+
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'Search (' ||
+  'SearchID varchar2(50) NOT NULL,' ||
+  'LayerID varchar2(50) NOT NULL,' ||
+  'DisplayName varchar2(50) NOT NULL,' ||
+  'ConnectionID varchar2(50),' ||
+  'SelectStatement varchar2(2000) NOT NULL,' ||
+  'SequenceNo number(2) NOT NULL,' ||
+  'AuthorizedRoles varchar2(200),' ||
+  'Active number(1) default 1' ||
+')';
+
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'SearchCriteria (' ||
+  'SearchCriteriaID varchar2(50) NOT NULL,' ||
+  'SearchID varchar2(50) NOT NULL,' ||
+  'DisplayName varchar2(50) NOT NULL,' ||
+  'ColumnName varchar2(50) NOT NULL,' ||
+  'SearchCriteriaType varchar2(50) NOT NULL,' ||
+  'ConnectionID varchar2(50),' ||
+  'StoredProc varchar2(100),' ||
+  'SequenceNo number(2) NOT NULL,' ||
+  'Active number(1) default 1' ||
 ')';
 
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'UsageTracking (' ||

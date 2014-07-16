@@ -1,16 +1,28 @@
 --
---  © 2004-2009, Applied Geographics, Inc.  All rights reserved.
+--  Copyright 2014 Applied Geographics, Inc.
 --
---  GPV31_Oracle_Copy.sql
+--  Licensed under the Apache License, Version 2.0 (the "License");
+--  you may not use this file except in compliance with the License.
+--  You may obtain a copy of the License at
 --
---  Copies the GPV v3.1 configuration tables.  You can set the source and destination prefixes for 
+--      http://www.apache.org/licenses/LICENSE-2.0
+
+--  Unless required by applicable law or agreed to in writing, software
+--  distributed under the License is distributed on an "AS IS" BASIS,
+--  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--  See the License for the specific language governing permissions and
+--  limitations under the License.
+--
+--  GPV41_Oracle_Copy.sql
+--
+--  Copies the GPV v4.1 configuration tables.  You can set the source and destination prefixes for 
 --  the table names by changing the values in the "srcPrefix varchar2(10)" and "desPrefix varchar2(10)"
---  lines below.  Make sure to run GPV31_Oracle_AddConstraints.sql using the destination prefix to
+--  lines below.  Make sure to run GPV41_Oracle_AddConstraints.sql using the destination prefix to
 --  create the necessary constraints on the copied tables.
 --
 
 DECLARE 
-  srcPrefix varchar2(10):= 'GPV31';
+  srcPrefix varchar2(10):= 'GPV41';
   desPrefix varchar2(10):= 'GPVx';
 
 BEGIN 
@@ -37,6 +49,8 @@ BEGIN
   EXECUTE IMMEDIATE 'CREATE TABLE ' || desPrefix || 'Proximity AS SELECT * FROM ' || srcPrefix || 'Proximity';
   EXECUTE IMMEDIATE 'CREATE TABLE ' || desPrefix || 'Query AS SELECT * FROM ' || srcPrefix || 'Query';
   EXECUTE IMMEDIATE 'CREATE TABLE ' || desPrefix || 'SavedState AS SELECT * FROM ' || srcPrefix || 'SavedState';
+  EXECUTE IMMEDIATE 'CREATE TABLE ' || desPrefix || 'Search AS SELECT * FROM ' || srcPrefix || 'Search';
+  EXECUTE IMMEDIATE 'CREATE TABLE ' || desPrefix || 'SearchCriteria AS SELECT * FROM ' || srcPrefix || 'SearchCriteria';
   EXECUTE IMMEDIATE 'CREATE TABLE ' || desPrefix || 'UsageTracking AS SELECT * FROM ' || srcPrefix || 'UsageTracking';
   EXECUTE IMMEDIATE 'CREATE TABLE ' || desPrefix || 'User AS SELECT * FROM ' || srcPrefix || 'User';
   EXECUTE IMMEDIATE 'CREATE TABLE ' || desPrefix || 'Zone AS SELECT * FROM ' || srcPrefix || 'Zone';

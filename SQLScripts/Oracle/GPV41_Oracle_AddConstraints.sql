@@ -1,14 +1,26 @@
 --
---  © 2004-2009, Applied Geographics, Inc.  All rights reserved.
+--  Copyright 2014 Applied Geographics, Inc.
 --
---  GPV31_Oracle_AddConstraints.sql
+--  Licensed under the Apache License, Version 2.0 (the "License");
+--  you may not use this file except in compliance with the License.
+--  You may obtain a copy of the License at
 --
---  Adds primary key, foreign key and unique constraints to the GPV v3.1 configuration tables.  You can
+--      http://www.apache.org/licenses/LICENSE-2.0
+
+--  Unless required by applicable law or agreed to in writing, software
+--  distributed under the License is distributed on an "AS IS" BASIS,
+--  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--  See the License for the specific language governing permissions and
+--  limitations under the License.
+--
+--  GPV41_Oracle_AddConstraints.sql
+--
+--  Adds primary key, foreign key and unique constraints to the GPV v4.1 configuration tables.  You can
 --  set the prefix for the table names by changing the value in the "prefix varchar2(10)" line below.
 --
 
 DECLARE 
-  prefix varchar2(10):= 'GPV31';
+  prefix varchar2(10):= 'GPV41';
 
 BEGIN
 
@@ -146,6 +158,18 @@ EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'SavedState ADD ' ||
   'CONSTRAINT PK_' || prefix || 'SavedState PRIMARY KEY ' ||
   '(' ||
   '  StateID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'Search ADD ' ||
+  'CONSTRAINT PK_' || prefix || 'Search PRIMARY KEY ' ||
+  '(' ||
+  '  SearchID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'SearchCriteria ADD ' ||
+  'CONSTRAINT PK_' || prefix || 'SearchCriteria PRIMARY KEY ' ||
+  '(' ||
+  '  SearchCriteriaID' ||
   ')';
 
 EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'Zone ADD ' ||
@@ -333,6 +357,38 @@ EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'Query ADD ' ||
 
 EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'Query ADD ' ||
   'CONSTRAINT FK_' || prefix || 'Query_Conn FOREIGN KEY ' ||
+  '(' ||
+  '  ConnectionID' ||
+  ') REFERENCES ' || prefix || 'Connection (' ||
+  '  ConnectionID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'Search ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'Search_Layer FOREIGN KEY ' ||
+  '(' ||
+  '  LayerID' ||
+  ') REFERENCES ' || prefix || 'Layer (' ||
+  '  LayerID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'Search ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'Search_Conn FOREIGN KEY ' ||
+  '(' ||
+  '  ConnectionID' ||
+  ') REFERENCES ' || prefix || 'Connection (' ||
+  '  ConnectionID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'SearchCriteria ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'SCrit_Search FOREIGN KEY ' ||
+  '(' ||
+  '  SearchID' ||
+  ') REFERENCES ' || prefix || 'Search (' ||
+  '  SearchID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'SearchCriteria ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'SCrit_Conn FOREIGN KEY ' ||
   '(' ||
   '  ConnectionID' ||
   ') REFERENCES ' || prefix || 'Connection (' ||
