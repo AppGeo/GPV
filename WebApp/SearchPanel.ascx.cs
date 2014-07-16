@@ -14,6 +14,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.OleDb;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -90,14 +92,14 @@ public partial class SearchPanel : System.Web.UI.UserControl
             break;
 
           case "lookup":
-            
             HtmlSelect select = new HtmlSelect();
+            PopulateLookup(searchCriteriaRow, select);
+            select.Items.Insert(0, new ListItem("", ""));
             searchCriteria.Controls.Add(select);
             select.Attributes["class"] = "searchselect";
             break;
 
           case "numeric":
-            
             HtmlInputText numeric = new HtmlInputText("text");
             searchCriteria.Controls.Add(numeric);
             numeric.Attributes["class"] = "searchnumeric";
@@ -117,5 +119,30 @@ public partial class SearchPanel : System.Web.UI.UserControl
       pnlSearchScroll.Controls.Add(search);
 
     }
+  }
+
+  private void PopulateLookup(Configuration.SearchCriteriaRow searchCriteriaRow, HtmlSelect select)
+  {
+    using (OleDbCommand command = searchCriteriaRow.GetDatabaseCommand())
+    {
+      if (command.Parameters.Count > 0)
+      {
+        command.Parameters[0].Value = AppUser.GetRole();
+      }
+
+      using (OleDbDataAdapter adapter = new OleDbDataAdapter(command))
+      {
+        DataTable lookupList = new DataTable();
+        adapter.Fill(lookupList);
+
+        select.DataSource = lookupList;
+        select.DataTextField = searchCriteriaRow.SearchCriteriaID;
+        select.DataValueField = searchCriteriaRow.SearchCriteriaID;
+        select.DataBind();
+      }
+
+      command.Connection.Dispose();
+    }
+
   }
 }
