@@ -830,12 +830,14 @@ public partial class Configuration
       {
         using (OleDbCommand command = search.GetDatabaseCommand())
         {
-          if (command == null)
+          if (!command.CommandText.Contains(" {0} "))
           {
-            search.ValidationError = "Stored procedure does not exist or is inaccessible";
+            search.ValidationError = "SelectCommand does not contain a where clause substitution: {0}";
           }
           else
           {
+            command.CommandText = String.Format(command.CommandText, "1 = 0");
+
             OleDbDataReader reader = null;
             bool hasMapId = false;
 
@@ -852,7 +854,7 @@ public partial class Configuration
 
             if (!hasMapId)
             {
-              search.ValidationError = "Stored procedure does not return a MapID column";
+              search.ValidationError = "SelectCommand does not return a MapID column";
             }
           }
         }
