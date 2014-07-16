@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.OleDb;
 using System.Linq;
+using System.Web.Script.Serialization;
 
 public class SearchPanelHandler : WebServiceHandler
 {
@@ -56,5 +57,111 @@ public class SearchPanelHandler : WebServiceHandler
   [WebServiceMethod]
   private void Search()
   {
+    string searchID = Request.Form["search"];
+
+    JavaScriptSerializer serializer = new JavaScriptSerializer();
+    Dictionary<String, Object> criteria = serializer.Deserialize<Dictionary<String, Object>>(Request.Form["criteria"]);
+    
+    Configuration config = AppContext.GetConfiguration();
+
+    List<String> where = new List<String>();
+    List<Object> parameters = new List<Object>();
+
+    foreach (string criteriaID in criteria.Keys)
+    {
+      Configuration.SearchCriteriaRow searchCriteriaRow = config.SearchCriteria.First(o => o.SearchCriteriaID == criteriaID);
+
+      switch (searchCriteriaRow.SearchCriteriaType)
+      {
+        case "autocomplete":
+        case "lookup":
+        case "numeric":
+        case "text":
+          where.Add(searchCriteriaRow.ColumnName + " = ?");
+          parameters.Add(criteria[criteriaID]);
+          break;
+
+        case "between":
+          object[] values = (object[])criteria[criteriaID];
+
+          if (values[0] != null)
+          {
+            where.Add(searchCriteriaRow.ColumnName + " >= ?");
+            parameters.Add(values[0]);
+          }
+
+          if (values[1] != null)
+          {
+            where.Add(searchCriteriaRow.ColumnName + " <= ?");
+            parameters.Add(values[1]);
+          }
+          break;
+      }
+    }
+
+    Dictionary<String, Object> result = new Dictionary<String, Object>();
+
+    using (OleDbCommand command = config.Search.First(o => o.SearchID == searchID).GetDatabaseCommand())
+    {
+      command.CommandText = String.Format(command.CommandText, String.Join(" and ", where.ToArray()));
+
+      for (int i = 0; i < parameters.Count; ++i)
+      {
+        command.Parameters.AddWithValue(i.ToString(), parameters[i]);
+      }
+
+      using (OleDbDataReader reader = command.ExecuteReader())
+      {
+        // get the indexes of the ID columns
+
+        int mapIdColumn = reader.GetColumnIndex("MapID");
+
+        // write the column headers
+
+        List<String> headers = new List<String>();
+
+        for (int i = 0; i < reader.FieldCount; ++i)
+        {
+          if (i != mapIdColumn)
+          {
+            headers.Add(reader.GetName(i));
+          }
+        }
+
+        result.Add("headers", headers);
+
+        // write the data
+
+        List<Dictionary<String, Object>> rows = new List<Dictionary<String, Object>>();
+
+        while (reader.Read())
+        {
+          if (!reader.IsDBNull(mapIdColumn))
+          {
+            Dictionary<String, String> id = new Dictionary<String, String>();
+
+            id.Add("m", reader.GetValue(mapIdColumn).ToString());
+
+            List<Object> values = new List<Object>();
+
+            for (int i = 0; i < reader.FieldCount; ++i)
+            {
+              if (i != mapIdColumn)
+              {
+                values.Add(reader.IsDBNull(i) ? null : reader.GetValue(i));
+              }
+            }
+
+            Dictionary<String, Object> row = new Dictionary<String, Object>();
+            row.Add("id", id);
+            row.Add("v", values);
+
+            rows.Add(row);
+          }
+        }
+
+        result.Add("rows", rows);
+      }
+    }
   }
 }
