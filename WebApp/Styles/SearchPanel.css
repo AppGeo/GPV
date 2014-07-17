@@ -105,3 +105,9 @@
   width: 63%;
   margin: 0 2px;
 }
+
+.autocomplete-suggestions { border: 1px solid #999; background: #FFF; max-height: 150px; overflow: auto; }
+.autocomplete-suggestion { position: static; padding: 2px 5px; white-space: nowrap; overflow: hidden; }
+.autocomplete-selected { background: #F0F0F0; }
+.autocomplete-suggestions strong { font-weight: bold; }
+

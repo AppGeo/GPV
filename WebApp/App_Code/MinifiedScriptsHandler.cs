@@ -31,6 +31,7 @@ public class MinifiedScriptsHandler : IHttpHandler
       new ScriptItem("Scripts/jquery-1.7.2.min.js", false, true),
       new ScriptItem("Scripts/jquery.cookie.min.js", false, true),
       new ScriptItem("Scripts/jquery.geo-test.min.js", false, true),
+      new ScriptItem("Scripts/jquery.autocomplete.min.js", false, true),
       new ScriptItem("Scripts/ColorSelector.js", true, true),
       new ScriptItem("Scripts/Extensions.js", true, true),
       new ScriptItem("Scripts/DataGrid.js", true, true),

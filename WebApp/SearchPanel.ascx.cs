@@ -75,8 +75,9 @@ public partial class SearchPanel : System.Web.UI.UserControl
         {
           case "autocomplete":
             HtmlInputText autoComplete = new HtmlInputText("text");
-            searchCriteria.Controls.Add(autoComplete);
             autoComplete.Attributes["class"] = "autocomplete";
+            autoComplete.Attributes["data-id"] = searchCriteriaRow.SearchCriteriaID;
+            searchCriteria.Controls.Add(autoComplete);
             break;
 
           case "between":
@@ -86,6 +87,8 @@ public partial class SearchPanel : System.Web.UI.UserControl
             betweenText.InnerText = " - ";
             minValue.Attributes["class"] = "searchbetween";
             maxValue.Attributes["class"] = "searchbetween";
+            minValue.Attributes["data-id"] = searchCriteriaRow.SearchCriteriaID;
+            maxValue.Attributes["data-id"] = searchCriteriaRow.SearchCriteriaID;
             searchCriteria.Controls.Add(minValue);
             searchCriteria.Controls.Add(betweenText);
             searchCriteria.Controls.Add(maxValue);
@@ -95,20 +98,23 @@ public partial class SearchPanel : System.Web.UI.UserControl
             HtmlSelect select = new HtmlSelect();
             PopulateLookup(searchCriteriaRow, select);
             select.Items.Insert(0, new ListItem("", ""));
-            searchCriteria.Controls.Add(select);
             select.Attributes["class"] = "searchselect";
+            select.Attributes["data-id"] = searchCriteriaRow.SearchCriteriaID;
+            searchCriteria.Controls.Add(select);
             break;
 
           case "numeric":
             HtmlInputText numeric = new HtmlInputText("text");
-            searchCriteria.Controls.Add(numeric);
             numeric.Attributes["class"] = "searchnumeric";
+            numeric.Attributes["data-id"] = searchCriteriaRow.SearchCriteriaID;
+            searchCriteria.Controls.Add(numeric);
             break;
 
           case "text":
             HtmlInputText text = new HtmlInputText("text");
-            searchCriteria.Controls.Add(text);
             text.Attributes["class"] = "searchtext";
+            text.Attributes["data-id"] = searchCriteriaRow.SearchCriteriaID;
+            searchCriteria.Controls.Add(text);
             break;
         }
 

@@ -23,8 +23,8 @@ public class SearchPanelHandler : WebServiceHandler
   [WebServiceMethod]
   private void Autocomplete()
   {
-    string id = Request.Form["criteria"];
-    string text = Request.Form["text"];
+    string id = Request.QueryString["criteria"];
+    string text = Request.QueryString["query"];
 
     Configuration config = AppContext.GetConfiguration();
     Configuration.SearchCriteriaRow searchCriteriaRow = config.SearchCriteria.First(o => o.SearchCriteriaID == id);
@@ -38,19 +38,22 @@ public class SearchPanelHandler : WebServiceHandler
         command.Parameters[1].Value = AppUser.GetRole();
       }
 
-      List<string> results = new List<string>();
+      List<string> values = new List<string>();
 
       using (OleDbDataReader reader = command.ExecuteReader())
       {
         while (reader.Read())
         {
-          results.Add(reader.GetString(0));
+          values.Add(reader.GetString(0));
         }
       }
 
       command.Connection.Dispose();
 
-      ReturnJson(results);
+      Dictionary<String, Object> result = new Dictionary<String, Object>();
+      result.Add("suggestions", values);
+
+      ReturnJson(result);
     }
   }
 

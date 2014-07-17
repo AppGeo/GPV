@@ -16,6 +16,7 @@ var GPV = (function (gpv) {
   $(function () {
     var $map = $("#mapMain");
     var $container = $("#pnlSearch");
+    var $submit = $("#cmdSearch");
     var config = gpv.configuration;
     var appState = gpv.appState;
     var service = "Services/SearchPanel.ashx";
@@ -24,11 +25,31 @@ var GPV = (function (gpv) {
 
     var $ddlSearch = $("#ddlSearches").on("change", searchChanged);
 
+    var $grdSearch = $("#grdSearch").dataGrid({
+      rowClass: "DataGridRow",
+      alternateClass: "DataGridRowAlternate",
+      selectedClass: "DataGridRowSelect"
+    });
+
+    $('.autocomplete').each(function () {
+      var $this = $(this);
+      $this.autocomplete({
+        serviceUrl: service,
+        params: { m: "Autocomplete", criteria: $this.attr("data-id") },
+        triggerSelectOnValidInput: false,
+        showNoSuggestionNotice: true,
+        noSuggestionNotice: 'No matching results',
+      });
+    });
+
     // =====  component events
     
     gpv.on("viewer", "mapTabChanged", fillSearches);
+    $submit.on("click", search)
 
     // =====  private functions  =====
+
+    function search(){}
 
     function fillSearches() {
       var changed = gpv.loadOptions($ddlSearch, config.mapTab[appState.MapTab].search);
