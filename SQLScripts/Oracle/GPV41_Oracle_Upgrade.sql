@@ -27,9 +27,37 @@ DECLARE
 
 BEGIN 
 
+-- remove AllowMapTabScroll and AllowDataTabScroll from GPVApplication
+
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'Application (' ||
+  'ApplicationID varchar2(50) NOT NULL,' ||
+  'DisplayName varchar2(50),' ||
+  'AuthorizedRoles varchar2(200),' ||
+  'FunctionTabs varchar2(50),' ||
+  'DefaultMapTab varchar2(50),' ||
+  'DefaultAction varchar2(50),' ||
+  'DefaultTargetLayer varchar2(50),' ||
+  'DefaultProximity varchar2(50),' ||
+  'DefaultSelectionLayer varchar2(50),' ||
+  'DefaultLevel varchar2(50),' ||
+  'FullExtent varchar2(50),' ||
+  'OverviewMapID varchar2(50), ' ||
+  'CoordinateModes varchar2(50),' ||
+  'ZoneLevelID varchar2(50),' ||
+  'TrackUse number(1),' ||
+  'About varchar2(1000),' ||
+  'Active number(1) default 1' ||
+')';
+
+EXECUTE IMMEDIATE 'INSERT INTO ' || prefix41 || 'Application (ApplicationID, DisplayName, AuthorizedRoles, FunctionTabs, DefaultMapTab, ' ||
+  'DefaultAction, DefaultTargetLayer, DefaultProximity, DefaultSelectionLayer, DefaultLevel, FullExtent, OverviewMapID, CoordinateModes, ' ||
+  'ZoneLevelID, TrackUse, About, Active) ' ||
+  'SELECT ApplicationID, DisplayName, AuthorizedRoles, FunctionTabs, DefaultMapTab, DefaultAction, DefaultTargetLayer, DefaultProximity, ' ||
+  'DefaultSelectionLayer, DefaultLevel, FullExtent, OverviewMapID, CoordinateModes, ZoneLevelID, TrackUse, About, Active ' ||
+  'FROM ' || prefix31 || 'Application';
+
 -- copy tables
 
-EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'Application AS SELECT * FROM ' || prefix31 || 'Application';
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'ApplicationMapTab AS SELECT * FROM ' || prefix31 || 'ApplicationMapTab';
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'ApplicationMarkupCategory AS SELECT * FROM ' || prefix31 || 'ApplicationMarkupCategory';
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'ApplicationPrintTemplate AS SELECT * FROM ' || prefix31 || 'ApplicationPrintTemplate';

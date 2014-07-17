@@ -46,8 +46,6 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'Application (' ||
   'FullExtent varchar2(50),' ||
   'OverviewMapID varchar2(50), ' ||
   'CoordinateModes varchar2(50),' ||
-  'AllowMapTabScroll number(1),' ||
-  'AllowDataTabScroll number(1),' ||
   'ZoneLevelID varchar2(50),' ||
   'TrackUse number(1),' ||
   'About varchar2(1000),' ||

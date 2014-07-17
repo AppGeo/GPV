@@ -832,7 +832,7 @@ public partial class Configuration
         {
           if (!command.CommandText.Contains(" {0} "))
           {
-            search.ValidationError = "SelectCommand does not contain a where clause substitution: {0}";
+            search.ValidationError = "SelectStatement does not contain a where clause substitution: {0}";
           }
           else
           {
@@ -854,7 +854,7 @@ public partial class Configuration
 
             if (!hasMapId)
             {
-              search.ValidationError = "SelectCommand does not return a MapID column";
+              search.ValidationError = "SelectStatement does not return a MapID column";
             }
           }
         }
