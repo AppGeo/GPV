@@ -16,22 +16,27 @@ var GPV = (function (gpv) {
   $(function () {
     var $map = $("#mapMain");
     var $container = $("#pnlSearch");
-    var $submit = $("#cmdSearch");
     var config = gpv.configuration;
     var appState = gpv.appState;
     var service = "Services/SearchPanel.ashx";
 
     // =====  controls  =====
-
+    
+    var $cmdSearch = $("#cmdSearch").on("click", search);
     var $ddlSearch = $("#ddlSearches").on("change", searchChanged);
 
     var $grdSearch = $("#grdSearch").dataGrid({
+      multiSelect: true,
       rowClass: "DataGridRow",
       alternateClass: "DataGridRowAlternate",
       selectedClass: "DataGridRowSelect"
     });
 
-    $('.autocomplete').each(function () {
+    var $input = $container.find(".SearchCriteria .Input").on("keyup change", function () {
+      $cmdSearch.toggleClass("Disabled", getFilledInputs().length == 0);
+    });
+
+    $container.find(".Autocomplete").each(function () {
       var $this = $(this);
       $this.autocomplete({
         serviceUrl: service,
@@ -45,11 +50,8 @@ var GPV = (function (gpv) {
     // =====  component events
     
     gpv.on("viewer", "mapTabChanged", fillSearches);
-    $submit.on("click", search)
 
     // =====  private functions  =====
-
-    function search(){}
 
     function fillSearches() {
       var changed = gpv.loadOptions($ddlSearch, config.mapTab[appState.MapTab].search);
@@ -59,21 +61,58 @@ var GPV = (function (gpv) {
       }
     }
 
+    function getFilledInputs() {
+      return $container.find(".Search:visible").find(".SearchCriteria .Input").map(function () {
+        if ($(this).val()) {
+          return this;
+        }
+      });
+    }
+
+    function search() {
+      var criteria = {};
+      
+      getFilledInputs().each(function () {
+        var $this = $(this);
+        var id = $this.attr("data-id");
+
+        if ($this.hasClass("Between")) {
+          if (!criteria.hasOwnProperty(id)) {
+            criteria[id] = [null, null];
+          }
+
+          criteria[id][$this.hasClass("1") ? 0 : 1] = $this.val();
+        }
+        else {
+          criteria[id] = $this.val();
+        }
+      });
+
+      gpv.post({
+        url: service,
+        data: {
+          app: gpv.appState.Application,
+          search: $container.find(".Search:visible").attr("data-search"),
+          criteria: JSON.stringify(criteria)
+        },
+        success: function (result) {
+          if (result) {
+            $grdSearch.dataGrid("load", result);
+          }
+        }
+      });
+    }
+
     function searchChanged() {
-      var $search = $container.find("#pnlSearchScroll .search").hide();
+      var $search = $container.find(".Search").hide();
       var $opt = $ddlSearch.find("option:selected");
 
       if ($opt.length) {
         $search.filter("[data-search='" + $opt.val() + "']").show();
       }
-      // show the criteria for the selected search
-      // clear the results grid
+
+      $grdSearch.dataGrid("empty");
     }
-
-    // =====  public interface  =====
-
-    gpv.searchPanel = {
-    };
 
     fillSearches();
   });

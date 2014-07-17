@@ -72,17 +72,30 @@
   z-index: 5;
 }
 
-.search
+.Search
 {
   width: 100%;
 }
 
-.searchcriteria
+.SearchCriteria
 {
   position: static;
   height: 24px;
   width: 100%;
   float: left;
+}
+
+.SearchCriteria .Input.Between
+{
+  width: 20%;
+  margin: 2px 2px;
+  margin-left: 2px;
+}
+
+.SearchCriteria .Input
+{
+  width: 63%;
+  margin: 0 2px;
 }
 
 #pnlSearchScroll span.Label
@@ -91,19 +104,6 @@
   display: inline-block;
   text-align: right;
   margin-right: 3px;
-}
-
-.searchbetween
-{
-  width: 20%;
-  margin: 2px 2px;
-  margin-left: 2px;
-}
-
-.searchtext, .searchnumeric, .searchselect, .autocomplete
-{
-  width: 63%;
-  margin: 0 2px;
 }
 
 .autocomplete-suggestions { border: 1px solid #999; background: #FFF; max-height: 150px; overflow: auto; }

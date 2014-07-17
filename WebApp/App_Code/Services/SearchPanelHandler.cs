@@ -13,6 +13,7 @@
 //  limitations under the License.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.OleDb;
 using System.Linq;
@@ -58,14 +59,21 @@ public class SearchPanelHandler : WebServiceHandler
   }
 
   [WebServiceMethod]
-  private void Search()
+  private void DefaultMethod()
   {
-    string searchID = Request.Form["search"];
+    Configuration config = AppContext.GetConfiguration();
+    Configuration.ApplicationRow applicationRow = config.Application.First(o => o.ApplicationID == Request.Form["app"]);
+    Configuration.SearchRow searchRow = config.Search.First(o => o.SearchID == Request.Form["search"]);
 
     JavaScriptSerializer serializer = new JavaScriptSerializer();
     Dictionary<String, Object> criteria = serializer.Deserialize<Dictionary<String, Object>>(Request.Form["criteria"]);
-    
-    Configuration config = AppContext.GetConfiguration();
+
+    List<String> levels = new List<String>();
+
+    if (!applicationRow.IsZoneLevelIDNull())
+    {
+      levels = applicationRow.ZoneLevelRow.GetLevelRows().Select(o => o.LevelID).ToList();
+    }
 
     List<String> where = new List<String>();
     List<Object> parameters = new List<Object>();
@@ -85,7 +93,7 @@ public class SearchPanelHandler : WebServiceHandler
           break;
 
         case "between":
-          object[] values = (object[])criteria[criteriaID];
+          ArrayList values = (ArrayList)criteria[criteriaID];
 
           if (values[0] != null)
           {
@@ -104,7 +112,7 @@ public class SearchPanelHandler : WebServiceHandler
 
     Dictionary<String, Object> result = new Dictionary<String, Object>();
 
-    using (OleDbCommand command = config.Search.First(o => o.SearchID == searchID).GetDatabaseCommand())
+    using (OleDbCommand command = searchRow.GetDatabaseCommand())
     {
       command.CommandText = String.Format(command.CommandText, String.Join(" and ", where.ToArray()));
 
@@ -118,6 +126,8 @@ public class SearchPanelHandler : WebServiceHandler
         // get the indexes of the ID columns
 
         int mapIdColumn = reader.GetColumnIndex("MapID");
+        int dataIdColumn = reader.GetColumnIndex("DataID");
+        int levelIdColumn = levels.Count > 0 ? reader.GetColumnIndex("LevelID") : -1;
 
         // write the column headers
 
@@ -125,7 +135,7 @@ public class SearchPanelHandler : WebServiceHandler
 
         for (int i = 0; i < reader.FieldCount; ++i)
         {
-          if (i != mapIdColumn)
+          if (i != mapIdColumn && i != dataIdColumn && i != levelIdColumn)
           {
             headers.Add(reader.GetName(i));
           }
@@ -139,17 +149,32 @@ public class SearchPanelHandler : WebServiceHandler
 
         while (reader.Read())
         {
-          if (!reader.IsDBNull(mapIdColumn))
+          if (!reader.IsDBNull(mapIdColumn) && !reader.IsDBNull(dataIdColumn))
           {
             Dictionary<String, String> id = new Dictionary<String, String>();
 
             id.Add("m", reader.GetValue(mapIdColumn).ToString());
 
+            if (dataIdColumn > -1 && !reader.IsDBNull(dataIdColumn))
+            {
+              id.Add("d", reader.GetValue(dataIdColumn).ToString());
+            }
+
+            if (levelIdColumn > -1 && !reader.IsDBNull(levelIdColumn))
+            {
+              string levelId = reader.GetValue(levelIdColumn).ToString();
+
+              if (levels.Contains(levelId))
+              {
+                id.Add("l", levelId);
+              }
+            }
+
             List<Object> values = new List<Object>();
 
             for (int i = 0; i < reader.FieldCount; ++i)
             {
-              if (i != mapIdColumn)
+              if (i != mapIdColumn && i != dataIdColumn && i != levelIdColumn)
               {
                 values.Add(reader.IsDBNull(i) ? null : reader.GetValue(i));
               }
@@ -166,5 +191,7 @@ public class SearchPanelHandler : WebServiceHandler
         result.Add("rows", rows);
       }
     }
+
+    ReturnJson(result);
   }
 }
