@@ -25,9 +25,9 @@ var GPV = (function (gpv) {
       gpv.post(args);
     }
 
-    function triggerChanged(truncated) {
+    function triggerChanged(truncated, scaleBy) {
       $.each(changedHandlers, function () {
-        this(truncated);
+        this(truncated, scaleBy);
       });
     }
 
@@ -92,7 +92,7 @@ var GPV = (function (gpv) {
       }
     }
 
-    function update() {
+    function update(scaleBy) {
       post({
         data: {
           m: "SelectFeatures",
@@ -101,7 +101,7 @@ var GPV = (function (gpv) {
         success: function (result) {
           if (result && result.state) {
             appState.update(result.state);
-            triggerChanged(result.truncated);
+            triggerChanged(result.truncated, scaleBy);
             showMaximumExceeded(result.truncated);
           }
         }

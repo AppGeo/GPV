@@ -87,7 +87,7 @@ public partial class Admin_TestStoredProcs : CustomStyledPage
       DataColumn[] uniqueColumns = new DataColumn[] { reportTable.Columns["ConnectionID"], reportTable.Columns["StoredProc"] };
       reportTable.Constraints.Add(new UniqueConstraint(uniqueColumns));
 
-      foreach (DataTable sourceTable in new DataTable[] { config.LayerFunction, config.DataTab, config.Query, config.SearchCriteria })
+      foreach (DataTable sourceTable in new DataTable[] { config.LayerFunction, config.DataTab, config.Query, config.Search, config.SearchCriteria })
       {
         foreach (DataRow sourceRow in sourceTable.Rows)
         {

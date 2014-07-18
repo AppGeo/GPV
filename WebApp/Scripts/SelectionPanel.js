@@ -358,7 +358,14 @@ var GPV = (function (gpv) {
 
     function parseQuery(s) {
       var q = {};
-      s.replace(/([^?=&]+)(=([^&]*))?/g, function (v0, v1, v2, v3) { q[v1] = v3; });
+      s.replace(/([^?=&]+)(=([^&]*))?/g, function (v0, v1, v2, v3) { q[v1] = v3 || null; });
+
+      $.each(["layerson", "layersoff", "targetids", "targetparams", "selectionids"], function (i, v) {
+        if (q.hasOwnProperty(v)) {
+          q[v] = q[v] ? q[v].split(",") : [];
+        }
+      });
+
       return q;
     }
 
@@ -369,7 +376,7 @@ var GPV = (function (gpv) {
 
     function printData() {
       if (!$cmdDataPrint.hasClass("Disabled")) {
-        var data = ["datatab=", escape(appState.DataTab), "&id=", escape(appState.ActiveDataId), "&print=1"].join("");
+        var data = ["datatab=", encodeURIComponent(appState.DataTab), "&id=", encodeURIComponent(appState.ActiveDataId), "&print=1"].join("");
         var windowName = "identify" + (new Date()).getTime();
         var features = "width=700,height=500,menubar=no,titlebar=no,toolbar=no,status=no,scrollbars=no,location=no,resizable=no";
         window.open("Identify.aspx?" + data, windowName, features, true);
@@ -413,7 +420,7 @@ var GPV = (function (gpv) {
         var key = prop.toLowerCase();
 
         if (key in query) {
-          appState[prop] = prop == "TargetIds" || prop == "SelectionIds" ? query[key].split(",") : query[key];
+          appState[prop] = query[key];
         }
       }
 
@@ -422,7 +429,7 @@ var GPV = (function (gpv) {
           data: {
             m: "GetTargetIds",
             layer: appState.TargetLayer,
-            params: query.targetparams
+            params: query.targetparams.join(",")
           },
           success: complete
         });
@@ -444,7 +451,8 @@ var GPV = (function (gpv) {
           this(query);
         });
 
-        selection.update();
+        var scaleBy = query.hasOwnProperty("scaleby") ? parseFloat(query.scaleby) : null;
+        selection.update(scaleBy);
       }
     }
 
@@ -576,6 +584,7 @@ var GPV = (function (gpv) {
 
     gpv.selectionPanel = {
       gridFilled: function (fn) { gridFilledHandlers.push(fn); },
+      reinitialize: reinitialize,
       reinitialized: function (fn) { reinitializedHandlers.push(fn); }
     };
 

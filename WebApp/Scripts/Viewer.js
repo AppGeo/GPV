@@ -146,7 +146,7 @@ var GPV = (function (gpv) {
           if (result && result.id) {
             var loc = document.location;
             var url = [loc.protocol, "//", loc.hostname, loc.port.length && loc.port != "80" ? ":" + loc.port : "", loc.pathname, "?state=", result.id];
-            loc.href = "mailto:?subject=Map&body=" + escape(url.join(""));
+            loc.href = "mailto:?subject=Map&body=" + encodeURIComponent(url.join(""));
           }
         }
       });
@@ -187,11 +187,7 @@ var GPV = (function (gpv) {
     });
 
     $("#cmdZoomSelect").on("click", function () {
-      gpv.selection.getSelectionExtent(function (bbox) {
-        if (bbox) {
-          $map.geomap("option", "bbox", $.geo.scaleBy(bbox, 1.6));
-        }
-      });
+      zoomToSelection(1.6);
     });
 
     var $ddlLevel = $("#ddlLevel").on("change", function () {
@@ -262,8 +258,13 @@ var GPV = (function (gpv) {
       $map.geomap("resize");
     });
 
-    gpv.on("selection", "changed", function () {
-      $map.geomap("refresh");
+    gpv.on("selection", "changed", function (truncated, scaleBy) {
+      if (scaleBy) {
+        zoomToSelection(scaleBy);
+      }
+      else {
+        $map.geomap("refresh");
+      }
     });
 
     gpv.on("zoomBar", "levelChanged", function (level) {
@@ -289,7 +290,7 @@ var GPV = (function (gpv) {
           return;
 
         case "optIdentify":
-          var data = ["maptab=", appState.MapTab, "&visiblelayers=", escape(gpv.legendPanel.getVisibleLayers(appState.MapTab).join("\x01")),
+          var data = ["maptab=", appState.MapTab, "&visiblelayers=", encodeURIComponent(gpv.legendPanel.getVisibleLayers(appState.MapTab).join("\x01")),
             "&level=", appState.Level, "&x=", geo.coordinates[0], "&y=", geo.coordinates[1], "&distance=4",
             "&scale=", $map.geomap("option", "pixelSize")].join("");
 
@@ -425,6 +426,14 @@ var GPV = (function (gpv) {
       gpv.selection.getActiveExtent(function (bbox) {
         if (bbox) {
           $map.geomap("option", "bbox", $.geo.scaleBy(bbox, 1.6));
+        }
+      });
+    }
+
+    function zoomToSelection(scaleBy) {
+      gpv.selection.getSelectionExtent(function (bbox) {
+        if (bbox) {
+          $map.geomap("option", "bbox", $.geo.scaleBy(bbox, scaleBy));
         }
       });
     }

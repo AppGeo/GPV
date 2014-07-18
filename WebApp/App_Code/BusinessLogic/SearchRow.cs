@@ -32,7 +32,59 @@ public partial class Configuration
     public OleDbCommand GetDatabaseCommand()
     {
       OleDbConnection connection = IsConnectionIDNull() ? AppContext.GetDatabaseConnection() : ConnectionRow.GetDatabaseConnection();
-      return new OleDbCommand(SelectStatement, connection);
+
+      if (connection != null)
+      {
+        OleDbCommand command = new OleDbCommand(StoredProc, connection);
+        command.CommandType = CommandType.StoredProcedure;
+
+        if (IsParameterCountNull())
+        {
+          ParameterCount = Configuration.GetParameterCount(command, false);
+        }
+
+        if (ParameterCount >= 0)
+        {
+          for (int i = 1; i <= ParameterCount; ++i)
+          {
+            command.Parameters.AddWithValue(i.ToString(), "0");
+          }
+
+          return command;
+        }
+      }
+
+      return null;
+    }
+
+    public OleDbCommand GetSelectCommand()
+    {
+      OleDbCommand command = null;
+
+      if (!IsSelectStatementNull())
+      {
+        OleDbConnection connection = IsConnectionIDNull() ? AppContext.GetDatabaseConnection() : ConnectionRow.GetDatabaseConnection();
+        command = new OleDbCommand(SelectStatement, connection);
+      }
+      else
+      {
+        using (OleDbCommand baseCommand = GetDatabaseCommand())
+        {
+          if (ParameterCount > 0)
+          {
+            baseCommand.Parameters.AddWithValue("1", AppUser.GetRole());
+          }
+
+          try
+          {
+            SelectStatement = baseCommand.ExecuteScalar() as string;
+            command = new OleDbCommand(SelectStatement, baseCommand.Connection);
+          }
+          catch {}
+        }
+      }
+
+      return command;
     }
 
     public Dictionary<String, Object> ToJsonData()

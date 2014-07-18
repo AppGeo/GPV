@@ -14,22 +14,27 @@
 
 var GPV = (function (gpv) {
   $(function () {
+    var $body = $("body");
     var $map = $("#mapMain");
     var $container = $("#pnlSearch");
     var config = gpv.configuration;
     var appState = gpv.appState;
     var service = "Services/SearchPanel.ashx";
+    var currentSearch;
 
     // =====  controls  =====
     
     var $cmdSearch = $("#cmdSearch").on("click", search);
+    var $cmdShowAllOnMap = $("#cmdShowAllOnMap").on("click", showOnMap);
+    var $cmdShowOnMap = $("#cmdShowOnMap").on("click", showOnMap);
     var $ddlSearch = $("#ddlSearches").on("change", searchChanged);
 
     var $grdSearch = $("#grdSearch").dataGrid({
       multiSelect: true,
       rowClass: "DataGridRow",
       alternateClass: "DataGridRowAlternate",
-      selectedClass: "DataGridRowSelect"
+      selectedClass: "DataGridRowSelect",
+      selectionChanged: resultGridChanged
     });
 
     var $input = $container.find(".SearchCriteria .Input").on("keyup change", function () {
@@ -43,7 +48,7 @@ var GPV = (function (gpv) {
         params: { m: "Autocomplete", criteria: $this.attr("data-id") },
         triggerSelectOnValidInput: false,
         showNoSuggestionNotice: true,
-        noSuggestionNotice: 'No matching results',
+        noSuggestionNotice: 'No matching results'
       });
     });
 
@@ -52,6 +57,12 @@ var GPV = (function (gpv) {
     gpv.on("viewer", "mapTabChanged", fillSearches);
 
     // =====  private functions  =====
+
+    function emptyResultGrid() {
+      $grdSearch.dataGrid("empty");
+      $cmdShowOnMap.addClass("Disabled");
+      $cmdShowAllOnMap.addClass("Disabled");
+    }
 
     function fillSearches() {
       var changed = gpv.loadOptions($ddlSearch, config.mapTab[appState.MapTab].search);
@@ -69,7 +80,17 @@ var GPV = (function (gpv) {
       });
     }
 
+    function resultGridChanged(dblClick) {
+      if (dblClick) {
+        updateTargets($grdSearch.dataGrid("getSelection"));
+      }
+      else {
+        $cmdShowOnMap.toggleClass("Disabled", $grdSearch.dataGrid("getSelection").length == 0)
+      }
+    }
+
     function search() {
+      emptyResultGrid();
       var criteria = {};
       
       getFilledInputs().each(function () {
@@ -91,13 +112,14 @@ var GPV = (function (gpv) {
       gpv.post({
         url: service,
         data: {
-          app: gpv.appState.Application,
+          app: appState.Application,
           search: $container.find(".Search:visible").attr("data-search"),
           criteria: JSON.stringify(criteria)
         },
         success: function (result) {
           if (result) {
             $grdSearch.dataGrid("load", result);
+            $cmdShowAllOnMap.toggleClass("Disabled", result.rows.length == 0);
           }
         }
       });
@@ -105,13 +127,34 @@ var GPV = (function (gpv) {
 
     function searchChanged() {
       var $search = $container.find(".Search").hide();
+      currentSearch = null;
       var $opt = $ddlSearch.find("option:selected");
 
       if ($opt.length) {
-        $search.filter("[data-search='" + $opt.val() + "']").show();
+        currentSearch = $opt.val();
+        $search.filter("[data-search='" + currentSearch + "']").show();
       }
 
-      $grdSearch.dataGrid("empty");
+      emptyResultGrid();
+    }
+
+    function showOnMap() {
+      var ids = $(this)[0].id == "cmdShowOnMap" ? $grdSearch.dataGrid("getSelection") : $grdSearch.dataGrid("getIds");
+      updateTargets(ids);
+    }
+
+    function updateTargets(ids) {
+      var layerID = config.search[currentSearch].layer.id;
+      var targetIds = $.map(ids, function (id) { return id.m; }).join(",");
+      var url = "application:action=0&selectionlayer=&selectionids=&scaleby=1.6&targetlayer=" + layerID + "&targetids=" + targetIds;
+
+      if (ids.length == 1) {
+        url += "&activemapid=" + ids[0].m;
+        url += "&activedataid=" + (ids[0].hasOwnProperty("d") ? ids[0].d : ids[0].m);
+      }
+
+      gpv.selectionPanel.reinitialize(url);
+      $("#tabSelection").trigger("click");
     }
 
     fillSearches();

@@ -88,9 +88,8 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'Search (' ||
   'LayerID varchar2(50) NOT NULL,' ||
   'DisplayName varchar2(50) NOT NULL,' ||
   'ConnectionID varchar2(50),' ||
-  'SelectStatement varchar2(2000) NOT NULL,' ||
+  'StoredProc varchar2(100) NOT NULL,' ||
   'SequenceNo number(2) NOT NULL,' ||
-  'AuthorizedRoles varchar2(200),' ||
   'Active number(1) default 1' ||
 ')';
 

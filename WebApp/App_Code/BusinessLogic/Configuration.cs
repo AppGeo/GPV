@@ -830,31 +830,42 @@ public partial class Configuration
       {
         using (OleDbCommand command = search.GetDatabaseCommand())
         {
-          if (!command.CommandText.Contains(" {0} "))
+          if (command == null)
           {
-            search.ValidationError = "SelectStatement does not contain a where clause substitution: {0}";
+            search.ValidationError = "Stored procedure does not exist or is inaccessible";
           }
-          else
+        }
+
+        if (search.IsValidationErrorNull())
+        {
+          using (OleDbCommand command = search.GetSelectCommand())
           {
-            command.CommandText = String.Format(command.CommandText, "1 = 0");
-
-            OleDbDataReader reader = null;
-            bool hasMapId = false;
-
-            try
+            if (!command.CommandText.Contains(" {0} "))
             {
-              using (reader = command.ExecuteReader())
-              {
-                hasMapId = reader.GetOrdinal("MapID") >= 0;
-              }
+              search.ValidationError = "Select statement does not contain a where clause substitution: {0}";
             }
-            catch { }
-
-            command.Connection.Dispose();
-
-            if (!hasMapId)
+            else
             {
-              search.ValidationError = "SelectStatement does not return a MapID column";
+              command.CommandText = String.Format(command.CommandText, "1 = 0");
+
+              OleDbDataReader reader = null;
+              bool hasMapId = false;
+
+              try
+              {
+                using (reader = command.ExecuteReader())
+                {
+                  hasMapId = reader.GetOrdinal("MapID") >= 0;
+                }
+              }
+              catch { }
+
+              command.Connection.Dispose();
+
+              if (!hasMapId)
+              {
+                search.ValidationError = "Select statement does not return a MapID column";
+              }
             }
           }
         }

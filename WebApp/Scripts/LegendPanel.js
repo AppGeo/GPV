@@ -74,11 +74,11 @@ var GPV = (function (gpv) {
 
     function reinitializeLayers(query) {
       if ("layerson" in query) {
-        toggleLayers(query.layerson.split(","), true);
+        toggleLayers(query.layerson, true);
       }
 
       if ("layersoff" in query) {
-        toggleLayers(query.layersoff.split(","), false);
+        toggleLayers(query.layersoff, false);
       }
     }
 

@@ -112,7 +112,7 @@ public class SearchPanelHandler : WebServiceHandler
 
     Dictionary<String, Object> result = new Dictionary<String, Object>();
 
-    using (OleDbCommand command = searchRow.GetDatabaseCommand())
+    using (OleDbCommand command = searchRow.GetSelectCommand())
     {
       command.CommandText = String.Format(command.CommandText, String.Join(" and ", where.ToArray()));
 
