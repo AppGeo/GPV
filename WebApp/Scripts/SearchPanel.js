@@ -25,9 +25,12 @@ var GPV = (function (gpv) {
     // =====  controls  =====
     
     var $cmdSearch = $("#cmdSearch").on("click", search);
+    var $cmdReset = $("#cmdReset").on("click", reset);
     var $cmdShowAllOnMap = $("#cmdShowAllOnMap").on("click", showOnMap);
     var $cmdShowOnMap = $("#cmdShowOnMap").on("click", showOnMap);
     var $ddlSearch = $("#ddlSearches").on("change", searchChanged);
+    var $inputBetween = $(".Between").on("keyup", numericOnly);
+    var $inputNumeric = $(".Numeric").on("keyup", numericOnly);
 
     var $grdSearch = $("#grdSearch").dataGrid({
       multiSelect: true,
@@ -39,6 +42,7 @@ var GPV = (function (gpv) {
 
     var $input = $container.find(".SearchCriteria .Input").on("keyup change", function () {
       $cmdSearch.toggleClass("Disabled", getFilledInputs().length == 0);
+      $cmdReset.toggleClass("Disabled");
     });
 
     $container.find(".Autocomplete").each(function () {
@@ -78,6 +82,21 @@ var GPV = (function (gpv) {
           return this;
         }
       });
+    }
+
+    function numericOnly(e) {
+      var charCode = (e.which) ? e.which : e.keyCode;
+      if (charCode < 31 && ((charCode > 48 || charCode < 57) || (charCode > 96 || charCode < 105))) {
+        $(this).val('');
+      }
+    }
+
+    function reset() {
+      $("#pnlSearchScroll").find("input:text").val('');
+      $("#pnlSearchScroll").find("select")[0].selectedIndex = 0;
+      $cmdSearch.toggleClass("Disabled");
+      $cmdReset.toggleClass("Disabled");
+      emptyResultGrid();
     }
 
     function resultGridChanged(dblClick) {
