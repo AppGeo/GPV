@@ -26,7 +26,7 @@ var GPV = (function (gpv) {
 
     var $pnlSearch = $("#pnlSearch");
     var $pnlSearchGridSizer = $("#pnlSearchGridSizer");
-    var $pnlSearchCriteriaSizer = $("#pnlSearchCriteriaSizer");
+    var $pnlSearchInputFieldSizer = $("#pnlSearchInputFieldSizer");
     var $searchDivider = $("#searchDivider");
 
     var $pnlLocation = $("#pnlLocation")
@@ -73,7 +73,7 @@ var GPV = (function (gpv) {
     });
 
     $searchDivider.on("touchstart mousedown", function () {
-      createFunctionResizer($searchDivider, $pnlSearch, $pnlSearchCriteriaSizer, $pnlSearchGridSizer);
+      createFunctionResizer($searchDivider, $pnlSearch, $pnlSearchInputFieldSizer, $pnlSearchGridSizer);
     });
 
     $locationDivider.on("touchstart mousedown", function () {
@@ -85,7 +85,7 @@ var GPV = (function (gpv) {
     });
 
     $("#tabSearch").on("click", function () {
-      adjustFunctionSizes($pnlSearch, $pnlSearchCriteriaSizer, $searchDivider, $pnlSearchGridSizer);
+      adjustFunctionSizes($pnlSearch, $pnlSearchInputFieldSizer, $searchDivider, $pnlSearchGridSizer);
     });
     
     $("#tabLocation").on("click", function () {
@@ -102,7 +102,7 @@ var GPV = (function (gpv) {
       }
 
       adjustFunctionSizes($pnlSelection, $pnlQuerySizer, $selectionDivider, $pnlDataSizer);
-      adjustFunctionSizes($pnlSearch, $pnlSearchCriteriaSizer, $searchDivider, $pnlSearchGridSizer);
+      adjustFunctionSizes($pnlSearch, $pnlSearchInputFieldSizer, $searchDivider, $pnlSearchGridSizer);
       adjustFunctionSizes($pnlLocation, $pnlOverviewSizer, $locationDivider, $pnlZoneLevelSizer);
     });
 

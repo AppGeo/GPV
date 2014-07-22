@@ -902,7 +902,7 @@ public partial class Viewer : CustomStyledPage
         ShowError("When providing target parameters, a target layer must also be specified or the application must have a default target layer defined");
       }
 
-      if (!targetLayer.GetLayerFunctionRows().Any(o => o.Function == "targetparams"))
+      if (!targetLayer.GetLayerFunctionRows().Any(o => o.FunctionName == "targetparams"))
       {
         ShowError("The target layer has not been configured to accept target parameters");
       }

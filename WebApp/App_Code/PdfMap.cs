@@ -149,7 +149,7 @@ public class PdfMap
 
     if (layer.Type == CommonLayerType.Group || numClasses > 1)
     {
-      properties.CurrentY -= properties.TextSize;
+      properties.CurrentY -= properties.FontSize;
       string name = layerName;
 
       try
@@ -162,9 +162,9 @@ public class PdfMap
       catch { }
 
       content.BeginText();
-      content.SetFontAndSize(properties.BaseFont, properties.TextSize);
+      content.SetFontAndSize(properties.BaseFont, properties.FontSize);
       content.SetRGBColorFill(0, 0, 0);
-      content.ShowTextAligned(PdfContentByte.ALIGN_LEFT, name, properties.OriginX + properties.CurrentX + indent, properties.OriginY + properties.CurrentY + (properties.SwatchHeight - properties.TextSize) / 2, 0);
+      content.ShowTextAligned(PdfContentByte.ALIGN_LEFT, name, properties.OriginX + properties.CurrentX + indent, properties.OriginY + properties.CurrentY + (properties.SwatchHeight - properties.FontSize) / 2, 0);
       content.EndText();
     }
 
@@ -174,7 +174,7 @@ public class PdfMap
 
       foreach (CommonLayer childLayer in layer.Children)
       {
-        CreateLayerInLegend(content, mapTab, layerList, properties, childLayer, indent + 1.5f * properties.TextSize);
+        CreateLayerInLegend(content, mapTab, layerList, properties, childLayer, indent + 1.5f * properties.FontSize);
       }
     }
     else
@@ -210,9 +210,9 @@ public class PdfMap
             catch { }
 
             content.BeginText();
-            content.SetFontAndSize(properties.BaseFont, properties.TextSize);
+            content.SetFontAndSize(properties.BaseFont, properties.FontSize);
             content.SetRGBColorFill(0, 0, 0);
-            content.ShowTextAligned(PdfContentByte.ALIGN_LEFT, label, properties.OriginX + properties.CurrentX + indent + properties.SwatchWidth + properties.ClassSpacing, properties.OriginY + properties.CurrentY + (properties.SwatchHeight - properties.TextSize) / 2, 0);
+            content.ShowTextAligned(PdfContentByte.ALIGN_LEFT, label, properties.OriginX + properties.CurrentX + indent + properties.SwatchWidth + properties.ClassSpacing, properties.OriginY + properties.CurrentY + (properties.SwatchHeight - properties.FontSize) / 2, 0);
             content.EndText();
 
             properties.CurrentY -= properties.ClassSpacing;
@@ -348,11 +348,11 @@ public class PdfMap
     float width = Convert.ToSingle(row.Width) * PointsPerInch;
     float height = Convert.ToSingle(row.Height) * PointsPerInch;
 
-    string textFont = row.IsTextFontNull() ? "Helvetica" : row.TextFont;
-    float textSize = row.IsTextSizeNull() ? 12 : Convert.ToSingle(row.TextSize);
+    string fontFamily = row.IsFontFamilyNull() ? "Helvetica" : row.FontFamily;
+    float fontSize = row.IsFontSizeNull() ? 12 : Convert.ToSingle(row.FontSize);
 
-    BaseFont normalFont = BaseFont.CreateFont(textFont, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
-    BaseFont boldFont = BaseFont.CreateFont(textFont + "-Bold", BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+    BaseFont normalFont = BaseFont.CreateFont(fontFamily, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+    BaseFont boldFont = BaseFont.CreateFont(fontFamily + "-Bold", BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
   }
 
 	private void CreatePdfText(PdfContentByte content, Configuration.PrintTemplateContentRow row, string text)
@@ -364,9 +364,9 @@ public class PdfMap
 		float width = Convert.ToSingle(row.Width) * PointsPerInch;
 		float height = Convert.ToSingle(row.Height) * PointsPerInch;
 
-		string textFont = "Helvetica";
+		string fontFamily = "Helvetica";
 		int textAlign = PdfContentByte.ALIGN_CENTER;
-		float textSize = 12;
+		float fontSize = 12;
 		int textStyle = iTextSharp.text.Font.NORMAL;
 		bool textWrap = false;
 
@@ -377,14 +377,14 @@ public class PdfMap
 			textWrap = row.TextWrap == 1;
 		}
 
-		if (!row.IsTextFontNull())
+		if (!row.IsFontFamilyNull())
 		{
-			textFont = row.TextFont;
+			fontFamily = row.FontFamily;
 		}
 
-		if (!row.IsTextBoldNull())
+		if (!row.IsFontBoldNull())
 		{
-			if (row.TextBold == 1)
+			if (row.FontBold == 1)
 			{
 				if (textWrap)
 				{
@@ -392,17 +392,17 @@ public class PdfMap
 				}
 				else
 				{
-					textFont += "-Bold";
+					fontFamily += "-Bold";
 				}
 			}
 		}
 
-		if (!row.IsTextSizeNull())
+		if (!row.IsFontSizeNull())
 		{
-			textSize = Convert.ToSingle(row.TextSize);
+			fontSize = Convert.ToSingle(row.FontSize);
 		}
 
-		BaseFont baseFont = BaseFont.CreateFont(textFont, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+		BaseFont baseFont = BaseFont.CreateFont(fontFamily, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
 
 		if (textWrap)
 		{
@@ -419,10 +419,10 @@ public class PdfMap
 				}
 			}
 
-			Font font = new Font(baseFont, textSize, textStyle);
+			Font font = new Font(baseFont, fontSize, textStyle);
 			content.SetRGBColorFill(0, 0, 0);
 
-			float leading = textSize * 1.2f;
+			float leading = fontSize * 1.2f;
 
 			ColumnText column = new ColumnText(content);
 			column.SetSimpleColumn(originX, originY, originX + width, originY + height, leading, columnAlign);
@@ -449,7 +449,7 @@ public class PdfMap
 			}
 
 			content.BeginText();
-			content.SetFontAndSize(baseFont, textSize);
+			content.SetFontAndSize(baseFont, fontSize);
 			content.SetRGBColorFill(0, 0, 0);
 			content.ShowTextAligned(textAlign, text, originX, originY, 0);
 			content.EndText();
@@ -462,7 +462,7 @@ public class PdfMap
 
     if (layer.Type == CommonLayerType.Group)
     {
-      height = properties.TextSize + properties.LayerSpacing;
+      height = properties.FontSize + properties.LayerSpacing;
 
       foreach (CommonLayer childLayer in layer.Children)
       {
@@ -479,7 +479,7 @@ public class PdfMap
 
       if (numClasses > 1)
       {
-        height = properties.TextSize + properties.ClassSpacing;
+        height = properties.FontSize + properties.ClassSpacing;
       }
 
       height += numClasses * (properties.SwatchHeight + properties.ClassSpacing) - properties.ClassSpacing;
@@ -749,7 +749,7 @@ public class PdfMap
 		public float Width;
 		public float Height;
 
-    public float TextSize;
+    public float FontSize;
     public BaseFont BaseFont;
 
     public float SwatchHeight;
@@ -772,24 +772,24 @@ public class PdfMap
       Width = Convert.ToSingle(row.Width) * PointsPerInch;
       Height = Convert.ToSingle(row.Height) * PointsPerInch;
 
-      string textFont = row.IsTextFontNull() ? "Helvetica" : row.TextFont;
-      TextSize = row.IsTextSizeNull() ? 12 : Convert.ToSingle(row.TextSize);
+      string fontFamily = row.IsFontFamilyNull() ? "Helvetica" : row.FontFamily;
+      FontSize = row.IsFontSizeNull() ? 12 : Convert.ToSingle(row.FontSize);
 
-      if (!row.IsTextBoldNull() && row.TextBold == 1)
+      if (!row.IsFontBoldNull() && row.FontBold == 1)
       {
-        textFont += "-Bold";
+        fontFamily += "-Bold";
       }
 
-      BaseFont = BaseFont.CreateFont(textFont, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+      BaseFont = BaseFont.CreateFont(fontFamily, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
 
-      SwatchHeight = TextSize;
-      SwatchWidth = TextSize * 1.4f;
-      LayerSpacing = TextSize * 0.5f;
-      ClassSpacing = TextSize * 0.15f;
-      ColumnSpacing = TextSize * 1.4f;
+      SwatchHeight = FontSize;
+      SwatchWidth = FontSize * 1.4f;
+      LayerSpacing = FontSize * 0.5f;
+      ClassSpacing = FontSize * 0.15f;
+      ColumnSpacing = FontSize * 1.4f;
 
       ColumnWidth = !row.IsLegendColumnWidthNull() ? Convert.ToSingle(row.LegendColumnWidth) * PointsPerInch :
-          TextSize * 12 + SwatchWidth;
+          FontSize * 12 + SwatchWidth;
 
       NumColumns = Convert.ToInt32(Math.Floor((Width + ColumnSpacing) / (ColumnWidth + ColumnSpacing)));
     }

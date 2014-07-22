@@ -56,8 +56,8 @@ public class SelectionPanelHandler : WebServiceHandler
     Configuration.LayerRow layer = Configuration.Layer.First(o => o.LayerID == Request.Form["layer"]);
 
     Dictionary<String, Object> result = new Dictionary<String, Object>();
-    result.Add("supportsMailingLabels", layer.GetLayerFunctionRows().Any(o => o.Function.ToLower() == "mailinglabel"));
-    result.Add("supportsExportData", layer.GetLayerFunctionRows().Any(o => o.Function.ToLower() == "export"));
+    result.Add("supportsMailingLabels", layer.GetLayerFunctionRows().Any(o => o.FunctionName.ToLower() == "mailinglabel"));
+    result.Add("supportsExportData", layer.GetLayerFunctionRows().Any(o => o.FunctionName.ToLower() == "export"));
     ReturnJson(result);
   }
 

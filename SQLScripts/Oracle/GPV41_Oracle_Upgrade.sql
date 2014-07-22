@@ -29,7 +29,7 @@ BEGIN
 
 -- remove AllowMapTabScroll and AllowDataTabScroll from GPVApplication
 
-EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'Application (' ||
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'Application (' ||
   'ApplicationID varchar2(50) NOT NULL,' ||
   'DisplayName varchar2(50),' ||
   'AuthorizedRoles varchar2(200),' ||
@@ -65,7 +65,23 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'Connection AS SELECT * FROM ' 
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'DataTab AS SELECT * FROM ' || prefix31 || 'DataTab';
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'ExternalMap AS SELECT * FROM ' || prefix31 || 'ExternalMap';
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'Layer AS SELECT * FROM ' || prefix31 || 'Layer';
-EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'LayerFunction AS SELECT * FROM ' || prefix31 || 'LayerFunction';
+
+-- rename Function to FunctionName in GPVLayerFunction
+
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'LayerFunction (' ||
+  'LayerID varchar2(50) NOT NULL,' ||
+  'FunctionName varchar2(20) NOT NULL,' ||
+  'ConnectionID varchar2(50),' ||
+  'StoredProc varchar2(100) NOT NULL,' ||
+  'Active number(1) default 1' ||
+')';
+
+EXECUTE IMMEDIATE 'INSERT INTO ' || prefix41 || 'LayerFunction (LayerID, FunctionName, ConnectionID, StoredProc, Active) ' ||
+  'SELECT LayerID, Function, ConnectionID, StoredProc, Active ' ||
+  'FROM ' || prefix31 || 'LayerFunction';
+
+-- copy tables
+
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'LayerProximity AS SELECT * FROM ' || prefix31 || 'LayerProximity';
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'Level AS SELECT * FROM ' || prefix31 || 'Level';
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'MailingLabel AS SELECT * FROM ' || prefix31 || 'MailingLabel';
@@ -76,7 +92,41 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'MarkupCategory AS SELECT * FRO
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'MarkupGroup AS SELECT * FROM ' || prefix31 || 'MarkupGroup';
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'MarkupSequence AS SELECT * FROM ' || prefix31 || 'MarkupSequence';
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'PrintTemplate AS SELECT * FROM ' || prefix31 || 'PrintTemplate';
-EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'PrintTemplateContent AS SELECT * FROM ' || prefix31 || 'PrintTemplateContent';
+
+-- rename TextFont to FontFamily, TextSize to FontSize and TextBold to FontBold in GPVPrintTemplateContent
+
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'PrintTemplateContent (' ||
+  'TemplateID varchar2(50) NOT NULL,' ||
+  'SequenceNo number(2) NOT NULL,' ||
+  'ContentType varchar2(20) NOT NULL,' ||
+  'DisplayName varchar2(50),' ||
+  'OriginX number(7,3) NOT NULL,' ||
+  'OriginY number(7,3) NOT NULL,' ||
+  'Width number(7,3) NOT NULL,' ||
+  'Height number(7,3) NOT NULL,' ||
+  'FillColor varchar2(25),' ||
+  'OutlineColor varchar2(25),' ||
+  'OutlineWidth number(11),' ||
+  'LegendColumnWidth decimal,' ||
+  'Text varchar2(1000),' ||
+  'TextAlign varchar2(6),' ||
+  'TextWrap number(1),' ||
+  'FontFamily varchar2(16),' ||
+  'FontSize number(3),' ||
+  'FontBold number(1),' ||
+  'FileName varchar2(25),' ||
+  'Active number(1) default 1' ||
+')';
+
+EXECUTE IMMEDIATE 'INSERT INTO ' || prefix41 || 'PrintTemplateContent (TemplateID, SequenceNo, ContentType, DisplayName, ' ||
+  'OriginX, OriginY, Width, Height, FillColor, OutlineColor, OutlineWidth, LegendColumnWidth, Text, TextAlign, TextWrap, ' ||
+  'FontFamily, FontSize, FontBold, FileName, Active) ' ||
+  'SELECT TemplateID, SequenceNo, ContentType, DisplayName, OriginX, OriginY, Width, Height, FillColor, OutlineColor, ' ||
+  'OutlineWidth, LegendColumnWidth, Text, TextAlign, TextWrap, TextFont, TextSize, TextBold, FileName, Active ' ||
+  'FROM ' || prefix31 || 'PrintTemplateContent';
+
+-- copy tables
+
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'Proximity AS SELECT * FROM ' || prefix31 || 'Proximity';
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'Query AS SELECT * FROM ' || prefix31 || 'Query';
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'SavedState AS SELECT * FROM ' || prefix31 || 'SavedState';
@@ -95,12 +145,12 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'Search (' ||
 
 -- create GPVSearchCriteria
 
-EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'SearchCriteria (' ||
-  'SearchCriteriaID varchar2(50) NOT NULL,' ||
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix41 || 'SearchInputField (' ||
+  'FieldID varchar2(50) NOT NULL,' ||
   'SearchID varchar2(50) NOT NULL,' ||
   'DisplayName varchar2(50) NOT NULL,' ||
   'ColumnName varchar2(50) NOT NULL,' ||
-  'SearchCriteriaType varchar2(50) NOT NULL,' ||
+  'FieldType varchar2(50) NOT NULL,' ||
   'ConnectionID varchar2(50),' ||
   'StoredProc varchar2(100),' ||
   'SequenceNo number(2) NOT NULL,' ||

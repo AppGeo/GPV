@@ -24,11 +24,11 @@ using System.Web.UI.WebControls;
 
 public partial class SearchPanel : System.Web.UI.UserControl
 {
-  private void AddCriteriaValue(HtmlControl parent, HtmlControl control, Configuration.SearchCriteriaRow searchCriteriaRow, string className)
+  private void AddInputFieldValue(HtmlControl parent, HtmlControl control, Configuration.SearchInputFieldRow searchInputFieldRow, string className)
   {
     parent.Controls.Add(control);
     control.Attributes["class"] = "Input " + className;
-    control.Attributes["data-id"] = searchCriteriaRow.SearchCriteriaID;
+    control.Attributes["data-id"] = searchInputFieldRow.FieldID;
   }
 
   public void Initialize(Configuration.ApplicationRow application)
@@ -66,61 +66,61 @@ public partial class SearchPanel : System.Web.UI.UserControl
       search.Attributes["class"] = "Search";
       search.Style["display"] = "none";
 
-      foreach (Configuration.SearchCriteriaRow searchCriteriaRow in searchRow.GetSearchCriteriaRows().OrderBy(o => o.SequenceNo))
+      foreach (Configuration.SearchInputFieldRow searchInputFieldRow in searchRow.GetSearchInputFieldRows().OrderBy(o => o.SequenceNo))
       {
         // add UI elements for this criterion
-        HtmlGenericControl searchCriteria = new HtmlGenericControl("div");
-        search.Controls.Add(searchCriteria);
-        searchCriteria.Attributes["data-criteria"] = searchCriteriaRow.SearchCriteriaID;
-        searchCriteria.Attributes["class"] = "SearchCriteria";
+        HtmlGenericControl searchInputField = new HtmlGenericControl("div");
+        search.Controls.Add(searchInputField);
+        searchInputField.Attributes["data-criteria"] = searchInputFieldRow.FieldID;
+        searchInputField.Attributes["class"] = "SearchInputField";
 
         HtmlGenericControl searchLabel = new HtmlGenericControl("span");
-        searchCriteria.Controls.Add(searchLabel);
-        searchLabel.InnerText = searchCriteriaRow.DisplayName;
+        searchInputField.Controls.Add(searchLabel);
+        searchLabel.InnerText = searchInputFieldRow.DisplayName;
         searchLabel.Attributes["class"] = "Label";
 
-        switch (searchCriteriaRow.SearchCriteriaType)
+        switch (searchInputFieldRow.FieldType)
         {
           case "autocomplete":
-            AddCriteriaValue(searchCriteria, new HtmlInputText("text"), searchCriteriaRow, "Autocomplete");
+            AddInputFieldValue(searchInputField, new HtmlInputText("text"), searchInputFieldRow, "Autocomplete");
             break;
 
           case "between":
-            AddCriteriaValue(searchCriteria, new HtmlInputText("text"), searchCriteriaRow, "Between 1");
+            AddInputFieldValue(searchInputField, new HtmlInputText("text"), searchInputFieldRow, "Between 1");
 
             HtmlGenericControl betweenText = new HtmlGenericControl("span");
-            searchCriteria.Controls.Add(betweenText);
+            searchInputField.Controls.Add(betweenText);
             betweenText.InnerText = " - ";
             
-            AddCriteriaValue(searchCriteria, new HtmlInputText("text"), searchCriteriaRow, "Between 2");
+            AddInputFieldValue(searchInputField, new HtmlInputText("text"), searchInputFieldRow, "Between 2");
             break;
 
           case "lookup":
-            HtmlSelect select = CreateLookup(searchCriteriaRow);
-            AddCriteriaValue(searchCriteria, select, searchCriteriaRow, "Lookup");
+            HtmlSelect select = CreateLookup(searchInputFieldRow);
+            AddInputFieldValue(searchInputField, select, searchInputFieldRow, "Lookup");
             break;
 
           case "numeric":
-            AddCriteriaValue(searchCriteria, new HtmlInputText("text"), searchCriteriaRow, "Numeric");
+            AddInputFieldValue(searchInputField, new HtmlInputText("text"), searchInputFieldRow, "Numeric");
             break;
 
           case "text":
-            AddCriteriaValue(searchCriteria, new HtmlInputText("text"), searchCriteriaRow, "Text");
+            AddInputFieldValue(searchInputField, new HtmlInputText("text"), searchInputFieldRow, "Text");
             break;
         }
 
         search.Controls.Add(new HtmlGenericControl("br"));
       }
-
+     
       pnlSearchScroll.Controls.Add(search);
     }
   }
 
-  private HtmlSelect CreateLookup(Configuration.SearchCriteriaRow searchCriteriaRow)
+  private HtmlSelect CreateLookup(Configuration.SearchInputFieldRow searchInputFieldRow)
   {
     HtmlSelect select = new HtmlSelect();
 
-    using (OleDbCommand command = searchCriteriaRow.GetDatabaseCommand())
+    using (OleDbCommand command = searchInputFieldRow.GetDatabaseCommand())
     {
       if (command.Parameters.Count > 0)
       {
@@ -133,8 +133,8 @@ public partial class SearchPanel : System.Web.UI.UserControl
         adapter.Fill(lookupList);
 
         select.DataSource = lookupList;
-        select.DataTextField = searchCriteriaRow.SearchCriteriaID;
-        select.DataValueField = searchCriteriaRow.SearchCriteriaID;
+        select.DataTextField = searchInputFieldRow.FieldID;
+        select.DataValueField = searchInputFieldRow.FieldID;
         select.DataBind();
       }
 

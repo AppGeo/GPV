@@ -19,7 +19,7 @@ using System.Data.OleDb;
 
 public partial class Configuration
 {
-  public partial class SearchCriteriaRow
+  public partial class SearchInputFieldRow
   {
     private Configuration Configuration
     {

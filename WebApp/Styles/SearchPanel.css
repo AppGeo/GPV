@@ -29,7 +29,7 @@
   width: 60%;
 }
 
-#pnlSearchCriteriaSizer
+#pnlSearchInputFieldSizer
 {
   bottom: auto;
   height: 200px;
@@ -41,7 +41,7 @@
   min-height: 106px;
 }
 
-#pnlSearchCriteria
+#pnlSearchInputField
 {
   padding: 5px;
 }
@@ -117,7 +117,7 @@
   width: 100%;
 }
 
-.SearchCriteria
+.SearchInputField
 {
   position: static;
   height: 24px;
@@ -125,14 +125,14 @@
   float: left;
 }
 
-.SearchCriteria .Input.Between
+.SearchInputField .Input.Between
 {
   width: 20%;
   margin: 2px 2px;
   margin-left: 2px;
 }
 
-.SearchCriteria .Input
+.SearchInputField .Input
 {
   width: 63%;
   margin: 0 2px;

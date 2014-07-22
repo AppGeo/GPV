@@ -29,7 +29,7 @@
     <Shape ID="DesignTable:Level" ZOrder="17" X="767" Y="424" Height="144" Width="150" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="140" />
     <Shape ID="DesignTable:ZoneLevelCombo" ZOrder="22" X="683" Y="610" Height="125" Width="163" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="121" />
     <Shape ID="DesignTable:Search" ZOrder="1" X="489" Y="994" Height="219" Width="150" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="215" />
-    <Shape ID="DesignTable:SearchCriteria" ZOrder="7" X="489" Y="1251" Height="239" Width="150" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="235" />
+    <Shape ID="DesignTable:SearchInputField" ZOrder="7" X="489" Y="1251" Height="239" Width="150" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="235" />
   </Shapes>
   <Connectors>
     <Connector ID="DesignRelation:ApplicationToZoneLevel" ZOrder="26" LineWidth="11">
@@ -352,7 +352,7 @@
         </Point>
       </RoutePoints>
     </Connector>
-    <Connector ID="DesignRelation:ConnectionToSearchCriteria" ZOrder="27" LineWidth="11">
+    <Connector ID="DesignRelation:ConnectionToSearchInputField" ZOrder="27" LineWidth="11">
       <RoutePoints>
         <Point>
           <X>862</X>
@@ -364,7 +364,7 @@
         </Point>
       </RoutePoints>
     </Connector>
-    <Connector ID="DesignRelation:SearchToSearchCriteria" ZOrder="6" LineWidth="11">
+    <Connector ID="DesignRelation:SearchToSearchInputField" ZOrder="6" LineWidth="11">
       <RoutePoints>
         <Point>
           <X>568</X>

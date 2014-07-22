@@ -40,7 +40,7 @@ var GPV = (function (gpv) {
       selectionChanged: resultGridChanged
     });
 
-    var $input = $container.find(".SearchCriteria .Input").on("keyup change", function () {
+    var $input = $container.find(".SearchInputField .Input").on("keyup change", function () {
       $cmdSearch.toggleClass("Disabled", getFilledInputs().length == 0);
       $cmdReset.toggleClass("Disabled");
     });
@@ -77,7 +77,7 @@ var GPV = (function (gpv) {
     }
 
     function getFilledInputs() {
-      return $container.find(".Search:visible").find(".SearchCriteria .Input").map(function () {
+      return $container.find(".Search:visible").find(".SearchInputField .Input").map(function () {
         if ($(this).val()) {
           return this;
         }

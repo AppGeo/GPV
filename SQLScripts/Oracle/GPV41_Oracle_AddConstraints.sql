@@ -166,10 +166,10 @@ EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'Search ADD ' ||
   '  SearchID' ||
   ')';
 
-EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'SearchCriteria ADD ' ||
-  'CONSTRAINT PK_' || prefix || 'SearchCriteria PRIMARY KEY ' ||
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'SearchInputField ADD ' ||
+  'CONSTRAINT PK_' || prefix || 'SearchInputField PRIMARY KEY ' ||
   '(' ||
-  '  SearchCriteriaID' ||
+  '  FieldID' ||
   ')';
 
 EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'Zone ADD ' ||
@@ -379,16 +379,16 @@ EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'Search ADD ' ||
   '  ConnectionID' ||
   ')';
 
-EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'SearchCriteria ADD ' ||
-  'CONSTRAINT FK_' || prefix || 'SCrit_Search FOREIGN KEY ' ||
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'SearchInputField ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'SInput_Search FOREIGN KEY ' ||
   '(' ||
   '  SearchID' ||
   ') REFERENCES ' || prefix || 'Search (' ||
   '  SearchID' ||
   ')';
 
-EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'SearchCriteria ADD ' ||
-  'CONSTRAINT FK_' || prefix || 'SCrit_Conn FOREIGN KEY ' ||
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'SearchInputField ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'SInput_Conn FOREIGN KEY ' ||
   '(' ||
   '  ConnectionID' ||
   ') REFERENCES ' || prefix || 'Connection (' ||

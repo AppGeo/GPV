@@ -17,8 +17,8 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeFile="SearchPanel.ascx.cs" Inherits="SearchPanel" %>
 <%@ Register TagPrefix="gpv" Assembly="App_Code" Namespace="GPV" %>
 
-<div id="pnlSearchCriteriaSizer">
-  <div id="pnlSearchCriteria" class="MainPanel">
+<div id="pnlSearchInputFieldSizer">
+  <div id="pnlSearchInputField" class="MainPanel">
     <gpv:Select ID="ddlSearches" runat="server" CssClass="Input" ToolTip="Choose a search to perform" />
   </div>
   <gpv:Div id="pnlSearchScroll" runat="server" />

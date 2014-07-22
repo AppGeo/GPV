@@ -28,9 +28,9 @@ public class SearchPanelHandler : WebServiceHandler
     string text = Request.QueryString["query"];
 
     Configuration config = AppContext.GetConfiguration();
-    Configuration.SearchCriteriaRow searchCriteriaRow = config.SearchCriteria.First(o => o.SearchCriteriaID == id);
+    Configuration.SearchInputFieldRow searchInputFieldRow = config.SearchInputField.First(o => o.FieldID == id);
 
-    using (OleDbCommand command = searchCriteriaRow.GetDatabaseCommand())
+    using (OleDbCommand command = searchInputFieldRow.GetDatabaseCommand())
     {
       command.Parameters[0].Value = text;
 
@@ -80,15 +80,15 @@ public class SearchPanelHandler : WebServiceHandler
 
     foreach (string criteriaID in criteria.Keys)
     {
-      Configuration.SearchCriteriaRow searchCriteriaRow = config.SearchCriteria.First(o => o.SearchCriteriaID == criteriaID);
+      Configuration.SearchInputFieldRow searchInputFieldRow = config.SearchInputField.First(o => o.FieldID == criteriaID);
 
-      switch (searchCriteriaRow.SearchCriteriaType)
+      switch (searchInputFieldRow.FieldType)
       {
         case "autocomplete":
         case "lookup":
         case "numeric":
         case "text":
-          where.Add(searchCriteriaRow.ColumnName + " = ?");
+          where.Add(searchInputFieldRow.ColumnName + " = ?");
           parameters.Add(criteria[criteriaID]);
           break;
 
@@ -97,13 +97,13 @@ public class SearchPanelHandler : WebServiceHandler
 
           if (values[0] != null)
           {
-            where.Add(searchCriteriaRow.ColumnName + " >= ?");
+            where.Add(searchInputFieldRow.ColumnName + " >= ?");
             parameters.Add(values[0]);
           }
 
           if (values[1] != null)
           {
-            where.Add(searchCriteriaRow.ColumnName + " <= ?");
+            where.Add(searchInputFieldRow.ColumnName + " <= ?");
             parameters.Add(values[1]);
           }
           break;

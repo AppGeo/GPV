@@ -110,7 +110,7 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'Layer (' ||
 
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'LayerFunction (' ||
   'LayerID varchar2(50) NOT NULL,' ||
-  'Function varchar2(20) NOT NULL,' ||
+  'FunctionName varchar2(20) NOT NULL,' ||
   'ConnectionID varchar2(50),' ||
   'StoredProc varchar2(100) NOT NULL,' ||
   'Active number(1) default 1' ||
@@ -235,11 +235,11 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'PrintTemplateContent (' ||
   'OutlineWidth number(11),' ||
   'LegendColumnWidth decimal,' ||
   'Text varchar2(1000),' ||
-  'TextFont varchar2(16),' ||
   'TextAlign varchar2(6),' ||
-  'TextSize number(3),' ||
-  'TextBold number(1),' ||
   'TextWrap number(1),' ||
+  'FontFamily varchar2(16),' ||
+  'FontSize number(3),' ||
+  'FontBold number(1),' ||
   'FileName varchar2(25),' ||
   'Active number(1) default 1' ||
 ')';
@@ -280,12 +280,12 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'Search (' ||
   'Active number(1) default 1' ||
 ')';
 
-EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'SearchCriteria (' ||
-  'SearchCriteriaID varchar2(50) NOT NULL,' ||
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'SearchInputField (' ||
+  'FieldID varchar2(50) NOT NULL,' ||
   'SearchID varchar2(50) NOT NULL,' ||
   'DisplayName varchar2(50) NOT NULL,' ||
   'ColumnName varchar2(50) NOT NULL,' ||
-  'SearchCriteriaType varchar2(50) NOT NULL,' ||
+  'FieldType varchar2(50) NOT NULL,' ||
   'ConnectionID varchar2(50),' ||
   'StoredProc varchar2(100),' ||
   'SequenceNo number(2) NOT NULL,' ||

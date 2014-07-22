@@ -136,7 +136,7 @@ public partial class Identify : System.Web.UI.Page
       if (isCandidateLayer)
       {
         Configuration.LayerRow layer = mapTabLayer.LayerRow;
-        Configuration.LayerFunctionRow layerFunction = layer.GetLayerFunctionRows().FirstOrDefault(o => o.Function.ToLower() == "identify");
+        Configuration.LayerFunctionRow layerFunction = layer.GetLayerFunctionRows().FirstOrDefault(o => o.FunctionName.ToLower() == "identify");
 
         if (layerFunction != null)
         {

@@ -49,7 +49,7 @@ public partial class Configuration
 
       try
       {
-        Configuration.LayerFunctionRow layerFunction = GetLayerFunctionRows().First(o => o.Function == "targetparams");
+        Configuration.LayerFunctionRow layerFunction = GetLayerFunctionRows().First(o => o.FunctionName == "targetparams");
 
         using (OleDbCommand command = layerFunction.GetDatabaseCommand())
         {
