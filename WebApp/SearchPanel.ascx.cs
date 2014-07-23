@@ -31,6 +31,12 @@ public partial class SearchPanel : System.Web.UI.UserControl
     control.Attributes["data-id"] = searchInputFieldRow.FieldID;
   }
 
+  private HtmlControl AddNumericTip(HtmlControl control)
+  {
+    control.Attributes["title"] = "Enter a number";
+    return control;
+  }
+
   public void Initialize(Configuration.ApplicationRow application)
   {
     // find all searches for this application
@@ -86,13 +92,13 @@ public partial class SearchPanel : System.Web.UI.UserControl
             break;
 
           case "between":
-            AddInputFieldValue(searchInputField, new HtmlInputText("text"), searchInputFieldRow, "Between 1");
+            AddInputFieldValue(searchInputField, AddNumericTip(new HtmlInputText("text")), searchInputFieldRow, "Between 1");
 
             HtmlGenericControl betweenText = new HtmlGenericControl("span");
             searchInputField.Controls.Add(betweenText);
             betweenText.InnerText = " - ";
             
-            AddInputFieldValue(searchInputField, new HtmlInputText("text"), searchInputFieldRow, "Between 2");
+            AddInputFieldValue(searchInputField, AddNumericTip(new HtmlInputText("text")), searchInputFieldRow, "Between 2");
             break;
 
           case "lookup":
@@ -101,7 +107,7 @@ public partial class SearchPanel : System.Web.UI.UserControl
             break;
 
           case "numeric":
-            AddInputFieldValue(searchInputField, new HtmlInputText("text"), searchInputFieldRow, "Numeric");
+            AddInputFieldValue(searchInputField, AddNumericTip(new HtmlInputText("text")), searchInputFieldRow, "Numeric");
             break;
 
           case "text":

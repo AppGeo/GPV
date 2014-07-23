@@ -29,8 +29,7 @@ var GPV = (function (gpv) {
     var $cmdShowAllOnMap = $("#cmdShowAllOnMap").on("click", showOnMap);
     var $cmdShowOnMap = $("#cmdShowOnMap").on("click", showOnMap);
     var $ddlSearch = $("#ddlSearches").on("change", searchChanged);
-    var $inputBetween = $(".Between").on("keyup", numericOnly);
-    var $inputNumeric = $(".Numeric").on("keyup", numericOnly);
+    $(".Between,.Numeric").numeric();
 
     var $grdSearch = $("#grdSearch").dataGrid({
       multiSelect: true,
@@ -41,8 +40,9 @@ var GPV = (function (gpv) {
     });
 
     var $input = $container.find(".SearchInputField .Input").on("keyup change", function () {
-      $cmdSearch.toggleClass("Disabled", getFilledInputs().length == 0);
-      $cmdReset.toggleClass("Disabled");
+      var hasData = getFilledInputs().length == 0;
+      $cmdSearch.toggleClass("Disabled", hasData);
+      $cmdReset.toggleClass("Disabled", hasData);
     });
 
     $container.find(".Autocomplete").each(function () {
@@ -82,13 +82,6 @@ var GPV = (function (gpv) {
           return this;
         }
       });
-    }
-
-    function numericOnly(e) {
-      var charCode = (e.which) ? e.which : e.keyCode;
-      if (charCode < 31 && ((charCode > 48 || charCode < 57) || (charCode > 96 || charCode < 105))) {
-        $(this).val('');
-      }
     }
 
     function reset() {
