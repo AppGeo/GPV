@@ -1,0 +1,179 @@
+﻿/*  Copyright 2012 Applied Geographics, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
+#optDrawPoint
+{
+  background-position: -430px 2px;  /* DrawPoint.gif */
+  behavior: url(Styles/PIE.htc);
+  border-radius: 2px 0px 0px 2px;
+  -webkit-border-radius: 2px 0px 0px 2px;
+  -moz-border-radius: 2px 0px 0px 2px;
+}
+
+#optDrawPoint.Disabled
+{
+  background-position: -454px 2px;  /* DrawPointDisable.gif */
+}
+
+#optDrawLine
+{
+  background-position: -382px 2px;  /* DrawLine.gif */
+}
+
+#optDrawLine.Disabled
+{
+  background-position: -406px 2px;  /* DrawLineDisable.gif */
+}
+
+#optDrawPolygon
+{
+  background-position: -478px 2px;  /* DrawPolygon.gif */
+}
+
+#optDrawPolygon.Disabled
+{
+  background-position: -502px 2px;  /* DrawPolygonDisable.gif */
+}
+
+#optDrawCircle
+{
+  background-position: -238px 2px;  /* DrawCircle.gif */
+}
+
+#optDrawCircle.Disabled
+{
+  background-position: -262px 2px;  /* DrawCircleDisable.gif */
+}
+
+#optDrawCoordinates
+{
+  background-position: -286px 2px;  /* DrawCoordinates.gif */
+}
+
+#optDrawCoordinates.Disabled
+{
+  background-position: -310px 2px;  /* DrawCoordinatesDisable.gif */
+}
+
+#optDrawLength
+{
+  background-position: -334px 2px;  /* DrawLength.gif */
+}
+
+#optDrawLength.Disabled
+{
+  background-position: -358px 2px;  /* DrawLengthDisable.gif */
+}
+
+#optDrawArea
+{
+  background-position: -190px 2px;  /* DrawArea.gif */
+  behavior: url(Styles/PIE.htc);
+  border-radius: 0px 2px 2px 0px;
+  -webkit-border-radius: 0px 2px 2px 0px;
+  -moz-border-radius: 0px 2px 2px 0px;
+}
+
+#optDrawArea.Disabled
+{
+  background-position: -214px 2px;  /* DrawAreaDisable.gif */
+}
+
+#optDeleteMarkup
+{
+  background-position: -142px 2px;  /* Delete.gif */
+  behavior: url(Styles/PIE.htc);
+  border-radius: 2px 0px 0px 2px;
+  -webkit-border-radius: 2px 0px 0px 2px;
+  -moz-border-radius: 2px 0px 0px 2px;
+}
+
+#optDeleteMarkup.Disabled
+{
+  background-position: -166px 2px;  /* DeleteDisable.gif */
+}
+
+#optColorPicker
+{
+  background-position: -70px 2px;  /* ColorPicker.gif */
+}
+
+#optColorPicker.Disabled
+{
+  background-position: -94px 2px;  /* ColorPickerDisable.gif */
+}
+
+#optPaintBucket
+{
+  background-position: -717px 2px;  /* PaintBucket.gif */
+  behavior: url(Styles/PIE.htc);
+  border-radius: 0px 2px 2px 0px;
+  -webkit-border-radius: 0px 2px 2px 0px;
+  -moz-border-radius: 0px 2px 2px 0px;
+}
+
+#optPaintBucket.Disabled
+{
+  background-position: -741px 2px;  /* PaintBucketDisable.gif */
+}
+
+#optDrawText
+{
+  background-position: -526px 2px;  /* DrawText.gif */
+  behavior: url(Styles/PIE.htc);
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+}
+
+#optDrawText.Disabled
+{
+  background-position: -550px 2px;  /* DrawTextDisable.gif */
+}
+#cmdMarkupColor, #cmdTextGlowColor 
+{
+  behavior: url(Styles/PIE.htc);
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+}
+
+#pnlMarkupGrid
+{
+  left: 10px;
+  top: 165px;
+  right: 10px;
+  bottom: 10px;
+  border: solid 1px #C9C9C9;
+   behavior: url(Styles/PIE.htc);
+  -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15);
+  -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.15);
+  box-shadow: 0 1px 1px rgba(0,0,0,0.15);
+  background-color: #F0F0F0;
+  overflow: auto;
+}
+
+.ColorSelector
+{
+  position: absolute;
+  behavior: url(Styles/PIE.htc);
+  /*-webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;*/
+  -webkit-box-shadow: Gray 0 1px 7px;
+  -moz-box-shadow: Gray 0 1px 7px;
+  box-shadow: Gray 0 1px 7px;
+
+}

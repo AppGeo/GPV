@@ -58,8 +58,7 @@
   position: absolute;
   top: auto;
   bottom: 5px;
-  left: auto;
-  right: 10px;
+  left: 70px;
   z-index: 2;
 }
 
@@ -99,8 +98,7 @@
   position: absolute;
   top: auto;
   bottom: 5px;
-  left: auto;
-  right: 10px;
+  left: 100px;
 }
 
 #pnlSearchScroll

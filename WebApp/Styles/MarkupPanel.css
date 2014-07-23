@@ -15,139 +15,112 @@
 
 #optDrawPoint
 {
-  background-position: -430px 2px;  /* DrawPoint.gif */
-  behavior: url(Styles/PIE.htc);
-  border-radius: 2px 0px 0px 2px;
-  -webkit-border-radius: 2px 0px 0px 2px;
-  -moz-border-radius: 2px 0px 0px 2px;
+  background-position: -432px 0px;  /* DrawPoint.gif */
 }
 
 #optDrawPoint.Disabled
 {
-  background-position: -454px 2px;  /* DrawPointDisable.gif */
+  background-position: -456px 0px;  /* DrawPointDisable.gif */
 }
 
 #optDrawLine
 {
-  background-position: -382px 2px;  /* DrawLine.gif */
+  background-position: -384px 0px;  /* DrawLine.gif */
 }
 
 #optDrawLine.Disabled
 {
-  background-position: -406px 2px;  /* DrawLineDisable.gif */
+  background-position: -408px 0px;  /* DrawLineDisable.gif */
 }
 
 #optDrawPolygon
 {
-  background-position: -478px 2px;  /* DrawPolygon.gif */
+  background-position: -480px 0px;  /* DrawPolygon.gif */
 }
 
 #optDrawPolygon.Disabled
 {
-  background-position: -502px 2px;  /* DrawPolygonDisable.gif */
+  background-position: -504px 0px;  /* DrawPolygonDisable.gif */
 }
 
 #optDrawCircle
 {
-  background-position: -238px 2px;  /* DrawCircle.gif */
+  background-position: -240px 0px;  /* DrawCircle.gif */
 }
 
 #optDrawCircle.Disabled
 {
-  background-position: -262px 2px;  /* DrawCircleDisable.gif */
+  background-position: -264px 0px;  /* DrawCircleDisable.gif */
 }
 
 #optDrawCoordinates
 {
-  background-position: -286px 2px;  /* DrawCoordinates.gif */
+  background-position: -288px 0px;  /* DrawCoordinates.gif */
 }
 
 #optDrawCoordinates.Disabled
 {
-  background-position: -310px 2px;  /* DrawCoordinatesDisable.gif */
+  background-position: -312px 0px;  /* DrawCoordinatesDisable.gif */
 }
 
 #optDrawLength
 {
-  background-position: -334px 2px;  /* DrawLength.gif */
+  background-position: -336px 0px;  /* DrawLength.gif */
 }
 
 #optDrawLength.Disabled
 {
-  background-position: -358px 2px;  /* DrawLengthDisable.gif */
+  background-position: -360px 0px;  /* DrawLengthDisable.gif */
 }
 
 #optDrawArea
 {
-  background-position: -190px 2px;  /* DrawArea.gif */
-  behavior: url(Styles/PIE.htc);
-  border-radius: 0px 2px 2px 0px;
-  -webkit-border-radius: 0px 2px 2px 0px;
-  -moz-border-radius: 0px 2px 2px 0px;
+  background-position: -192px 0px;  /* DrawArea.gif */
 }
 
 #optDrawArea.Disabled
 {
-  background-position: -214px 2px;  /* DrawAreaDisable.gif */
+  background-position: -216px 0px;  /* DrawAreaDisable.gif */
 }
 
 #optDeleteMarkup
 {
-  background-position: -142px 2px;  /* Delete.gif */
-  behavior: url(Styles/PIE.htc);
-  border-radius: 2px 0px 0px 2px;
-  -webkit-border-radius: 2px 0px 0px 2px;
-  -moz-border-radius: 2px 0px 0px 2px;
+  background-position: -144px 0px;  /* Delete.gif */
 }
 
 #optDeleteMarkup.Disabled
 {
-  background-position: -166px 2px;  /* DeleteDisable.gif */
+  background-position: -168px 0px;  /* DeleteDisable.gif */
 }
 
 #optColorPicker
 {
-  background-position: -70px 2px;  /* ColorPicker.gif */
+  background-position: -72px 0px;  /* ColorPicker.gif */
 }
 
 #optColorPicker.Disabled
 {
-  background-position: -94px 2px;  /* ColorPickerDisable.gif */
+  background-position: -96px 0px;  /* ColorPickerDisable.gif */
 }
 
 #optPaintBucket
 {
-  background-position: -717px 2px;  /* PaintBucket.gif */
-  behavior: url(Styles/PIE.htc);
-  border-radius: 0px 2px 2px 0px;
-  -webkit-border-radius: 0px 2px 2px 0px;
-  -moz-border-radius: 0px 2px 2px 0px;
+  background-position: -720px 0px;  /* PaintBucket.gif */
 }
 
 #optPaintBucket.Disabled
 {
-  background-position: -741px 2px;  /* PaintBucketDisable.gif */
+  background-position: -744px 0px;  /* PaintBucketDisable.gif */
 }
 
 #optDrawText
 {
-  background-position: -526px 2px;  /* DrawText.gif */
-  behavior: url(Styles/PIE.htc);
-  border-radius: 2px;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
+  background-position: -528px 0px;  /* DrawText.gif */
 }
 
 #optDrawText.Disabled
 {
-  background-position: -550px 2px;  /* DrawTextDisable.gif */
-}
-#cmdMarkupColor, #cmdTextGlowColor 
-{
-  behavior: url(Styles/PIE.htc);
-  border-radius: 2px;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
+  background-position: -552px 0px;  /* DrawTextDisable.gif */
 }
 
 #pnlMarkupGrid
@@ -156,11 +129,7 @@
   top: 165px;
   right: 10px;
   bottom: 10px;
-  border: solid 1px #C9C9C9;
-   behavior: url(Styles/PIE.htc);
-  -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15);
-  -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.15);
-  box-shadow: 0 1px 1px rgba(0,0,0,0.15);
+  border: solid 1px #606060;
   background-color: #F0F0F0;
   overflow: auto;
 }
@@ -169,11 +138,10 @@
 {
   position: absolute;
   behavior: url(Styles/PIE.htc);
-  /*-webkit-border-radius: 4px;
+  -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
-  border-radius: 4px;*/
-  -webkit-box-shadow: Gray 0 1px 7px;
-  -moz-box-shadow: Gray 0 1px 7px;
-  box-shadow: Gray 0 1px 7px;
-
+  border-radius: 4px;
+  -webkit-box-shadow: #909090 2px 2px 4px;
+  -moz-box-shadow: #909090 2px 2px 4px;
+  box-shadow: #909090 2px 2px 4px;
 }

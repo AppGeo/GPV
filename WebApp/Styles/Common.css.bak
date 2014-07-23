@@ -69,7 +69,7 @@ body, div, span, td, th, input, select
 
 input, select
 {
-  padding: 1px;
+  padding: 2px;
 }
 
 .Title
@@ -85,16 +85,16 @@ input, select
 
 .MainPanel
 {
-  z-index: 1;
+  z-index: 2;
   behavior: url(Styles/PIE.htc);
-  -webkit-border-radius: 8px;
-  -moz-border-radius: 8px;
-  border-radius: 8px;
-  -webkit-box-shadow: Gray 2px 2px 4px;
-  -moz-box-shadow: Gray 2px 2px 4px;
-  box-shadow: Gray 2px 2px 4px;
+  -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15);
+  -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.15);
+  box-shadow: 0 1px 1px rgba(0,0,0,0.15);
 }
+.Tab.Selected{
+  z-index: 2;
 
+}
 a, .CommandLink
 {
   text-decoration: none;

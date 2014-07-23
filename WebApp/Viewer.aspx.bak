@@ -54,7 +54,7 @@
               ft
             </div>
           </div>
-          <div style="left: 10px; top: 28px; right: 10px; height: 25px">
+          <div style="left: 10px; top: 25px; right: 10px; height: 25px">
             <div id="cmdFullView" class="Button" title="Full View"></div>
             <div id="cmdZoomPrevious" class="Button" title="Back to Previous Extent"></div>
             <div id="cmdZoomSelect" class="Button" title="Zoom to Selected Features"></div>
