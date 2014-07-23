@@ -85,7 +85,7 @@ public class SearchPanelHandler : WebServiceHandler
       switch (searchInputFieldRow.FieldType)
       {
         case "autocomplete":
-        case "lookup":
+        case "list":
         case "numeric":
         case "text":
           where.Add(searchInputFieldRow.ColumnName + " = ?");

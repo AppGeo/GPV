@@ -1511,8 +1511,8 @@ public partial class Configuration
 
   private bool ValidateSearchInputField()
   {
-    string[] validTypes = new string[] { "autocomplete", "between", "lookup", "numeric", "text" };
-    string[] procedureTypes = new string[] { "autocomplete", "lookup" };
+    string[] validTypes = new string[] { "autocomplete", "between", "list", "numeric", "text" };
+    string[] procedureTypes = new string[] { "autocomplete", "list" };
 
     bool newErrorsFound = false;
 
@@ -1527,7 +1527,7 @@ public partial class Configuration
         searchInputField.ValidationError = "Unknown content type: " + searchInputField.FieldType;
       }
 
-      // must have a stored procedure when type is "autocomplete" or "lookup"
+      // must have a stored procedure when type is "autocomplete" or "list"
 
       if (procedureTypes.Contains(searchInputField.FieldType.ToLower()) && searchInputField.IsStoredProcNull())
       {

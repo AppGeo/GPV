@@ -101,7 +101,7 @@ public partial class SearchPanel : System.Web.UI.UserControl
             AddInputFieldValue(searchInputField, AddNumericTip(new HtmlInputText("text")), searchInputFieldRow, "Between 2");
             break;
 
-          case "lookup":
+          case "list":
             HtmlSelect select = CreateLookup(searchInputFieldRow);
             AddInputFieldValue(searchInputField, select, searchInputFieldRow, "Lookup");
             break;
@@ -135,10 +135,10 @@ public partial class SearchPanel : System.Web.UI.UserControl
 
       using (OleDbDataAdapter adapter = new OleDbDataAdapter(command))
       {
-        DataTable lookupList = new DataTable();
-        adapter.Fill(lookupList);
+        DataTable list = new DataTable();
+        adapter.Fill(list);
 
-        select.DataSource = lookupList;
+        select.DataSource = list;
         select.DataTextField = searchInputFieldRow.FieldID;
         select.DataValueField = searchInputFieldRow.FieldID;
         select.DataBind();
