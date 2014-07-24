@@ -55,14 +55,12 @@ var GPV = (function (gpv) {
                 if (result && result.tipText) {
                   var tipText = result.tipText.split("\n");
 
-                  // get the character length of each line of text and append a span to the end of each
+                  // append a span to the end of each line of text
 
-                  var maxLen = 0;
-                  $.each(tipText, function (i, v) { maxLen = Math.max(maxLen, v.length); tipText[i] += "<span>&nbsp;</span>"; });
+                  $.each(tipText, function (i) { tipText[i] += "<span>&nbsp;</span>"; });
 
-                  // make a first approximation of the size and location of the tip box and display it
+                  // set the height and initial location of the tip box and display it
 
-                  var width = parseInt(maxLen * 7.5, 10);
                   var height = tipText.length * 14;
                   var left = lastPoint[0] + 5;
                   var top = lastPoint[1] - height - 9;
@@ -71,11 +69,11 @@ var GPV = (function (gpv) {
                     top = lastPoint[1] + 5;
                   }
 
-                  $mapTip.css({ left: left + "px", top: top + "px", width: width + "px", height: height + "px" }).empty().append(tipText.join("<br>")).show();
+                  $mapTip.css({ left: left + "px", top: top + "px", width: "2000px", height: height + "px" }).empty().append(tipText.join("<br>")).show();
 
-                  // refine the size and location: find the span farthest to the right and set the width to that
+                  // refine the width and location: find the span farthest to the right and set the width to that
 
-                  width = 0;
+                  var width = 0;
                   $mapTip.find("span").each(function () {
                     width = Math.max(width, $(this).offset().left - $mapTip.offset().left);
                   });
