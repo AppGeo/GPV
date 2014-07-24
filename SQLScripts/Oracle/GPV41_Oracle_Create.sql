@@ -332,8 +332,8 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'ZoneLevelCombo (' ||
 ')';
 
 
-EXECUTE IMMEDIATE 'insert into ' || prefix || 'ExternalMap (DisplayName, URL, SequenceNo, Active) values (''Google Maps'', ''http://local.google.com/?ll={lat},{lon}&z={lev}'', 1, 1)';
-EXECUTE IMMEDIATE 'insert into ' || prefix || 'ExternalMap (DisplayName, URL, SequenceNo, Active) values (''Windows Live Local'', ''http://local.live.com/?cp={lat}~{lon}&lvl={lev}'', 2, 1)';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'ExternalMap (DisplayName, URL, SequenceNo, Active) values (''Google Maps'', ''http://maps.google.com/?ll={lat},{lon}&z={lev}'', 1, 1)';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'ExternalMap (DisplayName, URL, SequenceNo, Active) values (''Bing Maps'', ''http://www.bing.com/maps/?cp={lat}~{lon}&lvl={lev}'', 2, 1)';
 
 EXECUTE IMMEDIATE 'insert into ' || prefix || 'MarkupSequence (NextGroupID, NextMarkupID) values (1, 1)';
 END;
