@@ -102,8 +102,8 @@ public partial class SearchPanel : System.Web.UI.UserControl
             break;
 
           case "list":
-            HtmlSelect select = CreateLookup(searchInputFieldRow);
-            AddInputFieldValue(searchInputField, select, searchInputFieldRow, "Lookup");
+            HtmlSelect select = CreateSelect(searchInputFieldRow);
+            AddInputFieldValue(searchInputField, select, searchInputFieldRow, "List");
             break;
 
           case "numeric":
@@ -122,7 +122,7 @@ public partial class SearchPanel : System.Web.UI.UserControl
     }
   }
 
-  private HtmlSelect CreateLookup(Configuration.SearchInputFieldRow searchInputFieldRow)
+  private HtmlSelect CreateSelect(Configuration.SearchInputFieldRow searchInputFieldRow)
   {
     HtmlSelect select = new HtmlSelect();
 
