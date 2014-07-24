@@ -202,7 +202,7 @@ public partial class Viewer : CustomStyledPage
 
     spnVersion.InnerText = Version.ToString();
 
-    TrackingManager.TrackUse(Request, false);
+    TrackingManager.TrackUse(launchParams, false);
   }
 
   private void CreateAppStateScript(Configuration.ApplicationRow application)

@@ -27,7 +27,7 @@ public partial class MobileViewer : System.Web.UI.Page
   protected void Page_Load(object sender, EventArgs e)
   {
     AddProjectionScripts();
-    TrackingManager.TrackUse(Request, true);
+    TrackingManager.TrackUse(Request.GetNormalizedParameters(), true);
   }
 
   private void AddProjectionScripts()
