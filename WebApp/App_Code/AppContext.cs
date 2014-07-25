@@ -255,8 +255,29 @@ public static class AppContext
     {
       switch (type)
       {
-        case "AGS": host = new AgsHost(mapTab.MapHost, userName, password); break;
-        case "ArcIMS": host = new ArcImsHost(mapTab.MapHost, userName, password); break;
+        case "AGS":
+          if (String.IsNullOrEmpty(userName) && String.IsNullOrEmpty(password))
+          {
+            host = new AgsHost(mapTab.MapHost);
+          }
+          else
+          {
+            try
+            {
+              host = new AgsHost(mapTab.MapHost, userName, password, true);
+            }
+            catch { }
+
+            if (host == null)
+            {
+              host = new AgsHost(mapTab.MapHost, userName, password, false);
+            }
+          }
+          break;
+
+        case "ArcIMS": 
+          host = new ArcImsHost(mapTab.MapHost, userName, password); 
+          break;
       }
     }
     catch { }
