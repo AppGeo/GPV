@@ -81,7 +81,7 @@ EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'LayerFunction ADD ' ||
   'CONSTRAINT ' || prefix || 'LayerFunctionUnique UNIQUE ' ||
   '(' ||
   '  LayerID,' ||
-  '  Function' ||
+  '  FunctionName' ||
   ')';
 
 EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'LayerProximity ADD ' ||
