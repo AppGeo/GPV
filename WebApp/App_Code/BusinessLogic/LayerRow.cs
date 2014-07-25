@@ -49,7 +49,7 @@ public partial class Configuration
 
       try
       {
-        Configuration.LayerFunctionRow layerFunction = GetLayerFunctionRows().First(o => o.Function == "targetparams");
+        Configuration.LayerFunctionRow layerFunction = GetLayerFunctionRows().First(o => o.FunctionName == "targetparams");
 
         using (OleDbCommand command = layerFunction.GetDatabaseCommand())
         {
@@ -76,11 +76,6 @@ public partial class Configuration
       return ids;
     }
 
-    public LayerIdentifier ToIdentifier()
-    {
-      return new LayerIdentifier(LayerID, Name);
-    }
-
     public Dictionary<String, Object> ToJsonData()
     {
       string[] proximityIDs = GetLayerProximityRows().Select(o => o.ProximityID).ToArray();
@@ -98,22 +93,5 @@ public partial class Configuration
       jsonData.Add("dataTab", GetDataTabRows().Select(o => o.DataTabID).ToArray());
       return jsonData;
     }
-  }
-}
-
-public class LayerIdentifier : IComparable<LayerIdentifier>
-{
-  public string Key = null;
-  public string Name = null;
-
-  public LayerIdentifier(string key, string name)
-  {
-    Key = key;
-    Name = name;
-  }
-
-  public int CompareTo(LayerIdentifier other)
-  {
-    return Key.CompareTo(other.Key);
   }
 }

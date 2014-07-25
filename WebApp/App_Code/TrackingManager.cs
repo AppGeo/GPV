@@ -20,9 +20,9 @@ using System.Web;
 
 public static class TrackingManager
 {
-  public static void TrackUse(HttpRequest request, bool isMobile)
+  public static void TrackUse(Dictionary<String, String> launchParams, bool isMobile)
   {
-    Dictionary<String, String> launchParams = request.GetNormalizedParameters();
+    HttpRequest request = HttpContext.Current.Request;
 
     if (launchParams.Keys.Contains("application"))
     {
@@ -32,7 +32,7 @@ public static class TrackingManager
 
       if (!application.IsTrackUseNull() && application.TrackUse == 1)
       {
-        string urlQuery = String.Join("&", request.GetNormalizedParameters().Select(o => o.Key + "=" + o.Value).ToArray());
+        string urlQuery = String.Join("&", launchParams.Select(o => o.Key + "=" + o.Value).ToArray());
 
         using (OleDbConnection connection = AppContext.GetDatabaseConnection())
         {

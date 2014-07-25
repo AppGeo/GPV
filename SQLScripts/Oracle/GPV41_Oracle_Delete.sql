@@ -1,14 +1,26 @@
 --
---  © 2004-2009, Applied Geographics, Inc.  All rights reserved.
+--  Copyright 2014 Applied Geographics, Inc.
 --
---  GPV31_Oracle_Delete.sql
+--  Licensed under the Apache License, Version 2.0 (the "License");
+--  you may not use this file except in compliance with the License.
+--  You may obtain a copy of the License at
 --
---  Deletes all GPV v3.1 configuration tables.  You can set the prefix for the table names by 
+--      http://www.apache.org/licenses/LICENSE-2.0
+
+--  Unless required by applicable law or agreed to in writing, software
+--  distributed under the License is distributed on an "AS IS" BASIS,
+--  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--  See the License for the specific language governing permissions and
+--  limitations under the License.
+--
+--  GPV41_Oracle_Delete.sql
+--
+--  Deletes all GPV v4.1 configuration tables.  You can set the prefix for the table names by 
 --  changing the value in the "prefix varchar2(10)" line below.
 --
 
 DECLARE 
-  prefix varchar2(10):= 'GPV31';
+  prefix varchar2(10):= 'GPV41';
 
 BEGIN 
 
@@ -30,6 +42,7 @@ BEGIN
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Proximity CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Query CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'SavedState CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'SearchCriteria CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'UsageTracking CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'User CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'ZoneLevelCombo CASCADE CONSTRAINTS';
@@ -43,6 +56,7 @@ BEGIN
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'MapTab CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'MarkupCategory CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'PrintTemplate CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Search CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Zone CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'ZoneLevel CASCADE CONSTRAINTS';
 

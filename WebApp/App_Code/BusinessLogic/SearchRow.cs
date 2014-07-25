@@ -19,7 +19,7 @@ using System.Data.OleDb;
 
 public partial class Configuration
 {
-  public partial class QueryRow
+  public partial class SearchRow
   {
     private Configuration Configuration
     {
@@ -57,10 +57,41 @@ public partial class Configuration
       return null;
     }
 
+    public OleDbCommand GetSelectCommand()
+    {
+      OleDbCommand command = null;
+
+      if (!IsSelectStatementNull())
+      {
+        OleDbConnection connection = IsConnectionIDNull() ? AppContext.GetDatabaseConnection() : ConnectionRow.GetDatabaseConnection();
+        command = new OleDbCommand(SelectStatement, connection);
+      }
+      else
+      {
+        using (OleDbCommand baseCommand = GetDatabaseCommand())
+        {
+          if (ParameterCount > 0)
+          {
+            baseCommand.Parameters.AddWithValue("1", AppUser.GetRole());
+          }
+
+          try
+          {
+            SelectStatement = baseCommand.ExecuteScalar() as string;
+            command = new OleDbCommand(SelectStatement, baseCommand.Connection);
+          }
+          catch {}
+        }
+      }
+
+      return command;
+    }
+
     public Dictionary<String, Object> ToJsonData()
     {
       Dictionary<String, Object> jsonData = new Dictionary<String, Object>();
       jsonData.Add("name", DisplayName);
+      jsonData.Add("layer", LayerID);
       jsonData.Add("sequenceNo", SequenceNo);
       return jsonData;
     }

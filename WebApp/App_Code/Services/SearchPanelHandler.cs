@@ -13,88 +13,120 @@
 //  limitations under the License.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.OleDb;
 using System.Linq;
+using System.Web.Script.Serialization;
 
-public class SelectionPanelHandler : WebServiceHandler
+public class SearchPanelHandler : WebServiceHandler
 {
   [WebServiceMethod]
-  private void GetDataListHtml()
+  private void Autocomplete()
   {
-    string dataTabID = Request.Form["datatab"];
-    string id = Request.Form["id"];
+    string id = Request.QueryString["criteria"];
+    string text = Request.QueryString["query"];
 
     Configuration config = AppContext.GetConfiguration();
-    Configuration.DataTabRow dataTab = config.DataTab.First(o => o.DataTabID == dataTabID);
-    DataListBuilder dataListBuilder = new DataListBuilder();
+    Configuration.SearchInputFieldRow searchInputFieldRow = config.SearchInputField.First(o => o.FieldID == id);
 
-    using (OleDbCommand command = dataTab.GetDatabaseCommand())
+    using (OleDbCommand command = searchInputFieldRow.GetDatabaseCommand())
     {
-      command.Parameters[0].Value = id;
+      command.Parameters[0].Value = text;
 
       if (command.Parameters.Count > 1)
       {
         command.Parameters[1].Value = AppUser.GetRole();
       }
+
+      List<string> values = new List<string>();
 
       using (OleDbDataReader reader = command.ExecuteReader())
       {
-        dataListBuilder.AddFromReader(reader);
+        while (reader.Read())
+        {
+          values.Add(reader.GetString(0));
+        }
       }
 
       command.Connection.Dispose();
+
+      Dictionary<String, Object> result = new Dictionary<String, Object>();
+      result.Add("suggestions", values);
+
+      ReturnJson(result);
     }
-
-    Response.ContentType = "text/html";
-    dataListBuilder.RenderToStream(Response.OutputStream);
   }
 
   [WebServiceMethod]
-  private void GetLayerProperties()
+  private void DefaultMethod()
   {
-    Configuration.LayerRow layer = Configuration.Layer.First(o => o.LayerID == Request.Form["layer"]);
+    Configuration config = AppContext.GetConfiguration();
+    Configuration.ApplicationRow applicationRow = config.Application.First(o => o.ApplicationID == Request.Form["app"]);
+    Configuration.SearchRow searchRow = config.Search.First(o => o.SearchID == Request.Form["search"]);
 
-    Dictionary<String, Object> result = new Dictionary<String, Object>();
-    result.Add("supportsMailingLabels", layer.GetLayerFunctionRows().Any(o => o.FunctionName.ToLower() == "mailinglabel"));
-    result.Add("supportsExportData", layer.GetLayerFunctionRows().Any(o => o.FunctionName.ToLower() == "export"));
-    ReturnJson(result);
-  }
+    JavaScriptSerializer serializer = new JavaScriptSerializer();
+    Dictionary<String, Object> criteria = serializer.Deserialize<Dictionary<String, Object>>(Request.Form["criteria"]);
 
-  [WebServiceMethod]
-  private void GetQueryGridData()
-  {
-    AppState appState = AppState.FromJson(Request.Form["state"]);
-    Configuration.ApplicationRow application = Configuration.Application.First(o => o.ApplicationID == appState.Application);
-    Configuration.QueryRow query = Configuration.Query.First(o => o.QueryID == appState.Query);
-
-    List<String> zones = new List<String>();
     List<String> levels = new List<String>();
 
-    if (!application.IsZoneLevelIDNull())
+    if (!applicationRow.IsZoneLevelIDNull())
     {
-      zones = application.ZoneLevelRow.GetZoneRows().Select(o => o.ZoneID).ToList();
-      levels = application.ZoneLevelRow.GetLevelRows().Select(o => o.LevelID).ToList();
+      levels = applicationRow.ZoneLevelRow.GetLevelRows().Select(o => o.LevelID).ToList();
+    }
+
+    List<String> where = new List<String>();
+    List<Object> parameters = new List<Object>();
+
+    foreach (string criteriaID in criteria.Keys)
+    {
+      Configuration.SearchInputFieldRow searchInputFieldRow = config.SearchInputField.First(o => o.FieldID == criteriaID);
+
+      switch (searchInputFieldRow.FieldType)
+      {
+        case "autocomplete":
+        case "list":
+        case "numeric":
+        case "text":
+          where.Add(searchInputFieldRow.ColumnName + " = ?");
+          parameters.Add(criteria[criteriaID]);
+          break;
+
+        case "between":
+          ArrayList values = (ArrayList)criteria[criteriaID];
+
+          if (values[0] != null)
+          {
+            where.Add(searchInputFieldRow.ColumnName + " >= ?");
+            parameters.Add(values[0]);
+          }
+
+          if (values[1] != null)
+          {
+            where.Add(searchInputFieldRow.ColumnName + " <= ?");
+            parameters.Add(values[1]);
+          }
+          break;
+      }
     }
 
     Dictionary<String, Object> result = new Dictionary<String, Object>();
 
-    using (OleDbCommand command = query.GetDatabaseCommand())
+    using (OleDbCommand command = searchRow.GetSelectCommand())
     {
-      command.Parameters[0].Value = appState.TargetIds.Join(",");
+      command.CommandText = String.Format(command.CommandText, String.Join(" and ", where.ToArray()));
 
-      if (command.Parameters.Count > 1)
+      for (int i = 0; i < parameters.Count; ++i)
       {
-        command.Parameters[1].Value = AppUser.GetRole();
+        command.Parameters.AddWithValue(i.ToString(), parameters[i]);
       }
-    
+
       using (OleDbDataReader reader = command.ExecuteReader())
       {
         // get the indexes of the ID columns
 
         int mapIdColumn = reader.GetColumnIndex("MapID");
         int dataIdColumn = reader.GetColumnIndex("DataID");
-        int zoneIdColumn = zones.Count > 0 ? reader.GetColumnIndex("ZoneID") : -1;
         int levelIdColumn = levels.Count > 0 ? reader.GetColumnIndex("LevelID") : -1;
 
         // write the column headers
@@ -103,7 +135,7 @@ public class SelectionPanelHandler : WebServiceHandler
 
         for (int i = 0; i < reader.FieldCount; ++i)
         {
-          if (i != mapIdColumn && i != dataIdColumn && i != zoneIdColumn && i != levelIdColumn)
+          if (i != mapIdColumn && i != dataIdColumn && i != levelIdColumn)
           {
             headers.Add(reader.GetName(i));
           }
@@ -128,16 +160,6 @@ public class SelectionPanelHandler : WebServiceHandler
               id.Add("d", reader.GetValue(dataIdColumn).ToString());
             }
 
-            if (zoneIdColumn > -1 && !reader.IsDBNull(zoneIdColumn))
-            {
-              string zoneId = reader.GetValue(zoneIdColumn).ToString();
-
-              if (zones.Contains(zoneId))
-              {
-                id.Add("z", zoneId);
-              }
-            }
-
             if (levelIdColumn > -1 && !reader.IsDBNull(levelIdColumn))
             {
               string levelId = reader.GetValue(levelIdColumn).ToString();
@@ -152,7 +174,7 @@ public class SelectionPanelHandler : WebServiceHandler
 
             for (int i = 0; i < reader.FieldCount; ++i)
             {
-              if (i != mapIdColumn && i != dataIdColumn && i != zoneIdColumn && i != levelIdColumn)
+              if (i != mapIdColumn && i != dataIdColumn && i != levelIdColumn)
               {
                 values.Add(reader.IsDBNull(i) ? null : reader.GetValue(i));
               }
@@ -168,18 +190,8 @@ public class SelectionPanelHandler : WebServiceHandler
 
         result.Add("rows", rows);
       }
-
-      command.Connection.Dispose();
     }
 
     ReturnJson(result);
-  }
-
-  [WebServiceMethod]
-  private void GetTargetIds()
-  {
-    Configuration.LayerRow layer = Configuration.Layer.First(o => o.LayerID == Request.Form["layer"]);
-    StringCollection data = layer.GetTargetIds(Request.Form["params"]);
-    ReturnJson<String[]>("ids", data.Cast<String>().ToArray());
   }
 }

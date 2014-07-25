@@ -87,24 +87,29 @@ public partial class Admin_TestStoredProcs : CustomStyledPage
       DataColumn[] uniqueColumns = new DataColumn[] { reportTable.Columns["ConnectionID"], reportTable.Columns["StoredProc"] };
       reportTable.Constraints.Add(new UniqueConstraint(uniqueColumns));
 
-      foreach (DataTable sourceTable in new DataTable[] { config.LayerFunction, config.DataTab, config.Query })
+      foreach (DataTable sourceTable in new DataTable[] { config.LayerFunction, config.DataTab, config.Query, config.Search, config.SearchInputField })
       {
         foreach (DataRow sourceRow in sourceTable.Rows)
         {
-          DataRow row = reportTable.NewRow();
+          string storedProc = sourceRow["StoredProc"] as String;
 
-          if (!sourceRow.IsNull("ConnectionID"))
+          if (!String.IsNullOrEmpty(storedProc))
           {
-            row["ConnectionID"] = sourceRow["ConnectionID"];
-          }
+            DataRow row = reportTable.NewRow();
 
-          row["StoredProc"] = sourceRow["StoredProc"];
+            if (!sourceRow.IsNull("ConnectionID"))
+            {
+              row["ConnectionID"] = sourceRow["ConnectionID"];
+            }
 
-          try
-          {
-            reportTable.Rows.Add(row);
+            row["StoredProc"] = sourceRow["StoredProc"];
+
+            try
+            {
+              reportTable.Rows.Add(row);
+            }
+            catch { }
           }
-          catch { }
         }
       }
 
@@ -138,9 +143,10 @@ public partial class Admin_TestStoredProcs : CustomStyledPage
 
               for (int n = 1; n <= i; ++n)
               {
-                command.Parameters.AddWithValue(n.ToString(), "0");
+                string testValue = "0";
+                command.Parameters.AddWithValue(n.ToString(), testValue);
               }
-              
+
               long startTime = DateTime.Now.Ticks;
 
               try

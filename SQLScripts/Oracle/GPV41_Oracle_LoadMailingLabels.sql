@@ -1,14 +1,26 @@
 --
---  © 2004-2009, Applied Geographics, Inc.  All rights reserved.
+--  Copyright 2009 Applied Geographics, Inc.
 --
---  GPV31_Oracle_LoadMailingLabels.sql
+--  Licensed under the Apache License, Version 2.0 (the "License");
+--  you may not use this file except in compliance with the License.
+--  You may obtain a copy of the License at
 --
---  Loads the GPV v3.1 mailing labels configuration table.  You can set the prefix for the table name by 
+--      http://www.apache.org/licenses/LICENSE-2.0
+
+--  Unless required by applicable law or agreed to in writing, software
+--  distributed under the License is distributed on an "AS IS" BASIS,
+--  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--  See the License for the specific language governing permissions and
+--  limitations under the License.
+--
+--  GPV41_Oracle_LoadMailingLabels.sql
+--
+--  Loads the GPV v4.1 mailing labels configuration table.  You can set the prefix for the table name by 
 --  changing the value in the "prefix varchar2(10)" line below.
 --
 
 DECLARE 
-  prefix varchar2(10):= 'GPV31';
+  prefix varchar2(10):= 'GPV41';
 
 BEGIN
 EXECUTE IMMEDIATE 'insert into ' || prefix || 'MailingLabel (ID, Manufacturer, ModelNo, LabelSize, IsAvailable, LabelsAcross, dxLabel, dyLabel, dxSpace, dySpace, xLeft, xRight, yTop, xOrg, yOrg, IsDotMatrix, IsPortrait, IsMetric) values (1,''Avery'',''4143'',''15/16" x 4"'',0,2,288,67.5,7.2,4.5,13.5,13.5,2.25,14.4,10.8,1,1,0)';

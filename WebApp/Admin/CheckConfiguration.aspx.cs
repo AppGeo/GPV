@@ -74,6 +74,8 @@ public partial class Admin_CheckConfiguration : CustomStyledPage
       errorCount += WriteReportBlock(config.PrintTemplateContent, "TemplateID", "SequenceNo");
       errorCount += WriteReportBlock(config.Proximity, "ProximityID", null);
       errorCount += WriteReportBlock(config.Query, "QueryID", "LayerID");
+      errorCount += WriteReportBlock(config.Search, "SearchID", "LayerID");
+      errorCount += WriteReportBlock(config.SearchInputField, "FieldID", "SearchID");
       errorCount += WriteReportBlock(config.Zone, "ZoneID", "ZoneLevelID");
       errorCount += WriteReportBlock(config.ZoneLevel, "ZoneLevelID", null);
       errorCount += WriteReportBlock(config.ZoneLevelCombo, "ZoneID,LevelID", "ZoneLevelID");

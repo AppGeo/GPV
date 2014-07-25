@@ -19,7 +19,7 @@ using System.Data.OleDb;
 
 public partial class Configuration
 {
-  public partial class QueryRow
+  public partial class SearchInputFieldRow
   {
     private Configuration Configuration
     {
@@ -55,14 +55,6 @@ public partial class Configuration
       }
 
       return null;
-    }
-
-    public Dictionary<String, Object> ToJsonData()
-    {
-      Dictionary<String, Object> jsonData = new Dictionary<String, Object>();
-      jsonData.Add("name", DisplayName);
-      jsonData.Add("sequenceNo", SequenceNo);
-      return jsonData;
     }
   }
 }

@@ -39,12 +39,14 @@ public partial class Configuration
     {
       Dictionary<String, Object> mapTabs = new Dictionary<String, Object>();
       List<String> layerIDs = new List<String>();
+      List<String> searchIDs = new List<String>();
 
       foreach (MapTabRow mapTab in GetApplicationMapTabRows().Select(o => o.MapTabRow))
       {
         Dictionary<String, Object> mapTabData = mapTab.ToJsonData();
         layerIDs.AddRange((string[])mapTabData["target"]);
         layerIDs.AddRange((string[])mapTabData["selection"]);
+        searchIDs.AddRange((string[])mapTabData["search"]);
 
         mapTabs.Add(mapTab.MapTabID, mapTabData);
       }
@@ -89,6 +91,14 @@ public partial class Configuration
         dataTabs.Add(dataTab.DataTabID, dataTab.ToJsonData());
       }
 
+      searchIDs = searchIDs.Distinct().ToList();
+      Dictionary<String, Object> searches = new Dictionary<String, Object>();
+
+      foreach (SearchRow search in Configuration.Search.Where(o => searchIDs.Contains(o.SearchID)))
+      {
+        searches.Add(search.SearchID, search.ToJsonData());
+      }
+
       Dictionary<String, Object> jsonData = new Dictionary<String, Object>();
       jsonData.Add("fullExtent", GetFullExtentEnvelope().ToArray());
       jsonData.Add("mapTab", mapTabs);
@@ -96,6 +106,7 @@ public partial class Configuration
       jsonData.Add("proximity", proximities);
       jsonData.Add("query", queries);
       jsonData.Add("dataTab", dataTabs);
+      jsonData.Add("search", searches);
 
       JavaScriptSerializer serializer = new JavaScriptSerializer();
       return serializer.Serialize(jsonData);

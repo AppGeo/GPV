@@ -30,6 +30,20 @@ var GPV = (function (gpv) {
     });
   }
 
+  function loadOptions($target, list) {
+    var previous = $target.val();
+    var changed = previous || list.length;
+    $target.empty();
+
+    $.each(list, function () {
+      var same = this.id == previous;
+      changed = changed && !same;
+      $("<option/>").val(this.id).text(this.name).prop("selected", same).appendTo($target);
+    });
+
+    return changed;
+  }
+
   function on(target, event, handler) {
     handlers.push({
       target: target,
@@ -85,6 +99,7 @@ var GPV = (function (gpv) {
   gpv.supportsTouch = supportsTouch;
   gpv.getEventPoint = getEventPoint;
   gpv.loadComplete = loadComplete;
+  gpv.loadOptions = loadOptions;
   gpv.on = on;
   gpv.post = post;
   gpv.selectTool = selectTool;

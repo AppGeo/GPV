@@ -39,7 +39,7 @@ public class ExportDataHandler : IHttpHandler
   private void WriteData(string layerId, string ids)
   {
     Configuration config = AppContext.GetConfiguration();
-    Configuration.LayerFunctionRow layerFunction = config.LayerFunction.First(o => o.LayerID == layerId && o.Function == "export");
+    Configuration.LayerFunctionRow layerFunction = config.LayerFunction.First(o => o.LayerID == layerId && o.FunctionName == "export");
     DataTable table = new DataTable();
 
     using (OleDbCommand command = layerFunction.GetDatabaseCommand())

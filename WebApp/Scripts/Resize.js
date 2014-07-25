@@ -24,6 +24,11 @@ var GPV = (function (gpv) {
     var $pnlDataSizer = $("#pnlDataSizer");
     var $selectionDivider = $("#selectionDivider");
 
+    var $pnlSearch = $("#pnlSearch");
+    var $pnlSearchGridSizer = $("#pnlSearchGridSizer");
+    var $pnlSearchInputFieldSizer = $("#pnlSearchInputFieldSizer");
+    var $searchDivider = $("#searchDivider");
+
     var $pnlLocation = $("#pnlLocation")
     var $pnlOverviewSizer = $("#pnlOverviewSizer");
     var $pnlZoneLevelSizer = $("#pnlZoneLevelSizer");
@@ -67,6 +72,10 @@ var GPV = (function (gpv) {
       createFunctionResizer($selectionDivider, $pnlSelection, $pnlQuerySizer, $pnlDataSizer);
     });
 
+    $searchDivider.on("touchstart mousedown", function () {
+      createFunctionResizer($searchDivider, $pnlSearch, $pnlSearchInputFieldSizer, $pnlSearchGridSizer);
+    });
+
     $locationDivider.on("touchstart mousedown", function () {
       createFunctionResizer($locationDivider, $pnlLocation, $pnlOverviewSizer, $pnlZoneLevelSizer);
     });
@@ -75,6 +84,10 @@ var GPV = (function (gpv) {
       adjustFunctionSizes($pnlSelection, $pnlQuerySizer, $selectionDivider, $pnlDataSizer);
     });
 
+    $("#tabSearch").on("click", function () {
+      adjustFunctionSizes($pnlSearch, $pnlSearchInputFieldSizer, $searchDivider, $pnlSearchGridSizer);
+    });
+    
     $("#tabLocation").on("click", function () {
       adjustFunctionSizes($pnlLocation, $pnlOverviewSizer, $locationDivider, $pnlZoneLevelSizer);
     });
@@ -89,6 +102,7 @@ var GPV = (function (gpv) {
       }
 
       adjustFunctionSizes($pnlSelection, $pnlQuerySizer, $selectionDivider, $pnlDataSizer);
+      adjustFunctionSizes($pnlSearch, $pnlSearchInputFieldSizer, $searchDivider, $pnlSearchGridSizer);
       adjustFunctionSizes($pnlLocation, $pnlOverviewSizer, $locationDivider, $pnlZoneLevelSizer);
     });
 

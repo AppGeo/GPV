@@ -107,6 +107,18 @@ public partial class Viewer : CustomStyledPage
     }
     else
     {
+      if ((_appState.FunctionTabs & FunctionTab.Search) == FunctionTab.Search)
+      {
+        tabSearch.Style["display"] = "block";
+        ucSearchPanel.Initialize(application);
+
+        if (_appState.ActiveFunctionTab == FunctionTab.Search)
+        {
+          pnlSearch.Style["display"] = "block";
+          tabSearch.Attributes["class"] = "Tab Selected";
+        }
+      } 
+      
       if ((_appState.FunctionTabs & FunctionTab.Selection) == FunctionTab.Selection)
       {
         tabSelection.Style["display"] = "block";
@@ -187,10 +199,18 @@ public partial class Viewer : CustomStyledPage
     ddlExternalMap.DataBind();
 
     CreateAppStateScript(application);
+    CreateActiveSelectionStyle();
 
     spnVersion.InnerText = Version.ToString();
 
-    TrackingManager.TrackUse(Request, false);
+    TrackingManager.TrackUse(launchParams, false);
+  }
+
+  private void CreateActiveSelectionStyle()
+  {
+    HtmlGenericControl style = new HtmlGenericControl("style");
+    head.Controls.Add(style);
+    style.InnerHtml = String.Format(".ActiveGridRowSelect, .ActiveGridRowSelect:hover {{ background-color: {0} }}", ColorTranslator.ToHtml(AppSettings.ActiveColorUI));
   }
 
   private void CreateAppStateScript(Configuration.ApplicationRow application)
@@ -890,7 +910,7 @@ public partial class Viewer : CustomStyledPage
         ShowError("When providing target parameters, a target layer must also be specified or the application must have a default target layer defined");
       }
 
-      if (!targetLayer.GetLayerFunctionRows().Any(o => o.Function == "targetparams"))
+      if (!targetLayer.GetLayerFunctionRows().Any(o => o.FunctionName == "targetparams"))
       {
         ShowError("The target layer has not been configured to accept target parameters");
       }
@@ -1277,6 +1297,10 @@ public partial class Viewer : CustomStyledPage
       if ((_appState.FunctionTabs & FunctionTab.Selection) == FunctionTab.Selection)
       {
         _appState.ActiveFunctionTab = FunctionTab.Selection;
+      }
+      else if ((_appState.FunctionTabs & FunctionTab.Search) == FunctionTab.Search)
+      {
+        _appState.ActiveFunctionTab = FunctionTab.Search;
       }
       else if ((_appState.FunctionTabs & FunctionTab.Legend) == FunctionTab.Legend)
       {

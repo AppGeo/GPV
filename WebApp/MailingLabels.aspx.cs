@@ -85,7 +85,7 @@ public partial class MailingLabels : System.Web.UI.Page
     Configuration config = AppContext.GetConfiguration();
 
     string layerID = (string)ViewState["layer"];
-    Configuration.LayerFunctionRow layerFunction = config.LayerFunction.First(o => o.LayerID == layerID && o.Function == "mailinglabel");
+    Configuration.LayerFunctionRow layerFunction = config.LayerFunction.First(o => o.LayerID == layerID && o.FunctionName == "mailinglabel");
     Configuration.MailingLabelRow mailingLabel = config.MailingLabel.First(o => o.ID == Convert.ToInt32(id));
 
     Response.Clear();

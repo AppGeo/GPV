@@ -19,11 +19,6 @@ public partial class Configuration
 {
   public partial class ProximityRow
   {
-    public ProximityIdentifier ToIdentifier()
-    {
-      return new ProximityIdentifier(ProximityID, DisplayName);
-    }
-
     public Dictionary<String, Object> ToJsonData()
     {
       Dictionary<String, Object> jsonData = new Dictionary<String, Object>();
@@ -31,22 +26,5 @@ public partial class Configuration
       jsonData.Add("sequenceNo", SequenceNo);
       return jsonData;
     }
-  }
-}
-
-public class ProximityIdentifier : IComparable<ProximityIdentifier>
-{
-  public string Key = null;
-  public string Name = null;
-
-  public ProximityIdentifier(string key, string name)
-  {
-    Key = key;
-    Name = name;
-  }
-
-  public int CompareTo(ProximityIdentifier other)
-  {
-    return Key.CompareTo(other.Key);
   }
 }

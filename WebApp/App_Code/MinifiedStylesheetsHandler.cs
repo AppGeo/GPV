@@ -37,6 +37,7 @@ public class MinifiedStylesheetsHandler : IHttpHandler
       "Styles/Tab.css",
       "Styles/Map.css",
       "Styles/SelectionPanel.css",
+      "Styles/SearchPanel.css",
       "Styles/LegendPanel.css",
       "Styles/LocationPanel.css",
       "Styles/MarkupPanel.css"

@@ -1,14 +1,26 @@
 --
---  © 2004-2009, Applied Geographics, Inc.  All rights reserved.
+--  Copyright 2014 Applied Geographics, Inc.
 --
---  GPV31_Oracle_Create.sql
+--  Licensed under the Apache License, Version 2.0 (the "License");
+--  you may not use this file except in compliance with the License.
+--  You may obtain a copy of the License at
 --
---  Creates the GPV v3.1 configuration tables.  You can set the prefix for the table names by changing 
+--      http://www.apache.org/licenses/LICENSE-2.0
+
+--  Unless required by applicable law or agreed to in writing, software
+--  distributed under the License is distributed on an "AS IS" BASIS,
+--  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--  See the License for the specific language governing permissions and
+--  limitations under the License.
+--
+--  GPV41_Oracle_Create.sql
+--
+--  Creates the GPV v4.1 configuration tables.  You can set the prefix for the table names by changing 
 --  the value in the "prefix varchar2(10)" line below.  Make sure to run the follow scripts after this
 --  one using the same prefix:
 --
---    GPV31_Oracle_AddConstraints.sql - to create the necessary constraints
---    GPV31_Oracle_LoadMailingLabels.sql - to load the mailing labels table
+--    GPV41_Oracle_AddConstraints.sql - to create the necessary constraints
+--    GPV41_Oracle_LoadMailingLabels.sql - to load the mailing labels table
 --
 
 
@@ -17,7 +29,7 @@
 SET define off
 
 DECLARE 
-  prefix varchar2(10):= 'GPV31';
+  prefix varchar2(10):= 'GPV41';
 
 BEGIN
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'Application (' ||
@@ -34,8 +46,6 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'Application (' ||
   'FullExtent varchar2(50),' ||
   'OverviewMapID varchar2(50), ' ||
   'CoordinateModes varchar2(50),' ||
-  'AllowMapTabScroll number(1),' ||
-  'AllowDataTabScroll number(1),' ||
   'ZoneLevelID varchar2(50),' ||
   'TrackUse number(1),' ||
   'About varchar2(1000),' ||
@@ -100,7 +110,7 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'Layer (' ||
 
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'LayerFunction (' ||
   'LayerID varchar2(50) NOT NULL,' ||
-  'Function varchar2(20) NOT NULL,' ||
+  'FunctionName varchar2(20) NOT NULL,' ||
   'ConnectionID varchar2(50),' ||
   'StoredProc varchar2(100) NOT NULL,' ||
   'Active number(1) default 1' ||
@@ -225,11 +235,11 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'PrintTemplateContent (' ||
   'OutlineWidth number(11),' ||
   'LegendColumnWidth decimal,' ||
   'Text varchar2(1000),' ||
-  'TextFont varchar2(16),' ||
   'TextAlign varchar2(6),' ||
-  'TextSize number(3),' ||
-  'TextBold number(1),' ||
   'TextWrap number(1),' ||
+  'FontFamily varchar2(16),' ||
+  'FontSize number(3),' ||
+  'FontBold number(1),' ||
   'FileName varchar2(25),' ||
   'Active number(1) default 1' ||
 ')';
@@ -258,6 +268,28 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'SavedState (' ||
   'DateCreated date NOT NULL,' ||
   'DateLastAccessed date NOT NULL,' ||
   'State nclob NOT NULL' ||
+')';
+
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'Search (' ||
+  'SearchID varchar2(50) NOT NULL,' ||
+  'LayerID varchar2(50) NOT NULL,' ||
+  'DisplayName varchar2(50) NOT NULL,' ||
+  'ConnectionID varchar2(50),' ||
+  'StoredProc varchar2(100) NOT NULL,' ||
+  'SequenceNo number(2) NOT NULL,' ||
+  'Active number(1) default 1' ||
+')';
+
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'SearchInputField (' ||
+  'FieldID varchar2(50) NOT NULL,' ||
+  'SearchID varchar2(50) NOT NULL,' ||
+  'DisplayName varchar2(50) NOT NULL,' ||
+  'ColumnName varchar2(50) NOT NULL,' ||
+  'FieldType varchar2(50) NOT NULL,' ||
+  'ConnectionID varchar2(50),' ||
+  'StoredProc varchar2(100),' ||
+  'SequenceNo number(2) NOT NULL,' ||
+  'Active number(1) default 1' ||
 ')';
 
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'UsageTracking (' ||
@@ -300,8 +332,8 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'ZoneLevelCombo (' ||
 ')';
 
 
-EXECUTE IMMEDIATE 'insert into ' || prefix || 'ExternalMap (DisplayName, URL, SequenceNo, Active) values (''Google Maps'', ''http://local.google.com/?ll={lat},{lon}&z={lev}'', 1, 1)';
-EXECUTE IMMEDIATE 'insert into ' || prefix || 'ExternalMap (DisplayName, URL, SequenceNo, Active) values (''Windows Live Local'', ''http://local.live.com/?cp={lat}~{lon}&lvl={lev}'', 2, 1)';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'ExternalMap (DisplayName, URL, SequenceNo, Active) values (''Google Maps'', ''http://maps.google.com/?ll={lat},{lon}&z={lev}'', 1, 1)';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'ExternalMap (DisplayName, URL, SequenceNo, Active) values (''Bing Maps'', ''http://www.bing.com/maps/?cp={lat}~{lon}&lvl={lev}'', 2, 1)';
 
 EXECUTE IMMEDIATE 'insert into ' || prefix || 'MarkupSequence (NextGroupID, NextMarkupID) values (1, 1)';
 END;

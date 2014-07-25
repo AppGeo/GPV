@@ -56,7 +56,7 @@ public class MapTipHandler : WebServiceHandler
       if (isCandidateLayer)
       {
         Configuration.LayerRow layer = mapTabLayer.LayerRow;
-        Configuration.LayerFunctionRow layerFunction = layer.GetLayerFunctionRows().FirstOrDefault(o => o.Function.ToLower() == "maptip");
+        Configuration.LayerFunctionRow layerFunction = layer.GetLayerFunctionRows().FirstOrDefault(o => o.FunctionName.ToLower() == "maptip");
 
         if (layerFunction != null)
         {
