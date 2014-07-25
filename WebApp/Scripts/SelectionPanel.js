@@ -61,7 +61,7 @@ var GPV = (function (gpv) {
     var $grdQuery = $("#grdQuery").dataGrid({
       rowClass: "DataGridRow",
       alternateClass: "DataGridRowAlternate",
-      selectedClass: "DataGridRowSelect",
+      selectedClass: "ActiveGridRowSelect",
       selectionChanged: queryGridChanged,
       stringCompare: addressCompare
     });

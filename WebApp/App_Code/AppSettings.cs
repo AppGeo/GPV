@@ -30,6 +30,14 @@ public static class AppSettings
     }
   }
 
+  public static Color ActiveColorUI
+  {
+    get
+    {
+      return BlendColors(Color.White, ActiveColor, ActiveOpacity);
+    }
+  }
+
   public static double ActiveOpacity
   {
     get

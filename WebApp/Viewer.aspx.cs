@@ -199,10 +199,18 @@ public partial class Viewer : CustomStyledPage
     ddlExternalMap.DataBind();
 
     CreateAppStateScript(application);
+    CreateActiveSelectionStyle();
 
     spnVersion.InnerText = Version.ToString();
 
     TrackingManager.TrackUse(launchParams, false);
+  }
+
+  private void CreateActiveSelectionStyle()
+  {
+    HtmlGenericControl style = new HtmlGenericControl("style");
+    head.Controls.Add(style);
+    style.InnerHtml = String.Format(".ActiveGridRowSelect, .ActiveGridRowSelect:hover {{ background-color: {0} }}", ColorTranslator.ToHtml(AppSettings.ActiveColorUI));
   }
 
   private void CreateAppStateScript(Configuration.ApplicationRow application)
