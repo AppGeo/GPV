@@ -139,8 +139,7 @@ public partial class SearchPanel : System.Web.UI.UserControl
         adapter.Fill(list);
 
         select.DataSource = list;
-        select.DataTextField = searchInputFieldRow.FieldID;
-        select.DataValueField = searchInputFieldRow.FieldID;
+        select.DataValueField = list.Columns[0].ColumnName;
         select.DataBind();
       }
 
