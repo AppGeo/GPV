@@ -47,7 +47,7 @@ public partial class SearchPanel : System.Web.UI.UserControl
     {
       Configuration.MapTabRow mapTabRow = appMapTabRow.MapTabRow;
 
-      foreach (Configuration.MapTabLayerRow mapTabLayerRow in mapTabRow.GetMapTabLayerRows().Where(o => !o.IsAllowTargetNull() && o.AllowTarget == 1))
+      foreach (Configuration.MapTabLayerRow mapTabLayerRow in mapTabRow.GetMapTabLayerRows().Where(o => !o.IsAllowTargetNull() && o.AllowTarget > 0))
       {
         Configuration.LayerRow layerRow = mapTabLayerRow.LayerRow;
 
@@ -65,8 +65,8 @@ public partial class SearchPanel : System.Web.UI.UserControl
 
     foreach (Configuration.SearchRow searchRow in searches)
     {
-
       // create the panel for this search
+
       HtmlGenericControl search = new HtmlGenericControl("div");
       search.Attributes["data-search"] = searchRow.SearchID;
       search.Attributes["class"] = "Search";
