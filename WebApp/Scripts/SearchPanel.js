@@ -85,11 +85,13 @@ var GPV = (function (gpv) {
     }
 
     function reset() {
-      $("#pnlSearchScroll").find("input:text").val('');
-      $("#pnlSearchScroll").find("select")[0].selectedIndex = 0;
-      $cmdSearch.toggleClass("Disabled");
-      $cmdReset.toggleClass("Disabled");
-      emptyResultGrid();
+      if (!$cmdReset.hasClass("Disabled")) {
+        $("#pnlSearchScroll").find("input:text").val('');
+        $("#pnlSearchScroll").find("select")[0].selectedIndex = 0;
+        $cmdSearch.toggleClass("Disabled");
+        $cmdReset.toggleClass("Disabled");
+        emptyResultGrid();
+      }
     }
 
     function resultGridChanged(dblClick) {
@@ -97,44 +99,46 @@ var GPV = (function (gpv) {
         updateTargets($grdSearch.dataGrid("getSelection"));
       }
       else {
-        $cmdShowOnMap.toggleClass("Disabled", $grdSearch.dataGrid("getSelection").length == 0)
+        $cmdShowOnMap.toggleClass("Disabled", $grdSearch.dataGrid("getSelection").length == 0);
       }
     }
 
     function search() {
-      emptyResultGrid();
-      var criteria = {};
-      
-      getFilledInputs().each(function () {
-        var $this = $(this);
-        var id = $this.attr("data-id");
+      if (!$cmdSearch.hasClass("Disabled")) {
+        emptyResultGrid();
+        var criteria = {};
 
-        if ($this.hasClass("Between")) {
-          if (!criteria.hasOwnProperty(id)) {
-            criteria[id] = [null, null];
+        getFilledInputs().each(function () {
+          var $this = $(this);
+          var id = $this.attr("data-id");
+
+          if ($this.hasClass("Between")) {
+            if (!criteria.hasOwnProperty(id)) {
+              criteria[id] = [null, null];
+            }
+
+            criteria[id][$this.hasClass("1") ? 0 : 1] = $this.val();
           }
-
-          criteria[id][$this.hasClass("1") ? 0 : 1] = $this.val();
-        }
-        else {
-          criteria[id] = $this.val();
-        }
-      });
-
-      gpv.post({
-        url: service,
-        data: {
-          app: appState.Application,
-          search: $container.find(".Search:visible").attr("data-search"),
-          criteria: JSON.stringify(criteria)
-        },
-        success: function (result) {
-          if (result) {
-            $grdSearch.dataGrid("load", result);
-            $cmdShowAllOnMap.toggleClass("Disabled", result.rows.length == 0);
+          else {
+            criteria[id] = $this.val();
           }
-        }
-      });
+        });
+
+        gpv.post({
+          url: service,
+          data: {
+            app: appState.Application,
+            search: $container.find(".Search:visible").attr("data-search"),
+            criteria: JSON.stringify(criteria)
+          },
+          success: function (result) {
+            if (result) {
+              $grdSearch.dataGrid("load", result);
+              $cmdShowAllOnMap.toggleClass("Disabled", result.rows.length == 0);
+            }
+          }
+        });
+      }
     }
 
     function searchChanged() {
