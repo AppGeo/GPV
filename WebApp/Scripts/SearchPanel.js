@@ -29,7 +29,9 @@ var GPV = (function (gpv) {
     var $cmdShowAllOnMap = $("#cmdShowAllOnMap").on("click", showOnMap);
     var $cmdShowOnMap = $("#cmdShowOnMap").on("click", showOnMap);
     var $ddlSearch = $("#ddlSearches").on("change", searchChanged);
-    $(".Between,.Numeric").numeric();
+
+    $(".Number,.NumberRange").numericInput();
+    $(".Date,.DateRange").dateInput().datepicker({ showAnim: "slideDown", changeMonth: true, changeYear: true });
 
     var $grdSearch = $("#grdSearch").dataGrid({
       multiSelect: true,
@@ -112,7 +114,7 @@ var GPV = (function (gpv) {
           var $this = $(this);
           var id = $this.attr("data-id");
 
-          if ($this.hasClass("Between")) {
+          if ($this.hasClass("DateRange") || $this.hasClass("NumberRange")) {
             if (!criteria.hasOwnProperty(id)) {
               criteria[id] = [null, null];
             }

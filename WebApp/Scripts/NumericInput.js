@@ -1,5 +1,5 @@
 ﻿(function ($) {
-  $.fn.numeric = function () {
+  $.fn.numericInput = function () {
     this.filter("input[type='text']").each(function () {
       var $this = $(this).on("keydown", function (e) {
         var numeric = $this.data("numeric");
