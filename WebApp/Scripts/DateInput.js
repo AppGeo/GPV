@@ -3,22 +3,23 @@
     this.filter("input[type='text']").each(function () {
       var $this = $(this).on("keydown", function (e) {
         var date = $this.data("date");
-        var current = date.oldValue = $this.val();
-
-        // if starting a paste, capture selection start and length
-
-        if (date.ctrl && e.which == 86) {
-          date.selectionStart = $this.prop("selectionStart");
-          date.selectionEnd = $this.prop("selectionEnd");
-        }
-        else {
-          date.typeStart = $this.prop("selectionStart");
-        }
 
         // allow ctrl sequences, backspace, tab, arrow keys, home, end, slash and digits
 
         if (date.ctrl || e.which == 8 || e.which == 9 || (e.which >= 35 && e.which <= 40) || (!date.shift && e.which >= 47 && e.which <= 57) || e.which == 191) {
-          return;
+
+          // prevent key hold-down repetition
+
+          if (e.which != date.key) {
+            date.key = e.which;
+
+            // capture previous value and text selection
+
+            date.previousValue = $this.val();
+            date.selectionStart = $this.prop("selectionStart");
+            date.selectionEnd = $this.prop("selectionEnd");
+            return;
+          }
         }
 
         // store state of shift and allow it through
@@ -35,9 +36,15 @@
           return;
         }
 
+        // otherwise prevent key from working
+
         e.preventDefault();
       }).on("keyup", function (e) {
         var date = $this.data("date");
+
+        if (e.which == date.key) {
+          date.key = -1;
+        }
 
         // reset shift state
 
@@ -51,28 +58,27 @@
           date.ctrl = false;
         }
         
-        // if not date after paste, revert
+        // if not date after typing or paste, revert
 
         if (!date.ctrl || e.which == 86) {
           var newValue = $this.val();
 
           if (!isDate(newValue, true)) {
-            $this.val(date.oldValue);
-
-            $this.prop("selectionStart", date.ctrl ? date.selectionStart : date.typeStart);
-            $this.prop("selectionEnd", date.ctrl ? date.selectionEnd : date.typeStart);
+            $this.val(date.previousValue);
+            $this.prop("selectionStart", date.selectionStart);
+            $this.prop("selectionEnd", date.selectionEnd);
           }
         }
       }).on("change", function () {
         var date = isDate($this.val());
         $this.val(date && date.length ? date : "");
       }).data("date", { 
+        key: -1,
         ctrl: false, 
         shift: false, 
         selectionStart: -1,
         selectionEnd: -1,
-        typeStart: -1,
-        current: "" 
+        previousValue: "" 
       });
     });
 
@@ -126,17 +132,19 @@
         return d;
       }
 
-      if (d > 28) {
-        if ((m == 1 || m == 3 | m == 5 || m == 7 || m == 8 || m == 10 || m == 12) && d <= 31) {
+      if (28 < d && d <= 31) {
+        if (m == 1 || m == 3 | m == 5 || m == 7 || m == 8 || m == 10 || m == 12) {
           return d;
         }
         
-        if ((m == 4 || m == 6 || m == 9 || m == 11) && d <= 30) {
-          return d;
-        }
+        if (d <= 30) {
+          if (m == 4 || m == 6 || m == 9 || m == 11) {
+            return d;
+          }
 
-        if (d == 29) {
-          return isLeapYear(y) ? 29 : 28;
+          if (d == 29) {
+            return isLeapYear(y) ? 29 : 28;
+          }
         }
       }
 
