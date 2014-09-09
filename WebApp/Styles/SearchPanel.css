@@ -85,7 +85,7 @@
   height: 11px;
 }
 
-#cmdShowOnMap 
+#labSearchCount 
 {
   position: absolute;
   top: auto;
@@ -93,12 +93,20 @@
   left: 10px;
 }
 
+#cmdShowOnMap 
+{
+  position: absolute;
+  top: auto;
+  bottom: 5px;
+  left: 120px;
+}
+
 #cmdShowAllOnMap 
 {
   position: absolute;
   top: auto;
   bottom: 5px;
-  left: 100px;
+  left: 210px;
 }
 
 #pnlSearchScroll

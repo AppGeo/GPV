@@ -26,6 +26,7 @@ var GPV = (function (gpv) {
     
     var $cmdSearch = $("#cmdSearch").on("click", search);
     var $cmdReset = $("#cmdReset").on("click", reset);
+    var $labSearchCount = $("#labSearchCount");
     var $cmdShowAllOnMap = $("#cmdShowAllOnMap").on("click", showOnMap);
     var $cmdShowOnMap = $("#cmdShowOnMap").on("click", showOnMap);
     var $ddlSearch = $("#ddlSearches").on("change", searchChanged);
@@ -126,6 +127,8 @@ var GPV = (function (gpv) {
           }
         });
 
+        gpv.waitClock.start();
+
         gpv.post({
           url: service,
           data: {
@@ -136,8 +139,12 @@ var GPV = (function (gpv) {
           success: function (result) {
             if (result) {
               $grdSearch.dataGrid("load", result);
+              $labSearchCount.text((result.rows.length == 0 ? "None" : result.rows.length) + " found");
               $cmdShowAllOnMap.toggleClass("Disabled", result.rows.length == 0);
             }
+          },
+          complete: function () {
+            gpv.waitClock.finish();
           }
         });
       }

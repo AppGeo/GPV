@@ -30,6 +30,7 @@
     <table id="grdSearch" class="DataGrid"></table>
   </div>
   <div id="pnlSearchCommand">
+    <div id="labSearchCount">None found</div>
     <div id="cmdShowOnMap" class="CommandLink Disabled">Show on Map</div>
     <div id="cmdShowAllOnMap" class="CommandLink Disabled">Show All on Map</div>
   </div>

@@ -65,10 +65,8 @@
       $target.data(key, settings);
     }
 
-    function bindRowData($tr, data) {
-      $tr.empty().on("mousedown", preventDefault);
-
-      $.each(data, function (i, v) {
+    function buildCells(data) {
+      return $.map(data, function (v, i) {
         var right = false;
 
         if (v == null) {
@@ -94,14 +92,18 @@
               }
               break;
 
-            case "number": right = true; break;
+            case "number": 
+              v = v.toString(); 
+              right = true; 
+              break;
+
             case "date": v = v.format(); break;
           }
         }
 
         var align = right ? " align='right'" : "";
-        $("<td" + align + " unselectable='on'/>").text(v).appendTo($tr);
-      });
+        return "<td" + align + " unselectable='on'>" + htmlEncode(v) + "</td>";
+      }).join("");
     }
 
     function clearSelection($target) {
@@ -164,6 +166,10 @@
       return selection;
     }
 
+    function htmlEncode(v) {
+      return v.replace("&", "&amp;").replace('"', "&quot;").replace("'", "&apos;").replace("<", "&lt;").replace(">", "&gt;");
+    }
+
     function load($target, data) {
       var settings = $target.data(key);
       var altClass = getAlternateClass(settings);
@@ -178,12 +184,19 @@
         }
       }
 
-      var $tbody = $target.find("tbody").empty();
+      var $tbody = $target.find("tbody").remove();
+      $tbody = $("<tbody>");
 
-      $.each(data.rows, function (i, row) {
-        var $tr = $("<tr/>").appendTo($tbody).data(key, row).addClass(i % 2 == 0 ? altClass : settings.rowClass).on("click dblclick", rowClick);
-        bindRowData($tr, row.v);
+      $tbody.html($.map(data.rows, function (row, i) {
+        var rowClass = i % 2 == 0 ? altClass : settings.rowClass;
+        return '<tr class="' + rowClass + '">' + buildCells(row.v) + '</tr>';
+      }).join(""));
+
+      $tbody.children().each(function (i, v) {
+        $(v).data(key, data.rows[i]).on("click dblclick", rowClick).on("mousedown", preventDefault);
       });
+
+      $target.append($tbody);
     }
 
     function onSelectionChanged($target, dblClick) {
@@ -275,8 +288,7 @@
       var $tr = getRowById($target, id);
 
       if ($tr) {
-        $tr.data(key).v = data;
-        bindRowData($tr, data);
+        $tr.html(buildCells(data)).data(key).v = data;
       }
     }
 
@@ -308,7 +320,7 @@
         settings.lastSort = column;
       }
 
-      var rows = $tbody.find("tr").detach().map(function () {
+      var rows = $tbody.detach().find("tr").detach().map(function () {
         return { data: $(this).data(key), elem: this };
       });
 
@@ -338,6 +350,7 @@
         $tbody.append(this.elem);
       });
 
+      $target.append($tbody);
       setAlternating($target);
     }
 
