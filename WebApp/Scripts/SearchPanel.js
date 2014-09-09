@@ -42,10 +42,14 @@ var GPV = (function (gpv) {
       selectionChanged: resultGridChanged
     });
 
-    var $input = $container.find(".SearchInputField .Input").on("keyup change", function () {
-      var hasData = getFilledInputs().length == 0;
-      $cmdSearch.toggleClass("Disabled", hasData);
-      $cmdReset.toggleClass("Disabled", hasData);
+    var $input = $container.find(".SearchInputField .Input").on("keyup change", function (e) {
+      var hasData = getFilledInputs().length > 0;
+      $cmdSearch.toggleClass("Disabled", !hasData);
+      $cmdReset.toggleClass("Disabled", !hasData);
+
+      if (e.type == "keyup" && hasData && e.which == 13) {
+        search();
+      }
     });
 
     $container.find(".Autocomplete").each(function () {
