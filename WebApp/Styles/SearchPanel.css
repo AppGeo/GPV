@@ -85,7 +85,7 @@
   height: 11px;
 }
 
-#cmdShowOnMap 
+#labSearchCount 
 {
   position: absolute;
   top: auto;
@@ -93,12 +93,20 @@
   left: 10px;
 }
 
+#cmdShowOnMap 
+{
+  position: absolute;
+  top: auto;
+  bottom: 5px;
+  left: 120px;
+}
+
 #cmdShowAllOnMap 
 {
   position: absolute;
   top: auto;
   bottom: 5px;
-  left: 100px;
+  left: 210px;
 }
 
 #pnlSearchScroll
@@ -124,9 +132,9 @@
   float: left;
 }
 
-.SearchInputField .Input.Between
+.SearchInputField .Input.DateRange, .SearchInputField .Input.NumberRange
 {
-  width: 20%;
+  width: 25%;
   margin: 2px 2px;
   margin-left: 2px;
 }
@@ -135,6 +143,11 @@
 {
   width: 63%;
   margin: 0 2px;
+}
+
+.SearchInputField .Input, .SearchInputField span
+{
+  vertical-align: top;
 }
 
 #pnlSearchScroll span.Label
@@ -149,4 +162,14 @@
 .autocomplete-suggestion { position: static; padding: 2px 5px; white-space: nowrap; overflow: hidden; }
 .autocomplete-selected { background: #F0F0F0; }
 .autocomplete-suggestions strong { font-weight: bold; }
+
+.ui-datepicker, .ui-datepicker div
+{
+  position: static;
+  margin: auto;
+  left: auto;
+  right: auto;
+  bottom: auto;
+  top: auto;
+}
 

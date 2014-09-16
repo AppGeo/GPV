@@ -64,7 +64,7 @@ public partial class Admin_CheckConfiguration : CustomStyledPage
       errorCount += WriteReportBlock(config.Connection, "ConnectionID", null);
       errorCount += WriteReportBlock(config.DataTab, "DataTabID", "LayerID");
       errorCount += WriteReportBlock(config.Layer, "LayerID", null);
-      errorCount += WriteReportBlock(config.LayerFunction, "LayerID", "Function");
+      errorCount += WriteReportBlock(config.LayerFunction, "LayerID", "FunctionName");
       errorCount += WriteReportBlock(config.LayerProximity, "LayerID", "ProximityID");
       errorCount += WriteReportBlock(config.Level, "LevelID", "ZoneLevelID");
       errorCount += WriteReportBlock(config.MapTab, "MapTabID", null);

@@ -47,7 +47,7 @@ public partial class SearchPanel : System.Web.UI.UserControl
     {
       Configuration.MapTabRow mapTabRow = appMapTabRow.MapTabRow;
 
-      foreach (Configuration.MapTabLayerRow mapTabLayerRow in mapTabRow.GetMapTabLayerRows().Where(o => !o.IsAllowTargetNull() && o.AllowTarget == 1))
+      foreach (Configuration.MapTabLayerRow mapTabLayerRow in mapTabRow.GetMapTabLayerRows().Where(o => !o.IsAllowTargetNull() && o.AllowTarget > 0))
       {
         Configuration.LayerRow layerRow = mapTabLayerRow.LayerRow;
 
@@ -65,8 +65,8 @@ public partial class SearchPanel : System.Web.UI.UserControl
 
     foreach (Configuration.SearchRow searchRow in searches)
     {
-
       // create the panel for this search
+
       HtmlGenericControl search = new HtmlGenericControl("div");
       search.Attributes["data-search"] = searchRow.SearchID;
       search.Attributes["class"] = "Search";
@@ -85,20 +85,26 @@ public partial class SearchPanel : System.Web.UI.UserControl
         searchLabel.InnerText = searchInputFieldRow.DisplayName;
         searchLabel.Attributes["class"] = "Label";
 
+        HtmlGenericControl betweenText;
+
         switch (searchInputFieldRow.FieldType)
         {
           case "autocomplete":
             AddInputFieldValue(searchInputField, new HtmlInputText("text"), searchInputFieldRow, "Autocomplete");
             break;
 
-          case "between":
-            AddInputFieldValue(searchInputField, AddNumericTip(new HtmlInputText("text")), searchInputFieldRow, "Between 1");
+          case "date":
+            AddInputFieldValue(searchInputField, new HtmlInputText("text"), searchInputFieldRow, "Date");
+            break;
 
-            HtmlGenericControl betweenText = new HtmlGenericControl("span");
+          case "daterange":
+            AddInputFieldValue(searchInputField, new HtmlInputText("text"), searchInputFieldRow, "DateRange 1");
+
+            betweenText = new HtmlGenericControl("span");
             searchInputField.Controls.Add(betweenText);
             betweenText.InnerText = " - ";
-            
-            AddInputFieldValue(searchInputField, AddNumericTip(new HtmlInputText("text")), searchInputFieldRow, "Between 2");
+
+            AddInputFieldValue(searchInputField, new HtmlInputText("text"), searchInputFieldRow, "DateRange 2");
             break;
 
           case "list":
@@ -106,8 +112,18 @@ public partial class SearchPanel : System.Web.UI.UserControl
             AddInputFieldValue(searchInputField, select, searchInputFieldRow, "List");
             break;
 
-          case "numeric":
-            AddInputFieldValue(searchInputField, AddNumericTip(new HtmlInputText("text")), searchInputFieldRow, "Numeric");
+          case "number":
+            AddInputFieldValue(searchInputField, AddNumericTip(new HtmlInputText("text")), searchInputFieldRow, "Number");
+            break;
+
+          case "numberrange":
+            AddInputFieldValue(searchInputField, AddNumericTip(new HtmlInputText("text")), searchInputFieldRow, "NumberRange 1");
+
+            betweenText = new HtmlGenericControl("span");
+            searchInputField.Controls.Add(betweenText);
+            betweenText.InnerText = " - ";
+
+            AddInputFieldValue(searchInputField, AddNumericTip(new HtmlInputText("text")), searchInputFieldRow, "NumberRange 2");
             break;
 
           case "text":
@@ -139,8 +155,7 @@ public partial class SearchPanel : System.Web.UI.UserControl
         adapter.Fill(list);
 
         select.DataSource = list;
-        select.DataTextField = searchInputFieldRow.FieldID;
-        select.DataValueField = searchInputFieldRow.FieldID;
+        select.DataValueField = list.Columns[0].ColumnName;
         select.DataBind();
       }
 

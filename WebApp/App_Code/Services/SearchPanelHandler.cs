@@ -85,14 +85,16 @@ public class SearchPanelHandler : WebServiceHandler
       switch (searchInputFieldRow.FieldType)
       {
         case "autocomplete":
+        case "date":
         case "list":
-        case "numeric":
+        case "number":
         case "text":
           where.Add(searchInputFieldRow.ColumnName + " = ?");
           parameters.Add(criteria[criteriaID]);
           break;
 
-        case "between":
+        case "daterange":
+        case "numberrange":
           ArrayList values = (ArrayList)criteria[criteriaID];
 
           if (values[0] != null)

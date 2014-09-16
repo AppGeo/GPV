@@ -131,7 +131,10 @@ var GPV = (function (gpv) {
         }
 
         fillProximity();
-        selection.update();
+
+        if (preserveSelection) {
+          selection.update();
+        }
       }
     }
 

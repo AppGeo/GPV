@@ -43,7 +43,7 @@ public partial class Admin_ShowDeactivated : CustomStyledPage
     WriteReportBlock(config.Connection, "ConnectionID", null);
     WriteReportBlock(config.DataTab, "DataTabID", "LayerID");
     WriteReportBlock(config.Layer, "LayerID", null);
-    WriteReportBlock(config.LayerFunction, "LayerID", "Function");
+    WriteReportBlock(config.LayerFunction, "LayerID", "FunctionName");
     WriteReportBlock(config.LayerProximity, "LayerID", "ProximityID");
     WriteReportBlock(config.Level, "LevelID", "ZoneLevelID");
     WriteReportBlock(config.MapTab, "MapTabID", null);

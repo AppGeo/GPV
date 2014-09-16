@@ -18,6 +18,7 @@ using System.Data;
 using System.Data.OleDb;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using AppGeo.Clients;
 using AppGeo.Clients.Ags;
@@ -26,6 +27,8 @@ using System.Web.Script.Serialization;
 
 public partial class Configuration
 {
+  private static Regex _searchSubstitutionRegex = new Regex(@"\s+\{0\}(\s+|$)");
+
   private static string[] TableNames
   {
     get
@@ -840,7 +843,7 @@ public partial class Configuration
         {
           using (OleDbCommand command = search.GetSelectCommand())
           {
-            if (!command.CommandText.Contains(" {0} "))
+            if (!_searchSubstitutionRegex.IsMatch(command.CommandText))
             {
               search.ValidationError = "Select statement does not contain a where clause substitution: {0}";
             }
@@ -1511,7 +1514,7 @@ public partial class Configuration
 
   private bool ValidateSearchInputField()
   {
-    string[] validTypes = new string[] { "autocomplete", "between", "list", "numeric", "text" };
+    string[] validTypes = new string[] { "autocomplete", "date", "daterange", "list", "number", "numberrange", "text" };
     string[] procedureTypes = new string[] { "autocomplete", "list" };
 
     bool newErrorsFound = false;
