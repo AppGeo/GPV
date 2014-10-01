@@ -1,12 +1,26 @@
-﻿(function ($) {
+﻿//  Copyright 2012 Applied Geographics, Inc.
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+
+(function ($) {
   $.fn.dateInput = function () {
     this.filter("input[type='text']").each(function () {
       var $this = $(this).on("keydown", function (e) {
         var date = $this.data("date");
 
-        // allow ctrl sequences, backspace, tab, arrow keys, home, end, slash and digits
+        // allow ctrl sequences, backspace, tab, arrow keys, home, end, delete, slash and digits
 
-        if (date.ctrl || e.which == 8 || e.which == 9 || (e.which >= 35 && e.which <= 40) || (!date.shift && e.which >= 47 && e.which <= 57) || e.which == 191) {
+        if (date.ctrl || e.which == 8 || e.which == 9 || (e.which >= 35 && e.which <= 40) || e.which == 46 || (!date.shift && e.which >= 47 && e.which <= 57) || e.which == 191) {
 
           // prevent key hold-down repetition
 

@@ -84,7 +84,7 @@
                 v = d.format();
               }
               else {
-                right = v.isNumeric();
+                right = v.isNumeric(true);
 
                 if (!right) {
                   v = v.replace("\n", "<br/>");
