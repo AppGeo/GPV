@@ -98,6 +98,10 @@
         if (!$this.val().isNumeric()) {
           $this.val("");
         }
+      }).on("blur", function () {
+        var numeric = $this.data("numeric");
+        numeric.shift = false;
+        numeric.ctrl = false;
       }).data("numeric", { 
         key: -1,
         ctrl: false, 

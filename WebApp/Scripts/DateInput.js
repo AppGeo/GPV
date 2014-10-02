@@ -86,6 +86,10 @@
       }).on("change", function () {
         var date = isDate($this.val());
         $this.val(date && date.length ? date : "");
+      }).on("blur", function () {
+        var date = $this.data("date");
+        date.shift = false;
+        date.ctrl = false;
       }).data("date", { 
         key: -1,
         ctrl: false, 
