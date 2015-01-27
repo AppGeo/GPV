@@ -57,8 +57,8 @@ public class MapImageHandler : WebServiceHandler
   private void MakeMapImage()
   {
     AppState appState = AppState.FromJson(Request.Form["state"]);
-    int width = Convert.ToInt32(Request.Form["width"]);
-    int height = Convert.ToInt32(Request.Form["height"]);
+    int width = Convert.ToInt32(Math.Round(Convert.ToDouble(Request.Form["width"])));
+    int height = Convert.ToInt32(Math.Round(Convert.ToDouble(Request.Form["height"])));
     ReturnJson(GetImageUrl(appState, width, height));
   }
 
@@ -96,8 +96,8 @@ public class MapImageHandler : WebServiceHandler
     appState.MapTab = application.OverviewMapID;
     appState.Extent = application.GetFullExtentEnvelope();
 
-    int width = Convert.ToInt32(Request.Form["width"]);
-    int height = Convert.ToInt32(Request.Form["height"]);
+    int width = Convert.ToInt32(Math.Round(Convert.ToDouble(Request.Form["width"])));
+    int height = Convert.ToInt32(Math.Round(Convert.ToDouble(Request.Form["height"])));
 
     ReturnJson(GetImageUrl(appState, width, height));
   }
@@ -132,8 +132,8 @@ public class MapImageHandler : WebServiceHandler
   private void SaveMapImage()
   {
     AppState appState = AppState.FromJson(Request.Form["state"]);
-    int width = Convert.ToInt32(Request.Form["width"]);
-    int height = Convert.ToInt32(Request.Form["height"]);
+    int width = Convert.ToInt32(Math.Round(Convert.ToDouble(Request.Form["width"])));
+    int height = Convert.ToInt32(Math.Round(Convert.ToDouble(Request.Form["height"])));
 
     MapMaker mapMaker = new MapMaker(appState, width, height);
     MapImageData mapImageData = mapMaker.GetImage();
@@ -147,8 +147,8 @@ public class MapImageHandler : WebServiceHandler
   private void SaveMapKml()
   {
     AppState appState = AppState.FromJson(Request.Form["state"]);
-    int width = Convert.ToInt32(Request.Form["width"]);
-    int height = Convert.ToInt32(Request.Form["height"]);
+    int width = Convert.ToInt32(Math.Round(Convert.ToDouble(Request.Form["width"])));
+    int height = Convert.ToInt32(Math.Round(Convert.ToDouble(Request.Form["height"])));
 
     MapMaker mapMaker = new MapMaker(appState, width, height);
     MapImageData mapImageData = mapMaker.GetImage();
