@@ -32,14 +32,6 @@ var GPV = (function (gpv) {
 
     // =====  controls required prior to map control creation  =====
 
-    var $tboScale = $("#tboScale");
-
-    if ($tboScale.val()) {
-      var initialExtent = appState.Extent.bbox;
-      initialExtent = $.geo.scaleBy(initialExtent, parseInt($tboScale.val(), 10) / getScaleFor(initialExtent));
-      appState.Extent.bbox = initialExtent;
-    }
-
     var $ddlExternalMap = $("#ddlExternalMap").on("change", setExternalMap);
 
     // =====  map control  =====
@@ -123,9 +115,7 @@ var GPV = (function (gpv) {
       },
       drawStyle: defaultDrawStyle,
       tilingScheme: null,
-      shape: mapShape,
-      loadstart: gpv.waitClock.start,
-      loadend: gpv.waitClock.finish
+      shape: mapShape
     });
 
     // =====  control events  =====
@@ -157,6 +147,11 @@ var GPV = (function (gpv) {
     });
 
     $("#cmdHelp").on("click", function () {
+    });
+
+    $('#cmdMenu').on("click", function () {
+      var left = $('#pnlFunctionSizer').css('left') === '0px' ? '-400px' : '0px';
+      $('#pnlFunctionSizer').animate({ left: left }, { duration: 800 });
     });
 
     $("#cmdMobile").on("click", function () {
@@ -195,12 +190,19 @@ var GPV = (function (gpv) {
       $map.geomap("refresh");
     });
 
-    $("#pnlMapTabs .Tab").on("click", function () {
-      var mapTab = $(this).attr("data-maptab");
+    var $ddlMapTheme = $("#ddlMapTheme").on("change", function(){
+      var mapTab = $("#ddlMapTheme :selected").attr("data-maptab");
       appState.MapTab = mapTab;
       triggerMapTabChanged();
       $map.geomap("refresh");
     });
+
+    //$("#pnlMapTabs .Tab").on("click", function () {
+    //  var mapTab = $(this).attr("data-maptab");
+    //  appState.MapTab = mapTab;
+    //  triggerMapTabChanged();
+    //  $map.geomap("refresh");
+    //});
 
     $("#pnlFunctionTabs .Tab").on("click", function () {
       $(".FunctionPanel").hide();
@@ -211,18 +213,6 @@ var GPV = (function (gpv) {
         this(name);
       });
     });
-
-    $tboScale.on("keydown", function (e) {
-      if (e.keyCode == 13) {
-        setMapScale();
-      };
-    }).on("keypress", function (e) {
-      var keyCode = e.keyCode ? e.keyCode : e.charCode;
-
-      if (!(48 <= keyCode && keyCode <= 57)) {
-        return false;
-      }
-    }).on("blur", setMapScale);
 
     // =====  map tools  =====
 
@@ -391,14 +381,7 @@ var GPV = (function (gpv) {
 
     function setMapScale() {
       var currentScale = getScaleFor(appState.Extent.bbox)
-      var newScale = parseInt($tboScale.val(), 10);
-
-      if (!newScale) {
-        $tboScale.val(currentScale);
-      }
-      else {
-        $map.geomap("option", "bbox", $.geo.scaleBy(appState.Extent.bbox, newScale / currentScale));
-      }
+      $map.geomap("option", "bbox", $.geo.scaleBy(appState.Extent.bbox, newScale / currentScale));
     }
 
     function setZoomBarLevel() {
@@ -411,7 +394,6 @@ var GPV = (function (gpv) {
 
     function showMapScale() {
       var scale = Math.round(getScaleFor(appState.Extent.bbox))
-      $tboScale.val(scale);
       $("#scaleBarText").text(scale + " ft");
     }
 

@@ -14,10 +14,6 @@
 
 var GPV = (function (gpv) {
   $(function () {
-    var $pnlContent = $("#pnlContent")
-    var $pnlMapSizer = $("#pnlMapSizer");
-    var $pnlFunctionSizer = $("#pnlFunctionSizer");
-    var $contentDivider = $("#contentDivider");
 
     var $pnlSelection = $("#pnlSelection")
     var $pnlQuerySizer = $("#pnlQuerySizer");
@@ -38,35 +34,6 @@ var GPV = (function (gpv) {
     var functionResizedHandlers = [];
 
     // =====  control events  =====
-
-    $contentDivider.on("touchstart mousedown", function () {
-      var $resizer = $("<div>").addClass("Resizer Main")
-        .on("touchmove mousemove", function (e) {
-          var x = gpv.getEventPoint(e)[0] - $pnlContent.offset().left;
-
-          if (x - 4 >= parseInt($pnlMapSizer.css("min-width"), 10)) {
-            x = $pnlContent.width() - x;
-
-            if (x - 4 >= parseInt($pnlFunctionSizer.css("min-width"), 10)) {
-              $pnlMapSizer.css("right", (x + 4) + "px");
-              $pnlFunctionSizer.css("width", (x - 4) + "px");
-            }
-          }
-        })
-        .on("touchend touchcancel mouseup touchleave mouseleave", resizerFinish)
-        .on("selectstart", function () { return false; })
-        .appendTo($pnlContent);
-
-      function resizerFinish() {
-        $contentDivider.css("right", parseInt($pnlMapSizer.css("right"), 10) - 8 + "px");
-        $resizer.remove();
-        $resizer = null;
-
-        $.each(mapResizedHandlers, function () {
-          this();
-        });
-      }
-    });
 
     $selectionDivider.on("touchstart mousedown", function () {
       createFunctionResizer($selectionDivider, $pnlSelection, $pnlQuerySizer, $pnlDataSizer);
@@ -93,14 +60,6 @@ var GPV = (function (gpv) {
     });
 
     $(window).on("resize", function () {
-      var x = $pnlContent.width() - $pnlMapSizer.width() - 8;
-
-      if ($pnlFunctionSizer.width() > x) {
-        $pnlFunctionSizer.width(x);
-        $contentDivider.css("right", x + "px");
-        $pnlMapSizer.css("right", x + 8 + "px");
-      }
-
       adjustFunctionSizes($pnlSelection, $pnlQuerySizer, $selectionDivider, $pnlDataSizer);
       adjustFunctionSizes($pnlSearch, $pnlSearchInputFieldSizer, $searchDivider, $pnlSearchGridSizer);
       adjustFunctionSizes($pnlLocation, $pnlOverviewSizer, $locationDivider, $pnlZoneLevelSizer);

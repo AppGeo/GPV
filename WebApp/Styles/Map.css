@@ -24,7 +24,7 @@
 
 #pnlMap
 {
-  top: 18px;
+  top: 0;
 }
 
 #cmdFullView
@@ -101,11 +101,10 @@
 
 #mapMain
 {
-  left: 10px;
-  top: 54px;
-  right: 10px;
-  bottom: 26px;
-  border: solid 1px #606060;
+  left: 0px;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
   background-color: White;  
   overflow: hidden;
 }
@@ -113,18 +112,6 @@
 .VersionText
 {
   font-size: 9px;
-}
-
-#waitClock
-{
-  left: 16px;
-  top: 62px;
-  right: auto;
-  bottom: auto;
-  width: 60px;
-  height: 60px;
-  background-image: url(../Images/UI/WaitClock.png);
-  display: none;
 }
 
 #pnlScaleBar

@@ -93,7 +93,8 @@ public partial class Viewer : CustomStyledPage
     Title = application.DisplayName;
 
     SetHelpLink();
-    CreateMapTabs(application);
+    //CreateMapTabs(application);
+    CreateMapThemes(application);
 
     bool isPublic = AppAuthentication.Mode == AuthenticationMode.None;
     ucLegendPanel.Initialize(_config, _appState, application);
@@ -101,9 +102,9 @@ public partial class Viewer : CustomStyledPage
     if (_appState.FunctionTabs == FunctionTab.None)
     {
       pnlContent.Style["min-width"] = "548px";
-      pnlMapSizer.Style["right"] = "0px";
-      pnlFunctionSizer.Style["display"] = "none";
-      contentDivider.Visible = false;
+      //pnlMapSizer.Style["right"] = "0px";
+      //pnlFunctionSizer.Style["display"] = "none";
+      //contentDivider.Visible = false;
     }
     else
     {
@@ -127,7 +128,7 @@ public partial class Viewer : CustomStyledPage
         if (_appState.ActiveFunctionTab == FunctionTab.Selection)
         {
           pnlSelection.Style["display"] = "block";
-          tabSelection.Attributes["class"] = "Tab Selected";
+          //tabSelection.Attributes["class"] = "Tab Selected";
         }
       }
 
@@ -138,7 +139,7 @@ public partial class Viewer : CustomStyledPage
         if (_appState.ActiveFunctionTab == FunctionTab.Legend)
         {
           pnlLegend.Style["display"] = "block";
-          tabLegend.Attributes["class"] = "Tab Selected";
+          //tabLegend.Attributes["class"] = "Tab Selected";
         }
       }
 
@@ -150,7 +151,7 @@ public partial class Viewer : CustomStyledPage
         if (_appState.ActiveFunctionTab == FunctionTab.Location)
         {
           pnlLocation.Style["display"] = "block";
-          tabLocation.Attributes["class"] = "Tab Selected";
+          //tabLocation.Attributes["class"] = "Tab Selected";
         }
       }
 
@@ -162,7 +163,7 @@ public partial class Viewer : CustomStyledPage
         if (_appState.ActiveFunctionTab == FunctionTab.Markup)
         {
           pnlMarkup.Style["display"] = "block";
-          tabMarkup.Attributes["class"] = "Tab Selected";
+          //tabMarkup.Attributes["class"] = "Tab Selected";
         }
       }
     }
@@ -191,7 +192,7 @@ public partial class Viewer : CustomStyledPage
 
     if (launchParams.ContainsKey("mapscale"))
     {
-      tboScale.Value = launchParams["mapscale"];
+      //tboScale.Value = launchParams["mapscale"];
     }
 
     ddlExternalMap.DataSource = _config.ExternalMap;
@@ -223,17 +224,30 @@ public partial class Viewer : CustomStyledPage
     scriptElem.InnerHtml = String.Format(script, application.ToJson(), AppSettings.ToJson(), _appState.ToJson());
   }
 
-  private void CreateMapTabs(Configuration.ApplicationRow application)
+  //private void CreateMapTabs(Configuration.ApplicationRow application)
+  //{
+  //  // add map tabs
+
+  //  foreach (Configuration.ApplicationMapTabRow appMapTabRow in application.GetApplicationMapTabRows())
+  //  {
+  //    HtmlGenericControl tab = new HtmlGenericControl("div");
+  //    plhMapTabs.Controls.Add(tab);
+  //    tab.InnerHtml = appMapTabRow.MapTabRow.DisplayName.Replace(" ", "&nbsp;");
+  //    tab.Attributes["class"] = "Tab " + (appMapTabRow.MapTabID == _appState.MapTab ? "Selected" : "Normal");
+  //    tab.Attributes["data-maptab"] = appMapTabRow.MapTabID;
+  //  }
+  //}
+
+  private void CreateMapThemes(Configuration.ApplicationRow application)
   {
     // add map tabs
 
     foreach (Configuration.ApplicationMapTabRow appMapTabRow in application.GetApplicationMapTabRows())
     {
-      HtmlGenericControl tab = new HtmlGenericControl("div");
-      plhMapTabs.Controls.Add(tab);
-      tab.InnerHtml = appMapTabRow.MapTabRow.DisplayName.Replace(" ", "&nbsp;");
-      tab.Attributes["class"] = "Tab " + (appMapTabRow.MapTabID == _appState.MapTab ? "Selected" : "Normal");
-      tab.Attributes["data-maptab"] = appMapTabRow.MapTabID;
+      HtmlGenericControl option = new HtmlGenericControl("option");
+      plhMapThemes.Controls.Add(option);
+      option.InnerHtml = appMapTabRow.MapTabRow.DisplayName.Replace(" ", "&nbsp;");
+      option.Attributes["data-maptab"] = appMapTabRow.MapTabID;
     }
   }
 

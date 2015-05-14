@@ -48,8 +48,8 @@
 
 #pnlContent
 {
-  top: 48px;
-  bottom: 28px;
+  top: 40px;
+  bottom: 20px;
 }
 
 /* height of the footer */
@@ -106,7 +106,7 @@ a.VersionText
 
 .Tab.Normal, a.Tab.Normal
 {
-  background-color: White;
+  background-color: ##dee0d5;
   color: #A0A0A0;
 }
 
@@ -129,21 +129,21 @@ a.VersionText
 
 .MainPanel, .Tab.Selected, .ColorSelector
 {
-  background-color: #DEE0D5;
+  background-color: #FFFFFF;
 }
 
 /* border color of panels, tabs and color selectors */
 
-.MainPanel, .Tab, .ColorSelector
+.Tab, .ColorSelector
 {
-  border-left: solid 1px #919581;
-  border-top: solid 1px #919581;
-  border-right: solid 1px #919581;
+  border-left: solid 1px #b9b9b9;
+  border-top: solid 1px #b9b9b9;
+  border-right: solid 1px #b9b9b9;
 }
 
-.MainPanel, .ColorSelector
+.ColorSelector
 {
-  border-bottom: solid 1px #919581;
+  border-bottom: solid 1px #b9b9b9;
 }
 
 /* border color of text boxes and drop down lists */

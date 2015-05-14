@@ -131,8 +131,6 @@ var GPV = (function (gpv) {
           }
         });
 
-        gpv.waitClock.start();
-
         gpv.post({
           url: service,
           data: {
@@ -148,7 +146,7 @@ var GPV = (function (gpv) {
             }
           },
           complete: function () {
-            gpv.waitClock.finish();
+
           }
         });
       }

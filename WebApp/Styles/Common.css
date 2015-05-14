@@ -86,13 +86,7 @@ input, select
 .MainPanel
 {
   z-index: 1;
-  behavior: url(Styles/PIE.htc);
-  -webkit-border-radius: 8px;
-  -moz-border-radius: 8px;
-  border-radius: 8px;
-  -webkit-box-shadow: Gray 2px 2px 4px;
-  -moz-box-shadow: Gray 2px 2px 4px;
-  box-shadow: Gray 2px 2px 4px;
+  border-top: solid 1px #b9b9b9;
 }
 
 a, .CommandLink

@@ -128,47 +128,57 @@ div.Button.Selected, div.Button.Selected:hover
 
 #pnlContent
 {
-  left: 8px;
-  right: 8px;
   min-width: 930px;
 }
 
 #pnlMapSizer
 {
-  right: 408px;
+  right: 0;
   min-width: 548px;
 }
 
-#contentDivider
+/*#contentDivider
 {
   left: auto;
   top: 26px;
   right: 400px;
-  bottom: 8px;
-  width: 8px;
+  bottom: 0px;
+  width: 1px;
   cursor: e-resize;
   z-index: 3;
-}
+}*/
 
-#pnlFunctionSizer
-{
-  left: auto;
+#pnlFunctionSizer {
+  left: 0;
   width: 400px;
   min-width: 374px;
+  z-index: 2;
+  background-color: white;
+  border: solid 1px #b9b9b9;
 }
 
 #pnlFunctionTabs
 {
   left: 12px;
   right: 12px;
-  bottom: auto;
-  height: 19px;
+  bottom: 0;
   overflow: hidden;
+}
+
+.MenuItem{
+  display: block;
+  color: black;
+  border-bottom: solid 1px #b9b9b9;
+  font-size: x-large;
+  padding: 8px;
 }
 
 #pnlFunction
 {
-  top: 18px;
+  left: 12px;
+  right: 12px;
+  bottom: 0;
+  overflow: hidden;
 }
 
 #pnlFooter

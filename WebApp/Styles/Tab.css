@@ -38,10 +38,6 @@
 	margin-right: 2px;
 	cursor: pointer;
 	float: left;
-  behavior: url(Styles/PIE.htc);
-  -webkit-border-radius: 4px 4px 0px 0px;
-  -moz-border-radius: 4px 4px 0px 0px;
-  border-radius: 4px 4px 0px 0px;
 }
 
 a.Tab:hover
