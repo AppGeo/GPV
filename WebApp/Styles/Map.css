@@ -25,78 +25,28 @@
 #pnlMap
 {
   top: 0;
+  border: none;
 }
 
 #cmdFullView
 {
-  left: 0px;
-  background-position: -600px 0px;  /* FullView.gif */
-}
-
-#cmdZoomPrevious
-{
-  left: 26px;
-  background-position: 0px 0px;  /* Back.gif */
+  left: 10px;
 }
 
 #cmdZoomSelect
 {
-  left: 52px;
+  left: 100px;
   background-position: -936px 0px;  /* ZoomSelected.gif */
-}
-
-#optZoomIn
-{
-  left: 78px;
-  background-position: -912px 0px;  /* ZoomIn.gif */
 }
 
 #optPan
 {
-  left: 104px;
-  background-position: -768px 0px;  /* Pan.gif */
-}
-
-#cmdPrint
-{
-  right: 156px;
-  background-position: -792px 0px;  /* Print.gif */
-}
-
-#cmdEmail
-{
-  right: 130px;
-  background-position: -576px 0px;  /* Email.gif */
+  left: 40px;
 }
 
 #optIdentify
 {
-  right: 104px;
-  background-position: -648px 0px;  /* Identify.gif */
-}
-
-#optCoordinates
-{
-  right: 78px;
-  background-position: -120px 0px;  /* Coordinates.gif */
-}
-
-#cmdClearGraphics
-{
-  right: 52px;
-  background-position: -48px 0px;  /* ClearGraphics.gif */
-}
-
-#optMeasureArea
-{
-  right: 26px;
-  background-position: -696px 0px;  /* MeasureArea.gif */
-}
-
-#optMeasureLine
-{
-  right: 0px;
-  background-position: -672px 0px;  /* Measure.gif */
+  left: 70px;
 }
 
 #mapMain
@@ -131,9 +81,6 @@
   behavior: url(Styles/PIE.htc);
   background-color: rgba(255, 255, 255, 0.8);
   -pie-background: rgba(255, 255, 255, 0.8);
-  -webkit-border-radius: 6px;
-  -moz-border-radius: 6px;
-  border-radius: 6px;
 }
 
 #scaleBar

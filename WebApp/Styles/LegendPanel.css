@@ -16,7 +16,8 @@
 #pnlLegendContent
 {
   width: 100%;
-  height: 100%;
+  top: 40px;
+  bottom: 0;
 }
 
 #cmdRefreshMap
@@ -30,7 +31,7 @@
 #pnlLegendScroll
 {
   left: 10px;
-  top: 18px;
+  top: 20px;
   right: 10px;
   bottom: 10px;
   border: solid 1px #606060;

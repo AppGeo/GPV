@@ -17,9 +17,11 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeFile="LocationPanel.ascx.cs" Inherits="LocationPanel" %>
 <%@ Register TagPrefix="gpv" Assembly="App_Code" Namespace="GPV" %>
 
+<div class="FunctionHeader"><span class="glyphicon glyphicon-menu-left FunctionExit" aria-hidden="true"></span>Location</div>
+
 <div id="pnlLocationContent">
   <div id="pnlOverviewSizer">
-    <div id="pnlOverview" class="MainPanel">
+    <div id="pnlOverview">
       <div id="mapOverview"></div>
     </div>
   </div>

@@ -28,8 +28,7 @@ public class MinifiedScriptsHandler : IHttpHandler
   public static List<ScriptItem> GetList()
   {
     return new List<ScriptItem>(new ScriptItem[] { 
-      new ScriptItem("Scripts/jquery-1.11.3.min.js", false, true),
-      new ScriptItem("Scripts/jquery-migrate-1.2.1.min.js", false, true),
+      new ScriptItem("Scripts/jquery-2.1.4.min.js", false, true),
       new ScriptItem("Scripts/jquery.cookie.min.js", false, true),
       new ScriptItem("Scripts/jquery.geo-test.min.js", false, true),
       new ScriptItem("Scripts/jquery.autocomplete.min.js", false, true),

@@ -21,7 +21,7 @@
   height: 8px;
   cursor: n-resize;
   z-index: 3;
-  top: 200px;
+  top: 240px;
 }
 
 #ddlSearches {
@@ -32,12 +32,13 @@
 #pnlSearchInputFieldSizer
 {
   bottom: auto;
+  top: 40px;
   height: 200px;
   min-height: 106px;
 }
 
 #pnlSearchGridSizer {
-  top: 210px;
+  top: 250px;
   min-height: 106px;
 }
 

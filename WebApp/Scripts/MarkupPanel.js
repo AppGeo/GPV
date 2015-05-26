@@ -245,7 +245,7 @@ var GPV = (function (gpv) {
         var $tools = $container.find(".Button.MapTool");
 
         if (!enable && $tools.filter(".Selected").removeClass("Selected").length) {
-          $("#optZoomIn").addClass("Selected");
+          $("#optPan").addClass("Selected");
         }
 
         if (!isPublic) {

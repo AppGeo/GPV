@@ -47,23 +47,13 @@ var GPV = (function (gpv) {
       createFunctionResizer($locationDivider, $pnlLocation, $pnlOverviewSizer, $pnlZoneLevelSizer);
     });
 
-    $("#tabSelection").on("click", function () {
-      adjustFunctionSizes($pnlSelection, $pnlQuerySizer, $selectionDivider, $pnlDataSizer);
-    });
 
-    $("#tabSearch").on("click", function () {
-      adjustFunctionSizes($pnlSearch, $pnlSearchInputFieldSizer, $searchDivider, $pnlSearchGridSizer);
-    });
-    
-    $("#tabLocation").on("click", function () {
-      adjustFunctionSizes($pnlLocation, $pnlOverviewSizer, $locationDivider, $pnlZoneLevelSizer);
-    });
 
-    $(window).on("resize", function () {
-      adjustFunctionSizes($pnlSelection, $pnlQuerySizer, $selectionDivider, $pnlDataSizer);
-      adjustFunctionSizes($pnlSearch, $pnlSearchInputFieldSizer, $searchDivider, $pnlSearchGridSizer);
-      adjustFunctionSizes($pnlLocation, $pnlOverviewSizer, $locationDivider, $pnlZoneLevelSizer);
-    });
+    //$(window).on("resize", function () {
+    //  adjustFunctionSizes($pnlSelection, $pnlQuerySizer, $selectionDivider, $pnlDataSizer);
+    //  adjustFunctionSizes($pnlSearch, $pnlSearchInputFieldSizer, $searchDivider, $pnlSearchGridSizer);
+    //  adjustFunctionSizes($pnlLocation, $pnlOverviewSizer, $locationDivider, $pnlZoneLevelSizer);
+    //});
 
     // =====  private functions  =====
 

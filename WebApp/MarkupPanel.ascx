@@ -17,6 +17,8 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeFile="MarkupPanel.ascx.cs" Inherits="MarkupPanel" %>
 <%@ Register TagPrefix="gpv" Assembly="App_Code" Namespace="GPV" %>
 
+<div class="FunctionHeader"><span class="glyphicon glyphicon-menu-left FunctionExit" aria-hidden="true"></span>Markup</div>
+
 <div id="pnlMarkupContent">
   <div style="left: 14px; top: 11px; right: auto; bottom: auto; width: 81px; text-align: right">Your Name</div>
   <gpv:Input type="text" id="tboMarkupUser" runat="server" CssClass="Input" style="position: absolute; left: 99px; top: 7px; width: 210px; cursor: default" />

@@ -13,6 +13,9 @@
  *  limitations under the License.
  */
 
+#pnlMarkupContent{
+  top: 40px;
+}
 #optDrawPoint
 {
   background-position: -432px 0px;  /* DrawPoint.gif */

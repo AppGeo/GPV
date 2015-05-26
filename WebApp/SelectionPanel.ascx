@@ -17,8 +17,10 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeFile="SelectionPanel.ascx.cs" Inherits="SelectionPanel" %>
 <%@ Register TagPrefix="gpv" Assembly="App_Code" Namespace="GPV" %>
 
+<div class="FunctionHeader"><span class="glyphicon glyphicon-menu-left FunctionExit" aria-hidden="true"></span>Selection</div>
+
 <div id="pnlQuerySizer">
-  <div id="pnlQuery" class="MainPanel">
+  <div id="pnlQuery">
     <gpv:Div ID="optSelect" runat="server" CssClass="Button MapTool" Style="left: 10px; top: 3px" ToolTip="Select Features" />
     <div id="cmdSelectView" class="Button" style="left: 10px; top: 28px" title="Select All in View"></div>
     <div id="cmdClearSelection" class="Button" style="left: 10px; top: 53px" title="Clear Selection"></div>

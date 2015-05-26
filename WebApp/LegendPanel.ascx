@@ -17,6 +17,8 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeFile="LegendPanel.ascx.cs" Inherits="LegendPanel" %>
 <%@ Register TagPrefix="gpv" Assembly="App_Code" Namespace="GPV" %>
 
+<div class="FunctionHeader"><span class="glyphicon glyphicon-menu-left FunctionExit" aria-hidden="true"></span>Legend</div>
+
 <div id="pnlLegendContent">
   <div id="cmdRefreshMap" class="CommandLink">Refresh Map</div>
   <gpv:Div id="pnlLegendScroll" runat="server" />

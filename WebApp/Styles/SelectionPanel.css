@@ -13,9 +13,11 @@
  *  limitations under the License.
  */
 
+
 #pnlQuerySizer
 {
   bottom: auto;
+  top: 40px;
   height: 250px;
   min-height: 212px;
 }
@@ -24,7 +26,7 @@
 {
   left: 8px;
   right: 8px;
-  top: 250px;
+  top: 290px;
   bottom: auto;
   height: 8px;
   cursor: n-resize;
@@ -33,7 +35,7 @@
 
 #pnlDataSizer
 {
-  top: 258px;
+  top: 298px;
   min-height: 212px;
 }
 
@@ -101,9 +103,8 @@
   left: 0px;
   top: 17px;
   right: 0px;
-  bottom: 10px;
+  bottom: 0px;
   border-top: solid 1px #b9b9b9;
-  border-bottom: solid 1px #b9b9b9;
   background-color: White;
   overflow: auto;
 }

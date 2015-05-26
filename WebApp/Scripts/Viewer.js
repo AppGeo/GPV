@@ -21,8 +21,8 @@ var GPV = (function (gpv) {
     var $map = $("#mapMain");
 
     var fullExtent = gpv.configuration.fullExtent;
-    var previousExtents = [];
-    var zoomPreviousClicked = false;
+    //var previousExtents = [];
+    //var zoomPreviousClicked = false;
     var defaultDrawStyle = { width: "0px", height: "0px", strokeWidth: "2px", stroke: "Gray", fill: "White", fillOpacity: 0.5 };
 
     var mapTabChangedHandlers = [];
@@ -119,12 +119,13 @@ var GPV = (function (gpv) {
     });
 
     // =====  control events  =====
+    ///TAMC Does removing these items from appstate affect the markup panel
 
-    $("#cmdClearGraphics").on("click", function () {
-      appState.Coordinates = [];
-      appState.CoordinateLabels = [];
-      $map.geomap("refresh");
-    });
+    //$("#cmdClearGraphics").on("click", function () {
+    //  appState.Coordinates = [];
+    //  appState.CoordinateLabels = [];
+    //  $map.geomap("refresh");
+    //});
 
     $("#cmdEmail").on("click", function () {
       gpv.post({
@@ -146,16 +147,9 @@ var GPV = (function (gpv) {
       $map.geomap("option", "bbox", fullExtent);
     });
 
-    $("#cmdHelp").on("click", function () {
-    });
-
     $('#cmdMenu').on("click", function () {
       var left = $('#pnlFunctionSizer').css('left') === '0px' ? '-400px' : '0px';
       $('#pnlFunctionSizer').animate({ left: left }, { duration: 800 });
-    });
-
-    $("#cmdMobile").on("click", function () {
-      window.location.href = "MobileViewer.aspx?application=" + appState.Application + "&maptab=" + appState.MapTab + "&extent=" + appState.Extent.bbox.join(",");
     });
 
     $("#cmdPrint").on("click", function () {
@@ -174,12 +168,12 @@ var GPV = (function (gpv) {
       $form.submit();
     });
 
-    $("#cmdZoomPrevious").on("click", function () {
-      if (previousExtents.length) {
-        zoomPreviousClicked = true;
-        $map.geomap("option", "bbox", previousExtents.pop());
-      }
-    });
+    //$("#cmdZoomPrevious").on("click", function () {
+    //  if (previousExtents.length) {
+    //    zoomPreviousClicked = true;
+    //    $map.geomap("option", "bbox", previousExtents.pop());
+    //  }
+    //});
 
     $("#cmdZoomSelect").on("click", function () {
       zoomToSelection(1.6);
@@ -197,18 +191,32 @@ var GPV = (function (gpv) {
       $map.geomap("refresh");
     });
 
-    //$("#pnlMapTabs .Tab").on("click", function () {
-    //  var mapTab = $(this).attr("data-maptab");
-    //  appState.MapTab = mapTab;
-    //  triggerMapTabChanged();
-    //  $map.geomap("refresh");
+    //$("#pnlFunctionTabs .Tab").on("click", function () {
+    //  $(".FunctionPanel").hide();
+    //  var name = $(this).text();
+    //  $("#pnl" + name).show();
+
+    //  $.each(functionTabChangedHandlers, function () {
+    //    this(name);
+    //  });
     //});
 
-    $("#pnlFunctionTabs .Tab").on("click", function () {
-      $(".FunctionPanel").hide();
-      var name = $(this).text();
-      $("#pnl" + name).show();
+    $(".FunctionExit").on("click", function () {
+      var left = $('#pnlFunctionTabs').css('left') === '12px' ? '-400px' : '12px';
+      $('#pnlFunction').fadeOut(800, function () {
+        $('#pnlFunctionTabs').animate({ left: left }, 800)
+      });
+    });
 
+
+    $(".MenuItem").on("click", function(){
+      var left = $('#pnlFunctionTabs').css('left') === '12px' ? '-400px' : '12px';
+      var name = $(this).text();
+      $('#pnlFunctionTabs').animate({ left: left }, 800, function () {
+        $(".FunctionPanel").hide();
+        $("#pnl" + name).show();
+        $('#pnlFunction').fadeIn(800);
+      });
       $.each(functionTabChangedHandlers, function () {
         this(name);
       });
@@ -218,29 +226,17 @@ var GPV = (function (gpv) {
 
     var $MapTool = $(".MapTool");
 
-    $("#optCoordinates").on("click", function () {
-      gpv.selectTool($(this), { mode: "drawPoint", pannable: false, drawStyle: { strokeWidth: "0px"} }, "crosshair");
-    });
-
     $("#optIdentify").on("click", function () {
       gpv.selectTool($(this), { mode: "drawPoint", pannable: false, drawStyle: { strokeWidth: "0px"} }, "default");
-    });
-
-    $("#optMeasureArea").on("click", function () {
-      gpv.selectTool($(this), { mode: "measureArea", pannable: false, drawStyle: { stroke: "Green", fill: "#C0FFC0", fillOpacity: 0.75} });
-    });
-
-    $("#optMeasureLine").on("click", function () {
-      gpv.selectTool($(this), { mode: "measureLength", pannable: false, drawStyle: { stroke: "Green"} });
     });
 
     $("#optPan").on("click", function () {
       gpv.selectTool($(this), { mode: "pan", pannable: true, drawStyle: defaultDrawStyle });
     });
 
-    $("#optZoomIn").on("click", function () {
-      gpv.selectTool($(this), { mode: "zoom", pannable: false, drawStyle: defaultDrawStyle });
-    });
+    //$("#optZoomIn").on("click", function () {
+    //  gpv.selectTool($(this), { mode: "zoom", pannable: false, drawStyle: defaultDrawStyle });
+    //});
 
     // =====  component events  =====
 
@@ -324,16 +320,16 @@ var GPV = (function (gpv) {
       setExternalMap();
 
       if (!same) {
-        if (!zoomPreviousClicked) {
-          previousExtents.push(appState.Extent.bbox);
-        }
+        //if (!zoomPreviousClicked) {
+        //  previousExtents.push(appState.Extent.bbox);
+        //}
 
         $.each(extentChangedHandlers, function () {
           this(view.bbox);
         });
       }
 
-      zoomPreviousClicked = false;
+      //zoomPreviousClicked = false;
       appState.VisibleLayers[appState.MapTab] = gpv.legendPanel.getVisibleLayers(appState.MapTab);
 
       return gpv.post({

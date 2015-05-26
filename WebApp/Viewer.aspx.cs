@@ -169,7 +169,7 @@ public partial class Viewer : CustomStyledPage
     }
 
     ShowLevelSelector(application);
-    CreateZoomBar();
+    //CreateZoomBar();
     pnlScaleBar.Style["display"] = AppSettings.ShowScaleBar ? "block" : "none";
 
     // set the default tool (also set in SelectionPanel and MarkupPanel)
@@ -182,7 +182,7 @@ public partial class Viewer : CustomStyledPage
     }
     else if ((_appState.FunctionTabs & FunctionTab.Selection) == FunctionTab.None)
     {
-      defaultTool = Page.FindControl("optZoomIn") as HtmlControl;
+      defaultTool = Page.FindControl("optPan") as HtmlControl;
     }
 
     if (defaultTool != null)
@@ -251,17 +251,17 @@ public partial class Viewer : CustomStyledPage
     }
   }
 
-  private void CreateZoomBar()
-  {
-    zoomBar.Attributes["data-maxlevel"] = AppSettings.ZoomLevels.ToString();
+  //private void CreateZoomBar()
+  //{
+  //  zoomBar.Attributes["data-maxlevel"] = AppSettings.ZoomLevels.ToString();
 
-    for (int i = 0; i < AppSettings.ZoomLevels - 2; ++i)
-    {
-      HtmlGenericControl span = new HtmlGenericControl("span");
-      plhZoomBar.Controls.Add(span);
-      span.Attributes["class"] = "ZoomBar Middle";
-    }
-  }
+  //  for (int i = 0; i < AppSettings.ZoomLevels - 2; ++i)
+  //  {
+  //    HtmlGenericControl span = new HtmlGenericControl("span");
+  //    plhZoomBar.Controls.Add(span);
+  //    span.Attributes["class"] = "ZoomBar Middle";
+  //  }
+  //}
 
   private string GetCacheControl()
   {
