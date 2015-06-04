@@ -19,29 +19,30 @@
 
 <div class="FunctionHeader"><span class="glyphicon glyphicon-menu-left FunctionExit" aria-hidden="true"></span>Selection</div>
 
-<div id="pnlQuerySizer">
-  <div id="pnlQuery">
-    <gpv:Div ID="optSelect" runat="server" CssClass="Button MapTool" Style="left: 10px; top: 3px" ToolTip="Select Features" />
-    <div id="cmdSelectView" class="Button" style="left: 10px; top: 28px" title="Select All in View"></div>
-    <div id="cmdClearSelection" class="Button" style="left: 10px; top: 53px" title="Clear Selection"></div>
-    <div style="left: 38px; top: 8px; right: 8px; bottom: auto">
-      <gpv:Select ID="ddlAction" runat="server" CssClass="Input" Style="position: absolute; width: 60%" ToolTip="Action to perform with the Select Features tool to the left" />
-      <gpv:Select ID="ddlTargetLayer" runat="server" CssClass="Input" Style="position: absolute; left: 61%; width: 39%" ToolTip="Target layer containing features of interest" />
-      <gpv:Select ID="ddlProximity" runat="server" CssClass="Input" Style="position: absolute; top: 22px; width: 60%" ToolTip="Proximity of target features to selection features" />
-      <gpv:Select ID="ddlSelectionLayer" runat="server" CssClass="Input" Style="position: absolute; left: 61%; top: 22px; width: 39%" ToolTip="Selection layer with features that will help find target features" />
-      <gpv:Select ID="ddlQuery" runat="server" CssClass="Input" Style="position: absolute; top: 44px; width: 100%" ToolTip="Filter which lists only those features meeting certain criteria" />
+<div id="pnlQuerySizer" class="Panel">
+  <div id="pnlQuery" class="Panel">
+    <gpv:Div ID="optSelect" runat="server" CssClass="Button MapTool" ToolTip="Select Features" />
+    <div id="cmdSelectView" class="Button" title="Select All in View"></div>
+    <div id="cmdZoomSelect" class="Button" title="Zoom to Selected Features"></div>
+    <div id="cmdClearSelection" class="Button" title="Clear Selection"></div>
+    <div id="pnlSelectionOptions" class="Panel">
+      <gpv:Select ID="ddlAction" runat="server" CssClass="Input" ToolTip="Action to perform with the Select Features tool to the left" />
+      <gpv:Select ID="ddlTargetLayer" runat="server" CssClass="Input" ToolTip="Target layer containing features of interest" />
+      <gpv:Select ID="ddlProximity" runat="server" CssClass="Input" ToolTip="Proximity of target features to selection features" />
+      <gpv:Select ID="ddlSelectionLayer" runat="server" CssClass="Input" ToolTip="Selection layer with features that will help find target features" />
+      <gpv:Select ID="ddlQuery" runat="server" CssClass="Input" ToolTip="Filter which lists only those features meeting certain criteria" />
     </div>
-    <div id="pnlQueryGrid">
+    <div id="pnlQueryGrid" class="Panel">
       <table id="grdQuery" class="DataGrid"></table>
     </div>
-    <div id="pnlQueryCommand">
-      <div id="labSelectionCount" style="position: absolute">None selected</div>
-      <div id="cmdMailingLabels" class="CommandLink Disabled" style="position: absolute; left: 120px">To Mailing Labels</div>
-      <div id="cmdExportData" class="CommandLink Disabled" style="position: absolute; left: 240px">To Spreadsheet</div>
+    <div id="pnlQueryCommand" class="Panel">
+      <div id="labSelectionCount">None selected</div>
+      <div id="cmdMailingLabels" class="CommandLink Disabled">To Mailing Labels</div>
+      <div id="cmdExportData" class="CommandLink Disabled">To Spreadsheet</div>
     </div>
   </div>
 </div>
-<div id="pnlDataSizer">
+<div id="pnlDataSizer" style="display: none;">
   <div id="pnlDataTabs" class="TabPanel">
     <div id="pnlDataTabScroll" class="TabScroll"></div>
   </div>

@@ -13,9 +13,12 @@
  *  limitations under the License.
  */
 
+
+
 #pnlMarkupContent{
   top: 40px;
 }
+
 #optDrawPoint
 {
   background-position: -432px 0px;  /* DrawPoint.gif */
@@ -128,11 +131,8 @@
 
 #pnlMarkupGrid
 {
-  left: 10px;
   top: 165px;
-  right: 10px;
-  bottom: 10px;
-  border: solid 1px #606060;
+  border: solid 1px #b9b9b9;
   background-color: #F0F0F0;
   overflow: auto;
 }

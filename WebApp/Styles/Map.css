@@ -28,15 +28,22 @@
   border: none;
 }
 
+#pnlMapTools{
+  left: 410px; 
+  top: 10px; 
+  right: 20px; 
+  height: 25px; 
+  z-index: 5
+}
+
+#pnlMapTools .Button span{
+  font-size: 16px;
+  margin: 3px;
+}
+
 #cmdFullView
 {
   left: 10px;
-}
-
-#cmdZoomSelect
-{
-  left: 100px;
-  background-position: -936px 0px;  /* ZoomSelected.gif */
 }
 
 #optPan

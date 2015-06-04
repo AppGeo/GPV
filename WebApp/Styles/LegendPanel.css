@@ -22,10 +22,8 @@
 
 #cmdRefreshMap
 {
- left: 10px;
- top: 2px;
- right: auto;
- bottom: auto;
+  padding-left: 10px;
+  padding-top: 10px;
 }
 
 #pnlLegendScroll
@@ -34,7 +32,8 @@
   top: 20px;
   right: 10px;
   bottom: 10px;
-  border: solid 1px #606060;
+  padding-left: 10px;
+  padding-top: 10px;
   background-color: White;
   overflow: auto; 
 }
@@ -118,3 +117,36 @@
   margin-right: 4px;
 }
 
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+  .LegendExpander.Expanded {
+    background-position: -19px 0;
+  }
+  .LegendExpander {
+    width: 20px;
+    height: 20px;
+    background-size: cover;
+  }
+  .LegendVisibility {
+    width: 20px;
+    height: 20px;
+    margin: 0 0;
+  }
+  input[type="checkbox"].LegendCheck{
+    height: 20px;
+    width: 20px;
+    margin-top: 0;
+  }
+  .LegendClass {
+    margin-bottom: 4px;
+    height: 20px;
+    font-size: 16px;
+  }
+  .LegendExpander, .LegendVisibility, .LegendName, .LegendSwatch, .LegendClassName {
+    font-size: 16px;
+    margin: 5px;
+  }
+  .LegendContent {
+    margin-left: 22px;
+    margin-bottom: 8px;
+  }
+}

@@ -13,12 +13,14 @@
  *  limitations under the License.
  */
 
+
+
 body
 {
   overflow: hidden;
 }
 
-div
+.Panel
 {
   position: absolute;
   left: 0px;
@@ -29,6 +31,7 @@ div
 
 div.Button, div.Button.Disabled:hover
 {
+  position: absolute;
   left: auto;
   right: auto;
   bottom: auto;
@@ -40,6 +43,7 @@ div.Button, div.Button.Disabled:hover
   border: solid 1px #b9b9b9;
   cursor: default;
 }
+
 div.Button:hover
 {
   border-left: solid 1px White;
@@ -94,7 +98,6 @@ div.Button.Selected, div.Button.Selected:hover
   font-weight: bold;
 }
 
-
 .Resizer
 {
   z-index: 4;
@@ -123,6 +126,16 @@ div.Button.Selected, div.Button.Selected:hover
   border-bottom: solid 1px #b9b9b9;
 }
 
+#cmdHelp{
+  float: right;
+  margin: 8px;
+}
+
+#cmdMenu {
+  float: left;
+  margin: 8px;
+}
+
 #pnlContent
 {
   min-width: 930px;
@@ -134,17 +147,6 @@ div.Button.Selected, div.Button.Selected:hover
   min-width: 548px;
 }
 
-/*#contentDivider
-{
-  left: auto;
-  top: 26px;
-  right: 400px;
-  bottom: 0px;
-  width: 1px;
-  cursor: e-resize;
-  z-index: 3;
-}*/
-
 #pnlFunctionSizer {
   left: 0;
   width: 400px;
@@ -152,6 +154,19 @@ div.Button.Selected, div.Button.Selected:hover
   z-index: 2;
   background-color: white;
   border-right: solid 1px #b9b9b9;
+}
+
+.FunctionLabel{
+  font-size: 20px;
+  margin-top: 8px;
+  display: inline-block;
+  width: 130px;
+  text-align: right;
+}
+
+#ddlMapTheme, #ddlLevel{
+  font-size: 18px;
+  margin-top: 12px;
 }
 
 #pnlFunctionTabs
@@ -167,7 +182,7 @@ div.Button.Selected, div.Button.Selected:hover
   display: block;
   color: black;
   border-bottom: solid 1px #b9b9b9;
-  font-size: x-large;
+  font-size: 24px;
   padding: 8px;
   cursor: pointer;
 }
@@ -207,9 +222,24 @@ div.Button.Selected, div.Button.Selected:hover
   top: 5px;
 }
 
+#pnlAttribution {
+  top: auto;
+  bottom: 5px;
+  height: 15px;
+}
+
 #pnlFooter
 {
   top: auto;
   bottom: 0px;
   border-top: solid 1px #b9b9b9;
+}
+
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+  .MenuItem {
+    font-size: 2em; /*24px/16px bumped up a little*/
+  }
+  #ddlMapTheme, #ddlLevel {
+  font-size: 1.5em;
+  }
 }

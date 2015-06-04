@@ -16,9 +16,8 @@
 
 #pnlQuerySizer
 {
-  bottom: auto;
+  bottom: 0;
   top: 40px;
-  height: 250px;
   min-height: 212px;
 }
 
@@ -39,9 +38,18 @@
   min-height: 212px;
 }
 
+#pnlSelectionOptions {
+  left: 33px; 
+  top: 3px; 
+  right: 5px; 
+  height: 100px;
+}
+
 #optSelect
 {
   background-position: -816px 0px;  /* Select.gif */
+  left: 5px; 
+  top: 3px
 }
 
 #optSelect.Disabled
@@ -52,6 +60,8 @@
 #cmdSelectView
 {
   background-position: -864px 0px;  /* SelectView.gif */
+  left: 5px; 
+  top: 30px
 }
 
 #cmdSelectView.Disabled
@@ -59,17 +69,41 @@
   background-position: -888px 0px;  /* SelectViewDisable.gif */
 }
 
+#cmdZoomSelect
+{
+  background-position: -936px 0px;  /* ZoomSelected.gif */
+  left: 5px; 
+  top: 57px
+}
+
 #cmdClearSelection
 {
   background-position: -24px 0px;  /* Clear.gif */
+  left: 5px; 
+  top: 84px
+}
+
+#ddlAction, #ddlProximity {
+  float: left;
+  width: 53%;
+  margin: 5px 2px;
+}
+
+#ddlTargetLayer, #ddlSelectionLayer{
+  float: right;
+  width: 44%;
+  margin: 5px 2px;
+}
+
+#ddlQuery{
+  width: 99%;
+  margin: 5px 2px;
 }
 
 #pnlQueryGrid
 {
-  left: 0px;
-  top: 80px;
-  right: 0px;
-  bottom: 20px;
+  top: 112px;
+  bottom: 25px;
   border-top: solid 1px #b9b9b9;
   border-bottom: solid 1px #b9b9b9;
   background-color: #F0F0F0;
@@ -78,10 +112,9 @@
 
 #pnlQueryCommand
 {
-  left: 10px;
-  bottom: 6px;
   top: auto;
-  height: 11px;
+  bottom: 5px;
+  height: 15px;
 }
 
 #pnlDataTabs
@@ -123,4 +156,14 @@
   right: 12px;
   top: 2px;
   text-align: right;
+}
+
+#labSelectionCount {
+  float: left;
+  margin-left: 10px
+}
+
+#cmdMailingLabels, #cmdExportData{
+  float: right;
+  margin-right: 10px
 }

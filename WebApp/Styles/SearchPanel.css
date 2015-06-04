@@ -33,7 +33,7 @@
 {
   bottom: auto;
   top: 40px;
-  height: 200px;
+  height: 210px;
   min-height: 106px;
 }
 
@@ -47,82 +47,54 @@
   padding: 5px;
 }
 
-#cmdSearch {
-  position: absolute;
-  top: auto;
-  bottom: 5px;
-  left: 10px;
-  z-index: 2;
-}
-
-#cmdReset {
-  position: absolute;
-  top: auto;
-  bottom: 5px;
-  left: 70px;
-  z-index: 2;
+#cmdSearch, #cmdReset {
+  float: left;
+  margin-left: 10px;
 }
 
 #pnlSearchGrid
 {
-  top: 10px;
-  left: 10px;
-  right: 10px;
-  bottom: 20px;
-  border: solid 1px #C9C9C9;
-   behavior: url(Styles/PIE.htc);
-  -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15);
-  -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.15);
-  box-shadow: 0 1px 1px rgba(0,0,0,0.15);
+  bottom: 25px;
+  border-bottom: solid 1px #C9C9C9;
   background-color: #F0F0F0;
   overflow: auto;
 }
-
-#pnlSearchCommand 
-{
-  left: 10px;
-  bottom: 0;
-  top: auto;
-  height: 11px;
+#grdSearch {
+  width: 98%;
 }
 
-#labSearchCount 
+.searchCommand 
 {
-  position: absolute;
   top: auto;
   bottom: 5px;
-  left: 10px;
+  height: 15px;
 }
 
-#cmdShowOnMap 
+#labSearchCount
 {
-  position: absolute;
-  top: auto;
-  bottom: 5px;
-  left: 120px;
+  float: left;
+  margin-left: 10px;
 }
 
-#cmdShowAllOnMap 
+#cmdShowOnMap, #cmdShowAllOnMap 
 {
-  position: absolute;
-  top: auto;
-  bottom: 5px;
-  left: 210px;
+  float: right;
+  margin-right: 10px;
 }
 
 #pnlSearchScroll
 {
   top: 35px;
   left: 10px;
-  right: 2px;
+  right: 10px;
   overflow-y: auto;
-  bottom: 20px;
+  bottom: 25px;
   z-index: 5;
 }
 
 .Search
 {
-  width: 345px;
+  width: 100%;
 }
 
 .SearchInputField
@@ -142,21 +114,22 @@
 
 .SearchInputField .Input
 {
-  width: 63%;
+  width: 62%;
   margin: 0 2px;
 }
 
 .SearchInputField .Input, .SearchInputField span
 {
-  vertical-align: top;
+  vertical-align: middle;
 }
 
 #pnlSearchScroll span.Label
 {
-  width: 32%;
+  width: 34%;
   display: inline-block;
   text-align: right;
   margin-right: 3px;
+  line-height: 16px;
 }
 
 .autocomplete-suggestions { border: 1px solid #999; background: #FFF; max-height: 150px; overflow: auto; }

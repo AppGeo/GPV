@@ -18,22 +18,24 @@
 <%@ Register TagPrefix="gpv" Assembly="App_Code" Namespace="GPV" %>
 
 <div class="FunctionHeader"><span class="glyphicon glyphicon-menu-left FunctionExit" aria-hidden="true"></span>Search</div>
-<div id="pnlSearchInputFieldSizer">
-  <div id="pnlSearchInputField">
+<div id="pnlSearchInputFieldSizer" class="Panel">
+  <div id="pnlSearchInputField" class="Panel">
     <gpv:Select ID="ddlSearches" runat="server" CssClass="Input" ToolTip="Choose a search to perform" />
   </div>
-  <gpv:Div id="pnlSearchScroll" runat="server" />
-  <div id="cmdSearch" class="CommandLink Disabled">Search</div>
-  <div id="cmdReset" class="CommandLink Disabled">Reset</div>
+  <gpv:Div id="pnlSearchScroll" runat="server" class="Panel" />
+  <div class="searchCommand Panel">
+    <div id="cmdSearch" class="CommandLink Disabled">Search</div>
+    <div id="cmdReset" class="CommandLink Disabled">Reset</div>
+  </div>
 </div>
-<div id="pnlSearchGridSizer" class="MainPanel">
-  <div id="pnlSearchGrid">
+<div id="pnlSearchGridSizer" class="MainPanel Panel">
+  <div id="pnlSearchGrid" class="Panel">
     <table id="grdSearch" class="DataGrid"></table>
   </div>
-  <div id="pnlSearchCommand">
+  <div id="pnlSearchCommand" class="searchCommand Panel">
     <div id="labSearchCount">None found</div>
     <div id="cmdShowOnMap" class="CommandLink Disabled">Show on Map</div>
     <div id="cmdShowAllOnMap" class="CommandLink Disabled">Show All on Map</div>
   </div>
 </div>
-<div id="searchDivider"></div>
+<div id="searchDivider" class="Panel"></div>

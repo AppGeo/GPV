@@ -93,6 +93,7 @@ a, .CommandLink
 .VersionText
 {
   color: #A0A685;
+  margin-left: 10px;
 }
 
 /* text color of the AppGeo link below the map */
