@@ -154,7 +154,7 @@
             <td class="Description" valign="top"><span class="BoldText">Return to Previous 
                 Extent</span> - Returns the map view to the last extent before the current 
               one.&nbsp; Every extent from the beginning of the mapping session is 
-              remembered, so you can click this repeatly to undo multiple pan/zoom 
+              remembered, so you can click this repeatedly to undo multiple pan/zoom 
               operations.
             </td>
           </tr>
@@ -380,7 +380,7 @@
           the feature.&nbsp; The total number of rows in the grid is displayed at the lower left of the grid.</p>
         <img src="Images/Help/DataGrid.png" alt="" width="361" height="171"/>
         <p class="BodyText"><span class="BoldText">To Mailing Labels</span> - When enabled, this lets you generate mailing labels 
-          for the selected target features.&nbsp; A window will&nbsp;popup which let's 
+          for the selected target features.&nbsp; A window will&nbsp;popup which lets 
           you select the label format, printing direction and font characteristics.&nbsp; The labels 
           are&nbsp;delivered as a PDF file which can be printed or saved to disk.&nbsp; 
           It is likely that only certain layers (such as parcels or buildings) will be 
