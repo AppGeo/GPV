@@ -451,7 +451,7 @@
           <li class="BodyText">
             <span class="BoldText">Title</span> - The title of the current markup 
             group.&nbsp; This defaults to [untitled] for new markup groups.&nbsp; Change 
-            this to a short phase which accurately describes the markup group.<br/>
+            this to a short phrase which accurately describes the markup group.<br/>
           </li>
           <li id="liLock" runat="server" class="BodyText" visible="false">
             <span class="BoldText">Lock</span> - When checked, only you can edit or delete
