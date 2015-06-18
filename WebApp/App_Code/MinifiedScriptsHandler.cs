@@ -30,7 +30,6 @@ public class MinifiedScriptsHandler : IHttpHandler
     return new List<ScriptItem>(new ScriptItem[] { 
       new ScriptItem("Scripts/jquery-2.1.4.min.js", false, true),
       new ScriptItem("Scripts/jquery.cookie.min.js", false, true),
-      //new ScriptItem("Scripts/jquery.geo-test.min.js", false, true),
       new ScriptItem("Scripts/jquery.autocomplete.min.js", false, true),
       new ScriptItem("Scripts/jquery-ui-datepicker.js", false, true),
       new ScriptItem("Scripts/leaflet.js", false, true),
