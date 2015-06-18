@@ -108,6 +108,13 @@ public class LambertConformalConic : Projection
 		y = (_pcR0 - r * Math.Cos(theta));
 	}
 
+  public override string ToProj4String()
+  {
+    return String.Format("+proj=lcc +lon_0={0} +lat_0={1} +lat_1={2} +lat_2={3} +ellps=GRS80 +datum=NAD83 +towgs84=0,0,0,0,0,0,0 +no_defs",
+      _centralMeridian * DegreesPerRadian, _originLatitude * DegreesPerRadian, _standardParallel1 * DegreesPerRadian,
+      _standardParallel2 * DegreesPerRadian);
+  }
+
 	private double GetM(double latitude)
 	{
 		double eSqr = _spheroid.Eccentricity * _spheroid.Eccentricity;

@@ -656,6 +656,7 @@ public static class AppSettings
     jsonData.Add("isPublic", String.IsNullOrEmpty(AppUser.Name));
     jsonData.Add("mapUnits", MapUnits);
     jsonData.Add("measureUnits", MeasureUnits);
+    jsonData.Add("coordinateSystem", CoordinateSystem.ToProj4String(MapUnits));
 
     JavaScriptSerializer serializer = new JavaScriptSerializer();
     return serializer.Serialize(jsonData);
