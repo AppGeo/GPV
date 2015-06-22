@@ -39,71 +39,86 @@
 }
 
 #pnlSelectionOptions {
-  left: 33px; 
+  left: 5px; 
   top: 3px; 
   right: 5px; 
-  height: 100px;
-}
-
-#optSelect
-{
-  background-position: -816px 0px;  /* Select.gif */
-  left: 5px; 
-  top: 3px
-}
-
-#optSelect.Disabled
-{
-  background-position: -840px 0px;  /* SelectDisable.gif */
-}
-
-#cmdSelectView
-{
-  background-position: -864px 0px;  /* SelectView.gif */
-  left: 5px; 
-  top: 30px
-}
-
-#cmdSelectView.Disabled
-{
-  background-position: -888px 0px;  /* SelectViewDisable.gif */
-}
-
-#cmdZoomSelect
-{
-  background-position: -936px 0px;  /* ZoomSelected.gif */
-  left: 5px; 
-  top: 57px
-}
-
-#cmdClearSelection
-{
-  background-position: -24px 0px;  /* Clear.gif */
-  left: 5px; 
-  top: 84px
+  height: 86px;
 }
 
 #ddlAction, #ddlProximity {
   float: left;
   width: 53%;
-  margin: 5px 2px;
+  margin: 2px;
 }
 
 #ddlTargetLayer, #ddlSelectionLayer{
   float: right;
   width: 44%;
-  margin: 5px 2px;
+  margin: 2px;
 }
 
 #ddlQuery{
   width: 99%;
-  margin: 5px 2px;
+  margin: 2px;
+}
+
+#pnlSelectTools{
+  top: 87px;
+  width: 400px;
+  padding: 0px 5px;
+  height: 35px;
+}
+#pnlSelectTools button{
+  position: relative;
+  padding-left: 25px;
+  margin: 5px 7px;
+}
+
+#pnlSelectTools button span{
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: auto;
+  width: 18px;
+  height: 18px;
+  background-image: url(../Images/UI/Icons.png);
+  background-repeat: no-repeat;
+  cursor: default;
+}
+.select-feature
+{
+  background-position: -816px 0px;  /* Select.gif */
+}
+
+.select-feature .Disabled
+{
+  background-position: -840px 0px;  /* SelectDisable.gif */
+}
+
+.select-view
+{
+  background-position: -864px 0px;  /* SelectView.gif */
+}
+
+.select-view .Disabled
+{
+  background-position: -888px 0px;  /* SelectViewDisable.gif */
+}
+
+.select-zoom
+{
+  background-position: -936px 0px;  /* ZoomSelected.gif */
+}
+
+.select-clear
+{
+  background-position: -24px 0px;  /* Clear.gif */
 }
 
 #pnlQueryGrid
 {
-  top: 112px;
-  bottom: 25px;
+  top: 122px;
+  bottom: 35px;
   border-top: solid 1px #b9b9b9;
   border-bottom: solid 1px #b9b9b9;
   background-color: #f4f7f7;
@@ -113,8 +128,8 @@
 #pnlQueryCommand
 {
   top: auto;
-  bottom: 5px;
-  height: 15px;
+  bottom: 0px;
+  height: 41px;
 }
 
 #pnlDataTabs
@@ -160,10 +175,11 @@
 
 #labSelectionCount {
   float: left;
-  margin-left: 10px
+  margin-left: 10px;
+  margin-top: 12px
 }
 
 #cmdMailingLabels, #cmdExportData{
   float: right;
-  margin-right: 10px
+  margin: 10px 5px;
 }

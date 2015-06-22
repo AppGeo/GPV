@@ -161,14 +161,14 @@ a.VersionText
 
 .DataGridRowAlternate
 {
-  background-color: #DCEDC8;
+  background-color: #E0F2F1;
 }
 
 /* background and text color of headers in data tabs and identify windows */
 
 .DataList .RowSetHeader
 {
-  background-color: #DCEDC8;
+  background-color: #E0F2F1;
   color: Black;
 }
 

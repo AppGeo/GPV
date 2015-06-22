@@ -79,29 +79,37 @@
           <div id="pnlShare" runat="server" class="FunctionPanel Panel" style="display: none">
             <div class="FunctionHeader"><span class="glyphicon glyphicon-menu-left FunctionExit" aria-hidden="true"></span>Share</div>
             <div id="pnlShareContent" class="Panel">
-              <button id="cmdPrint" class="Button" title="Printable Map"><i class="fa fa-print"></i> Print</button>
-              <button id="cmdEmail" class="Button" title="Email This Page"><i class="fa fa-envelope-o"></i> Email</button>
-              <button id="cmdExport" class="Button" title="Email This Page"><i class="fa fa-external-link"></i> Export</button>
-              <button id="cmdDownload" class="Button" title="Download Map"><i class="fa fa-download"></i> Download</button>
-              <div id="pnlPrint" style="position: relative; left: 12px; right: 12px; top: 40px;">
+              <button id="cmdForPrint" class="share-type" title="Printable Map"><i class="fa fa-print"></i> Print</button>
+              <button id="cmdForEmail" class="share-type" title="Email This Page"><i class="fa fa-envelope-o"></i> Email</button>
+              <button id="cmdForExport" class="share-type" title="Export Map Extent"><i class="fa fa-external-link"></i> Export</button>
+              <button id="cmdForDownload" class="share-type" title="Download Map"><i class="fa fa-download"></i> Download</button>
+              <div id="pnlPrint" class="share">
                 <form id="form1" runat="server">
-                    <div class="Title" style="left: 20px; top: 14px; width: 207px; height: 18px">Create Printable PDF Map</div>
-                    <label for="ddlPrintTemplate">Format</label>
-                    <asp:DropDownList id="ddlPrintTemplate" runat="server" Height="19px" Width="216px" AutoPostBack="true" style="left: 139px; top: 40px" />
-		                  <asp:Button id="cmdCreate" runat="server" Enabled="false" Text="Create" CssClass="Button" style="left: 139px; top: 48px" />
+                  <div class="FunctionLabel">Create Printable PDF Map</div><br />
+                  <label for="ddlPrintTemplate">Format</label>
+                  <asp:DropDownList id="ddlPrintTemplate" runat="server" Width="216px" AutoPostBack="true" />
+		              <button id="cmdCreate" runat="server" Enabled="false" style="left: 139px; top: 48px">Create</button>
                 </form>
               </div>
-              <div id="pnlEmail" style="position: relative; left: 12px; top: 40px; height: 20px"></div>
-              <div id="pnlExport" style="position: relative; left: 12px; top: 50px; height: 20px">
-              <select id="ddlExternalMap" runat="server" class="Input" style="width: 200px"></select>
-                <a id="cmdExternalMap" href="#" class="CommandLink Disabled" target="external">Go</a>
+              <div id="pnlEmail" class="share">
+                <div class="FunctionLabel">Email a Map</div><br />
+                <label for="tboEmail">Email Address</label>
+                <input id="tboEmail" />
+                <button id="cmdEmail">Send</button>
               </div>
-              <div id="pnlDownload" style="position: relative; left: 12px; top: 80px; height: 20px">
-                <span id="cmdSaveMap" class="CommandLink">Save Map</span>
+              <div id="pnlExport" class="share">
+              <div class="FunctionLabel">Export Map Extent</div><br />
+              <select id="ddlExternalMap" runat="server" class="Input" style="width: 200px"></select>
+                <button id="cmdExternalMap">Go</button>
+              </div>
+              <div id="pnlDownload" class="share">
+                <div class="FunctionLabel">Download a Map</div><br />
+                <label for="ddlSaveMap">Save as</label>
                 <select id="ddlSaveMap" runat="server" class="Input" style="width: 90px">
                   <option value="image">as Image</option>
                   <option value="kml">as KML</option>
                 </select>
+                <button id="cmdSaveMap">Save</button>
               </div>
             </div>
           </div>

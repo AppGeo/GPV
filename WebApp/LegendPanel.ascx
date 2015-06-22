@@ -21,5 +21,5 @@
 
 <div id="pnlLegendContent">
   <div id="cmdRefreshMap" class="CommandLink">Refresh Map</div>
-  <gpv:Div id="pnlLegendScroll" runat="server" />
+  <gpv:Div id="pnlLegendScroll" runat="server" CssClass="Panel" />
 </div>

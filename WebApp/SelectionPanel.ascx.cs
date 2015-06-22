@@ -28,7 +28,7 @@ public partial class SelectionPanel : System.Web.UI.UserControl
 
     if (!launchParams.ContainsKey("tool") || String.Compare(launchParams["tool"], "select", true) == 0)
     {
-      ((Div)FindControl("optSelect")).CssClass = "Button MapTool Selected";
+      //((Div)FindControl("optSelect")).CssClass = "Button MapTool Selected";
     }
   }
 }

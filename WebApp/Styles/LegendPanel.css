@@ -28,10 +28,8 @@
 
 #pnlLegendScroll
 {
-  left: 10px;
-  top: 20px;
-  right: 10px;
-  bottom: 10px;
+  top: 70px;
+  bottom: 0;
   padding-left: 10px;
   padding-top: 10px;
   background-color: White;

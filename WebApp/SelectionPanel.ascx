@@ -21,10 +21,6 @@
 
 <div id="pnlQuerySizer" class="Panel">
   <div id="pnlQuery" class="Panel">
-    <gpv:Div ID="optSelect" runat="server" CssClass="Button MapTool" ToolTip="Select Features" />
-    <div id="cmdSelectView" class="Button" title="Select All in View"></div>
-    <div id="cmdZoomSelect" class="Button" title="Zoom to Selected Features"></div>
-    <div id="cmdClearSelection" class="Button" title="Clear Selection"></div>
     <div id="pnlSelectionOptions" class="Panel">
       <gpv:Select ID="ddlAction" runat="server" CssClass="Input" ToolTip="Action to perform with the Select Features tool to the left" />
       <gpv:Select ID="ddlTargetLayer" runat="server" CssClass="Input" ToolTip="Target layer containing features of interest" />
@@ -32,13 +28,22 @@
       <gpv:Select ID="ddlSelectionLayer" runat="server" CssClass="Input" ToolTip="Selection layer with features that will help find target features" />
       <gpv:Select ID="ddlQuery" runat="server" CssClass="Input" ToolTip="Filter which lists only those features meeting certain criteria" />
     </div>
+    <div id="pnlSelectTools" class="Panel">
+      <%--<gpv:Div ID="optSelect" runat="server" CssClass="MapTool" ToolTip="Select Features" />--%>
+      <button id="optSelect" title="Select Feature"><span class="select-feature"></span>Select</button>
+      <button id="cmdSelectView" title="Select All in View"><span class="select-view"></span>Select All</button>
+      <button id="cmdZoomSelect" title="Zoom to Selected Features"><span class="select-zoom"></span>Zoom To</button>
+      <button id="cmdClearSelection" title="Clear Selection"><span class="select-clear"></span>Clear</button>
+    </div>
     <div id="pnlQueryGrid" class="Panel">
       <table id="grdQuery" class="DataGrid"></table>
     </div>
     <div id="pnlQueryCommand" class="Panel">
       <div id="labSelectionCount">None selected</div>
-      <div id="cmdMailingLabels" class="CommandLink Disabled">To Mailing Labels</div>
-      <div id="cmdExportData" class="CommandLink Disabled">To Spreadsheet</div>
+      <button id="cmdMailingLabels" class="Disabled" title="Mailing Labels"><i class="fa fa-tag"></i> Mailing Labels</button>
+      <button id="cmdExportData" class="Disabled" title="Spreadsheet"><i class="fa fa-table"></i> Spreadsheet</button>
+      <%--<div id="cmdMailingLabels" class="CommandLink Disabled">To Mailing Labels</div>
+      <div id="cmdExportData" class="CommandLink Disabled">To Spreadsheet</div>--%>
     </div>
   </div>
 </div>

@@ -40,6 +40,7 @@ div.Button, div.Button.Disabled:hover
   background-image: url(../Images/UI/Icons.png);
   background-position: 0px 24px;
   background-repeat: no-repeat;
+  background-color: #FFFFFF;
   border: solid 1px #b9b9b9;
   cursor: default;
 }
@@ -63,7 +64,7 @@ div.Button.Selected, div.Button.Selected:hover
 }
 
 button {
-  margin: 10px 13px;
+  margin: 10px;
 }
 
 .DataGrid
@@ -78,12 +79,12 @@ button {
 
 .DataGridRow:hover, .DataGridRowAlternate:hover
 {
-  background-color: #FFFFC8;
+  background-color: #FFF9C4;
 }
 
 .DataGridRowSelect, .DataGridRowSelect:hover
 {
-  background-color: yellow;
+  background-color: #FFEB3B;
 }
 
 .DataGrid th, .DataGrid td
@@ -158,12 +159,15 @@ button {
   -mox-box-shadow: 4px 0 5px -2px #b9b9b9;
 }
 
-.FunctionLabel{
+.FunctionLabel, .Title{
   font-size: 20px;
   margin-top: 8px;
   display: inline-block;
-  width: 130px;
   text-align: right;
+}
+
+#pnlFunctionTabs .FunctionLabel {
+  width: 130px;
 }
 
 #ddlMapTheme, #ddlLevel{
@@ -187,6 +191,9 @@ button {
   padding: 8px;
   cursor: pointer;
 }
+/*.MenuItem:hover{
+  background-color: #FFCC80
+}*/
 
 #pnlFunction
 {
@@ -208,12 +215,29 @@ button {
 .FunctionExit{
   font-size: 18px;
   margin: 5px 10px;
+  -webkit-transition: 0.75s ease-in-out;
+  -moz-transition: 0.75s ease-in-out;  
+  transition: 0.75s ease-in-out;  
+  -webkit-transform: translate(3em,0);
+  -moz-transform: translate(3em,0);
+  -ms-transform: translate(3em,0);
+  transform: translate(3em,0);
+  transform: rotate(180deg)
+}
+
+.FunctionExitOpen{
+  transform: rotate(-360deg)
 }
 
 #pnlShareContent{
   top: 40px;
 }
 
+.share{
+  width: 380px;
+  margin: 10px;
+  display: none;
+}
 
 #cmdPrint
 {

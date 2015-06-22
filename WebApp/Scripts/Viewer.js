@@ -122,7 +122,9 @@ var GPV = (function (gpv) {
 
     $(".FunctionExit").on("click", function () {
       $('#pnlFunction').animate({ left: '-400px', opacity: '0' }, 600, function () {
-        $('#pnlFunctionTabs').animate({ left: '12px' }, 600)
+        $('#pnlFunctionTabs').animate({ left: '12px' }, 600);
+        $('.share').hide();
+        $('.FunctionExit').removeClass('FunctionExitOpen');
       });
     });
 
@@ -132,11 +134,20 @@ var GPV = (function (gpv) {
       $('#pnlFunctionTabs').animate({ left: '-400px' }, 600, function () {
         $(".FunctionPanel").hide();
         $("#pnl" + name).show();
-        $('#pnlFunction').animate({left: '0', opacity: '1.0'}, 600);
+        $('#pnlFunction').animate({ left: '0', opacity: '1.0' }, 600, function () {
+          $('.FunctionExit').addClass('FunctionExitOpen');
+        });
       });
       $.each(functionTabChangedHandlers, function () {
         this(name);
       });
+    });
+
+    $(".share-type").on("click", function (e) {
+      e.preventDefault();
+      $('.share').hide();
+      var panel = '#pnl' + e.target.id.replace('cmdFor', '');
+      $(panel).fadeIn(600);
     });
 
     // =====  map tools  =====

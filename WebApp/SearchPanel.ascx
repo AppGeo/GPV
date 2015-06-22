@@ -24,18 +24,20 @@
   </div>
   <gpv:Div id="pnlSearchScroll" runat="server" class="Panel" />
   <div class="searchCommand Panel">
-    <div id="cmdSearch" class="CommandLink Disabled">Search</div>
-    <div id="cmdReset" class="CommandLink Disabled">Reset</div>
+    <button id="cmdSearch" title="Seach">Search</button>
+    <button id="cmdReset" title="Reset">Reset</button>
   </div>
 </div>
 <div id="pnlSearchGridSizer" class="MainPanel Panel">
   <div id="pnlSearchGrid" class="Panel">
     <table id="grdSearch" class="DataGrid"></table>
   </div>
-  <div id="pnlSearchCommand" class="searchCommand Panel">
+  <div id="pnlSearchCommand" class="searchResultCommand Panel">
     <div id="labSearchCount">None found</div>
-    <div id="cmdShowOnMap" class="CommandLink Disabled">Show on Map</div>
-    <div id="cmdShowAllOnMap" class="CommandLink Disabled">Show All on Map</div>
+    <button id="cmdShowOnMap" class="Disabled" title="Show on Map">Show on Map</button>
+    <button id="cmdShowAllOnMap" class="Disabled" title="Show All on Map">Show All on Map</button>
+    <%--<div id="cmdShowOnMap" class="CommandLink Disabled">Show on Map</div>
+    <div id="cmdShowAllOnMap" class="CommandLink Disabled">Show All on Map</div>--%>
   </div>
 </div>
 <div id="searchDivider" class="Panel"></div>

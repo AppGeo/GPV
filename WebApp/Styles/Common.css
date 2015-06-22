@@ -88,14 +88,14 @@ src: url("fonts/open-sans/OpenSans-Regular.otf") format("opentype");
 font-family: OpenSans;
 font-weight: bold;
 font-style: normal;
-src: url("fonts/source-sans-pro/OpenSans-Bold.otf") format("opentype");
+src: url("fonts/open-sans/OpenSans-Bold.otf") format("opentype");
 }
 
 @font-face {
 font-family: OpenSans;
 font-weight: lighter;
 font-style: normal;
-src: url("fonts/source-sans-pro/OpenSans-Light.otf") format("opentype");
+src: url("fonts/open-sans/OpenSans-Light.otf") format("opentype");
 }
 
 /* =====  common styles  ===== */
