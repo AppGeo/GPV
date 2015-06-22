@@ -27,4 +27,6 @@ public abstract class Projection
 	public abstract void ToGeodetic(double x, double y, out double lon, out double lat);
 
 	public abstract void ToProjected(double lon, double lat, out double x, out double y);
+
+  public abstract string ToProj4String();
 }

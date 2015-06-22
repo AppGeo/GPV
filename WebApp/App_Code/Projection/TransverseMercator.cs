@@ -326,4 +326,10 @@ public class TransverseMercator : Projection
 		lon /= RadiansPerDegree;
 		lat /= RadiansPerDegree;
 	}
+
+  public override string ToProj4String()
+  {
+    return String.Format("+proj=tmerc +lon_0={0} +lat_0={1} +k={2} +ellps=GRS80 +datum=NAD83 +towgs84=0,0,0,0,0,0,0 +no_defs",
+      _centralMeridian * DegreesPerRadian, _originLatitude * DegreesPerRadian, _scaleFactor);
+  }
 }

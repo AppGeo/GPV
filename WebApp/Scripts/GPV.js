@@ -16,8 +16,6 @@ var GPV = (function (gpv) {
   var supportsTouch = "ontouchend" in document;
   var handlers = [];
 
-  $.geo.proj = null;
-
   // =====  private functions  =====
 
   function getEventPoint(e) {
@@ -67,18 +65,18 @@ var GPV = (function (gpv) {
   }
 
   function selectTool($tool, mapOptions, cursor) {
-    if (!$tool.hasClass("Disabled")) {
-      $(".MapTool").not($tool.addClass("Selected")).removeClass("Selected");
+    //if (!$tool.hasClass("Disabled")) {
+    //  $(".MapTool").not($tool.addClass("Selected")).removeClass("Selected");
 
-      mapOptions = $.extend({ shift: "zoom" }, mapOptions);
+    //  mapOptions = $.extend({ shift: "zoom" }, mapOptions);
 
-      if (cursor) {
-        mapOptions.cursors = $("#mapMain").geomap("option", "cursors");
-        mapOptions.cursors[mapOptions.mode] = cursor;
-      }
+    //  if (cursor) {
+    //    mapOptions.cursors = $("#mapMain").geomap("option", "cursors");
+    //    mapOptions.cursors[mapOptions.mode] = cursor;
+    //  }
 
-      $("#mapMain").geomap("option", mapOptions);
-    }
+    //  $("#mapMain").geomap("option", mapOptions);
+    //}
   }
 
   function store(name, value) {

@@ -44,4 +44,19 @@ public class CoordinateSystem
 		x += FalseEasting;
 		y += FalseNorthing;
 	}
+
+  public string ToProj4String()
+  {
+    return ToProj4String("meters");
+	}
+
+  public string ToProj4String(string units)
+  {
+    double toMeters = units == "meters" ? 1 : Constants.MetersPerFoot;
+    double falseEasting = FalseEasting / toMeters;
+    double falseNorthing = FalseNorthing / toMeters;
+
+    return String.Format("{0} +x_0={1} +y_0={2} +to_meter={3}", Projection.ToProj4String(), falseEasting,
+      falseNorthing, toMeters);
+  }
 }
