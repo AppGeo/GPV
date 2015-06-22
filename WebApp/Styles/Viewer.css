@@ -35,8 +35,8 @@ div.Button, div.Button.Disabled:hover
   left: auto;
   right: auto;
   bottom: auto;
-  width: 24px;
-  height: 24px;
+  width: 25px;
+  height: 25px;
   background-image: url(../Images/UI/Icons.png);
   background-position: 0px 24px;
   background-repeat: no-repeat;
@@ -62,6 +62,10 @@ div.Button.Selected, div.Button.Selected:hover
   cursor: default;
 }
 
+button {
+  margin: 10px 13px;
+}
+
 .DataGrid
 {
   empty-cells: show;
@@ -84,10 +88,7 @@ div.Button.Selected, div.Button.Selected:hover
 
 .DataGrid th, .DataGrid td
 {
-  padding-left: 3px;
-  padding-right: 3px;
-  padding-bottom: 2px;
-  padding-top: 2px;
+  padding: 2px 3px;
   border-right: solid 1px #D0D0D0;
   white-space: nowrap;
 }
@@ -123,7 +124,6 @@ div.Button.Selected, div.Button.Selected:hover
 #pnlHeader
 {
   bottom: auto;
-  border-bottom: solid 1px #b9b9b9;
 }
 
 #cmdHelp{
@@ -153,7 +153,9 @@ div.Button.Selected, div.Button.Selected:hover
   min-width: 374px;
   z-index: 2;
   background-color: white;
-  border-right: solid 1px #b9b9b9;
+  box-shadow: 4px 0 5px -2px #b9b9b9;
+  -webkit-box-shadow: 4px 0 5px -2px #b9b9b9;
+  -mox-box-shadow: 4px 0 5px -2px #b9b9b9;
 }
 
 .FunctionLabel{
@@ -166,7 +168,7 @@ div.Button.Selected, div.Button.Selected:hover
 
 #ddlMapTheme, #ddlLevel{
   font-size: 18px;
-  margin-top: 12px;
+  margin: 12px 0 0 5px;
 }
 
 #pnlFunctionTabs
@@ -180,8 +182,7 @@ div.Button.Selected, div.Button.Selected:hover
 
 .MenuItem{
   display: block;
-  color: black;
-  border-bottom: solid 1px #b9b9b9;
+  font-family: Lora;
   font-size: 24px;
   padding: 8px;
   cursor: pointer;
@@ -189,15 +190,19 @@ div.Button.Selected, div.Button.Selected:hover
 
 #pnlFunction
 {
+  position: absolute;
+  left: -400px;
+  width: 400px;
   bottom: 0;
   overflow: hidden;
 }
 
 .FunctionHeader{
-  height: 35px;
-  font-size: 20px;
-  margin: 5px 0;
-  border-bottom: solid 1px #b9b9b9;
+  font-family: Lora;
+  font-size: 24px;
+  letter-spacing: .25px;
+  height: 40px;
+  padding: 3px 0;
 }
 
 .FunctionExit{
@@ -219,7 +224,7 @@ div.Button.Selected, div.Button.Selected:hover
 #cmdEmail
 {
   left: 42px;
-  top: 5px;
+  top: 35px;
 }
 
 #pnlAttribution {
@@ -232,7 +237,6 @@ div.Button.Selected, div.Button.Selected:hover
 {
   top: auto;
   bottom: 0px;
-  border-top: solid 1px #b9b9b9;
 }
 
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {

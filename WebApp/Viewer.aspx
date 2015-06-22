@@ -40,14 +40,13 @@
     <div id="pnlContent" runat="server" class="Panel">
       <div id="pnlFunctionSizer" runat="server" class="Panel">
         <div id="pnlFunctionTabs" class="TabPanel Panel">
-          <span class="FunctionLabel">Map Theme: </span>
+          <span class="FunctionLabel">Map Theme </span>
           <select id="ddlMapTheme" style="margin-top: 12px">
             <asp:PlaceHolder id="plhMapThemes" runat="server"></asp:PlaceHolder>
           </select><br />
-            <span id="labLevel" class="FunctionLabel" runat="server" style="display: none">Level: </span>
+            <span id="labLevel" class="FunctionLabel" runat="server" style="display: none">Level </span>
             <select id="ddlLevel" runat="server" class="Input" style="width: 70px; display: none"></select>
-          <hr />
-          <ul class="TabScroll">
+          <ul class="TabScroll" style="border-left: solid 3px #B2DFDB; margin-top: 20px;">
             <li id="tabSearch" runat="server" class="MenuItem Normal" style="display: none">Search</li>
             <li id="tabSelection" runat="server" class="MenuItem Normal" style="display: none">Selection</li>
             <li id="tabLegend" runat="server" class="MenuItem Normal" style="display: none">Legend</li>
@@ -60,7 +59,7 @@
             <a class="VersionText" href="http://www.appgeo.com" target="AppGeo">AppGeo</a>
           </div>
         </div>
-        <div id="pnlFunction" style="display: none" class="Panel">
+        <div id="pnlFunction" class="Panel">
           <%-- Fuction tab name with < to click to return to main menu --%>
           <div id="pnlSearch" runat="server" class="FunctionPanel Panel" style="display: none">
             <uc1:SearchPanel ID="ucSearchPanel" runat="server" />
@@ -80,13 +79,24 @@
           <div id="pnlShare" runat="server" class="FunctionPanel Panel" style="display: none">
             <div class="FunctionHeader"><span class="glyphicon glyphicon-menu-left FunctionExit" aria-hidden="true"></span>Share</div>
             <div id="pnlShareContent" class="Panel">
-              <div id="cmdPrint" class="Button" title="Printable Map"><span style="font-size: 16px; margin: 3px;" class="glyphicon glyphicon-print"></span></div>
-              <div id="cmdEmail" class="Button" title="Email This Page"><span style="font-size: 16px; margin: 3px;" class="glyphicon glyphicon-envelope"></span></div>
-              <div style="position: relative; left: 12px; top: 50px; height: 20px">
+              <button id="cmdPrint" class="Button" title="Printable Map"><i class="fa fa-print"></i> Print</button>
+              <button id="cmdEmail" class="Button" title="Email This Page"><i class="fa fa-envelope-o"></i> Email</button>
+              <button id="cmdExport" class="Button" title="Email This Page"><i class="fa fa-external-link"></i> Export</button>
+              <button id="cmdDownload" class="Button" title="Download Map"><i class="fa fa-download"></i> Download</button>
+              <div id="pnlPrint" style="position: relative; left: 12px; right: 12px; top: 40px;">
+                <form id="form1" runat="server">
+                    <div class="Title" style="left: 20px; top: 14px; width: 207px; height: 18px">Create Printable PDF Map</div>
+                    <label for="ddlPrintTemplate">Format</label>
+                    <asp:DropDownList id="ddlPrintTemplate" runat="server" Height="19px" Width="216px" AutoPostBack="true" style="left: 139px; top: 40px" />
+		                  <asp:Button id="cmdCreate" runat="server" Enabled="false" Text="Create" CssClass="Button" style="left: 139px; top: 48px" />
+                </form>
+              </div>
+              <div id="pnlEmail" style="position: relative; left: 12px; top: 40px; height: 20px"></div>
+              <div id="pnlExport" style="position: relative; left: 12px; top: 50px; height: 20px">
               <select id="ddlExternalMap" runat="server" class="Input" style="width: 200px"></select>
                 <a id="cmdExternalMap" href="#" class="CommandLink Disabled" target="external">Go</a>
               </div>
-              <div style="position: relative; left: 12px; top: 80px; height: 20px">
+              <div id="pnlDownload" style="position: relative; left: 12px; top: 80px; height: 20px">
                 <span id="cmdSaveMap" class="CommandLink">Save Map</span>
                 <select id="ddlSaveMap" runat="server" class="Input" style="width: 90px">
                   <option value="image">as Image</option>

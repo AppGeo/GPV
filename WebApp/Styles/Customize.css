@@ -78,9 +78,12 @@
 
 #pnlHeader, #pnlFooter
 {
-  background-color: #F4F5F0;
+  background-color: #f4f7f7;
 }
 
+#cmdMenu span, #cmdHelp span {
+color: #009688;
+}
 /* text color of links (external pages and GPV commands) */
 
 a, .CommandLink
@@ -158,14 +161,14 @@ a.VersionText
 
 .DataGridRowAlternate
 {
-  background-color: #F2F0FA;
+  background-color: #DCEDC8;
 }
 
 /* background and text color of headers in data tabs and identify windows */
 
 .DataList .RowSetHeader
 {
-  background-color: #E0E0E0;
+  background-color: #DCEDC8;
   color: Black;
 }
 
@@ -177,7 +180,29 @@ a.VersionText
   color: Black;
 }
 
+/* text color for function menu items */
 
+.FunctionLabel{
+  color: #00796B;
+}
+
+.MenuItem {
+  color: #00796B;
+  /*border-bottom: solid 1px #80cbc4;*/
+}
+
+.FunctionHeader {
+  color: #FFFFFF;
+  background-color: #009688;
+  border-left: #B2DFDB solid 6px;
+}
+
+.FunctionExit {
+  color: #FFFFFF;
+}
+#pnlSearchGrid, #pnlQueryGrid{
+  color: #f4f7f7;
+}
 /* =================================== */
 /*   Custom header and footer styles   */
 /* =================================== */

@@ -57,24 +57,61 @@ ul
 input, textarea, select 
 {
 	font-family: inherit;
-	font-size: inherit;
 	font-weight: inherit;
 	font-size: 100%;
+}
+
+/* =====  load fonts  =====*/
+
+@font-face {
+font-family: Lora;
+font-weight: normal;
+font-style: normal;
+src: url("fonts/lora/Lora-Regular.otf") format("opentype");
+}
+
+@font-face {
+font-family: Lora;
+font-weight: bold;
+font-style: normal;
+src: url("fonts/lora/Lora-Bold.otf") format("opentype");
+}
+
+@font-face {
+font-family: OpenSans;
+font-weight: normal;
+font-style: normal;
+src: url("fonts/open-sans/OpenSans-Regular.otf") format("opentype");
+}
+
+@font-face {
+font-family: OpenSans;
+font-weight: bold;
+font-style: normal;
+src: url("fonts/source-sans-pro/OpenSans-Bold.otf") format("opentype");
+}
+
+@font-face {
+font-family: OpenSans;
+font-weight: lighter;
+font-style: normal;
+src: url("fonts/source-sans-pro/OpenSans-Light.otf") format("opentype");
 }
 
 /* =====  common styles  ===== */
 
 body, div, span, td, th, input, select
 {
-  font-family: Verdana, Arial, Helvetica, San-Serif;
-  font-size: 12px;
+  font-family: OpenSans, Helvetica, San-Serif;
+  font-size: 14px;
+  letter-spacing: .2px;
   color: Black;
 }
 
 input, select
 {
   padding: 1px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .Title
@@ -85,7 +122,7 @@ input, select
 .Label
 {
   color: #404040;
-  font-weight: bold;
+  font-size: 16px;
 }
 
 .MainPanel

@@ -202,20 +202,18 @@ var GPV = (function (gpv) {
     //});
 
     $(".FunctionExit").on("click", function () {
-      var left = $('#pnlFunctionTabs').css('left') === '12px' ? '-400px' : '12px';
-      $('#pnlFunction').fadeOut(800, function () {
-        $('#pnlFunctionTabs').animate({ left: left }, 800)
+      $('#pnlFunction').animate({ left: '-400px', opacity: '0' }, 600, function () {
+        $('#pnlFunctionTabs').animate({ left: '12px' }, 600)
       });
     });
 
 
     $(".MenuItem").on("click", function(){
-      var left = $('#pnlFunctionTabs').css('left') === '12px' ? '-400px' : '12px';
       var name = $(this).text();
-      $('#pnlFunctionTabs').animate({ left: left }, 800, function () {
+      $('#pnlFunctionTabs').animate({ left: '-400px' }, 600, function () {
         $(".FunctionPanel").hide();
         $("#pnl" + name).show();
-        $('#pnlFunction').fadeIn(800);
+        $('#pnlFunction').animate({left: '0', opacity: '1.0'}, 600);
       });
       $.each(functionTabChangedHandlers, function () {
         this(name);

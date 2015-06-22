@@ -95,6 +95,7 @@ public partial class Viewer : CustomStyledPage
     SetHelpLink();
     //CreateMapTabs(application);
     CreateMapThemes(application);
+    CreatePrintLayoutList();
 
     bool isPublic = AppAuthentication.Mode == AuthenticationMode.None;
     ucLegendPanel.Initialize(_config, _appState, application);
@@ -251,6 +252,33 @@ public partial class Viewer : CustomStyledPage
     }
   }
 
+  private void CreatePrintLayoutList()
+  {
+    AppState appState = null;
+
+    if (!String.IsNullOrEmpty(Request.Form["state"]) && !String.IsNullOrEmpty(Request.Form["width"]))
+    {
+      appState = AppState.FromJson(Request.Form["state"]);
+      appState.SaveTo(ViewState);
+
+      Configuration config = _config;
+
+      foreach (Configuration.PrintTemplateRow template in config.PrintTemplate)
+      {
+        bool add = template.IsAlwaysAvailableNull() || template.AlwaysAvailable == 1;
+
+        if (!add)
+        {
+          add = template.GetApplicationPrintTemplateRows().Any(o => o.ApplicationID == appState.Application);
+        }
+
+        if (add)
+        {
+          ddlPrintTemplate.Items.Add(new ListItem(template.TemplateTitle, template.TemplateID));
+        }
+      }
+    }
+  }
   //private void CreateZoomBar()
   //{
   //  zoomBar.Attributes["data-maxlevel"] = AppSettings.ZoomLevels.ToString();

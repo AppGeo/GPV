@@ -42,7 +42,8 @@ public class MinifiedStylesheetsHandler : IHttpHandler
       "Styles/LegendPanel.css",
       "Styles/LocationPanel.css",
       "Styles/MarkupPanel.css",
-      "Styles/jquery-ui-datepicker.css"
+      "Styles/jquery-ui-datepicker.css",
+      "Styles/font-awesome.css"
     });
   }
 
