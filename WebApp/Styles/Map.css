@@ -13,15 +13,6 @@
  *  limitations under the License.
  */
 
-#pnlMapTabs
-{
-  left: 12px;
-  right: 12px;
-  bottom: auto;
-  height: 19px;
-  overflow: hidden;
-}
-
 #pnlMap
 {
   top: 0;

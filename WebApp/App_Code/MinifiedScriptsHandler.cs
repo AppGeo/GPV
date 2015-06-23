@@ -46,14 +46,11 @@ public class MinifiedScriptsHandler : IHttpHandler
       new ScriptItem("Scripts/Configuration.js", true, true),
       new ScriptItem("Scripts/AppState.js", true, true),
       new ScriptItem("Scripts/Selection.js", true, true),
-      new ScriptItem("Scripts/ZoomBar.js", true, true),
       new ScriptItem("Scripts/SearchPanel.js", true, true),
       new ScriptItem("Scripts/SelectionPanel.js", true, true),
       new ScriptItem("Scripts/LegendPanel.js", true, true),
       new ScriptItem("Scripts/LocationPanel.js", true, true),
       new ScriptItem("Scripts/MarkupPanel.js", true, true),
-      new ScriptItem("Scripts/Resize.js", true, true),
-      new ScriptItem("Scripts/Tab.js", true, true),
       new ScriptItem("Scripts/MapTip.js", true, true),
       new ScriptItem("Scripts/Viewer.js", true, true)
     });

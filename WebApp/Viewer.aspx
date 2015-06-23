@@ -33,7 +33,7 @@
 <body>
   <div id="pnlBody" class="container-fluid">
     <div id="pnlHeader" class="Panel">
-      <span id="cmdMenu" runat="server" class="CommandLink" title="Show the help pages" target="menu"><span class="glyphicon glyphicon-menu-hamburger" style="font-size: 22px;"></span></span>
+      <span id="cmdMenu" class="CommandLink" title="Show/hide the menu"><span class="glyphicon glyphicon-menu-hamburger" style="font-size: 22px;"></span></span>
       <uc1:Header ID="Header1" runat="server" />
       <a id="cmdHelp" runat="server" class="CommandLink" title="Show the help pages" href="Help.aspx" target="help"><span class="glyphicon glyphicon-question-sign" style="font-size: 22px;"></span></a>
     </div>
@@ -117,9 +117,6 @@
       </div>
       <div id="pnlMapSizer" runat="server" class="Panel">
         <div id="pnlMap" class="MainPanel Panel">
-          <div style="display: none;">
-              <div id="zoomBar" runat="server" style="margin-top: 4px"><span id="zoomBarMinus"></span><span id="zoomBarActive"><span id="zoomBarLeft" class="ZoomBar"></span><asp:PlaceHolder ID="plhZoomBar" runat="server" /><span id="zoomBarRight" class="ZoomBar"></span><span id="zoomBarSlider" class="ZoomBar"></span></span><span id="zoomBarPlus"></span></div>
-          </div>
           <div id="pnlMapTools" class="Panel">
             <div id="cmdFullView" class="Button" title="Full View"><span class="glyphicon glyphicon-globe"></span></div>
             <div id="optPan" runat="server" class="Button MapTool Selected" title="Pan"><span class="glyphicon glyphicon-hand-up"></span></div>
@@ -133,10 +130,8 @@
             <div id="scaleBar"></div>
             <div id="scaleBarText"></div>
           </div>
-
         </div>
       </div>
-
     </div>
     <div id="pnlFooter" class="Panel"><uc1:Footer ID="Footer1" runat="server" /></div>
     <form id="frmSaveMap" method="post" action="Services/MapImage.ashx">

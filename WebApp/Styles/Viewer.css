@@ -143,6 +143,7 @@ button {
 
 #pnlMapSizer
 {
+  left: 400px;
   right: 0;
   min-width: 548px;
 }

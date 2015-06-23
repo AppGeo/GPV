@@ -61,8 +61,6 @@ var GPV = (function (gpv) {
 
     // =====  component events  =====
 
-    gpv.on("resize", "functionResized", refreshOverviewMap);
-    gpv.on("resize", "mapResized", refreshOverviewMap);
     gpv.on("viewer", "functionTabChanged", refreshOverviewMap);
     gpv.on("viewer", "extentChanged", drawMainExtent);
     gpv.on("selectionPanel", "gridFilled", showZoneLevelCounts);

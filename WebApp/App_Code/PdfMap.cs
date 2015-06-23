@@ -602,7 +602,7 @@ public class PdfMap
 	{
     response.Clear();
 		response.ContentType = "application/pdf";
-		response.AddHeader("Content-Disposition", inline ? "inline" : "attachment" + "; filename=Map.pdf");
+		response.AddHeader("Content-Disposition", (inline ? "inline" : "attachment") + "; filename=Map.pdf");
 
 		// create the PDF document
 

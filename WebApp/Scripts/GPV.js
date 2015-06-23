@@ -64,21 +64,6 @@ var GPV = (function (gpv) {
     return $.ajax(args);
   }
 
-  function selectTool($tool, mapOptions, cursor) {
-    //if (!$tool.hasClass("Disabled")) {
-    //  $(".MapTool").not($tool.addClass("Selected")).removeClass("Selected");
-
-    //  mapOptions = $.extend({ shift: "zoom" }, mapOptions);
-
-    //  if (cursor) {
-    //    mapOptions.cursors = $("#mapMain").geomap("option", "cursors");
-    //    mapOptions.cursors[mapOptions.mode] = cursor;
-    //  }
-
-    //  $("#mapMain").geomap("option", mapOptions);
-    //}
-  }
-
   function store(name, value) {
     var s = $.cookie("store");
     s = s ? JSON.parse(s) : {};
@@ -100,7 +85,6 @@ var GPV = (function (gpv) {
   gpv.loadOptions = loadOptions;
   gpv.on = on;
   gpv.post = post;
-  gpv.selectTool = selectTool;
   gpv.store = store;
 
   return gpv;

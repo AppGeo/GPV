@@ -14,8 +14,6 @@
 
 var GPV = (function (gpv) {
   $(function () {
-    var metersPerFoot = 0.3048;
-    var zoomFactor = 1.414213562373095;
     var appState = gpv.appState;
 
     var $map = $("#mapMain");
@@ -35,6 +33,7 @@ var GPV = (function (gpv) {
 
     // TODO: add support for measurement
     // TODO: add support for markup
+    // TODO: restore optional scale bar?
 
     var crs = new L.Proj.CRS('GPV:1', gpv.settings.coordinateSystem, {
       resolutions: [
@@ -84,8 +83,18 @@ var GPV = (function (gpv) {
     });
 
     $('#cmdMenu').on("click", function () {
-      var left = $('#pnlFunctionSizer').css('left') === '0px' ? '-400px' : '0px';
-      $('#pnlFunctionSizer').animate({ left: left }, { duration: 800 });
+      var hide = $('#pnlFunctionSizer').css('left') === '0px';
+      $('#pnlFunctionSizer').animate({ left: hide ? '-400px' : '0px' }, { duration: 800 });
+      $('#pnlMapSizer').animate({ left: hide ? '0px' : '400px' }, { 
+          duration: 800,
+          progress: function () {
+            map.invalidateSize();
+          },
+          complete: function () {
+            map.invalidateSize();
+            shingleLayer.redraw();
+          }
+      });
     });
 
     $("#cmdPrint").on("click", function () {
@@ -128,7 +137,6 @@ var GPV = (function (gpv) {
       });
     });
 
-
     $(".MenuItem").on("click", function(){
       var name = $(this).text();
       $('#pnlFunctionTabs').animate({ left: '-400px' }, 600, function () {
@@ -155,11 +163,11 @@ var GPV = (function (gpv) {
     var $MapTool = $(".MapTool");
 
     $("#optIdentify").on("click", function () {
-      gpv.selectTool($(this), { mode: "drawPoint", pannable: false, drawStyle: { strokeWidth: "0px"} }, "default");
+      // TODO: switch to identify mode
     });
 
     $("#optPan").on("click", function () {
-      //gpv.selectTool($(this), { mode: "pan", pannable: true, drawStyle: defaultDrawStyle });
+      // TODO: switch to pan/zoom mode
     });
 
     // =====  component events  =====

@@ -34,7 +34,6 @@ public class MinifiedStylesheetsHandler : IHttpHandler
       "Styles/DataList.css",
       "Styles/Viewer.css",
       "Styles/MapTip.css",
-      "Styles/ZoomBar.css",
       "Styles/Tab.css",
       "Styles/Map.css",
       "Styles/SelectionPanel.css",
