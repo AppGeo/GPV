@@ -102,7 +102,6 @@ button {
 .Resizer
 {
   z-index: 4;
-  behavior: url(Styles/PIE.htc);
   background-color: rgba(0, 0, 0, 0);
   -pie-background: rgba(0, 0, 0, 0);
 }

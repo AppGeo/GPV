@@ -206,21 +206,15 @@
           $button.on("touchstart." + key + " mousedown." + key, settings.showSelector);
 
           function disposeSelector() {
-            $selector.hide();
-
-            // PIE.htc on IE needs this delay, otherwise an error will occur
-
-            setTimeout(function () {
-              $selector.remove();
-              $selector = null;
-              $saturationBar = null;
-              $hueSlider = null;
-              $saturationSlider = null;
-              $valueSlider = null;
-              $surface = null;
-              $curColorBox = null;
-              $newColorBox = null;
-            }, 100);
+            $selector.remove();
+            $selector = null;
+            $saturationBar = null;
+            $hueSlider = null;
+            $saturationSlider = null;
+            $valueSlider = null;
+            $surface = null;
+            $curColorBox = null;
+            $newColorBox = null;
           }
 
           function makeBar(title, top, colorFunction) {
