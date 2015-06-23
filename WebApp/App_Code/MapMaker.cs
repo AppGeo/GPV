@@ -88,8 +88,8 @@ public class MapMaker
   {
     DrawCross(graphics, p, pen, 10);
 
-    double x = p.Coordinate.X - AppSettings.DatumShiftX;
-    double y = p.Coordinate.Y - AppSettings.DatumShiftY;
+    double x = p.Coordinate.X;
+    double y = p.Coordinate.Y;
 
     if (AppSettings.MapUnits == "feet")
     {

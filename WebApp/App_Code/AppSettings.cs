@@ -229,30 +229,6 @@ public static class AppSettings
     }
   }
 
-  public static string DataTabLinkWindowName
-  {
-    get
-    {
-      return GetConfigSetting("DataTabLinkWindowName");
-    }
-  }
-
-  public static double DatumShiftX
-  {
-    get
-    {
-      return GetConfigDouble("DatumShiftX");
-    }
-  }
-
-  public static double DatumShiftY
-  {
-    get
-    {
-      return GetConfigDouble("DatumShiftY");
-    }
-  }
-
   public static Envelope DefaultFullExtent
   {
     get
@@ -323,30 +299,6 @@ public static class AppSettings
       }
 
       return polygonMode;
-    }
-  }
-
-  public static string IdentifyPopup
-  {
-    get
-    {
-      return GetConfigSetting("IdentifyPopup");
-    }
-  }
-
-  public static int IdentifyWindowHeight
-  {
-    get
-    {
-      return GetConfigInteger("IdentifyWindowHeight");
-    }
-  }
-
-  public static int IdentifyWindowWidth
-  {
-    get
-    {
-      return GetConfigInteger("IdentifyWindowWidth");
     }
   }
 
@@ -571,14 +523,6 @@ public static class AppSettings
     }
   }
 
-  public static int ZoomLevels
-  {
-    get
-    {
-      return GetConfigInteger("ZoomLevels");
-    }
-  }
-
   private static Color BlendColors(Color backColor, Color foreColor, double foreOpacity)
   {
     int r = Convert.ToInt32(backColor.R * (1 - foreOpacity) + foreColor.R * foreOpacity);
@@ -650,9 +594,6 @@ public static class AppSettings
   {
     Dictionary<String, Object> jsonData = new Dictionary<String, Object>();
     jsonData.Add("preserveOnActionChange", PreserveOnActionChange);
-    jsonData.Add("identifyWindowWidth", IdentifyWindowWidth);
-    jsonData.Add("identifyWindowHeight", IdentifyWindowHeight);
-    jsonData.Add("identifyPopup", IdentifyPopup);
     jsonData.Add("isPublic", String.IsNullOrEmpty(AppUser.Name));
     jsonData.Add("mapUnits", MapUnits);
     jsonData.Add("measureUnits", MeasureUnits);

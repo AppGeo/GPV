@@ -153,7 +153,7 @@ public class ExportMarkupHandler : IHttpHandler
     for (int i = 0; i < points.Count; ++i)
     {
       double lat; double lon;
-      _coordSys.ToGeodetic((points[i].X - AppSettings.DatumShiftX) * f, (points[i].Y - AppSettings.DatumShiftY) * f, out lon, out lat);
+      _coordSys.ToGeodetic(points[i].X * f, points[i].Y * f, out lon, out lat);
       coordinates.Add(String.Format("{0},{1},0", lon, lat));
     }
 
