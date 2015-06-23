@@ -81,21 +81,24 @@ src: url("fonts/lora/Lora-Bold.otf") format("opentype");
 font-family: OpenSans;
 font-weight: normal;
 font-style: normal;
-src: url("fonts/open-sans/OpenSans-Regular.otf") format("opentype");
+src: url("fonts/open-sans/OpenSans-Regular.eot");
+src: local("OpenSans-Regular"),  url('fonts/OpenSans-Regular.otf') format("opentype");
 }
 
 @font-face {
 font-family: OpenSans;
 font-weight: bold;
 font-style: normal;
-src: url("fonts/open-sans/OpenSans-Bold.otf") format("opentype");
+src: url("fonts/open-sans/OpenSans-Bold.eot");
+src: local("OpenSans-Bold"),  url('fonts/OpenSans-Bold.otf') format("opentype");
 }
 
 @font-face {
 font-family: OpenSans;
 font-weight: lighter;
 font-style: normal;
-src: url("fonts/open-sans/OpenSans-Light.otf") format("opentype");
+src: url("fonts/open-sans/OpenSans-Light.eot");
+src: local("OpenSans-Light"),  url('fonts/OpenSans-Light.otf') format("opentype");
 }
 
 /* =====  common styles  ===== */

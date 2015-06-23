@@ -20,41 +20,43 @@
 <div class="FunctionHeader"><span class="glyphicon glyphicon-menu-left FunctionExit" aria-hidden="true"></span>Markup</div>
 
 <div id="pnlMarkupContent" class="Panel">
-  <div class="Panel" style="left: 14px; top: 11px; right: auto; bottom: auto; width: 81px; text-align: right">Your Name</div>
-  <gpv:Input type="text" id="tboMarkupUser" runat="server" CssClass="Input" style="position: absolute; left: 99px; top: 7px; width: 210px; cursor: default" />
-  <div class="Panel" style="left: 14px; top: 34px; right: auto; bottom: auto; width: 81px; text-align: right">Category</div>
-  <gpv:Select id="ddlMarkupCategory" runat="server" CssClass="Input" style="position: absolute; left: 99px; top: 31px; width: 216px" />
+  <label for="tboMarkupUser">Your Name</label>
+  <gpv:Input type="text" id="tboMarkupUser" runat="server" CssClass="Input" /><br />
+  <label for="ddlMarkupCategory">Category</label>
+  <gpv:Select id="ddlMarkupCategory" runat="server" CssClass="Input" /><br />
             
-  <div class="Panel" style="left: 14px; top: 57px; right: auto; bottom: auto; width: 81px; text-align: right">Markup Group</div>
-  <gpv:Div id="cmdNewMarkup" runat="server" CssClass="CommandLink Disabled Panel" style="left: 104px; top: 57px; right: auto; bottom: auto">New</gpv:Div>  
-  <div class="Panel" id="cmdZoomToMarkup" class="CommandLink Disabled Toggleable" style="left: 145px; top: 57px; right: auto; bottom: auto">Zoom To</div>  
-  <div class="Panel" id="cmdDeleteMarkup" class="CommandLink Disabled Toggleable" style="left: 213px; top: 57px; right: auto; bottom: auto">Delete</div>  
-  <div class="Panel" id="cmdExportMarkup" class="CommandLink Disabled Toggleable" style="left: 267px; top: 57px; right: auto; bottom: auto">To KML</div>  
+  <label>Markup Group</label>
+  <gpv:Div id="cmdNewMarkup" runat="server" CssClass="CommandLink Disabled MarkupGroup">New</gpv:Div>  
+  <div id="cmdZoomToMarkup" class="CommandLink Disabled MarkupGroup Toggleable">Zoom To</div>  
+  <div id="cmdDeleteMarkup" class="CommandLink Disabled MarkupGroup Toggleable">Delete</div>  
+  <div id="cmdExportMarkup" class="CommandLink Disabled MarkupGroup Toggleable">To KML</div><br />
 
-  <div class="Panel" style="left: 95px; top: 76px; right: auto; bottom: auto; width: 34px; text-align: right">Title</div>
-  <input type="text" id="tboMarkupTitle" class="Input" style="position: absolute; left: 132px; top: 73px; width: 176px; cursor: default" disabled="disabled" />
+  <label>Title</label>
+  <input type="text" id="tboMarkupTitle" class="Input" disabled="disabled" />
 
-  <gpv:Input type="checkbox" id="chkMarkupLock" runat="server" disabled="disabled" style="position: absolute; left: 315px; top: 73px; display: none" />
-  <gpv:Label id="labMarkupLock" runat="server" for="chkMarkupLock" style="position: absolute; left: 335px; top: 76px; display: none">Lock</gpv:Label>
+  <gpv:Input type="checkbox" id="chkMarkupLock" runat="server" disabled="disabled" style="display: none" />
+  <gpv:Label id="labMarkupLock" runat="server" for="chkMarkupLock" style="display: none">Lock</gpv:Label>
 
-  <gpv:Div id="optDrawPoint" runat="server" CssClass="Button MapTool Disabled Panel" style="left: 19px; top: 107px" Title="Draw Point"></gpv:Div>
-  <gpv:Div id="optDrawLine" runat="server" CssClass="Button MapTool Disabled Panel" style="left: 44px; top: 107px" Title="Draw Line"></gpv:Div>
-  <gpv:Div id="optDrawPolygon" runat="server" CssClass="Button MapTool Disabled Panel" style="left: 69px; top: 107px" Title="Draw Polygon"></gpv:Div>
-  <gpv:Div id="optDrawCircle" runat="server" CssClass="Button MapTool Disabled Panel" style="left: 94px; top: 107px" Title="Draw Circle"></gpv:Div>
-  <gpv:Div id="optDrawCoordinates" runat="server" CssClass="Button MapTool Disabled Panel" style="left: 130px; top: 107px" Title="Draw Coordinates"></gpv:Div>
-  <gpv:Div id="optDrawLength" runat="server" CssClass="Button MapTool Disabled Panel" style="left: 155px; top: 107px" Title="Draw Measured Length"></gpv:Div>
-  <gpv:Div id="optDrawArea" runat="server" CssClass="Button MapTool Disabled Panel" style="left: 180px; top: 107px" Title="Draw Measured Area"></gpv:Div>
-  <gpv:Div id="optDeleteMarkup" runat="server" CssClass="Button MapTool Disabled Panel" style="left: 219px; top: 107px" Title="Delete Markup"></gpv:Div>
-  <gpv:Div id="optColorPicker" runat="server" CssClass="Button MapTool Disabled Panel" style="left: 244px; top: 107px" Title="Pick Color"></gpv:Div>
-  <gpv:Div id="optPaintBucket" runat="server" CssClass="Button MapTool Disabled Panel" style="left: 269px; top: 107px" Title="Fill With Color"></gpv:Div>
-  <div id="cmdMarkupColor" class="Button Disabled Color Panel" style="left: 307px; top: 107px; background-color: #808080" title="Markup Color"></div>
+  <div id="pnlMarkupTools" class="Panel" >
+    <gpv:Div id="optDrawPoint" runat="server" CssClass="Button MapTool Disabled MarkupTool" Title="Draw Point"></gpv:Div>
+    <gpv:Div id="optDrawLine" runat="server" CssClass="Button MapTool Disabled MarkupTool" Title="Draw Line"></gpv:Div>
+    <gpv:Div id="optDrawPolygon" runat="server" CssClass="Button MapTool Disabled MarkupTool" Title="Draw Polygon"></gpv:Div>
+    <gpv:Div id="optDrawCircle" runat="server" CssClass="Button MapTool Disabled MarkupTool" Title="Draw Circle"></gpv:Div>
+    <gpv:Div id="optDrawCoordinates" runat="server" CssClass="Button MapTool Disabled MarkupTool" Title="Draw Coordinates"></gpv:Div>
+    <gpv:Div id="optDrawLength" runat="server" CssClass="Button MapTool Disabled MarkupTool" Title="Draw Measured Length"></gpv:Div>
+    <gpv:Div id="optDrawArea" runat="server" CssClass="Button MapTool Disabled MarkupTool" Title="Draw Measured Area"></gpv:Div>
+    <gpv:Div id="optDeleteMarkup" runat="server" CssClass="Button MapTool Disabled MarkupTool" Title="Delete Markup"></gpv:Div>
+    <gpv:Div id="optColorPicker" runat="server" CssClass="Button MapTool Disabled MarkupTool" Title="Pick Color"></gpv:Div>
+    <gpv:Div id="optPaintBucket" runat="server" CssClass="Button MapTool Disabled MarkupTool" Title="Fill With Color"></gpv:Div>
+    <div id="cmdMarkupColor" class="Button Disabled Color MarkupTool" background-color: #808080" title="Markup Color"></div><br /><br />
 
-  <gpv:Div id="optDrawText" runat="server" CssClass="Button MapTool Disabled Panel" style="left: 19px; top: 133px" Title="Draw Text"></gpv:Div>
-  <div  class="Panel"style="left: 40px; top: 138px; right: auto; bottom: auto; width: 32px; text-align: right">Text</div>
-  <input type="text" id="tboMarkupText" class="Input" style="position: absolute; left: 75px; top: 134px; width: 169px; cursor: default" disabled="disabled" />
-  <input type="checkbox" id="chkTextGlow" style="position: absolute; left: 253px; top: 134px" />
-  <div class="Panel" style="left: 274px; top: 138px; right: auto; bottom: auto">Glow</div>
-  <div id="cmdTextGlowColor" class="Button Disabled Color Panel" style="left: 307px; top: 133px; background-color: #808080" title="Text Glow Color"></div>
+    <gpv:Div id="optDrawText" runat="server" CssClass="Button MapTool Disabled MarkupTool" Title="Draw Text"></gpv:Div>
+    <div  class="MarkupTool">Text</div>
+    <input type="text" id="tboMarkupText" class="Input MarkupTool" style="width: 169px; cursor: default" disabled="disabled" />
+    <input type="checkbox" id="chkTextGlow" class="MarkupTool" />
+    <div class="MarkupTool" >Glow</div>
+    <div id="cmdTextGlowColor" class="Button Disabled Color MarkupTool" background-color: #808080" title="Text Glow Color"></div>
+  </div>
 
   <div class="Panel" id="pnlMarkupGrid">
     <table id="grdMarkup" class="DataGrid"></table>

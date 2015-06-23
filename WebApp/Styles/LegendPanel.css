@@ -68,33 +68,30 @@
 
 .LegendExpander
 {
-  margin-right: 5px;
-  background-image: url(../Images/UI/Expand.png);
-  width: 11px;
-  height: 11px;
+  margin-right: 8px;
+  font-family: FontAwesome;
+  font-size: 15px;
 }
 
-.LegendExpander.Expanded
+.LegendExpander.Expanded:before
 {
-  background-position: -11px 0px;
+  content: "\f147";
 }
 
-.LegendExpander.Collapsed
+.LegendExpander.Collapsed:before
 {
-  background-position: 0px 0px;
+  content: "\f196";
 }
 
 .LegendExpander.Empty
 {
-  background-image: none;
+  padding-right: 13px;
 }
 
 .LegendVisibility
 {
-  width: 14px;
-  height: 14px;
-  margin-top: 1px;
   margin-right: 5px;
+  margin-top: 2px;
 }
 
 .LegendContent

@@ -33,7 +33,7 @@
 <body>
   <div id="pnlBody" class="container-fluid">
     <div id="pnlHeader" class="Panel">
-      <a id="cmdMenu" runat="server" class="CommandLink" title="Show the help pages" href="javascript: void(0);" target="menu"><span class="glyphicon glyphicon-menu-hamburger" style="font-size: 22px;"></span></a>
+      <span id="cmdMenu" runat="server" class="CommandLink" title="Show the help pages" target="menu"><span class="glyphicon glyphicon-menu-hamburger" style="font-size: 22px;"></span></span>
       <uc1:Header ID="Header1" runat="server" />
       <a id="cmdHelp" runat="server" class="CommandLink" title="Show the help pages" href="Help.aspx" target="help"><span class="glyphicon glyphicon-question-sign" style="font-size: 22px;"></span></a>
     </div>
@@ -46,7 +46,7 @@
           </select><br />
             <span id="labLevel" class="FunctionLabel" runat="server" style="display: none">Level </span>
             <select id="ddlLevel" runat="server" class="Input" style="width: 70px; display: none"></select>
-          <ul class="TabScroll" style="border-left: solid 3px #B2DFDB; margin-top: 20px;">
+          <ul class="TabScroll Menu">
             <li id="tabSearch" runat="server" class="MenuItem Normal" style="display: none">Search</li>
             <li id="tabSelection" runat="server" class="MenuItem Normal" style="display: none">Selection</li>
             <li id="tabLegend" runat="server" class="MenuItem Normal" style="display: none">Legend</li>

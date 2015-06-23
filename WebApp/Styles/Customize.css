@@ -186,6 +186,10 @@ a.VersionText
   color: #00796B;
 }
 
+.Menu{
+  border-left: solid 4px #B2DFDB; 
+}
+
 .MenuItem {
   color: #00796B;
   /*border-bottom: solid 1px #80cbc4;*/

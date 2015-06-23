@@ -45,21 +45,20 @@ div.Button, div.Button.Disabled:hover
   cursor: default;
 }
 
+.Button span{
+  color: #7B7B7B;
+}
+.Selected span{
+  color: #000000;
+}
+
 div.Button:hover
 {
-  border-left: solid 1px White;
-  border-top: solid 1px White;
-  border-right: solid 1px Gray;
-  border-bottom: solid 1px Gray;
   cursor: pointer;
 }
 
 div.Button.Selected, div.Button.Selected:hover
 {
-  border-left: solid 1px Gray;
-  border-top: solid 1px Gray;
-  border-right: solid 1px White;
-  border-bottom: solid 1px White;
   cursor: default;
 }
 
@@ -184,6 +183,10 @@ button {
   overflow: hidden;
 }
 
+.Menu{
+  margin-top: 20px;
+}
+
 .MenuItem{
   display: block;
   font-family: Lora;
@@ -191,9 +194,6 @@ button {
   padding: 8px;
   cursor: pointer;
 }
-/*.MenuItem:hover{
-  background-color: #FFCC80
-}*/
 
 #pnlFunction
 {
