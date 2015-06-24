@@ -117,10 +117,31 @@
       </div>
       <div id="pnlMapSizer" runat="server" class="Panel">
         <div id="pnlMap" class="MainPanel Panel">
-          <div id="pnlMapTools" class="Panel">
             <div id="cmdFullView" class="Button" title="Full View"><span class="glyphicon glyphicon-globe"></span></div>
+          <div id="pnlMapTools" class="Panel">
             <div id="optPan" runat="server" class="Button MapTool Selected" title="Pan"><span class="glyphicon glyphicon-hand-up"></span></div>
             <div id="optIdentify" runat="server" class="Button MapTool" title="Identify"><span class="glyphicon glyphicon-info-sign"></span></div>
+            <div ID="optSelect" runat="server" class="Button MapTool" title="Select Features"></div>
+          </div>
+          <div id="pnlMarkupTools" class="Panel" >
+            <div id="optDrawPoint" runat="server" class="Button MapTool Disabled MarkupTool" title="Draw Point"></div>
+            <div id="optDrawLine" runat="server" class="Button MapTool Disabled MarkupTool" title="Draw Line"></div>
+            <div id="optDrawPolygon" runat="server" class="Button MapTool Disabled MarkupTool" title="Draw Polygon"></div>
+            <div id="optDrawCircle" runat="server" class="Button MapTool Disabled MarkupTool" title="Draw Circle"></div>
+            <div id="optDrawCoordinates" runat="server" class="Button MapTool Disabled MarkupTool" title="Draw Coordinates"></div>
+            <div id="optDrawLength" runat="server" class="Button MapTool Disabled MarkupTool" title="Draw Measured Length"></div>
+            <div id="optDrawArea" runat="server" class="Button MapTool Disabled MarkupTool" title="Draw Measured Area"></div>
+            <div id="optDeleteMarkup" runat="server" class="Button MapTool Disabled MarkupTool" title="Delete Markup"></div>
+            <div id="optColorPicker" runat="server" class="Button MapTool Disabled MarkupTool" title="Pick Color"></div>
+            <div id="optPaintBucket" runat="server" class="Button MapTool Disabled MarkupTool" title="Fill With Color"></div>
+            <div id="cmdMarkupColor" class="Button Disabled Color MarkupTool" background-color: #808080" title="Markup Color"></div><br />
+
+            <div id="optDrawText" runat="server" class="Button MapTool Disabled MarkupTool" title="Draw Text"></div>
+            <div  class="MarkupTool">Text</div>
+            <input type="text" id="tboMarkupText" class="Input MarkupTool" style="width: 169px; cursor: default" disabled="disabled" />
+            <input type="checkbox" id="chkTextGlow" class="MarkupTool" />
+            <div class="MarkupTool" >Glow</div>
+            <div id="cmdTextGlowColor" class="Button Disabled Color MarkupTool" background-color: #808080" title="Text Glow Color"></div>
           </div>
           <div id="mapMain" runat="server" class="Panel">
             <div id="mapTip" style="display: none"></div>

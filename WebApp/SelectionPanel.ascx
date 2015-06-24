@@ -29,8 +29,8 @@
       <gpv:Select ID="ddlQuery" runat="server" CssClass="Input" ToolTip="Filter which lists only those features meeting certain criteria" />
     </div>
     <div id="pnlSelectTools" class="Panel">
-      <%--<gpv:Div ID="optSelect" runat="server" CssClass="MapTool" ToolTip="Select Features" />--%>
-      <button id="optSelect" title="Select Feature"><span class="select-feature"></span>Select</button>
+<%--  <gpv:Div ID="optSelect" runat="server" CssClass="MapTool" ToolTip="Select Features" />
+      <button id="optSelect" title="Select Feature"><span class="select-feature"></span>Select</button>--%>
       <button id="cmdSelectView" title="Select All in View"><span class="select-view"></span>Select All</button>
       <button id="cmdZoomSelect" title="Zoom to Selected Features"><span class="select-zoom"></span>Zoom To</button>
       <button id="cmdClearSelection" title="Clear Selection"><span class="select-clear"></span>Clear</button>
