@@ -125,6 +125,9 @@
           <div id="mapMain" runat="server" class="Panel">
             <div id="mapTip" style="display: none"></div>
           </div>
+          <div id="progress" style="display: none">
+            <div id="progressBar"></div>
+          </div>
         </div>
       </div>
     </div>

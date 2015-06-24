@@ -19,6 +19,7 @@ var GPV = (function (gpv) {
     var $map = $("#mapMain");
     var fullExtent = gpv.configuration.fullExtent;
     var resizeHandle;
+    var redrawPost;
 
     var mapTabChangedHandlers = [];
     var functionTabChangedHandlers = [];
@@ -35,7 +36,7 @@ var GPV = (function (gpv) {
     // TODO: add support for markup
     // TODO: restore optional scale bar?
 
-    var crs = new L.Proj.CRS('GPV:1', gpv.settings.coordinateSystem, {
+    var crs = new L.Proj.CRS("GPV:1", gpv.settings.coordinateSystem, {
       resolutions: [
         8192, 4096, 2048, 1024, 512, 256, 128,
         64, 32, 16, 8, 4, 2, 1, 0.5
@@ -43,11 +44,13 @@ var GPV = (function (gpv) {
       origin: [0, 4000000]
     });
 
-    var map = L.map('mapMain', {
+    var map = L.map("mapMain", {
       crs: crs
     });
 
-    var shingleLayer = L.shingleLayer({ urlBuilder: refreshMap }).addTo(map);
+    var shingleLayer = L.shingleLayer({ urlBuilder: refreshMap }).on("shingleload", function () {
+      gpv.progress.clear();
+    }).addTo(map);
 
     if (gpv.settings.showScaleBar) {
       L.control.scale({
@@ -223,6 +226,9 @@ var GPV = (function (gpv) {
     function refreshMap(size, bbox, callback) {
       var same = sameBox(appState.Extent.bbox, bbox);
       appState.Extent.bbox = bbox;
+      appState.VisibleLayers[appState.MapTab] = gpv.legendPanel.getVisibleLayers(appState.MapTab);
+      console.log(appState.toJson());
+
       setExternalMap();
 
       if (!same) {
@@ -231,9 +237,13 @@ var GPV = (function (gpv) {
         });
       }
 
-      appState.VisibleLayers[appState.MapTab] = gpv.legendPanel.getVisibleLayers(appState.MapTab);
+      if (redrawPost) {
+        redrawPost.abort();
+      }
 
-      return gpv.post({
+      gpv.progress.start();
+
+      redrawPost = gpv.post({
         url: "Services/MapImage.ashx",
         data: {
           m: "MakeMapImage",
@@ -242,6 +252,7 @@ var GPV = (function (gpv) {
           height: size.y
         }
       }).done(function (url) {
+        redrawPost = null;
         callback(url);
       });
     }

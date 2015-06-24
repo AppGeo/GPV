@@ -166,6 +166,8 @@ L.ShingleLayer = L.Layer.extend({
       delete this.data.reset;
       layer._shingles.push(this);
     }
+
+    layer.fire('shingleload');
   },
 
   _update: function (reset) {
