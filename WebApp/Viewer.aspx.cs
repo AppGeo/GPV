@@ -170,8 +170,6 @@ public partial class Viewer : CustomStyledPage
     }
 
     ShowLevelSelector(application);
-    //CreateZoomBar();
-    pnlScaleBar.Style["display"] = AppSettings.ShowScaleBar ? "block" : "none";
 
     // set the default tool (also set in SelectionPanel and MarkupPanel)
 

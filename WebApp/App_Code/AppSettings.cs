@@ -593,6 +593,7 @@ public static class AppSettings
   public static string ToJson()
   {
     Dictionary<String, Object> jsonData = new Dictionary<String, Object>();
+    jsonData.Add("showScaleBar", ShowScaleBar);
     jsonData.Add("preserveOnActionChange", PreserveOnActionChange);
     jsonData.Add("isPublic", String.IsNullOrEmpty(AppUser.Name));
     jsonData.Add("mapUnits", MapUnits);

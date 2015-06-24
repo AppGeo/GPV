@@ -125,11 +125,6 @@
           <div id="mapMain" runat="server" class="Panel">
             <div id="mapTip" style="display: none"></div>
           </div>
-          <div id="pnlScaleBar" runat="server">
-            <div id="pnlScaleBarBackground"> </div>
-            <div id="scaleBar"></div>
-            <div id="scaleBarText"></div>
-          </div>
         </div>
       </div>
     </div>
