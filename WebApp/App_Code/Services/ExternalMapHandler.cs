@@ -72,15 +72,15 @@ public class ExternalMapHandler : WebServiceHandler
 
     double lon;
     double lat;
-    AppSettings.CoordinateSystem.ToGeodetic((x - AppSettings.DatumShiftX) * f, (y - AppSettings.DatumShiftY) * f, out lon, out lat);
+    AppSettings.CoordinateSystem.ToGeodetic(x * f, y * f, out lon, out lat);
 
     double minLon;
     double minLat;
-    AppSettings.CoordinateSystem.ToGeodetic((minx - AppSettings.DatumShiftX) * f, (miny - AppSettings.DatumShiftY) * f, out minLon, out minLat);
+    AppSettings.CoordinateSystem.ToGeodetic(minx * f, miny * f, out minLon, out minLat);
 
     double maxLon;
     double maxLat;
-    AppSettings.CoordinateSystem.ToGeodetic((maxx - AppSettings.DatumShiftX) * f, (maxy - AppSettings.DatumShiftY) * f, out maxLon, out maxLat);
+    AppSettings.CoordinateSystem.ToGeodetic(maxx * f, maxy * f, out maxLon, out maxLat);
 
     double zoomLevel = (Math.Log(190500 / pixelSize) / Math.Log(2)) + 1;
 

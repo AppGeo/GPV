@@ -180,9 +180,6 @@ public partial class Admin_CheckConfiguration : CustomStyledPage
     name.Add("FullExtent");
     message.Add(AppSettings.DefaultFullExtent == null ? "Not set or incorrectly specified, must be four comma-separated numbers" : null);
 
-    name.Add("ZoomLevels");
-    message.Add(CheckIsSet(AppSettings.ZoomLevels));
-
     // check MapUnits and MeasureUnits
 
     name.Add("MapUnits");
@@ -230,14 +227,6 @@ public partial class Admin_CheckConfiguration : CustomStyledPage
 
     name.Add("FalseNorthing");
     message.Add(CheckIsSet(AppSettings.GetConfigDouble("FalseNorthing")));
-
-    // check datum shift
-
-    name.Add("DatumShiftX");
-    message.Add(CheckIsSet(AppSettings.GetConfigDouble("DatumShiftX")));
-
-    name.Add("DatumShiftY");
-    message.Add(CheckIsSet(AppSettings.GetConfigDouble("DatumShiftY")));
 
     // check highlight colors, opacities and sizes
     
@@ -289,16 +278,6 @@ public partial class Admin_CheckConfiguration : CustomStyledPage
     name.Add("ExportFormat");
     values = new List<String>(new string[] { "csv", "xls" });
     message.Add(CheckInValues(AppSettings.ExportFormat, values));
-
-    name.Add("IdentifyPopup");
-    values = new List<String>(new string[] { "single", "multiple" });
-    message.Add(CheckInValues(AppSettings.IdentifyPopup, values));
-
-    name.Add("IdentifyWindowWidth");
-    message.Add(CheckGreaterThanZero(AppSettings.IdentifyWindowWidth));
-
-    name.Add("IdentifyWindowHeight");
-    message.Add(CheckGreaterThanZero(AppSettings.IdentifyWindowHeight));
 
     name.Add("MarkupTimeout");
     message.Add(CheckGreaterThanZero(AppSettings.MarkupTimeout));

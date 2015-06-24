@@ -170,8 +170,6 @@ public partial class Viewer : CustomStyledPage
     }
 
     ShowLevelSelector(application);
-    //CreateZoomBar();
-    pnlScaleBar.Style["display"] = AppSettings.ShowScaleBar ? "block" : "none";
 
     // set the default tool (also set in SelectionPanel and MarkupPanel)
 
@@ -317,11 +315,6 @@ public partial class Viewer : CustomStyledPage
       ShowError("FullExtent has not been provided or is invalid in Web.config");
     }
 
-    if (AppSettings.ZoomLevels == Int32.MinValue)
-    {
-      ShowError("ZoomLevels has not been provided in Web.config");
-    }
-
     if (AppSettings.MapUnits == null)
     {
       ShowError("MapUnits has not been provided in Web.config");
@@ -353,16 +346,6 @@ public partial class Viewer : CustomStyledPage
     if (AppSettings.CoordinateSystem == null)
     {
       ShowError("Projection parameters have not been provided or are invalid in Web.config");
-    }
-
-    if (Double.IsNaN(AppSettings.DatumShiftX))
-    {
-      ShowError("DatumShiftX has not been provided in Web.config");
-    }
-
-    if (Double.IsNaN(AppSettings.DatumShiftY))
-    {
-      ShowError("DatumShiftY has not been provided in Web.config");
     }
 
     // -- Active --
@@ -621,28 +604,6 @@ public partial class Viewer : CustomStyledPage
     if (AppSettings.PreserveOnActionChange != "target" && AppSettings.PreserveOnActionChange != "selection")
     {
       ShowError("PreserveOnActionChange is invalid in Web.config, must be \"target\" or \"selection\"");
-    }
-
-    if (AppSettings.IdentifyPopup == null)
-    {
-      ShowError("IdentifyPopup has not been provided in Web.config");
-    }
-    else
-    {
-      if (AppSettings.IdentifyPopup != "single" && AppSettings.IdentifyPopup != "multiple")
-      {
-        ShowError("IdentifyPopup is invalid in Web.config, must be \"single\" or \"multiple\"");
-      }
-    }
-
-    if (AppSettings.IdentifyWindowWidth == Int32.MinValue)
-    {
-      ShowError("IdentifyWindowWidth has not been provided in Web.config");
-    }
-
-    if (AppSettings.IdentifyWindowHeight == Int32.MinValue)
-    {
-      ShowError("IdentifyWindowHeight has not been provided in Web.config");
     }
 
     if (AppSettings.MarkupTimeout == Int32.MinValue)
@@ -1705,9 +1666,6 @@ public partial class Viewer : CustomStyledPage
         x *= Constants.FeetPerMeter;
         y *= Constants.FeetPerMeter;
       }
-
-      x += AppSettings.DatumShiftX;
-      y += AppSettings.DatumShiftY;
 
       double dx = _appState.Extent.Width / 2;
       double dy = _appState.Extent.Height / 2;

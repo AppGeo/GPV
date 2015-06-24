@@ -47,9 +47,6 @@ public partial class Identify : System.Web.UI.Page
         x *= Constants.FeetPerMeter;
         y *= Constants.FeetPerMeter;
       }
-
-      x += AppSettings.DatumShiftX;
-      y += AppSettings.DatumShiftY;
     }
 
     string dataTabID = Request.QueryString["datatab"];

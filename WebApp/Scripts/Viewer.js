@@ -49,6 +49,13 @@ var GPV = (function (gpv) {
 
     var shingleLayer = L.shingleLayer({ urlBuilder: refreshMap }).addTo(map);
 
+    if (gpv.settings.showScaleBar) {
+      L.control.scale({
+        imperial: gpv.settings.measureUnits !== "meters",
+        metric: gpv.settings.measureUnits !== "feet"
+      }).addTo(map);
+    }
+
     // =====  control events  =====
     
     $(window).on("resize", function () {
