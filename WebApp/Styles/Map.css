@@ -39,12 +39,24 @@
 
 #optPan
 {
-  left: 34px;
+  left: 0;
 }
 
 #optIdentify
 {
-  left: 58px;
+  left: 24px;
+}
+
+#optSelect
+{
+  left: 48px;
+  background-image: url(../Images/UI/Icons.png);
+  background-position: -816px 0px;  /* Select.gif */
+}
+
+#optSelect .Disabled
+{
+  background-position: -840px 0px;  /* SelectDisable.gif */
 }
 
 #mapMain

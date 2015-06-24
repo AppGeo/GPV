@@ -85,15 +85,7 @@
   background-repeat: no-repeat;
   cursor: default;
 }
-.select-feature
-{
-  background-position: -816px 0px;  /* Select.gif */
-}
 
-.select-feature .Disabled
-{
-  background-position: -840px 0px;  /* SelectDisable.gif */
-}
 
 .select-view
 {
