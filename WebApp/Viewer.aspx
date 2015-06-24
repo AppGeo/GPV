@@ -144,8 +144,8 @@
             <div id="cmdTextGlowColor" class="Button Disabled Color MarkupTool" background-color: #808080" title="Text Glow Color"></div>
           </div>
           <div id="mapMain" runat="server" class="Panel">
-            <div id="mapTip" style="display: none"></div>
           </div>
+          <div id="mapTip" style="display: none"></div>
           <div id="progress" style="display: none">
             <div id="progressBar"></div>
           </div>

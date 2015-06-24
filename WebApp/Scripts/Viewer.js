@@ -59,6 +59,8 @@ var GPV = (function (gpv) {
       }).addTo(map);
     }
 
+    gpv.mapTip.setMap(map);
+
     // =====  control events  =====
     
     $(window).on("resize", function () {
@@ -237,7 +239,7 @@ var GPV = (function (gpv) {
         });
       }
 
-      if (redrawPost) {
+      if (redrawPost && redrawPost.readyState !== 4) {
         redrawPost.abort();
       }
 
