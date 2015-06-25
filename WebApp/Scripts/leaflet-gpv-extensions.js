@@ -62,20 +62,22 @@ L.Map.prototype.on('click', function (e) {
     return;
   }
 
-  var isPolyline = map.options.drawing.mode === 'polyline';
+  var mode = map.options.drawing.mode;
+  var isPolyline = mode === 'polyline';
   var project = map.options.crs.project;
   var unproject = map.options.crs.unproject;
-  var modifiers = { shiftKey: e.originalEvent.shiftKey, ctrlKey: e.originalEvent.ctrlKey }
+  var modifiers = { shiftKey: e.originalEvent.shiftKey, ctrlKey: e.originalEvent.ctrlKey };
+  var unclickable = { clickable: false, pointerEvents: "none" };
   var latlngs, p0, p1;
 
-  switch (map.options.drawing.mode) {
+  switch (mode) {
     case 'point':
-      map.fire('shapedrawn', L.extend({ mode: 'point', shape: e.latlng }, modifiers));
+      map.fire('shapedrawn', L.extend(modifiers, { mode: mode, shape: e.latlng }));
       return;
 
     case 'rectangle':
       if (!map._drawingShape) {
-        map._drawingShape = L.polygon([ e.latlng, e.latlng ], L.extend(map.options.drawing.style, { clickable: false })).addTo(map);
+        map._drawingShape = L.polygon([ e.latlng ], L.extend({ clickable: false }, map.options.drawing.style)).addTo(map);
       }
       else {
         p0 = project(map._drawingShape.getLatLngs()[0]);
@@ -94,7 +96,7 @@ L.Map.prototype.on('click', function (e) {
           unproject(L.point(minx, miny))
         ]);
 
-        map.fire('shapedrawn', L.extend({ mode: 'rectangle', shape: map._drawingShape }, modifiers));
+        map.fire('shapedrawn', L.extend(modifiers, { mode: mode, shape: map._drawingShape }));
         delete map._drawingShape;
       }
       return;
@@ -102,17 +104,13 @@ L.Map.prototype.on('click', function (e) {
     case 'polyline':
     case 'polygon':
       if (!map._drawingShape) {
-        latlngs = [ e.latlng, e.latlng ];
-        map._drawingShape = L[map.options.drawing.mode](latlngs, L.extend(map.options.drawing.style, { 
-          fill: !isPolyline,
-          clickable: false
-        })).addTo(map);
+        map._drawingShape = L[mode]([ e.latlng ], L.extend(unclickable, map.options.drawing.style)).addTo(map);
       }
       else {
         if (map._drawingTimeout) {
           clearTimeout(map._drawingTimeout);
           addPolyLatLng();
-          map.fire('shapedrawn', L.extend({ mode: map.options.drawing.mode, shape: map._drawingShape }, modifiers));
+          map.fire('shapedrawn', L.extend(modifiers, { mode: mode, shape: map._drawingShape }));
           delete map._drawingShape;
         }
         else {
@@ -125,7 +123,7 @@ L.Map.prototype.on('click', function (e) {
 
     case 'circle':
       if (!map._drawingShape) {
-        map._drawingShape = L.polygon([ e.latlng, e.latlng ], L.extend(map.options.drawing.style, { clickable: false })).addTo(map);
+        map._drawingShape = L.polygon([ e.latlng ], L.extend(unclickable, map.options.drawing.style)).addTo(map);
       }
       else {
         map.removeLayer(map._drawingShape);
@@ -138,8 +136,8 @@ L.Map.prototype.on('click', function (e) {
         var dy = p1.y - p0.y;
         var radius = Math.sqrt(dx * dx + dy * dy);
 
-        map._drawingShape = L.circle(center, radius, L.extend(map.options.drawing.style, { clickable: false })).addTo(map);
-        map.fire('shapedrawn', L.extend({ mode: 'circle', shape: map._drawingShape }, modifiers));
+        map._drawingShape = L.circle(center, radius, L.extend(unclickable, map.options.drawing.style)).addTo(map);
+        map.fire('shapedrawn', L.extend(modifiers, { mode: mode, shape: map._drawingShape }));
         delete map._drawingShape;
       }
       return;
@@ -151,12 +149,7 @@ L.Map.prototype.on('click', function (e) {
   function addPolyLatLng() {
     delete map._drawingTimeout;
     latlngs = map._drawingShape.getLatLngs();
-
-    if (isPolyline && latlngs.length === 2 && latlngs[0].equals(latlngs[1])) {
-      latlngs.pop();
-    }
-
-    latlngs.splice(latlngs.length - (isPolyline ? 0 : 1), 0, e.latlng);
+    latlngs.push(e.latlng);
     map._drawingShape.setLatLngs(latlngs);
   }
 });

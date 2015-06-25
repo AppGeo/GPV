@@ -67,7 +67,7 @@ var GPV = (function (gpv) {
       $(map.getPanes().mapPane).css("cursor", mapOptions.cursor || "");
       delete mapOptions.cursor;
 
-      map.options = $.extend(map.options, mapOptions);
+      $.extend(true, map.options, mapOptions);
     }
   }
 
