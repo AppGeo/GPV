@@ -33,7 +33,6 @@ var GPV = (function (gpv) {
 
     // TODO: add support for measurement
     // TODO: add support for markup
-    // TODO: restore optional scale bar?
 
     var crs = new L.Proj.CRS("GPV:1", gpv.settings.coordinateSystem, {
       resolutions: [
@@ -49,11 +48,11 @@ var GPV = (function (gpv) {
       drawing: {
         mode: 'off',
         style: {
-          color: '#FF0000',
+          color: '#808080',
           weight: 2,
           opacity: 1,
           fill: true,
-          fillColor: '#FF0000',
+          fillColor: '#808080',
           fillOpacity: 0.5
         }
       }
@@ -74,6 +73,7 @@ var GPV = (function (gpv) {
 
     gpv.mapTip.setMap(map);
     gpv.selectionPanel.setMap(map);
+    gpv.markupPanel.setMap(map);
 
     // =====  control events  =====
     

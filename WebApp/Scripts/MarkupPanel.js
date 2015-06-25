@@ -14,7 +14,8 @@
 
 var GPV = (function (gpv) {
   $(function () {
-    var $map = $("#mapMain");
+    var map, shingleLayer, currentShape;
+
     var $container = $("#pnlMarkup");
     var config = gpv.configuration;
     var appState = gpv.appState;
@@ -98,34 +99,36 @@ var GPV = (function (gpv) {
     var $MapTool = $(".MapTool");
 
     $("#optDeleteMarkup,#optColorPicker,#optPaintBucket").on("click", function () {
-      gpv.selectTool($(this), { mode: "drawPoint", pannable: false, drawStyle: { strokeWidth: "0px"} }, "default");
+      gpv.selectTool($(this), map, { cursor: '', drawing: { mode: "point" } });
     });
 
     $("#optDrawArea").on("click", function () {
-      var color = getMarkupColor();
-      gpv.selectTool($(this), { mode: "measureArea", pannable: false, drawStyle: { strokeWidth: "2px", stroke: color, fill: color} });
+      var c = getMarkupColor();
+      gpv.selectTool($(this), map, { cursor: '', drawing: { mode: "polygon", style: { color: c, fill: true, fillColor: c } } });
     });
 
     $("#optDrawCircle").on("click", function () {
-      var color = getMarkupColor();
-      gpv.selectTool($(this), { mode: "dragCircle", pannable: false, drawStyle: { strokeWidth: "2px", stroke: color, fill: color} });
+      var c = getMarkupColor();
+      gpv.selectTool($(this), map, { cursor: '', drawing: { mode: "circle", style: { color: c, fill: true, fillColor: c } } });
     });
 
     $("#optDrawPoint,#optDrawCoordinates,#optDrawText").on("click", function () {
-      gpv.selectTool($(this), { mode: "drawPoint", pannable: false, drawStyle: { strokeWidth: "0px"} }, "crosshair");
+      gpv.selectTool($(this), map, { cursor: '', drawing: { mode: "point" } });
     });
 
     $("#optDrawLength").on("click", function () {
-      gpv.selectTool($(this), { mode: "measureLength", pannable: false, drawStyle: { strokeWidth: "2px", stroke: getMarkupColor()} });
+      var c = getMarkupColor();
+      gpv.selectTool($(this), map, { cursor: '', drawing: { mode: "polyline", style: { color: c, fill: false } } });
     });
 
     $("#optDrawLine").on("click", function () {
-      gpv.selectTool($(this), { mode: "drawLineString", pannable: false, drawStyle: { strokeWidth: "2px", stroke: getMarkupColor()} });
+      var c = getMarkupColor();
+      gpv.selectTool($(this), map, { cursor: '', drawing: { mode: "polyline", style: { color: c, fill: false } } });
     });
 
     $("#optDrawPolygon").on("click", function () {
-      var color = getMarkupColor();
-      gpv.selectTool($(this), { mode: "drawPolygon", pannable: false, drawStyle: { strokeWidth: "2px", stroke: color, fill: color} });
+      var c = getMarkupColor();
+      gpv.selectTool($(this), map, { cursor: '', drawing: { mode: "polygon", style: { color: c, fill: true, fillColor: c } } });
     });
 
     // =====  component events  =====
@@ -134,11 +137,13 @@ var GPV = (function (gpv) {
 
     // =====  private functions  =====
 
-    function addMarkup(geo, option) {
+    function addMarkup(e, option) {
+      currentShape = e.shape;
+
       var data = {
         m: "AddMarkup",
         id: appState.MarkupGroups[0],
-        shape: toWkt(geo),
+        shape: toWkt(currentShape),
         color: getMarkupColor()
       };
 
@@ -158,7 +163,7 @@ var GPV = (function (gpv) {
         data: data,
         success: function (result) {
           if (result) {
-            $map.geomap("refresh");
+            gpv.viewer.refreshMap();
           }
         }
       });
@@ -184,19 +189,21 @@ var GPV = (function (gpv) {
       });
     }
 
-    function deleteMarkup(geo) {
+    function deleteMarkup(e) {
+      var p = map.options.crs.project(e.shape);
+
       post({
         data: {
           m: "DeleteMarkup",
           id: appState.MarkupGroups[0],
-          x: geo.coordinates[0],
-          y: geo.coordinates[1],
+          x: p.x,
+          y: p.y,
           distance: 4,
-          scale: $map.geomap("option", "pixelSize")
+          scale: map.getProjectedPixelSize()
         },
         success: function (result) {
           if (result) {
-            $map.geomap("refresh");
+            gpv.viewer.refreshMap();
           }
         }
       });
@@ -242,7 +249,7 @@ var GPV = (function (gpv) {
       }
 
       function complete(canLock, isLocked) {
-        var $tools = $container.find(".Button.MapTool");
+        var $tools = $(".Button.MarkupTool");
 
         if (!enable && $tools.filter(".Selected").removeClass("Selected").length) {
           $("#optPan").addClass("Selected");
@@ -283,14 +290,16 @@ var GPV = (function (gpv) {
       }
     }
 
-    function floodColors(geo) {
+    function floodColors(e) {
+      var p = map.options.crs.project(e.shape);
+
       var data = {
         m: "FillWithColor",
         id: appState.MarkupGroups[0],
-        x: geo.coordinates[0],
-        y: geo.coordinates[1],
+        x: p.x,
+        y: p.y,
         distance: 4,
-        scale: $map.geomap("option", "pixelSize"),
+        scale: map.getProjectedPixelSize(),
         color: getMarkupColor()
       };
 
@@ -302,7 +311,7 @@ var GPV = (function (gpv) {
         data: data,
         success: function (result) {
           if (result) {
-            $map.geomap("refresh");
+            gpv.viewer.refreshMap();
           }
         }
       });
@@ -324,42 +333,44 @@ var GPV = (function (gpv) {
       });
     }
 
-    function mapShape(e, geo) {
+    function mapShape(e) {
       switch ($MapTool.filter(".Selected").attr("id")) {
         case "optDrawCircle":
-          if ($.geo.width(geo.bbox) > 0) {
-            addMarkup(geo);
-          }
+          //if ($.geo.width(geo.bbox) > 0) {
+            addMarkup(e);
+          //}
           return;
 
         case "optDrawPoint":
         case "optDrawLine":
         case "optDrawPolygon":
-          addMarkup(geo);
+          addMarkup(e);
           return;
 
         case "optDrawCoordinates":
         case "optDrawLength":
         case "optDrawArea":
-          addMarkup(geo, "measured");
+          addMarkup(e, "measured");
           return;
 
-        case "optDeleteMarkup": deleteMarkup(geo); return;
-        case "optColorPicker": pickColors(geo); return;
-        case "optPaintBucket": floodColors(geo); return;
-        case "optDrawText": addMarkup(geo, "text"); return;
+        case "optDeleteMarkup": deleteMarkup(e); return;
+        case "optColorPicker": pickColors(e); return;
+        case "optPaintBucket": floodColors(e); return;
+        case "optDrawText": addMarkup(e, "text"); return;
       }
     }
 
-    function pickColors(geo) {
+    function pickColors(e) {
+      var p = map.options.crs.project(e.shape);
+
       post({
         data: {
           m: "PickColors",
           id: appState.MarkupGroups[0],
-          x: geo.coordinates[0],
-          y: geo.coordinates[1],
+          x: p.x,
+          y: p.y,
           distance: 4,
-          scale: $map.geomap("option", "pixelSize")
+          scale: map.getProjectedPixelSize()
         },
         success: function (result) {
           if (result && result.color) {
@@ -399,28 +410,50 @@ var GPV = (function (gpv) {
     }
 
     function setDrawingColor(c) {
-      if ($container.find(".Button.MapTool.Selected").length) {
-        var drawStyle = $map.geomap("option", "drawStyle");
-        drawStyle.color = c;
-        $map.geomap("option", "drawStyle", drawStyle);
+      $.extend(map.options.drawing.style, { color: c, fillColor: c })
+    }
+
+    function setMap(m) {
+      map = m;
+
+      map.eachLayer(function (layer) {
+        if (!shingleLayer) {
+          shingleLayer = layer;
+        }
+      });
+
+      shingleLayer.on("shingleload", function () {
+        if (currentShape) {
+          map.removeLayer(currentShape);
+          currentShape = null;
+        }
+      });
+    }
+
+    function toWkt(shape) {
+      if (shape instanceof L.Polygon) {
+        var latlngs = shape.getLatLngs();
+        latlngs.push(latlngs[0]);
+        return "POLYGON((" + toWktCoordinates(latlngs) + "))";
+      }
+      else if (shape instanceof L.Polyline) {
+        return "LINESTRING(" + toWktCoordinates(shape.getLatLngs()) + ")";
+      }
+      else if (shape instanceof L.LatLng) {
+        return "POINT(" + toWktCoordinates([ shape ]) + ")";
+      }
+      else if (shape instanceof L.Circle) {
       }
     }
 
-    function toWkt(geometry) {
-      switch (geometry.type) {
-        case "Point": return "POINT(" + toWktCoordinates([geometry.coordinates]) + ")";
-        case "LineString": return "LINESTRING(" + toWktCoordinates(geometry.coordinates) + ")";
-        case "Polygon": return "POLYGON((" + toWktCoordinates(geometry.coordinates[0]) + "))";
-      }
-    }
-
-    function toWktCoordinates(coords) {
-      var prec = Math.log($map.geomap("option", "pixelSize")) / Math.LN10;
+    function toWktCoordinates(latlngs) {
+      var prec = Math.log(map.getProjectedPixelSize()) / Math.LN10;
       prec = prec >= 0 ? 0 : 0 - Math.floor(prec);
       var c = [];
 
-      for (var i = 0; i < coords.length; ++i) {
-        c.push(coords[i][0].toFixed(prec) + " " + coords[i][1].toFixed(prec));
+      for (var i = 0; i < latlngs.length; ++i) {
+        var p = map.options.crs.project(latlngs[i]);
+        c.push(p.x.toFixed(prec) + " " + p.y.toFixed(prec));
       }
 
       return c.join(",");
@@ -470,6 +503,7 @@ var GPV = (function (gpv) {
     // =====  public interface  =====
 
     gpv.markupPanel = {
+      setMap: setMap
     };
 
     // =====  finish initialization  =====
