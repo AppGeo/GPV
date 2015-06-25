@@ -81,3 +81,24 @@
 {
   font-size: 9px;
 }
+
+#progress
+{
+  background-color: white;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  height: 2px;
+  z-index: 6;
+}
+
+#progressBar
+{
+  background-color: blue;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 60px;
+  height: 100%;
+}
