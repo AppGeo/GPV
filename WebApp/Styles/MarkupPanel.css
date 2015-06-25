@@ -37,6 +37,30 @@ label#labMarkupLock {
   width: 50%;
 }
 
+#pnlMarkupTextGlow{
+  position: relative;
+  height: 25px;
+}
+
+#chkTextGlow{
+  display: inline-block;
+  float: left;
+  margin: 8px 5px;
+}
+
+#lblTextGlow{
+  display: inline-block;
+  float: left;
+  margin: 4px 5px;
+}
+
+#cmdTextGlowColor{
+  color: #808080;
+  display: inline-block;
+  float: left;
+  margin-left: 5px;
+}
+
 #pnlMarkupTools {
   top: 36px;
   left: 347px;
@@ -162,7 +186,7 @@ label#labMarkupLock {
 }
 
 #pnlMarkupGrid {
-  top: 115px;
+  top: 140px;
   border-top: solid 1px #b9b9b9;
   background-color: #F0F0F0;
   overflow: auto;

@@ -16,7 +16,7 @@ var GPV = (function (gpv) {
   $(function () {
     var map;
     var $container = $("#pnlSelection");
-    var $pnlDataDisplay = $('#pnlDataDisplay');
+    var $pnlDataDisplay = $("#pnlDataDisplay");
     var config = gpv.configuration;
     var appState = gpv.appState;
     var selection = gpv.selection;
@@ -251,7 +251,9 @@ var GPV = (function (gpv) {
             $pnlDataList.empty().append(html);
             $cmdDataPrint.removeClass("Disabled");
             if($pnlDataDisplay.css("right").substring(0, 1) === "-"){
-              $pnlDataDisplay.animate({ right: 0, opacity: "1.0" }, 600);
+              $pnlDataDisplay.animate({ right: 0, opacity: "1.0" }, 600, function () {
+                $(".DataExit").addClass("DataExitOpen");
+              });
             }
           },
           error: function (xhr, status, message) {

@@ -137,11 +137,6 @@
             <div id="cmdMarkupColor" class="Button Disabled Color MarkupTool" background-color: #808080" title="Markup Color"></div><br />
 
             <div id="optDrawText" runat="server" class="Button MapTool Disabled MarkupTool" title="Draw Text"></div>
-            <div  class="MarkupTool">Text</div>
-            <input type="text" id="tboMarkupText" class="Input MarkupTool" style="width: 169px; cursor: default" disabled="disabled" />
-            <input type="checkbox" id="chkTextGlow" class="MarkupTool" />
-            <div class="MarkupTool" >Glow</div>
-            <div id="cmdTextGlowColor" class="Button Disabled Color MarkupTool" background-color: #808080" title="Text Glow Color"></div>
           </div>
           <div id="mapMain" runat="server" class="Panel">
           </div>
@@ -153,10 +148,6 @@
       </div>
 
       <div id="pnlDataDisplay" class="Panel">
-        
-<%--        <div id="pnlDataTabs" class="TabPanel">
-          <div id="pnlDataTabScroll" class="TabScroll"></div>
-        </div>--%>
         <div class="DataHeader">Details<span class="glyphicon glyphicon-menu-right DataExit" aria-hidden="true"></span></div>
           <div id="pnlData" class="Panel">
           <span class="DataLabel">Data Set</span>
