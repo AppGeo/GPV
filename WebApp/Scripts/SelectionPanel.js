@@ -14,7 +14,7 @@
 
 var GPV = (function (gpv) {
   $(function () {
-    var $map = $("#mapMain");
+    var map;
     var $container = $("#pnlSelection");
     var $pnlDataDisplay = $("#pnlDataDisplay");
     var config = gpv.configuration;
@@ -85,7 +85,7 @@ var GPV = (function (gpv) {
     // =====  map tools  =====
 
     var $optSelect = $("#optSelect").on("click", function () {
-      gpv.selectTool($(this), { mode: "dragBox", pannable: false, shift: "dragBox", drawStyle: { strokeWidth: "2px", stroke: "Gray", fill: "White"} }, "default");
+      gpv.selectTool($(this), map, { cursor: 'pointer', drawing: { mode: 'point' } });
     });
 
     // =====  component events
@@ -335,16 +335,14 @@ var GPV = (function (gpv) {
       fillDataList();
     }
 
-    function mapShape(e, geo) {
+    function mapShape(e) {
+      // TODO: select by box
+
       if ($optSelect.hasClass("Selected") && appState.TargetLayer.length > 0) {
-        var g = geo.bbox;
-        var pixelSize = $map.geomap("option", "pixelSize");
-
-        if ($.geo.width(g) <= pixelSize * 6 && $.geo.height(g) <= pixelSize * 6) {
-          g = $.geo.center(g);
-        }
-
-        gpv.selection.selectByGeometry(g, e.shiftKey ? "add" : e.ctrlKey ? "remove" : "new", pixelSize * 4);
+        var p = map.options.crs.project(e.shape);
+        var geo = [ p.x, p.y ];
+        var pixelSize = map.getProjectedPixelSize();
+        gpv.selection.selectByGeometry(geo, e.shiftKey ? "add" : e.ctrlKey ? "remove" : "new", pixelSize * 4);
       }
     }
 
@@ -558,6 +556,11 @@ var GPV = (function (gpv) {
       }
     }
 
+    function setMap(m) {
+      map = m;
+      map.on("shape", mapShape);
+    }
+
     function syncAppState($ddl, prop) {
       $ddl.val(appState[prop]);
 
@@ -594,7 +597,8 @@ var GPV = (function (gpv) {
     gpv.selectionPanel = {
       gridFilled: function (fn) { gridFilledHandlers.push(fn); },
       reinitialize: reinitialize,
-      reinitialized: function (fn) { reinitializedHandlers.push(fn); }
+      reinitialized: function (fn) { reinitializedHandlers.push(fn); },
+      setMap: function (m) { map = m; }
     };
 
     initialize();

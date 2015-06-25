@@ -55,6 +55,111 @@ L.Map.prototype.getProjectedPixelSize = function () {   // -> Number
   return this.getProjectedBounds().getSize().x / this.getSize().x;
 }
 
+L.Map.prototype.on('click', function (e) {
+  var map = this;
+
+  if (!map.options.drawing) {
+    return;
+  }
+
+  var isPolyline = map.options.drawing.mode === 'polyline';
+  var project = map.options.crs.project;
+  var unproject = map.options.crs.unproject;
+  var modifiers = { shiftKey: e.originalEvent.shiftKey, ctrlKey: e.originalEvent.ctrlKey }
+  var latlngs, p0, p1;
+
+  switch (map.options.drawing.mode) {
+    case 'point':
+      map.fire('shapedrawn', L.extend({ mode: 'point', shape: e.latlng }, modifiers));
+      return;
+
+    case 'rectangle':
+      if (!map._drawingShape) {
+        map._drawingShape = L.polygon([ e.latlng, e.latlng ], L.extend(map.options.drawing.style, { clickable: false })).addTo(map);
+      }
+      else {
+        p0 = project(map._drawingShape.getLatLngs()[0]);
+        p1 = project(e.latlng);
+
+        var minx = Math.min(p0.x, p1.x);
+        var miny = Math.min(p0.y, p1.y);
+        var maxx = Math.max(p0.x, p1.x);
+        var maxy = Math.max(p0.y, p1.y);
+
+        map._drawingShape.setLatLngs([
+          unproject(L.point(minx, miny)),
+          unproject(L.point(minx, maxy)),
+          unproject(L.point(maxx, maxy)),
+          unproject(L.point(maxx, miny)),
+          unproject(L.point(minx, miny))
+        ]);
+
+        map.fire('shapedrawn', L.extend({ mode: 'rectangle', shape: map._drawingShape }, modifiers));
+        delete map._drawingShape;
+      }
+      return;
+
+    case 'polyline':
+    case 'polygon':
+      if (!map._drawingShape) {
+        latlngs = [ e.latlng, e.latlng ];
+        map._drawingShape = L[map.options.drawing.mode](latlngs, L.extend(map.options.drawing.style, { 
+          fill: !isPolyline,
+          clickable: false
+        })).addTo(map);
+      }
+      else {
+        if (map._drawingTimeout) {
+          clearTimeout(map._drawingTimeout);
+          addPolyLatLng();
+          map.fire('shapedrawn', L.extend({ mode: map.options.drawing.mode, shape: map._drawingShape }, modifiers));
+          delete map._drawingShape;
+        }
+        else {
+          map._drawingTimeout = setTimeout(function () {
+            addPolyLatLng();
+          }, 250);
+        }
+      }
+      return;
+
+    case 'circle':
+      if (!map._drawingShape) {
+        map._drawingShape = L.polygon([ e.latlng, e.latlng ], L.extend(map.options.drawing.style, { clickable: false })).addTo(map);
+      }
+      else {
+        map.removeLayer(map._drawingShape);
+
+        var center = map._drawingShape.getLatLngs()[0];
+        p0 = project(center);
+        p1 = project(e.latlng);
+        
+        var dx = p1.x - p0.x;
+        var dy = p1.y - p0.y;
+        var radius = Math.sqrt(dx * dx + dy * dy);
+
+        map._drawingShape = L.circle(center, radius, L.extend(map.options.drawing.style, { clickable: false })).addTo(map);
+        map.fire('shapedrawn', L.extend({ mode: 'circle', shape: map._drawingShape }, modifiers));
+        delete map._drawingShape;
+      }
+      return;
+
+    case 'text':
+      return;
+  }
+
+  function addPolyLatLng() {
+    delete map._drawingTimeout;
+    latlngs = map._drawingShape.getLatLngs();
+
+    if (isPolyline && latlngs.length === 2 && latlngs[0].equals(latlngs[1])) {
+      latlngs.pop();
+    }
+
+    latlngs.splice(latlngs.length - (isPolyline ? 0 : 1), 0, e.latlng);
+    map._drawingShape.setLatLngs(latlngs);
+  }
+});
 
 // ShingleLayer
 

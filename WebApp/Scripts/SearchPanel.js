@@ -15,7 +15,6 @@
 var GPV = (function (gpv) {
   $(function () {
     var $body = $("body");
-    var $map = $("#mapMain");
     var $container = $("#pnlSearch");
     var config = gpv.configuration;
     var appState = gpv.appState;
