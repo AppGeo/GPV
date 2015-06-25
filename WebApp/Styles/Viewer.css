@@ -153,9 +153,7 @@ button {
   min-width: 374px;
   z-index: 2;
   background-color: white;
-  box-shadow: 4px 0 5px -2px #b9b9b9;
-  -webkit-box-shadow: 4px 0 5px -2px #b9b9b9;
-  -mox-box-shadow: 4px 0 5px -2px #b9b9b9;
+  border-right: solid 1px #b9b9b9;
 }
 
 .FunctionLabel, .Title, .DataLabel{
@@ -198,6 +196,7 @@ button {
 #pnlFunction
 {
   position: absolute;
+  border-right: solid 1px #b9b9b9;
   left: -400px;
   width: 400px;
   bottom: 0;
