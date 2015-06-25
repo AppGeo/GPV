@@ -35,9 +35,13 @@
   <input type="text" id="tboMarkupTitle" class="Input" disabled="disabled" />
 
   <gpv:Input type="checkbox" id="chkMarkupLock" runat="server" disabled="disabled" style="display: none" />
-  <gpv:Label id="labMarkupLock" runat="server" for="chkMarkupLock" style="display: none">Lock</gpv:Label>
+  <gpv:Label id="labMarkupLock" runat="server" for="chkMarkupLock" style="display: none">Lock</gpv:Label><br />
 
-
+  <div id="pnlMarkupTextGlow">
+    <input type="checkbox" id="chkTextGlow" />
+    <div id="lblTextGlow">Markup Text Glow</div>
+    <div id="cmdTextGlowColor" class="Button Disabled Color" title="Text Glow Color"></div>
+  </div>
 
   <div class="Panel" id="pnlMarkupGrid">
     <table id="grdMarkup" class="DataGrid"></table>

@@ -153,7 +153,6 @@ button {
   min-width: 374px;
   z-index: 2;
   background-color: white;
-  border-right: solid 1px #b9b9b9;
 }
 
 .FunctionLabel, .Title, .DataLabel{
@@ -196,7 +195,6 @@ button {
 #pnlFunction
 {
   position: absolute;
-  border-right: solid 1px #b9b9b9;
   left: -400px;
   width: 400px;
   bottom: 0;
@@ -211,12 +209,13 @@ button {
   padding: 3px 0;
 }
 
-.FunctionExit{
+.FunctionExit, .DataExit{
   font-size: 18px;
   margin: 5px 10px;
-  -webkit-transition: 0.75s ease-in-out;
-  -moz-transition: 0.75s ease-in-out;  
-  transition: 0.75s ease-in-out;  
+  cursor: pointer;
+  -webkit-transition: 0.5s;
+  -moz-transition: 0.5s;  
+  transition: 0.5s;  
   -webkit-transform: translate(3em,0);
   -moz-transform: translate(3em,0);
   -ms-transform: translate(3em,0);
@@ -225,7 +224,15 @@ button {
 }
 
 .FunctionExitOpen{
-  transform: rotate(-360deg)
+  transform: rotate(0deg);
+}
+
+.DataExitOpen {
+  transform: rotate(360deg);
+}
+
+.FunctionPanel{
+  right: 1px;
 }
 
 #pnlShareContent{
@@ -274,15 +281,7 @@ button {
   letter-spacing: .25px;
   height: 40px;
   padding: 3px 10px;
-  background-color: #FFB74D;
-  color: #FFFFFF;
   text-align: right;
-}
-
-.DataExit{
-  font-size: 18px;
-  margin: 5px 10px;
-  color: #FFFFFF;
 }
 
 .DataLabel {

@@ -194,6 +194,9 @@ a.VersionText
   color: #00796B;
   /*border-bottom: solid 1px #80cbc4;*/
 }
+#pnlFunctionSizer{
+  border-right: solid 1px #009688;
+}
 
 .FunctionHeader {
   color: #FFFFFF;
@@ -201,9 +204,15 @@ a.VersionText
   border-left: #B2DFDB solid 6px;
 }
 
-.FunctionExit {
+.FunctionExit, .DataExit {
   color: #FFFFFF;
 }
+
+.DataHeader {
+  background-color: #FFB74D;
+  color: #FFFFFF;
+}
+
 #pnlSearchGrid, #pnlQueryGrid{
   color: #f4f7f7;
 }

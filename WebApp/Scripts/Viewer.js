@@ -94,10 +94,10 @@ var GPV = (function (gpv) {
       zoomToFullExtent();
     });
 
-    $('#cmdMenu').on("click", function () {
-      var hide = $('#pnlFunctionSizer').css('left') === '0px';
-      $('#pnlFunctionSizer').animate({ left: hide ? '-400px' : '0px' }, { duration: 800 });
-      $('#pnlMapSizer').animate({ left: hide ? '0px' : '400px' }, { 
+    $("#cmdMenu").on("click", function () {
+      var hide = $("#pnlFunctionSizer").css("left") === "0px";
+      $("#pnlFunctionSizer").animate({ left: hide ? "-400px" : "0px" }, { duration: 800 });
+      $("#pnlMapSizer").animate({ left: hide ? "0px" : "400px" }, { 
           duration: 800,
           progress: function () {
             map.invalidateSize();
@@ -142,25 +142,27 @@ var GPV = (function (gpv) {
     });
 
     $(".FunctionExit").on("click", function () {
-      $('#pnlFunction').animate({ left: '-400px', opacity: '0' }, 600, function () {
-        $('#pnlFunctionTabs').animate({ left: '12px' }, 600);
-        $('.share').hide();
-        $('.FunctionExit').removeClass('FunctionExitOpen');
+      $("#pnlFunction").animate({ left: "-400px", opacity: "0" }, 600, function () {
+        $("#pnlFunctionTabs").animate({ left: "12px" }, 600);
+        $(".share").hide();
+        $(".FunctionExit").removeClass("FunctionExitOpen");
       });
     });
 
     $(".DataExit").on("click", function () {
-      var width = '-' + $('#pnlDataDisplay').css('width');
-      $('#pnlDataDisplay').animate({ right: width, opacity: '0' }, 600);
+      var width = "-" + $("#pnlDataDisplay").css("width");
+      $("#pnlDataDisplay").animate({ right: width, opacity: "0" }, 600, function () {
+        $(".DataExit").removeClass("DataExitOpen");
+      });
     });
 
     $(".MenuItem").on("click", function(){
       var name = $(this).text();
-      $('#pnlFunctionTabs').animate({ left: '-400px' }, 600, function () {
+      $("#pnlFunctionTabs").animate({ left: "-400px" }, 600, function () {
         $(".FunctionPanel").hide();
         $("#pnl" + name).show();
-        $('#pnlFunction').animate({ left: '0', opacity: '1.0' }, 600, function () {
-          $('.FunctionExit').addClass('FunctionExitOpen');
+        $("#pnlFunction").animate({ left: "0", opacity: "1.0" }, 600, function () {
+          $(".FunctionExit").addClass("FunctionExitOpen");
         });
       });
       $.each(functionTabChangedHandlers, function () {
@@ -170,8 +172,8 @@ var GPV = (function (gpv) {
 
     $(".share-type").on("click", function (e) {
       e.preventDefault();
-      $('.share').hide();
-      var panel = '#pnl' + e.target.id.replace('cmdFor', '');
+      $(".share").hide();
+      var panel = "#pnl" + e.target.id.replace("cmdFor", "");
       $(panel).fadeIn(600);
     });
 
