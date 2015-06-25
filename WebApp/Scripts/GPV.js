@@ -13,14 +13,9 @@
 //  limitations under the License.
 
 var GPV = (function (gpv) {
-  var supportsTouch = "ontouchend" in document;
   var handlers = [];
 
   // =====  private functions  =====
-
-  function getEventPoint(e) {
-    return supportsTouch ? [e.originalEvent.changedTouches[0].pageX, e.originalEvent.changedTouches[0].pageY] : [e.pageX, e.pageY];
-  }
 
   function loadComplete() {
     $.each(handlers, function (i, v) {
@@ -64,6 +59,18 @@ var GPV = (function (gpv) {
     return $.ajax(args);
   }
 
+  function selectTool($tool, map, mapOptions) {
+    if (!$tool.hasClass("Disabled")) {
+      $(".MapTool").not($tool.addClass("Selected")).removeClass("Selected");
+
+      mapOptions = mapOptions || {};
+      $(map.getPanes().mapPane).css("cursor", mapOptions.cursor || "");
+      delete mapOptions.cursor;
+
+      map.options = $.extend(map.options, mapOptions);
+    }
+  }
+
   function store(name, value) {
     var s = $.cookie("store");
     s = s ? JSON.parse(s) : {};
@@ -79,12 +86,11 @@ var GPV = (function (gpv) {
 
   // =====  public interface  =====
 
-  gpv.supportsTouch = supportsTouch;
-  gpv.getEventPoint = getEventPoint;
   gpv.loadComplete = loadComplete;
   gpv.loadOptions = loadOptions;
   gpv.on = on;
   gpv.post = post;
+  gpv.selectTool = selectTool;
   gpv.store = store;
 
   return gpv;

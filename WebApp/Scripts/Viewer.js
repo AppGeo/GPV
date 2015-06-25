@@ -16,7 +16,6 @@ var GPV = (function (gpv) {
   $(function () {
     var appState = gpv.appState;
 
-    var $map = $("#mapMain");
     var fullExtent = gpv.configuration.fullExtent;
     var resizeHandle;
     var redrawPost;
@@ -45,8 +44,22 @@ var GPV = (function (gpv) {
     });
 
     var map = L.map("mapMain", {
-      crs: crs
+      crs: crs,
+      doubleClickZoom: false,
+      drawing: {
+        mode: 'off',
+        style: {
+          color: '#FF0000',
+          weight: 2,
+          opacity: 1,
+          fill: true,
+          fillColor: '#FF0000',
+          fillOpacity: 0.5
+        }
+      }
     });
+
+    map.on("shapedrawn", mapShape);
 
     var shingleLayer = L.shingleLayer({ urlBuilder: refreshMap }).on("shingleload", function () {
       gpv.progress.clear();
@@ -60,6 +73,7 @@ var GPV = (function (gpv) {
     }
 
     gpv.mapTip.setMap(map);
+    gpv.selectionPanel.setMap(map);
 
     // =====  control events  =====
     
@@ -112,7 +126,7 @@ var GPV = (function (gpv) {
     $("#cmdPrint").on("click", function () {
       var $form = $("#frmPrint");
       $form.find('[name="state"]').val(appState.toJson());
-      $form.find('[name="width"]').val($map.width());
+      $form.find('[name="width"]').val(map.getSize().x);
       $form.submit();
     });
 
@@ -120,8 +134,8 @@ var GPV = (function (gpv) {
       var $form = $("#frmSaveMap");
       $form.find('[name="m"]').val($("#ddlSaveMap").val() == "image" ? "SaveMapImage" : "SaveMapKml");
       $form.find('[name="state"]').val(appState.toJson());
-      $form.find('[name="width"]').val($map.width());
-      $form.find('[name="height"]').val($map.height());
+      $form.find('[name="width"]').val(map.getSize().x);
+      $form.find('[name="height"]').val(map.getSize().y);
       $form.submit();
     });
 
@@ -175,11 +189,11 @@ var GPV = (function (gpv) {
     var $MapTool = $(".MapTool");
 
     $("#optIdentify").on("click", function () {
-      // TODO: switch to identify mode
+      gpv.selectTool($(this), map, { cursor: 'pointer', drawing: { mode: 'off' } });
     });
 
     $("#optPan").on("click", function () {
-      // TODO: switch to pan/zoom mode
+      gpv.selectTool($(this), map, { cursor: '', drawing: { mode: 'off' } });
     });
 
     // =====  component events  =====
@@ -195,33 +209,33 @@ var GPV = (function (gpv) {
 
     // =====  private functions  =====
 
-    function mapShape(e, geo) {
-      switch ($MapTool.filter(".Selected").attr("id")) {
-        case "optCoordinates":
-          appState.Coordinates.push({ coordinates: geo.coordinates });
-          appState.CoordinateLabels.push("1");
-          shingleLayer.redraw();
-          return;
+    function mapShape(e) {
+      //switch ($MapTool.filter(".Selected").attr("id")) {
+      //  case "optCoordinates":
+      //    appState.Coordinates.push({ coordinates: geo.coordinates });
+      //    appState.CoordinateLabels.push("1");
+      //    shingleLayer.redraw();
+      //    return;
 
-        case "optIdentify":
-          var data = ["maptab=", appState.MapTab, "&visiblelayers=", encodeURIComponent(gpv.legendPanel.getVisibleLayers(appState.MapTab).join("\x01")),
-            "&level=", appState.Level, "&x=", geo.coordinates[0], "&y=", geo.coordinates[1], "&distance=4",
-            "&scale=", $map.geomap("option", "pixelSize")].join("");
+      //  case "optIdentify":
+      //    var data = ["maptab=", appState.MapTab, "&visiblelayers=", encodeURIComponent(gpv.legendPanel.getVisibleLayers(appState.MapTab).join("\x01")),
+      //      "&level=", appState.Level, "&x=", geo.coordinates[0], "&y=", geo.coordinates[1], "&distance=4",
+      //      "&scale=", $map.geomap("option", "pixelSize")].join("");
 
-          var windowName = "identify";
-          var settings = gpv.settings;
+      //    var windowName = "identify";
+      //    var settings = gpv.settings;
 
-          if (settings.identifyPopup == "multiple") {
-            windowName += (new Date()).getTime();
-          }
+      //    if (settings.identifyPopup == "multiple") {
+      //      windowName += (new Date()).getTime();
+      //    }
 
-          var features = "width=" + settings.identifyWindowWidth + ",height=" + settings.identifyWindowHeight + ",menubar=no,titlebar=no,toolbar=no,status=no,scrollbars=yes,location=yes,resizable=yes";
-          window.open("Identify.aspx?" + data, windowName, features, true);
-          return;
-      }
+      //    var features = "width=" + settings.identifyWindowWidth + ",height=" + settings.identifyWindowHeight + ",menubar=no,titlebar=no,toolbar=no,status=no,scrollbars=yes,location=yes,resizable=yes";
+      //    window.open("Identify.aspx?" + data, windowName, features, true);
+      //    return;
+      //}
 
       $.each(mapShapeHandlers, function () {
-        this(e, geo);
+        this(e);
       });
     }
 
