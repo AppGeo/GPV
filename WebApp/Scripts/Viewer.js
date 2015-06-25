@@ -163,6 +163,11 @@ var GPV = (function (gpv) {
       });
     });
 
+    $(".DataExit").on("click", function () {
+      var width = '-' + $('#pnlDataDisplay').css('width');
+      $('#pnlDataDisplay').animate({ right: width, opacity: '0' }, 600);
+    });
+
     $(".MenuItem").on("click", function(){
       var name = $(this).text();
       $('#pnlFunctionTabs').animate({ left: '-400px' }, 600, function () {

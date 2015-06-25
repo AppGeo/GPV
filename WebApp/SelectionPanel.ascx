@@ -47,7 +47,7 @@
     </div>
   </div>
 </div>
-<div id="pnlDataSizer" style="display: none;">
+<%--<div id="pnlDataSizer" style="display: none;">
   <div id="pnlDataTabs" class="TabPanel">
     <div id="pnlDataTabScroll" class="TabScroll"></div>
   </div>
@@ -55,7 +55,7 @@
     <div id="cmdDataPrint" class="CommandLink Disabled">Print</div>
     <div id="pnlDataList"></div>
   </div>
-</div>
+</div>--%>
 <div id="selectionDivider"></div>
 <form id="frmExportData" method="post" target="export">
   <input id="hdnExportLayer" type="hidden" name="layer" />

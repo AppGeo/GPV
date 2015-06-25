@@ -16,6 +16,7 @@ var GPV = (function (gpv) {
   $(function () {
     var map;
     var $container = $("#pnlSelection");
+    var $pnlDataDisplay = $('#pnlDataDisplay');
     var config = gpv.configuration;
     var appState = gpv.appState;
     var selection = gpv.selection;
@@ -75,8 +76,9 @@ var GPV = (function (gpv) {
       }
     });
 
-    var $pnlDataTabScroll = $("#pnlDataTabScroll").on("click", ".Tab", function () {
-      appState.DataTab = $(this).attr("data-datatab");
+    var $ddlDataTheme = $("#ddlDataTheme").on("change", function () {
+      var dataTab = $("#ddlDataTheme :selected").attr("data-datatab");
+      appState.DataTab = dataTab;
       fillDataList();
     });
 
@@ -248,6 +250,9 @@ var GPV = (function (gpv) {
           success: function (html) {
             $pnlDataList.empty().append(html);
             $cmdDataPrint.removeClass("Disabled");
+            if($pnlDataDisplay.css("right").substring(0, 1) === "-"){
+              $pnlDataDisplay.animate({ right: 0, opacity: "1.0" }, 600);
+            }
           },
           error: function (xhr, status, message) {
             alert(message);
@@ -529,7 +534,7 @@ var GPV = (function (gpv) {
     }
 
     function setDataTabs() {
-      $pnlDataTabScroll.empty();
+      $ddlDataTheme.empty();
 
       if (appState.TargetLayer) {
         var layer = config.layer[appState.TargetLayer];
@@ -544,8 +549,7 @@ var GPV = (function (gpv) {
             appState.DataTab = v.id;
           }
 
-          var mode = appState.DataTab == v.id ? "Selected" : "Normal";
-          $("<div class='Tab " + mode + "'/>").attr("data-datatab", v.id).text(v.name).appendTo($pnlDataTabScroll);
+          $("<option value=' " + v.name + "' data-datatab=' " + v.id + "  '>" + v.name + "</option>").appendTo($ddlDataTheme);
         });
       }
     }

@@ -151,6 +151,22 @@
           </div>
         </div>
       </div>
+
+      <div id="pnlDataDisplay" class="Panel">
+        
+<%--        <div id="pnlDataTabs" class="TabPanel">
+          <div id="pnlDataTabScroll" class="TabScroll"></div>
+        </div>--%>
+        <div class="DataHeader">Details<span class="glyphicon glyphicon-menu-right DataExit" aria-hidden="true"></span></div>
+          <div id="pnlData" class="Panel">
+          <span class="DataLabel">Data Set</span>
+          <select id="ddlDataTheme">
+          </select><br />
+            <button id="cmdDataPrint" class="Disabled">Print</button>
+            <div id="pnlDataList" class="Panel"></div>
+          </div>
+      </div>
+
     </div>
     <div id="pnlFooter" class="Panel"><uc1:Footer ID="Footer1" runat="server" /></div>
     <form id="frmSaveMap" method="post" action="Services/MapImage.ashx">

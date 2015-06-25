@@ -153,19 +153,17 @@ button {
   min-width: 374px;
   z-index: 2;
   background-color: white;
-  box-shadow: 4px 0 5px -2px #b9b9b9;
-  -webkit-box-shadow: 4px 0 5px -2px #b9b9b9;
-  -mox-box-shadow: 4px 0 5px -2px #b9b9b9;
+  border-right: solid 1px #b9b9b9;
 }
 
-.FunctionLabel, .Title{
+.FunctionLabel, .Title, .DataLabel{
   font-size: 20px;
   margin-top: 8px;
   display: inline-block;
   text-align: right;
 }
 
-#pnlFunctionTabs .FunctionLabel {
+#pnlFunctionTabs .FunctionLabel, #pnlDataDisplay .FunctionLabel {
   width: 130px;
 }
 
@@ -198,6 +196,7 @@ button {
 #pnlFunction
 {
   position: absolute;
+  border-right: solid 1px #b9b9b9;
   left: -400px;
   width: 400px;
   bottom: 0;
@@ -255,6 +254,86 @@ button {
   top: auto;
   bottom: 5px;
   height: 15px;
+}
+
+#pnlDataDisplay{
+  background-color: #FFFFFF;
+  left: auto;
+  right: -405px;
+  height: 100%;
+  width: 400px;
+  box-shadow: -4px 0px 5px -2px #b9b9b9;
+  -webkit-box-shadow: -4px 0px 5px -2px #b9b9b9;
+  -mox-box-shadow: -4px 0px 5px -2px #b9b9b9;
+  z-index: 11;
+}
+
+.DataHeader{
+  font-family: Lora;
+  font-size: 24px;
+  letter-spacing: .25px;
+  height: 40px;
+  padding: 3px 10px;
+  background-color: #FFB74D;
+  color: #FFFFFF;
+  text-align: right;
+}
+
+.DataExit{
+  font-size: 18px;
+  margin: 5px 10px;
+  color: #FFFFFF;
+}
+
+.DataLabel {
+  margin-left: 10px;
+}
+
+#ddlDataTheme{
+  margin: 5px;
+  font-size: 18px;
+  width: 225px
+}
+
+
+#pnlDataTabs
+{
+  left: 12px;
+  right: 12px;
+  bottom: auto;
+  height: 19px;
+  overflow: hidden;
+}
+
+#pnlData
+{
+  top: 40px;
+}
+
+#pnlDataList
+{
+  left: 0px;
+  top: 43px;
+  right: 0px;
+  bottom: 0px;
+  border-top: solid 1px #b9b9b9;
+  background-color: White;
+  overflow: auto;
+}
+
+#pnlDataList .DataList
+{
+  left: 10px;
+  top: 10px;
+  right: 30px;
+}
+
+#cmdDataPrint
+{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  margin: 0;
 }
 
 #pnlFooter
