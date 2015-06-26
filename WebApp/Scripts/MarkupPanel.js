@@ -336,11 +336,6 @@ var GPV = (function (gpv) {
     function mapShape(e) {
       switch ($MapTool.filter(".Selected").attr("id")) {
         case "optDrawCircle":
-          //if ($.geo.width(geo.bbox) > 0) {
-            addMarkup(e);
-          //}
-          return;
-
         case "optDrawPoint":
         case "optDrawLine":
         case "optDrawPolygon":
@@ -431,29 +426,57 @@ var GPV = (function (gpv) {
     }
 
     function toWkt(shape) {
-      if (shape instanceof L.Polygon) {
-        var latlngs = shape.getLatLngs();
-        latlngs.push(latlngs[0]);
-        return "POLYGON((" + toWktCoordinates(latlngs) + "))";
-      }
-      else if (shape instanceof L.Polyline) {
-        return "LINESTRING(" + toWktCoordinates(shape.getLatLngs()) + ")";
+      var points;
+
+      if (shape instanceof L.Polyline) {
+        points = shape.getLatLngs().map(function (latlng) {
+          map.options.crs.project(latlng);
+        });
+
+        if (shape instanceof L.Polygon) {
+          points.push(points[0]);
+          return "POLYGON((" + toWktCoordinates(points) + "))";
+        }
+        else {
+          return "LINESTRING(" + toWktCoordinates(points) + ")";
+        }
       }
       else if (shape instanceof L.LatLng) {
-        return "POINT(" + toWktCoordinates([ shape ]) + ")";
+        return "POINT(" + toWktCoordinates([ map.options.crs.project(shape) ]) + ")";
       }
       else if (shape instanceof L.Circle) {
+        var sweepAngle = 3;
+        var segments = 360 / sweepAngle;
+          
+        sweepAngle *= Math.PI / 180;
+        var cos = Math.cos(sweepAngle);
+        var sin = Math.sin(sweepAngle);
+
+        var center = map.options.crs.project(shape.getLatLng());
+        var dx = 0;
+        var dy = shape.getRadius();
+        points = [ L.point(center.x + dx, center.y + dy) ];
+
+        for (var i = 0; i < segments - 1; ++i) {
+          var ndx = dx * cos + dy * sin;
+          var ndy = dy * cos - dx * sin;
+          dx = ndx;
+          dy = ndy;
+          points.push(L.point(center.x + dx, center.y + dy));
+        }
+
+        points.push(points[0]);
+        return "POLYGON((" + toWktCoordinates(points) + "))";
       }
     }
 
-    function toWktCoordinates(latlngs) {
+    function toWktCoordinates(points) {
       var prec = Math.log(map.getProjectedPixelSize()) / Math.LN10;
       prec = prec >= 0 ? 0 : 0 - Math.floor(prec);
       var c = [];
 
-      for (var i = 0; i < latlngs.length; ++i) {
-        var p = map.options.crs.project(latlngs[i]);
-        c.push(p.x.toFixed(prec) + " " + p.y.toFixed(prec));
+      for (var i = 0; i < points.length; ++i) {
+        c.push(points[i].x.toFixed(prec) + " " + points[i].y.toFixed(prec));
       }
 
       return c.join(",");

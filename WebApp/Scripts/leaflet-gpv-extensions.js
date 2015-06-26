@@ -64,8 +64,6 @@ L.Map.prototype.on('click', function (e) {
 
   var mode = map.options.drawing.mode;
   var isPolyline = mode === 'polyline';
-  var project = map.options.crs.project;
-  var unproject = map.options.crs.unproject;
   var modifiers = { shiftKey: e.originalEvent.shiftKey, ctrlKey: e.originalEvent.ctrlKey };
   var unclickable = { clickable: false, pointerEvents: "none" };
   var latlngs, p0, p1;
@@ -80,8 +78,8 @@ L.Map.prototype.on('click', function (e) {
         map._drawingShape = L.polygon([ e.latlng ], L.extend({ clickable: false }, map.options.drawing.style)).addTo(map);
       }
       else {
-        p0 = project(map._drawingShape.getLatLngs()[0]);
-        p1 = project(e.latlng);
+        p0 = map.options.crs.project(map._drawingShape.getLatLngs()[0]);
+        p1 = map.options.crs.project(e.latlng);
 
         var minx = Math.min(p0.x, p1.x);
         var miny = Math.min(p0.y, p1.y);
@@ -89,11 +87,11 @@ L.Map.prototype.on('click', function (e) {
         var maxy = Math.max(p0.y, p1.y);
 
         map._drawingShape.setLatLngs([
-          unproject(L.point(minx, miny)),
-          unproject(L.point(minx, maxy)),
-          unproject(L.point(maxx, maxy)),
-          unproject(L.point(maxx, miny)),
-          unproject(L.point(minx, miny))
+          map.options.crs.unproject(L.point(minx, miny)),
+          map.options.crs.unproject(L.point(minx, maxy)),
+          map.options.crs.unproject(L.point(maxx, maxy)),
+          map.options.crs.unproject(L.point(maxx, miny)),
+          map.options.crs.unproject(L.point(minx, miny))
         ]);
 
         map.fire('shapedrawn', L.extend(modifiers, { mode: mode, shape: map._drawingShape }));
@@ -129,8 +127,8 @@ L.Map.prototype.on('click', function (e) {
         map.removeLayer(map._drawingShape);
 
         var center = map._drawingShape.getLatLngs()[0];
-        p0 = project(center);
-        p1 = project(e.latlng);
+        p0 = map.options.crs.project(center);
+        p1 = map.options.crs.project(e.latlng);
         
         var dx = p1.x - p0.x;
         var dy = p1.y - p0.y;
