@@ -170,6 +170,12 @@ var GPV = (function (gpv) {
       });
     });
 
+    $("#selectMapTools li").click(function () {
+      if (!$(this).hasClass('Disabled')) {
+        $("#selectedTool").html($(this).html());
+      }
+    });
+
     $(".MenuItem").on("click", function(){
       var name = $(this).text();
       $("#pnlFunctionTabs").animate({ left: "-400px" }, 600, function () {

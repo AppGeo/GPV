@@ -19,19 +19,6 @@
   border: none;
 }
 
-#pnlMapTools{
-  left: 410px; 
-  top: 10px; 
-  right: 20px; 
-  height: 25px; 
-  z-index: 5
-}
-
-#pnlMapTools .Button span{
-  font-size: 16px;
-  margin: 3px;
-}
-
 #cmdFullView
 {
   left: 10px;
@@ -42,30 +29,174 @@
   padding: 4px 6px;
   border: none;
   box-shadow: 0 1px 5px rgba(0,0,0,.65);
+  -webkit-box-shadow: 0 1px 5px rgba(0,0,0,.65);
+  -mox-box-shadow: 0 1px 5px rgba(0,0,0,.65);
   border-radius: 4px;
 }
 
-#optPan
-{
-  left: 0;
+#pnlMapTools{
+  position: absolute;
+  z-index: 10;
+  width: 100px;
+  left: 50px;
 }
 
-#optIdentify
-{
-  left: 24px;
+#btnToolMenu{
+  border: none;
+  box-shadow: 0 1px 5px rgba(0,0,0,.65);
+  -webkit-box-shadow: 0 1px 5px rgba(0,0,0,.65);
+  -mox-box-shadow: 0 1px 5px rgba(0,0,0,.65);
+  border-radius: 4px;
+  height: 26px;
+  font-size: 13px;
+  padding: 0 10px;
 }
 
-#optSelect
-{
-  left: 48px;
+#selectedTool{
+  letter-spacing: .5px;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+#selectMapTools{
+  left: 10px;
+  font-size: 13px;
+  padding: 8px;
+  width: 185px;
+}
+
+li.MapTool{
+  cursor: pointer;
+  display: inline-block;
+  height: 28px;
+  padding: 4px 0;
+  width: 100%;
+}
+
+li.MapTool span{
+  vertical-align: middle;
+}
+
+li.MapTool:hover{
+  background-color: #B2DFDB;
+}
+
+li.MapTool.Disabled{
+  background-color: #F0F0F0;
+}
+
+.dropdown-header{
+  border-bottom: solid 1px #b9b9b9;
+  border-top: solid 1px #b9b9b9;
+  text-transform: uppercase;
+  padding: 3px 10px;
+}
+
+li.MapTool span:not(.glyphicon), #selectedTool span:not(.glyphicon){
   background-image: url(../Images/UI/Icons.png);
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  vertical-align: middle;
+}
+
+.select
+{
   background-position: -816px 0px;  /* Select.gif */
 }
 
-#optSelect .Disabled
+#optSelect.Disabled
 {
   background-position: -840px 0px;  /* SelectDisable.gif */
 }
+.draw-point {
+  background-position: -432px 0px; /* DrawPoint.gif */
+}
+
+#optDrawPoint.Disabled {
+  background-position: -456px 0px; /* DrawPointDisable.gif */
+}
+
+.draw-line {
+  background-position: -384px 0px; /* DrawLine.gif */
+}
+
+#optDrawLine.Disabled {
+  background-position: -408px 0px; /* DrawLineDisable.gif */
+}
+
+.draw-polygon {
+  background-position: -480px 0px; /* DrawPolygon.gif */
+}
+
+#optDrawPolygon.Disabled {
+  background-position: -504px 0px; /* DrawPolygonDisable.gif */
+}
+
+.draw-circle {
+  background-position: -240px 0px; /* DrawCircle.gif */
+}
+
+#optDrawCircle.Disabled {
+  background-position: -264px 0px; /* DrawCircleDisable.gif */
+}
+
+.draw-coordinates {
+  background-position: -288px 0px; /* DrawCoordinates.gif */
+}
+
+#optDrawCoordinates.Disabled {
+  background-position: -312px 0px; /* DrawCoordinatesDisable.gif */
+}
+
+.draw-length {
+  background-position: -336px 0px; /* DrawLength.gif */
+}
+
+#optDrawLength.Disabled {
+  background-position: -360px 0px; /* DrawLengthDisable.gif */
+}
+
+.draw-area {
+  background-position: -192px 0px; /* DrawArea.gif */
+}
+
+#optDrawArea.Disabled {
+  background-position: -216px 0px; /* DrawAreaDisable.gif */
+}
+
+.delete-markup {
+  background-position: -144px 0px; /* Delete.gif */
+}
+
+#optDeleteMarkup.Disabled {
+  background-position: -168px 0px; /* DeleteDisable.gif */
+}
+
+.color-picker {
+  background-position: -72px 0px; /* ColorPicker.gif */
+}
+
+#optColorPicker.Disabled {
+  background-position: -96px 0px; /* ColorPickerDisable.gif */
+}
+
+.paint-bucket {
+  background-position: -720px 0px; /* PaintBucket.gif */
+}
+
+#optPaintBucket.Disabled {
+  background-position: -744px 0px; /* PaintBucketDisable.gif */
+}
+
+.draw-text {
+  background-position: -528px 0px; /* DrawText.gif */
+}
+
+#optDrawText.Disabled {
+  background-position: -552px 0px; /* DrawTextDisable.gif */
+}
+
 
 #mapMain
 {

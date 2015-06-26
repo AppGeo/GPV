@@ -41,6 +41,8 @@
     <input type="checkbox" id="chkTextGlow" />
     <div id="lblTextGlow">Markup Text Glow</div>
     <div id="cmdTextGlowColor" class="Button Disabled Color" title="Text Glow Color"></div>
+    <div id="cmdMarkupColor" class="Button Disabled Color" title="Markup Color"></div>
+    <div id="lblMarkupColor">Markup Color</div>
   </div>
 
   <div class="Panel" id="pnlMarkupGrid">
