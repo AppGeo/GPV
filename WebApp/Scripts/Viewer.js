@@ -54,6 +54,10 @@ var GPV = (function (gpv) {
           fill: true,
           fillColor: '#808080',
           fillOpacity: 0.5
+        },
+        text: {
+          className: 'MarkupText',
+          color: '#FF0000'
         }
       }
     });

@@ -62,7 +62,19 @@ L.Map.prototype.on('click', function (e) {
     return;
   }
 
+  if (!map._drawing) {
+    map._drawing = {};
+  }
+
   var mode = map.options.drawing.mode;
+
+  if (mode !== map._drawing.lastMode && map._drawing.shape) {
+    map.removeLayer(map._drawing.shape);
+    delete map._drawing.shape;
+  }
+
+  map._drawing.lastMode = mode;
+
   var isPolyline = mode === 'polyline';
   var modifiers = { shiftKey: e.originalEvent.shiftKey, ctrlKey: e.originalEvent.ctrlKey };
   var unclickable = { clickable: false, pointerEvents: "none" };
@@ -74,11 +86,11 @@ L.Map.prototype.on('click', function (e) {
       return;
 
     case 'rectangle':
-      if (!map._drawingShape) {
-        map._drawingShape = L.polygon([ e.latlng ], L.extend({ clickable: false }, map.options.drawing.style)).addTo(map);
+      if (!map._drawing.shape) {
+        map._drawing.shape = L.polygon([ e.latlng ], L.extend({ clickable: false }, map.options.drawing.style)).addTo(map);
       }
       else {
-        p0 = map.options.crs.project(map._drawingShape.getLatLngs()[0]);
+        p0 = map.options.crs.project(map._drawing.shape.getLatLngs()[0]);
         p1 = map.options.crs.project(e.latlng);
 
         var minx = Math.min(p0.x, p1.x);
@@ -86,7 +98,7 @@ L.Map.prototype.on('click', function (e) {
         var maxx = Math.max(p0.x, p1.x);
         var maxy = Math.max(p0.y, p1.y);
 
-        map._drawingShape.setLatLngs([
+        map._drawing.shape.setLatLngs([
           map.options.crs.unproject(L.point(minx, miny)),
           map.options.crs.unproject(L.point(minx, maxy)),
           map.options.crs.unproject(L.point(maxx, maxy)),
@@ -94,22 +106,22 @@ L.Map.prototype.on('click', function (e) {
           map.options.crs.unproject(L.point(minx, miny))
         ]);
 
-        map.fire('shapedrawn', L.extend(modifiers, { mode: mode, shape: map._drawingShape }));
-        delete map._drawingShape;
+        map.fire('shapedrawn', L.extend(modifiers, { mode: mode, shape: map._drawing.shape }));
+        delete map._drawing.shape;
       }
       return;
 
     case 'polyline':
     case 'polygon':
-      if (!map._drawingShape) {
-        map._drawingShape = L[mode]([ e.latlng ], L.extend(unclickable, map.options.drawing.style)).addTo(map);
+      if (!map._drawing.shape) {
+        map._drawing.shape = L[mode]([ e.latlng ], L.extend(unclickable, map.options.drawing.style)).addTo(map);
       }
       else {
         if (map._drawingTimeout) {
           clearTimeout(map._drawingTimeout);
           addPolyLatLng();
-          map.fire('shapedrawn', L.extend(modifiers, { mode: mode, shape: map._drawingShape }));
-          delete map._drawingShape;
+          map.fire('shapedrawn', L.extend(modifiers, { mode: mode, shape: map._drawing.shape }));
+          delete map._drawing.shape;
         }
         else {
           map._drawingTimeout = setTimeout(function () {
@@ -120,13 +132,13 @@ L.Map.prototype.on('click', function (e) {
       return;
 
     case 'circle':
-      if (!map._drawingShape) {
-        map._drawingShape = L.polygon([ e.latlng ], L.extend(unclickable, map.options.drawing.style)).addTo(map);
+      if (!map._drawing.shape) {
+        map._drawing.shape = L.polygon([ e.latlng ], L.extend(unclickable, map.options.drawing.style)).addTo(map);
       }
       else {
-        map.removeLayer(map._drawingShape);
+        map.removeLayer(map._drawing.shape);
 
-        var center = map._drawingShape.getLatLngs()[0];
+        var center = map._drawing.shape.getLatLngs()[0];
         p0 = map.options.crs.project(center);
         p1 = map.options.crs.project(e.latlng);
         
@@ -134,23 +146,139 @@ L.Map.prototype.on('click', function (e) {
         var dy = p1.y - p0.y;
         var radius = Math.sqrt(dx * dx + dy * dy);
 
-        map._drawingShape = L.circle(center, radius, L.extend(unclickable, map.options.drawing.style)).addTo(map);
-        map.fire('shapedrawn', L.extend(modifiers, { mode: mode, shape: map._drawingShape }));
-        delete map._drawingShape;
+        map._drawing.shape = L.circle(center, radius, L.extend(unclickable, map.options.drawing.style)).addTo(map);
+        map.fire('shapedrawn', L.extend(modifiers, { mode: mode, shape: map._drawing.shape }));
+        delete map._drawing.shape;
       }
       return;
 
     case 'text':
+      var text = L.text({ 
+        latlng: e.latlng, 
+        className: map.options.drawing.text.className, 
+        color: map.options.drawing.text.color, 
+        input: true 
+      }).addTo(map);
+
+      text.on('enterkey lostfocus', function () {
+        map.removeLayer(text);
+
+        if (text.options.value) {
+          text = L.text({ 
+            latlng: text.options.latlng, 
+            className: map.options.drawing.text.className, 
+            color: map.options.drawing.text.color,
+            value: text.options.value
+          }).addTo(map);
+
+          map.fire('shapedrawn', L.extend(modifiers, { mode: mode, shape: text }));
+        }
+      });
       return;
   }
 
   function addPolyLatLng() {
     delete map._drawingTimeout;
-    latlngs = map._drawingShape.getLatLngs();
+    latlngs = map._drawing.shape.getLatLngs();
     latlngs.push(e.latlng);
-    map._drawingShape.setLatLngs(latlngs);
+    map._drawing.shape.setLatLngs(latlngs);
   }
 });
+
+// Text
+
+L.Text = L.Layer.extend({
+  options: {
+    pane: 'overlayPane'
+  },
+
+  getEvents: function () {
+    var events = {
+      viewreset: this._reset
+    };
+
+    if (this._zoomAnimated) {
+      events.zoomanim = this._animateZoom;
+      events.zoomend = this._reset;
+    }
+
+    return events;
+  },
+
+  initialize: function (options) {
+    L.setOptions(this, options);
+  },
+
+  onAdd: function (map) {
+    if (!this._text) {
+      this._map = map
+
+      this._container = L.DomUtil.create('div', 'leaflet-zoom-animated', this.getPane());
+      this._container.style.position = 'absolute';
+
+      if (this.options.input) {
+        this._text = L.DomUtil.create('input', this.options.className);
+        this._text.setAttribute('type', 'text');
+        this._text.setAttribute('value', this.options.value || '');
+
+        L.DomEvent.disableClickPropagation(this._text);
+
+        L.DomEvent.addListener(this._text, 'blur', function (e) {
+          this.fire("lostfocus");
+        }, this);
+
+        L.DomEvent.addListener(this._text, 'keydown', function (e) {
+          if (e.keyCode === 13) {
+            L.DomEvent.preventDefault(e);
+            this.fire("enterkey");
+          }
+        }, this);
+
+        L.DomEvent.addListener(this._text, 'keyup', function (e) {
+          this.options.value = this._text.value;
+        }, this);
+      }
+      else {
+        this._text = L.DomUtil.create('div', this.options.className);
+        this._text.appendChild(document.createTextNode(this.options.value || ''));
+      }
+
+      if (this.options.color) {
+        this._text.style.color = this.options.color;
+      }
+
+      this._text.style.position = 'absolute';
+      this._container.appendChild(this._text);
+
+      if (this.options.input) {
+        this._text.selectionStart = this._text.selectionEnd = this.options.value ? this.options.value.length : 0;
+        this._text.focus();
+      }
+
+      this._reset();
+    }
+  },
+
+  onRemove: function (map) {
+    L.DomUtil.remove(this._container);
+    this._container = null;
+    this._text = null;
+  },
+
+  _animateZoom: function (e) {
+    var position = this._map._latLngToNewLayerPoint(this.options.latlng, e.zoom, e.center);
+    L.DomUtil.setTransform(this._container, position, 1);
+  },
+
+  _reset: function () {
+    var pos = this._map.latLngToLayerPoint(this.options.latlng);
+    L.DomUtil.setPosition(this._container, pos);
+  }
+});
+
+L.text = function (options) {
+  return new L.Text(options);
+};
 
 // ShingleLayer
 

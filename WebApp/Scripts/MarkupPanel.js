@@ -148,7 +148,7 @@ var GPV = (function (gpv) {
       };
 
       if (option == "text") {
-        data.text = $("#tboMarkupText").val();
+        data.text = e.shape.options.value;
       }
 
       if (option == "measured") {
@@ -427,6 +427,10 @@ var GPV = (function (gpv) {
 
     function toWkt(shape) {
       var points;
+
+      if (shape instanceof L.Text) {
+        shape = shape.options.latlng;
+      }
 
       if (shape instanceof L.Polyline) {
         points = shape.getLatLngs().map(function (latlng) {
