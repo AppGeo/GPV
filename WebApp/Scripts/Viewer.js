@@ -143,6 +143,13 @@ var GPV = (function (gpv) {
       zoomToSelection(1.6);
     });
 
+    $(".DataExit").on("click", function () {
+      var width = "-" + $("#pnlDataDisplay").css("width");
+      $("#pnlDataDisplay").animate({ right: width, opacity: "0" }, 600, function () {
+        $(".DataExit").removeClass("DataExitOpen");
+      });
+    });
+
     var $ddlLevel = $("#ddlLevel").on("change", function () {
       appState.Level = $(this).val();
       shingleLayer.redraw();
@@ -161,19 +168,6 @@ var GPV = (function (gpv) {
         $(".share").hide();
         $(".FunctionExit").removeClass("FunctionExitOpen");
       });
-    });
-
-    $(".DataExit").on("click", function () {
-      var width = "-" + $("#pnlDataDisplay").css("width");
-      $("#pnlDataDisplay").animate({ right: width, opacity: "0" }, 600, function () {
-        $(".DataExit").removeClass("DataExitOpen");
-      });
-    });
-
-    $("#selectMapTools li").click(function () {
-      if (!$(this).hasClass('Disabled')) {
-        $("#selectedTool").html($(this).html());
-      }
     });
 
     $(".MenuItem").on("click", function(){
@@ -198,6 +192,12 @@ var GPV = (function (gpv) {
     });
 
     // =====  map tools  =====
+
+    $("#selectMapTools li").click(function () {
+      if (!$(this).hasClass('Disabled')) {
+        $("#selectedTool").html($(this).html());
+      }
+    });
 
     var $MapTool = $(".MapTool");
 

@@ -37,6 +37,12 @@ label#labMarkupLock {
   width: 50%;
 }
 
+.MarkupGroup.CommandLink {
+  display: inline-block;
+  width: 60px;
+  text-align: center;
+}
+
 #pnlMarkupTextGlow{
   position: relative;
   height: 25px;
