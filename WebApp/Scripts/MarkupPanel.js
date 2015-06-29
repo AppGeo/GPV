@@ -112,8 +112,12 @@ var GPV = (function (gpv) {
       gpv.selectTool($(this), map, { cursor: '', drawing: { mode: "circle", style: { color: c, fill: true, fillColor: c } } });
     });
 
-    $("#optDrawPoint,#optDrawCoordinates,#optDrawText").on("click", function () {
+    $("#optDrawPoint,#optDrawCoordinates").on("click", function () {
       gpv.selectTool($(this), map, { cursor: '', drawing: { mode: "point" } });
+    });
+
+    $("#optDrawText").on("click", function () {
+      gpv.selectTool($(this), map, { cursor: '', drawing: { mode: "text" } });
     });
 
     $("#optDrawLength").on("click", function () {
