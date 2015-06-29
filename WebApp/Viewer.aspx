@@ -130,17 +130,17 @@
               <li class="dropdown-header">Selection Tools</li>
               <li id="optSelect" class="Button MapTool"><span class="select"></span> Select Features</li>
               <li class="dropdown-header">Markup Tools</li>
-              <li id="optDrawPoint" class="Button MapTool Disabled"><span class="draw-point"></span> Draw Point</li>
-              <li id="optDrawLine" class="Button MapTool Disabled"><span class="draw-line"></span> Draw Line</li>
-              <li id="optDrawPolygon" class="Button MapTool Disabled"><span class="draw-polygon"></span> Draw Polygon</li>
-              <li id="optDrawCircle" class="Button MapTool Disabled"><span class="draw-circle"></span> Draw Circle</li>
-              <li id="optDrawText" class="Button MapTool Disabled"><span class="draw-text"></span> Draw Text</li>
-              <li id="optDrawCoordinates" class="Button MapTool Disabled"><span class="draw-coordinates"></span> Draw Coordinates</li>
-              <li id="optDrawLength" class="Button MapTool Disabled"><span class="draw-length"></span> Draw Measured Length</li>
-              <li id="optDrawArea" class="Button MapTool Disabled"><span class="draw-area"></span> Draw Measured Area</li>
-              <li id="optDeleteMarkup" class="Button MapTool Disabled"><span class="delete-markup"></span> Delete Markup</li>
-              <li id="optColorPicker" class="Button MapTool Disabled"><span class="color-picker"></span> Pick Color</li>
-              <li id="optPaintBucket" class="Button MapTool Disabled"><span class="paint-bucket"></span> Fill With Color</li>
+              <li id="optDrawPoint" class="Button MapTool MarkupTool Disabled"><span class="draw-point"></span> Draw Point</li>
+              <li id="optDrawLine" class="Button MapTool MarkupTool Disabled"><span class="draw-line"></span> Draw Line</li>
+              <li id="optDrawPolygon" class="Button MapTool MarkupTool Disabled"><span class="draw-polygon"></span> Draw Polygon</li>
+              <li id="optDrawCircle" class="Button MapTool MarkupTool Disabled"><span class="draw-circle"></span> Draw Circle</li>
+              <li id="optDrawText" class="Button MapTool MarkupTool Disabled"><span class="draw-text"></span> Draw Text</li>
+              <li id="optDrawCoordinates" class="Button MapTool MarkupTool Disabled"><span class="draw-coordinates"></span> Draw Coordinates</li>
+              <li id="optDrawLength" class="Button MapTool MarkupTool Disabled"><span class="draw-length"></span> Draw Measured Length</li>
+              <li id="optDrawArea" class="Button MapTool MarkupTool Disabled"><span class="draw-area"></span> Draw Measured Area</li>
+              <li id="optDeleteMarkup" class="Button MapTool MarkupTool Disabled"><span class="delete-markup"></span> Delete Markup</li>
+              <li id="optColorPicker" class="Button MapTool MarkupTool Disabled"><span class="color-picker"></span> Pick Color</li>
+              <li id="optPaintBucket" class="Button MapTool MarkupTool Disabled"><span class="paint-bucket"></span> Fill With Color</li>
             </ul>
           </div>
 
