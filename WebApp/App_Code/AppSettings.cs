@@ -523,6 +523,14 @@ public static class AppSettings
     }
   }
 
+  public static int ZoomLevels
+  {
+    get
+    {
+      return GetConfigInteger("ZoomLevels");
+    }
+  }
+
   private static Color BlendColors(Color backColor, Color foreColor, double foreOpacity)
   {
     int r = Convert.ToInt32(backColor.R * (1 - foreOpacity) + foreColor.R * foreOpacity);
@@ -599,6 +607,7 @@ public static class AppSettings
     jsonData.Add("mapUnits", MapUnits);
     jsonData.Add("measureUnits", MeasureUnits);
     jsonData.Add("coordinateSystem", CoordinateSystem.ToProj4String(MapUnits));
+    jsonData.Add("zoomLevels", ZoomLevels);
 
     JavaScriptSerializer serializer = new JavaScriptSerializer();
     return serializer.Serialize(jsonData);

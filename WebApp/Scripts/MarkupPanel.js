@@ -117,7 +117,8 @@ var GPV = (function (gpv) {
     });
 
     $("#optDrawText").on("click", function () {
-      gpv.selectTool($(this), map, { cursor: '', drawing: { mode: "text" } });
+      var c = getMarkupColor();
+      gpv.selectTool($(this), map, { cursor: '', drawing: { mode: "text", text: { color: c } } });
     });
 
     $("#optDrawLength").on("click", function () {
@@ -409,7 +410,7 @@ var GPV = (function (gpv) {
     }
 
     function setDrawingColor(c) {
-      $.extend(map.options.drawing.style, { color: c, fillColor: c })
+      $.extend(true, map.options.drawing, { style: { color: c, fillColor: c }, text: { color: c } });
     }
 
     function setMap(m) {
@@ -438,7 +439,7 @@ var GPV = (function (gpv) {
 
       if (shape instanceof L.Polyline) {
         points = shape.getLatLngs().map(function (latlng) {
-          map.options.crs.project(latlng);
+          return map.options.crs.project(latlng);
         });
 
         if (shape instanceof L.Polygon) {

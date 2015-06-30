@@ -243,14 +243,14 @@ li.MapTool span:not(.glyphicon), #selectedTool span:not(.glyphicon){
 
 div.MarkupText
 {
-  top: -17px;
+  top: -19px;
   left: 2px;
   cursor: pointer;
 }
 
 input.MarkupText
 {
-  top: -19px;
+  top: -21px;
   border: solid 1px rgba(128, 128, 128, 0.5);
   background-color: rgba(255, 255, 255, 0.5);
 }

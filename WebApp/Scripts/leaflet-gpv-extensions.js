@@ -36,7 +36,17 @@ L.Map.prototype.fitProjectedBounds = function (bounds) {   // (Bounds)
   var maxLat = Math.max(Math.max(Math.max(sw.lat, nw.lat), ne.lat), se.lat);
   var maxLng = Math.max(Math.max(Math.max(sw.lng, nw.lng), ne.lng), se.lng);
 
-  this.fitBounds(L.latLngBounds(L.latLng(minLat, minLng), L.latLng(maxLat, maxLng))); 
+  var oldBounds;
+  
+  try {
+    oldBounds = this.getBounds();
+  }
+  catch (e) {}
+
+  var newBounds = L.latLngBounds(L.latLng(minLat, minLng), L.latLng(maxLat, maxLng));
+  this.fitBounds(newBounds);
+
+  return newBounds !== oldBounds;
 }
 
 L.Map.prototype.getProjectedBounds = function () {   // -> Bounds

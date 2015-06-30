@@ -34,17 +34,21 @@ var GPV = (function (gpv) {
     // TODO: add support for measurement
     // TODO: add support for markup
 
+    var maxZoom = gpv.settings.zoomLevels - 1;
+    var resolutions = [ 0.25 * Math.pow(2, maxZoom) ];
+
+    for (var i = 0; i < maxZoom; ++i) {
+      resolutions.push(resolutions[i] * 0.5);
+    }
+
     var crs = new L.Proj.CRS("GPV:1", gpv.settings.coordinateSystem, {
-      resolutions: [
-        8192, 4096, 2048, 1024, 512, 256, 128,
-        64, 32, 16, 8, 4, 2, 1, 0.5
-      ],
-      origin: [0, 4000000]
+      resolutions: resolutions
     });
 
     var map = L.map("mapMain", {
       crs: crs,
       doubleClickZoom: false,
+      maxZoom: maxZoom,
       drawing: {
         mode: 'off',
         style: {
@@ -296,7 +300,7 @@ var GPV = (function (gpv) {
 
     function setExtent(extent) {
       $ddlLevel.val(appState.Level); 
-      map.fitProjectedBounds(L.Bounds.fromArray(extent));
+      map.fitProjectedBounds(L.Bounds.fromArray(extent)) || shingleLayer.redraw();
       return map.getProjectedBounds().toArray();
     }
 
@@ -337,19 +341,19 @@ var GPV = (function (gpv) {
     function zoomToActive() {
       gpv.selection.getActiveExtent(function (bbox) {
         if (bbox) {
-          map.fitProjectedBounds(L.Bounds.fromArray(bbox).pad(1.6));
+          map.fitProjectedBounds(L.Bounds.fromArray(bbox).pad(1.6)) || shingleLayer.redraw();
         }
       });
     }
 
     function zoomToFullExtent() {
-      map.fitProjectedBounds(L.Bounds.fromArray(fullExtent));
+      map.fitProjectedBounds(L.Bounds.fromArray(fullExtent)) || shingleLayer.redraw();
     }
 
     function zoomToSelection(scaleBy) {
       gpv.selection.getSelectionExtent(function (bbox) {
         if (bbox) {
-          map.fitProjectedBounds(L.Bounds.fromArray(bbox).pad(scaleBy));
+          map.fitProjectedBounds(L.Bounds.fromArray(bbox).pad(scaleBy)) || shingleLayer.redraw();
         }
       });
     }
