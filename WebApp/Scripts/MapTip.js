@@ -67,7 +67,7 @@ var GPV = (function (gpv) {
 
                 // set the height and initial location of the tip box and display it
 
-                var height = tipText.length * 14;
+                var height = tipText.length * 15;
                 var left = lastPoint.x + 5;
                 var top = lastPoint.y - height - 9;
 

@@ -243,37 +243,29 @@ public partial class Viewer : CustomStyledPage
 
     foreach (Configuration.ApplicationMapTabRow appMapTabRow in application.GetApplicationMapTabRows())
     {
-      HtmlGenericControl option = new HtmlGenericControl("option");
-      plhMapThemes.Controls.Add(option);
-      option.InnerHtml = appMapTabRow.MapTabRow.DisplayName.Replace(" ", "&nbsp;");
-      option.Attributes["data-maptab"] = appMapTabRow.MapTabID;
+      HtmlGenericControl li = new HtmlGenericControl("li");
+      phlMapTheme.Controls.Add(li);
+      li.InnerHtml = appMapTabRow.MapTabRow.DisplayName.Replace(" ", "&nbsp;");
+      li.Attributes["data-maptab"] = appMapTabRow.MapTabID;
     }
   }
 
   private void CreatePrintLayoutList()
   {
-    AppState appState = null;
+    AppState appState = _appState;
 
-    if (!String.IsNullOrEmpty(Request.Form["state"]) && !String.IsNullOrEmpty(Request.Form["width"]))
+    foreach (Configuration.PrintTemplateRow template in _config.PrintTemplate)
     {
-      appState = AppState.FromJson(Request.Form["state"]);
-      appState.SaveTo(ViewState);
+      bool add = template.IsAlwaysAvailableNull() || template.AlwaysAvailable == 1;
 
-      Configuration config = _config;
-
-      foreach (Configuration.PrintTemplateRow template in config.PrintTemplate)
+      if (!add)
       {
-        bool add = template.IsAlwaysAvailableNull() || template.AlwaysAvailable == 1;
+        add = template.GetApplicationPrintTemplateRows().Any(o => o.ApplicationID == appState.Application);
+      }
 
-        if (!add)
-        {
-          add = template.GetApplicationPrintTemplateRows().Any(o => o.ApplicationID == appState.Application);
-        }
-
-        if (add)
-        {
-          ddlPrintTemplate.Items.Add(new ListItem(template.TemplateTitle, template.TemplateID));
-        }
+      if (add)
+      {
+        ddlPrintTemplate.Items.Add(new ListItem(template.TemplateTitle, template.TemplateID));
       }
     }
   }
@@ -1847,14 +1839,28 @@ public partial class Viewer : CustomStyledPage
 
       if (levels.Length > 0)
       {
-        labLevel.Style["display"] = "inline";
+
+        //HtmlGenericControl li = new HtmlGenericControl("li");
+        //phlMapTheme.Controls.Add(li);
+        //li.InnerHtml = appMapTabRow.MapTabRow.DisplayName.Replace(" ", "&nbsp;");
+        //li.Attributes["data-maptab"] = appMapTabRow.MapTabID;
+
+        //labLevel.Style["display"] = "inline";
         ddlLevel.Style["display"] = "inline";
 
-        labLevel.InnerText = levelName;
+        //labLevel.InnerText = levelName;
         ddlLevel.DataSource = levels;
         ddlLevel.DataTextField = "DisplayName";
         ddlLevel.DataValueField = "LevelID";
         ddlLevel.DataBind();
+
+        foreach (Configuration.ApplicationMapTabRow appMapTabRow in application.GetApplicationMapTabRows())
+        {
+          HtmlGenericControl li = new HtmlGenericControl("li");
+          phlMapTheme.Controls.Add(li);
+          li.InnerHtml = appMapTabRow.MapTabRow.DisplayName.Replace(" ", "&nbsp;");
+          li.Attributes["data-maptab"] = appMapTabRow.MapTabID;
+        }
 
         int index = ddlLevel.Items.Cast<ListItem>().ToList().FindIndex(o => o.Value == _appState.Level);
 

@@ -65,7 +65,7 @@
 #pnlSelectTools{
   top: 87px;
   width: 400px;
-  padding: 0px 5px;
+  padding: 2px 5px;
   height: 35px;
 }
 #pnlSelectTools button{
@@ -86,6 +86,9 @@
   cursor: default;
 }
 
+#cmdClearSelection{
+  float: right;
+}
 
 .select-view
 {

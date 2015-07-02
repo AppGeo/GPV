@@ -40,12 +40,6 @@
     <div id="pnlContent" runat="server" class="Panel">
       <div id="pnlFunctionSizer" runat="server" class="Panel">
         <div id="pnlFunctionTabs" class="TabPanel Panel">
-          <span class="FunctionLabel">Map Theme </span>
-          <select id="ddlMapTheme" style="margin-top: 12px">
-            <asp:PlaceHolder id="plhMapThemes" runat="server"></asp:PlaceHolder>
-          </select><br />
-            <span id="labLevel" class="FunctionLabel" runat="server" style="display: none">Level </span>
-            <select id="ddlLevel" runat="server" class="Input" style="width: 70px; display: none"></select>
           <ul class="TabScroll Menu">
             <li id="tabSearch" runat="server" class="MenuItem Normal" style="display: none">Search</li>
             <li id="tabSelection" runat="server" class="MenuItem Normal" style="display: none">Selection</li>
@@ -117,13 +111,36 @@
       </div>
       <div id="pnlMapSizer" runat="server" class="Panel">
         <div id="pnlMap" class="MainPanel Panel">
-            <div id="cmdFullView" class="Button" title="Full View"><span class="glyphicon glyphicon-globe"></span></div>
+
+           <div id="cmdFullView" class="Button" title="Full View"><span class="glyphicon glyphicon-globe"></span></div>
+
+           <div id="pnlMapThemes">
+            <button class="btn btn-default dropdown-toggle" type="button" id="btnMapTheme" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              <span id="selectedTheme"></span>
+              <span class="caret"></span>
+            </button>
+            <ul id="selectMapTheme" class="dropdown-menu" aria-labelledby="btnMapTheme">
+              <asp:PlaceHolder id="phlMapTheme" runat="server"></asp:PlaceHolder>
+            </ul>
+          </div>
+
+          <div id="pnlMapLevels">
+<%--            <button class="btn btn-default dropdown-toggle" type="button" id="btnMapLevel" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              <span id="selectedLevel"></span>
+              <span class="caret"></span>
+            </button>
+            <ul id="selectMapLevel" class="dropdown-menu" aria-labelledby="btnMapLevel">
+              <asp:PlaceHolder id="phlMapLevel" runat="server"></asp:PlaceHolder>
+            </ul>--%>
+          <select id="ddlLevel" runat="server" class="Input" style="width: 70px; display: none"></select>
+          </div>
+
           <div id="pnlMapTools">
             <button class="btn btn-default dropdown-toggle" type="button" id="btnToolMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
               <span id="selectedTool"><span class="glyphicon glyphicon-hand-up"></span> Pan</span>
               <span class="caret"></span>
             </button>
-            <ul id="selectMapTools" class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <ul id="selectMapTools" class="dropdown-menu" aria-labelledby="btnToolMenu">
               <li class="dropdown-header">Map Tools</li>
               <li id="optPan" class="Button MapTool"><span class="glyphicon glyphicon-hand-up"></span> Pan</li>
               <li id="optIdentify" class="Button MapTool"><span class="glyphicon glyphicon-info-sign"></span> Identify</li>

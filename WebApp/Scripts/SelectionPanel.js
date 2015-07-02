@@ -250,6 +250,7 @@ var GPV = (function (gpv) {
           success: function (html) {
             $pnlDataList.empty().append(html);
             $cmdDataPrint.removeClass("Disabled");
+            $pnlDataDisplay.show();
             if($pnlDataDisplay.css("right").substring(0, 1) === "-"){
               $pnlDataDisplay.animate({ right: 0, opacity: "1.0" }, 600, function () {
                 $(".DataExit").addClass("DataExitOpen");
