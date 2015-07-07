@@ -79,25 +79,25 @@
               <button id="cmdForDownload" class="share-type" title="Download Map"><i class="fa fa-download"></i> Download</button>
               <div id="pnlPrint" class="share">
                 <form id="form1" runat="server">
-                  <div class="FunctionLabel">Create Printable PDF Map</div><br />
+                  <div class="FunctionLabel">Create Printable PDF Map</div><br>
                   <label for="ddlPrintTemplate">Format</label>
                   <asp:DropDownList id="ddlPrintTemplate" runat="server" Width="216px" AutoPostBack="true" />
 		              <button id="cmdCreate" runat="server" Enabled="false" style="left: 139px; top: 48px">Create</button>
                 </form>
               </div>
               <div id="pnlEmail" class="share">
-                <div class="FunctionLabel">Email a Map</div><br />
+                <div class="FunctionLabel">Email a Map</div><br>
                 <label for="tboEmail">Email Address</label>
                 <input id="tboEmail" />
                 <button id="cmdEmail">Send</button>
               </div>
               <div id="pnlExport" class="share">
-              <div class="FunctionLabel">Export Map Extent</div><br />
+              <div class="FunctionLabel">Export Map Extent</div><br>
               <select id="ddlExternalMap" runat="server" class="Input" style="width: 200px"></select>
                 <button id="cmdExternalMap">Go</button>
               </div>
               <div id="pnlDownload" class="share">
-                <div class="FunctionLabel">Download a Map</div><br />
+                <div class="FunctionLabel">Download a Map</div><br>
                 <label for="ddlSaveMap">Save as</label>
                 <select id="ddlSaveMap" runat="server" class="Input" style="width: 90px">
                   <option value="image">as Image</option>
@@ -175,7 +175,7 @@
           <div id="pnlData" class="Panel">
           <span class="DataLabel">Data Set</span>
           <select id="ddlDataTheme">
-          </select><br />
+          </select><br>
             <button id="cmdDataPrint" class="Disabled">Print</button>
             <div id="pnlDataList" class="Panel"></div>
           </div>

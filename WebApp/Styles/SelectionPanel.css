@@ -14,7 +14,7 @@
  */
 
 
-#pnlQuerySizer
+#pnlQuery
 {
   bottom: 0;
   top: 40px;
@@ -114,6 +114,7 @@
 {
   top: 122px;
   bottom: 35px;
+  margin-top: 3px;
   border-top: solid 1px #b9b9b9;
   border-bottom: solid 1px #b9b9b9;
   background-color: #f4f7f7;

@@ -13,38 +13,22 @@
  *  limitations under the License.
  */
 
-#searchDivider
+#pnlSearchFields
 {
-  left: 8px;
-  right: 8px;
-  bottom: auto;
-  height: 8px;
-  cursor: n-resize;
-  z-index: 3;
-  top: 240px;
+  bottom: 0;
+  top: 40px;
 }
 
 #ddlSearches {
   position: absolute;
+  z-index: 10;
   width: 60%;
-}
-
-#pnlSearchInputFieldSizer
-{
-  bottom: auto;
-  top: 40px;
-  height: 230px;
-  min-height: 106px;
-}
-
-#pnlSearchGridSizer {
-  top: 270px;
-  min-height: 106px;
 }
 
 #pnlSearchInputField
 {
   padding: 5px;
+  height: 285px;
 }
 
 #cmdSearch, #cmdReset {
@@ -54,7 +38,10 @@
 
 #pnlSearchGrid
 {
+  top: 285px;
+  margin-top: 3px;
   bottom: 35px;
+  border-top: solid 1px #C9C9C9;
   border-bottom: solid 1px #C9C9C9;
   background-color: #f4f7f7;
   overflow: auto;

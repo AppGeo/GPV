@@ -19,7 +19,6 @@
 
 <div class="FunctionHeader"><span class="glyphicon glyphicon-menu-left FunctionExit" aria-hidden="true"></span>Selection</div>
 
-<div id="pnlQuerySizer" class="Panel">
   <div id="pnlQuery" class="Panel">
     <div id="pnlSelectionOptions" class="Panel">
       <gpv:Select ID="ddlAction" runat="server" CssClass="Input" ToolTip="Action to perform with the Select Features tool to the left" />
@@ -29,8 +28,6 @@
       <gpv:Select ID="ddlQuery" runat="server" CssClass="Input" ToolTip="Filter which lists only those features meeting certain criteria" />
     </div>
     <div id="pnlSelectTools" class="Panel">
-<%--  <gpv:Div ID="optSelect" runat="server" CssClass="MapTool" ToolTip="Select Features" />
-      <button id="optSelect" title="Select Feature"><span class="select-feature"></span>Select</button>--%>
       <button id="cmdSelectView" title="Select All in View"><span class="select-view"></span>Select All</button>
       <button id="cmdZoomSelect" title="Zoom to Selected Features"><span class="select-zoom"></span>Zoom To</button>
       <button id="cmdClearSelection" title="Clear Selection"><span class="select-clear"></span>Clear</button>
@@ -42,20 +39,9 @@
       <div id="labSelectionCount">None selected</div>
       <button id="cmdMailingLabels" class="Disabled" title="Mailing Labels"><i class="fa fa-tag"></i> Mailing Labels</button>
       <button id="cmdExportData" class="Disabled" title="Spreadsheet"><i class="fa fa-table"></i> Spreadsheet</button>
-      <%--<div id="cmdMailingLabels" class="CommandLink Disabled">To Mailing Labels</div>
-      <div id="cmdExportData" class="CommandLink Disabled">To Spreadsheet</div>--%>
     </div>
   </div>
-</div>
-<%--<div id="pnlDataSizer" style="display: none;">
-  <div id="pnlDataTabs" class="TabPanel">
-    <div id="pnlDataTabScroll" class="TabScroll"></div>
-  </div>
-  <div id="pnlData" class="MainPanel">
-    <div id="cmdDataPrint" class="CommandLink Disabled">Print</div>
-    <div id="pnlDataList"></div>
-  </div>
-</div>--%>
+
 <div id="selectionDivider"></div>
 <form id="frmExportData" method="post" target="export">
   <input id="hdnExportLayer" type="hidden" name="layer" />
