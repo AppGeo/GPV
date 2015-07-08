@@ -127,7 +127,7 @@ public partial class SearchPanel : System.Web.UI.UserControl
             break;
         }
 
-        search.Controls.Add(new HtmlGenericControl("br"));
+        search.Controls.Add(new LiteralControl("<br/>"));
       }
      
       pnlSearchScroll.Controls.Add(search);
