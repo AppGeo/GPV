@@ -38,10 +38,10 @@ public partial class Viewer : CustomStyledPage
 
     DateTime lastWriteTime = MinifiedStylesheetsHandler.GetLastWriteTime();
 
-    HtmlGenericControl link = new HtmlGenericControl("link");
+    HtmlLink link = new HtmlLink();
     link.Attributes["type"] = "text/css";
     link.Attributes["rel"] ="stylesheet";
-    link.Attributes["href"] = "Styles/MinifiedStylesheets.ashx" + GetCacheControl(lastWriteTime) + "&ext=.css";
+    link.Href = "Styles/MinifiedStylesheets.ashx" + GetCacheControl(lastWriteTime) + "&ext=.css";
     head.Controls.Add(link);
 
     // reference minified scripts if not in debug mode

@@ -274,7 +274,6 @@ var GPV = (function (gpv) {
       var same = sameBox(appState.Extent.bbox, bbox);
       appState.Extent.bbox = bbox;
       appState.VisibleLayers[appState.MapTab] = gpv.legendPanel.getVisibleLayers(appState.MapTab);
-      console.log(appState.toJson());
 
       setExternalMap();
 
