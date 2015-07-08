@@ -64,7 +64,7 @@ div.Button.Selected, div.Button.Selected:hover
 
 button {
   margin: 10px;
-  padding: 5px;
+  padding: 2px 5px;
 }
 
 .DataGrid

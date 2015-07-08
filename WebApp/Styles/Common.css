@@ -49,6 +49,10 @@ th
 	text-align: left;
 }
 
+th, td {
+  height: 20px;
+}
+
 ul 
 {
 	list-style: none;
