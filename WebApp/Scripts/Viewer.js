@@ -123,8 +123,8 @@ var GPV = (function (gpv) {
     });
 
     $("#cmdMenu").on("click", function () {
-      var hide = $("#pnlFunctionSizer").css("left") === "0px";
-      $("#pnlFunctionSizer").animate({ left: hide ? "-400px" : "0px" }, { duration: 800 });
+      var hide = $("#pnlFunctionSidebar").css("left") === "0px";
+      $("#pnlFunctionSidebar").animate({ left: hide ? "-400px" : "0px" }, { duration: 800 });
       $("#pnlMapSizer").animate({ left: hide ? "0px" : "400px" }, { 
           duration: 800,
           progress: function () {

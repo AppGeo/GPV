@@ -20,11 +20,7 @@
 <div class="FunctionHeader"><span class="glyphicon glyphicon-menu-left FunctionExit" aria-hidden="true"></span>Location</div>
 
 <div id="pnlLocationContent">
-  <div id="pnlOverviewSizer">
-    <div id="pnlOverview">
-      <div id="mapOverview"></div>
-    </div>
-  </div>
+
   <div id="pnlZoneLevelSizer">
     <div id="pnlZoneLevelTabs" class="TabPanel">
       <div class="TabScroll">

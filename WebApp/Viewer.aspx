@@ -38,7 +38,7 @@
       <a id="cmdHelp" runat="server" class="CommandLink" title="Show the help pages" href="Help.aspx" target="help"><span class="glyphicon glyphicon-question-sign" style="font-size: 22px;"></span></a>
     </div>
     <div id="pnlContent" runat="server" class="Panel">
-      <div id="pnlFunctionSizer" runat="server" class="Panel">
+      <div id="pnlFunctionSidebar" runat="server" class="Panel">
         <div id="pnlFunctionTabs" class="TabPanel Panel">
           <ul class="TabScroll Menu">
             <li id="tabSearch" runat="server" class="MenuItem Normal" style="display: none">Search</li>
@@ -160,6 +160,12 @@
               <li id="optPaintBucket" class="Button MapTool MarkupTool Disabled"><span class="paint-bucket"></span> Fill With Color</li>
             </ul>
           </div>
+
+<%--            <div id="pnlOverviewSizer">
+              <div id="pnlOverview">
+                <div id="mapOverview"></div>
+              </div>
+            </div>--%>
 
           <div id="mapMain" runat="server" class="Panel">
           </div>
