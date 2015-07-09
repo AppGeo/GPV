@@ -92,6 +92,7 @@ button {
   padding: 2px 3px;
   border-right: solid 1px #D0D0D0;
   white-space: nowrap;
+  height: 20px;
 }
 
 .DataGrid th

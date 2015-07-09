@@ -137,4 +137,8 @@
 #cmdMailingLabels, #cmdExportData{
   float: right;
   margin: 10px 5px;
+  display: block;
+}
+#cmdMailingLabels.Disabled, #cmdExportData.Disabled{
+  display: none;
 }

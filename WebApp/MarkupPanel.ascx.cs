@@ -35,7 +35,7 @@ public partial class MarkupPanel : System.Web.UI.UserControl
         tboMarkupUser.Attributes["disabled"] = "disabled";
         chkMarkupLock.Style["display"] = null;
         labMarkupLock.Style["display"] = null;
-        cmdNewMarkup.CssClass = "CommandLink";
+        cmdNewMarkup.Attributes["class"] = "CommandLink";
       }
     }
   }

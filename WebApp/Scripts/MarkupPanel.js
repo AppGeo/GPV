@@ -61,6 +61,14 @@ var GPV = (function (gpv) {
     var $cmdMarkupColor = $("#cmdMarkupColor").colorSelector("color", "#FF0000").colorSelector("colorChanged", setDrawingColor);
     var $cmdTextGlowColor = $("#cmdTextGlowColor").colorSelector("color", "#FFFFFF");
 
+    $('#btnMarkupColor').on('click', function () {
+      $("#cmdMarkupColor").trigger('touchstart');
+    });
+
+    $('#btnTextGlowColor').on('click', function () {
+      $("#cmdTextGlowColor").trigger('touchstart');
+    });
+
     var $ddlMarkupCategory = $("#ddlMarkupCategory").change(function () {
       if (appState.MarkupGroups.length > 0) {
         appState.MarkupGroups = [];

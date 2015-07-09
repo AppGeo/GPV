@@ -26,10 +26,10 @@
   <gpv:Select id="ddlMarkupCategory" runat="server" CssClass="Input" /><br />
             
   <label>Markup Group</label>
-  <gpv:Div id="cmdNewMarkup" runat="server" CssClass="CommandLink Disabled MarkupGroup">New</gpv:Div>  
-  <div id="cmdZoomToMarkup" class="CommandLink Disabled MarkupGroup Toggleable">Zoom To</div>  
-  <div id="cmdDeleteMarkup" class="CommandLink Disabled MarkupGroup Toggleable">Delete</div>  
-  <div id="cmdExportMarkup" class="CommandLink Disabled MarkupGroup Toggleable">To KML</div><br />
+  <button id="cmdNewMarkup" runat="server" class="CommandLink Disabled MarkupGroup" style="margin-left: 0">New</button>
+  <button id="cmdZoomToMarkup" class="CommandLink Disabled MarkupGroup Toggleable">Zoom To</button>  
+  <button id="cmdDeleteMarkup" class="CommandLink Disabled MarkupGroup Toggleable">Delete</button>  
+  <button id="cmdExportMarkup" class="CommandLink Disabled MarkupGroup Toggleable">To KML</button><br />
 
   <label>Title</label>
   <input type="text" id="tboMarkupTitle" class="Input" disabled="disabled" />
@@ -37,13 +37,10 @@
   <gpv:Input type="checkbox" id="chkMarkupLock" runat="server" disabled="disabled" style="display: none" />
   <gpv:Label id="labMarkupLock" runat="server" for="chkMarkupLock" style="display: none">Lock</gpv:Label><br />
 
-  <div id="pnlMarkupTextGlow">
-    <input type="checkbox" id="chkTextGlow" />
-    <div id="lblTextGlow">Markup Text Glow</div>
-    <div id="cmdTextGlowColor" class="Button Disabled Color" title="Text Glow Color"></div>
-    <div id="cmdMarkupColor" class="Button Disabled Color" title="Markup Color"></div>
-    <div id="lblMarkupColor">Markup Color</div>
-  </div>
+  <label>Style</label>
+    <button id="btnMarkupColor" style="margin-left: 0"><span id="cmdMarkupColor" class="Button Disabled Color" title="Markup Color"></span> Color</button>
+    <button id="btnTextGlowColor" style="float:right" ><span id="cmdTextGlowColor" class="Button Disabled Color" title="Text Glow Color"></span> Text Glow</button>
+    <input type="checkbox" id="chkTextGlow" style="float:right" />
 
   <div class="Panel" id="pnlMarkupGrid">
     <table id="grdMarkup" class="DataGrid"></table>

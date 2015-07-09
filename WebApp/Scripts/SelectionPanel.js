@@ -43,7 +43,7 @@ var GPV = (function (gpv) {
 
     $("#cmdExportData").on("click", function () {
       exportData($(this), "ExportData.ashx");
-    });
+    })
 
     $("#cmdMailingLabels").on("click", function () {
       exportData($(this), "MailingLabels.aspx");
@@ -52,6 +52,8 @@ var GPV = (function (gpv) {
     $("#cmdSelectView").on("click", function () {
       gpv.selection.selectByGeometry(gpv.viewer.getExtent());
     });
+
+    //$('#pnlQueryCommand .Disabled').hide();
 
     var $ddlAction = $("#ddlAction").on("change", actionChanged);
     var $ddlProximity = $("#ddlProximity").on("change", proximityChanged);
