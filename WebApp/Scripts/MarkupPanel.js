@@ -168,7 +168,7 @@ var GPV = (function (gpv) {
         data.measured = 1;
       }
 
-      if ((option == "text" || (option == "measured" && geo.type == "Point")) && $chkTextGlow.attr("checked")) {
+      if ((option == "text" || (option == "measured" && currentShape instanceof L.LatLng)) && $chkTextGlow.prop("checked")) {
         data.glow = $cmdTextGlowColor.colorSelector("color");
       }
 
