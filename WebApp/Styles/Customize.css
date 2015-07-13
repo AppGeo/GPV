@@ -214,6 +214,10 @@ a.VersionText
   color: #FFFFFF;
 }
 
+li.MapTool:hover, #selectMapTheme li:hover{
+  background-color: #B2DFDB;
+}
+
 #pnlSearchGrid, #pnlQueryGrid{
   color: #f4f7f7;
 }

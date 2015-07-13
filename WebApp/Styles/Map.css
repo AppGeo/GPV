@@ -90,10 +90,6 @@ li.MapTool span{
   vertical-align: middle;
 }
 
-li.MapTool:hover, #selectMapTheme li:hover{
-  background-color: #B2DFDB;
-}
-
 li.MapTool.Disabled{
   background-color: #F0F0F0;
 }
@@ -113,6 +109,10 @@ li.MapTool span:not(.glyphicon), #selectedTool span:not(.glyphicon){
   vertical-align: middle;
 }
 
+.pan{
+    background-position: -768px 0px;  /* Select.gif */
+}
+
 .select
 {
   background-position: -816px 0px;  /* Select.gif */
@@ -122,6 +122,7 @@ li.MapTool span:not(.glyphicon), #selectedTool span:not(.glyphicon){
 {
   background-position: -840px 0px;  /* SelectDisable.gif */
 }
+
 .draw-point {
   background-position: -432px 0px; /* DrawPoint.gif */
 }

@@ -142,7 +142,7 @@
             </button>
             <ul id="selectMapTools" class="dropdown-menu" aria-labelledby="btnToolMenu">
               <li class="dropdown-header">Map Tools</li>
-              <li id="optPan" class="Button MapTool"><span class="glyphicon glyphicon-hand-up"></span> Pan</li>
+              <li id="optPan" class="Button MapTool"><span class="pan"></span> Pan</li>
               <li id="optIdentify" class="Button MapTool"><span class="glyphicon glyphicon-info-sign"></span> Identify</li>
               <li class="dropdown-header">Selection Tools</li>
               <li id="optSelect" class="Button MapTool"><span class="select"></span> Select Features</li>

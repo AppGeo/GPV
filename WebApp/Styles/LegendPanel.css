@@ -20,15 +20,9 @@
   bottom: 0;
 }
 
-#cmdRefreshMap
-{
-  padding-left: 10px;
-  padding-top: 10px;
-}
-
 #pnlLegendScroll
 {
-  top: 70px;
+  top: 80px;
   bottom: 0;
   padding-left: 10px;
   padding-top: 10px;
