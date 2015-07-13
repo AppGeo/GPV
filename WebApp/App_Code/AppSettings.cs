@@ -229,6 +229,14 @@ public static class AppSettings
     }
   }
 
+  public static string DefaultApplication
+  {
+    get
+    {
+      return GetConfigSetting("DefaultApplication");
+    }
+  }
+
   public static Envelope DefaultFullExtent
   {
     get
