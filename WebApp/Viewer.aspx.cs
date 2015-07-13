@@ -295,7 +295,7 @@ public partial class Viewer : CustomStyledPage
     // otherwise, if no application was specified, show the
     // available applications or an error
 
-    if (!launchParams.ContainsKey("application"))
+    if (String.IsNullOrEmpty(AppSettings.DefaultApplication) && !launchParams.ContainsKey("application"))
     {
       ShowError("An application has not been specified");
     }
@@ -608,7 +608,7 @@ public partial class Viewer : CustomStyledPage
 
     // === application ===
 
-    _appState.Application = launchParams["application"];
+    _appState.Application = launchParams.ContainsKey("application") ? launchParams["application"] : AppSettings.DefaultApplication;
 
     Configuration.ApplicationRow application = _config.Application.FindByApplicationID(_appState.Application);
     Configuration.MapTabRow mapTab;

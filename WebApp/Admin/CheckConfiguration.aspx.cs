@@ -50,12 +50,12 @@ public partial class Admin_CheckConfiguration : CustomStyledPage
 
       LayoutColumns();
 
-      int errorCount = WriteWebConfigBlock();
-
       Configuration config = Configuration.GetCurrent();
       config.CascadeDeactivated();
       config.RemoveDeactivated();
       config.ValidateConfiguration();
+
+      int errorCount = WriteWebConfigBlock(config);
 
       errorCount += WriteReportBlock(config.Application, "ApplicationID", null);
       errorCount += WriteReportBlock(config.ApplicationMapTab, "ApplicationID", "MapTabID");
@@ -170,15 +170,24 @@ public partial class Admin_CheckConfiguration : CustomStyledPage
     td.Height = "0px";
   }
 
-  private int WriteWebConfigBlock()
+  private int WriteWebConfigBlock(Configuration config)
   {
     List<String> name = new List<String>();
     List<String> message = new List<String>();
+
+    // check DefaultApplication
+
+    name.Add("DefaultApplication");
+    bool hasApplication = !String.IsNullOrEmpty(AppSettings.DefaultApplication) && config.Application.Any(o => String.Compare(o.ApplicationID, AppSettings.DefaultApplication, true) == 0);
+    message.Add(!hasApplication ? "Not set to a valid application ID" : null);
 
     // check FullExtent and ZoomLevel
 
     name.Add("FullExtent");
     message.Add(AppSettings.DefaultFullExtent == null ? "Not set or incorrectly specified, must be four comma-separated numbers" : null);
+
+    name.Add("ZoomLevels");
+    message.Add(CheckIsSet(AppSettings.ZoomLevels));
 
     // check MapUnits and MeasureUnits
 

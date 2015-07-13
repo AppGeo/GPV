@@ -92,7 +92,6 @@ var GPV = (function (gpv) {
 
     // =====  component events
 
-    gpv.on("viewer", "mapShape", mapShape);
     gpv.on("viewer", "mapTabChanged", mapTabChanged);
     gpv.on("selection", "changed", selectionChanged);
 
@@ -561,7 +560,7 @@ var GPV = (function (gpv) {
 
     function setMap(m) {
       map = m;
-      map.on("shape", mapShape);
+      map.on("shapedrawn", mapShape);
     }
 
     function syncAppState($ddl, prop) {
@@ -601,7 +600,7 @@ var GPV = (function (gpv) {
       gridFilled: function (fn) { gridFilledHandlers.push(fn); },
       reinitialize: reinitialize,
       reinitialized: function (fn) { reinitializedHandlers.push(fn); },
-      setMap: function (m) { map = m; }
+      setMap: setMap
     };
 
     initialize();

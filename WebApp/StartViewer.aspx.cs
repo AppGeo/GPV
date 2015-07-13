@@ -52,7 +52,7 @@ public partial class StartViewer : CustomStyledPage
       Session["LaunchParams"] = launchParams;
 		}
 
-    if (launchParams.ContainsKey("application") || launchParams.ContainsKey("state"))
+    if (!String.IsNullOrEmpty(AppSettings.DefaultApplication) || launchParams.ContainsKey("application") || launchParams.ContainsKey("state"))
 		{
 			Response.Redirect("Viewer.aspx");
 		}
