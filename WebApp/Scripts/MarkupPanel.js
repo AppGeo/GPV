@@ -22,6 +22,13 @@ var GPV = (function (gpv) {
     var isPublic = gpv.settings.isPublic;
     var service = "Services/MarkupPanel.ashx";
 
+    var metersPerFoot = 0.3048;
+    var feetPerMile = 5280;
+    var squareFeetPerAcre = 43560;
+
+    var measureCoordinates;
+    var measureText;
+
     // =====  controls  =====
 
     var $colorSelectors = $(".Color").colorSelector({
@@ -143,10 +150,6 @@ var GPV = (function (gpv) {
       var c = getMarkupColor();
       gpv.selectTool($(this), map, { cursor: '', drawing: { mode: "polygon", style: { color: c, fill: true, fillColor: c } } });
     });
-
-    // =====  component events  =====
-
-    gpv.on("viewer", "mapShape", mapShape);
 
     // =====  private functions  =====
 
@@ -347,6 +350,15 @@ var GPV = (function (gpv) {
     }
 
     function mapShape(e) {
+      if (measureCoordinates) {
+        measureCoordinates = undefined;
+      }
+
+      if (measureText) {
+        map.removeLayer(measureText);
+        measureText = undefined;
+      }
+
       switch ($MapTool.filter(".Selected").attr("id")) {
         case "optDrawCircle":
         case "optDrawPoint":
@@ -423,6 +435,8 @@ var GPV = (function (gpv) {
 
     function setMap(m) {
       map = m;
+      map.on("shapedrawing", shapeDrawing);
+      map.on("shapedrawn", mapShape);
 
       map.eachLayer(function (layer) {
         if (!shingleLayer) {
@@ -436,6 +450,112 @@ var GPV = (function (gpv) {
           currentShape = null;
         }
       });
+    }
+
+
+    function shapeDrawing(e) {
+      var currentTool = $MapTool.filter(".Selected").attr("id");
+
+      if (currentTool === 'optDrawLength' || currentTool === 'optDrawArea') {
+        var units = gpv.settings.measureUnits;
+        var inFeet = units == "feet" || units == "both";
+        var inMeters = units == "meters" || units == "both";
+        var convert = 1 / (gpv.settings.mapUnits == "feet" ? 1 : metersPerFoot);
+
+        if (!measureCoordinates) {
+          measureCoordinates = [];
+        }
+        
+        var c = measureCoordinates;
+
+        var latlngs = e.shape.getLatLngs();
+        var lastLatLng = latlngs[latlngs.length - 1];
+        c.push(map.options.crs.project(lastLatLng));
+
+        if (measureText) {
+          map.removeLayer(measureText);
+        }
+
+        var value = [];
+        var i, j;
+
+        if (currentTool === 'optDrawLength') {
+          if (c.length >= 2) {
+            var length = 0;
+
+            for (i = 1; i < c.length; ++i) {
+              var dx = c[i].x - c[i - 1].x;
+              var dy = c[i].y - c[i - 1].y;
+              length += Math.sqrt(dx * dx + dy * dy);
+            }
+
+            if (length > 0) {
+              length *= convert;
+
+              if (inFeet) {
+                value.push(length < feetPerMile ? Math.round(length) + " ft" : (length / feetPerMile).toFixed(1) + " mi");
+              }
+
+              if (inMeters) {
+                length *= metersPerFoot;
+                value.push(length < 1000 ? Math.round(length) + " m" : (length / 1000).toFixed(1) + " km");
+              }
+
+              measureText = L.text({ 
+                latlng: lastLatLng,
+                className: "MeasureText",
+                value: value.join("\n")
+              }).addTo(map);
+            }
+          }
+        }
+        else {
+          if (c.length >= 3) {
+            var x = 0;
+            var y = 0;
+            var area = 0;
+            var n;
+
+            for (i = 1; i <= c.length; ++i) {
+              j = i % c.length;
+              n = (c[i - 1].x * c[j].y) - (c[j].x * c[i - 1].y);
+              x += (c[i - 1].x + c[j].x) * n;
+              y += (c[i - 1].y + c[j].y) * n;
+              area += n;
+            }
+
+            x /= 3 * area;
+            y /= 3 * area;
+
+            area = Math.abs(area * 0.5);
+
+            if (area > 0) {
+              area *= convert * convert;
+              var acres = area / squareFeetPerAcre;
+
+              if (inFeet) {
+                var squareMile = feetPerMile * feetPerMile;
+                value.push(area <= squareMile ? Math.round(area) + " sq ft" : (area / squareMile).toFixed(2) + " sq mi");
+              }
+
+              if (inMeters) {
+                area *= metersPerFoot * metersPerFoot;
+                value.push(area <= 100000 ? Math.round(area) + " sq m" : (area / 1000000).toFixed(2) + " sq km");
+              }
+
+              if (inFeet) {
+                value.push(acres.toFixed(2) + " acres");
+              }
+
+              measureText = L.text({ 
+                latlng: map.options.crs.unproject(L.point(x, y)),
+                className: "MeasureText " + (inFeet ? "Area3" : "Area2"),
+                value: value.join("\n")
+              }).addTo(map);
+            }
+          }
+        }
+      }
     }
 
     function toWkt(shape) {

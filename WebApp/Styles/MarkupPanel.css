@@ -75,3 +75,25 @@ label#labMarkupLock {
   -webkit-border-radius: 4px;
   -mox-border-radius: 4px;
 }
+
+.MeasureText {
+  font-family: Verdana, sans-serif;
+  font-size: 11px;
+  color: #404040;
+  width: 200px;
+  line-height: 13px;
+  text-align: center;
+  cursor: default;
+  text-shadow: 0px 0px 4px white;
+}
+
+.MeasureText.Area2 {
+  left: -100px;
+  top: -13px;
+}
+
+.MeasureText.Area3 {
+  left: -100px;
+  top: -19px;
+}
+

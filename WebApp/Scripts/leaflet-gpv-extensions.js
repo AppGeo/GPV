@@ -125,6 +125,7 @@ L.Map.prototype.on('click', function (e) {
     case 'polygon':
       if (!map._drawing.shape) {
         map._drawing.shape = L[mode]([ e.latlng ], L.extend(unclickable, map.options.drawing.style)).addTo(map);
+        map.fire('shapedrawing', L.extend(modifiers, { mode: mode, shape: map._drawing.shape }));
       }
       else {
         if (map._drawingTimeout) {
@@ -136,6 +137,7 @@ L.Map.prototype.on('click', function (e) {
         else {
           map._drawingTimeout = setTimeout(function () {
             addPolyLatLng();
+            map.fire('shapedrawing', L.extend(modifiers, { mode: mode, shape: map._drawing.shape }));
           }, 250);
         }
       }
@@ -225,6 +227,7 @@ L.Text = L.Layer.extend({
 
       this._container = L.DomUtil.create('div', 'leaflet-zoom-animated', this.getPane());
       this._container.style.position = 'absolute';
+      this._container.style.zIndex = 2;
 
       if (this.options.input) {
         this._text = L.DomUtil.create('input', this.options.className);
@@ -249,8 +252,15 @@ L.Text = L.Layer.extend({
         }, this);
       }
       else {
+        var lines = (this.options.value || '').split('\n');
+
         this._text = L.DomUtil.create('div', this.options.className);
-        this._text.appendChild(document.createTextNode(this.options.value || ''));
+        this._text.appendChild(document.createTextNode(lines[0]));
+
+        for (var i = 1; i < lines.length; ++i) {
+          this._text.appendChild(L.DomUtil.create('br'));
+          this._text.appendChild(document.createTextNode(lines[i]));
+        }
       }
 
       if (this.options.color) {

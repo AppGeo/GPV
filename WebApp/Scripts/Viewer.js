@@ -23,7 +23,6 @@ var GPV = (function (gpv) {
     var mapTabChangedHandlers = [];
     var functionTabChangedHandlers = [];
     var extentChangedHandlers = [];
-    var mapShapeHandlers = [];
 
     // =====  controls required prior to map control creation  =====
 
@@ -264,10 +263,6 @@ var GPV = (function (gpv) {
       //    window.open("Identify.aspx?" + data, windowName, features, true);
       //    return;
       //}
-
-      $.each(mapShapeHandlers, function () {
-        this(e);
-      });
     }
 
     function refreshMap(size, bbox, callback) {
@@ -373,7 +368,6 @@ var GPV = (function (gpv) {
       extentChanged: function (fn) { extentChangedHandlers.push(fn); },
       getExtent: function () { return map.getProjectedBounds().toArray(); },
       functionTabChanged: function (fn) { functionTabChangedHandlers.push(fn); },
-      mapShape: function (fn) { mapShapeHandlers.push(fn); },
       mapTabChanged: function (fn) { mapTabChangedHandlers.push(fn); },
       refreshMap: function () { $ddlLevel.val(appState.Level); shingleLayer.redraw(); },
       setExtent: setExtent,
