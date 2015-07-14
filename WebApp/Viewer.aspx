@@ -35,6 +35,7 @@
     <div id="pnlHeader" class="Panel">
       <span id="cmdMenu" class="CommandLink" title="Show/hide the menu"><span class="glyphicon glyphicon-menu-hamburger" style="font-size: 22px;"></span></span>
       <uc1:Header ID="Header1" runat="server" />
+      <span id="cmdShowDetails" class="glyphicon glyphicon-option-vertical" style="font-size: 22px;"></span>
       <a id="cmdHelp" runat="server" class="CommandLink" title="Show the help pages" href="Help.aspx" target="help"><span class="glyphicon glyphicon-question-sign" style="font-size: 22px;"></span></a>
     </div>
     <div id="pnlContent" runat="server" class="Panel">

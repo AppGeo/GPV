@@ -81,8 +81,12 @@
   background-color: #f4f7f7;
 }
 
-#cmdMenu span, #cmdHelp span {
+#cmdMenu span, #cmdHelp span{
 color: #009688;
+}
+
+#cmdShowDetails{
+  color: #FFB74D;
 }
 /* text color of links (external pages and GPV commands) */
 
@@ -196,6 +200,7 @@ a.VersionText
 }
 
 #pnlFunctionSidebar{
+  background-color: #FFFFFF;
   border-right: solid 1px #009688;
 }
 

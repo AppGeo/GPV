@@ -114,41 +114,41 @@ var GPV = (function (gpv) {
     var $MapTool = $(".MapTool");
 
     $("#optDeleteMarkup,#optColorPicker,#optPaintBucket").on("click", function () {
-      gpv.selectTool($(this), map, { cursor: '', drawing: { mode: "point" } });
+      gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "point" } });
     });
 
     $("#optDrawArea").on("click", function () {
       var c = getMarkupColor();
-      gpv.selectTool($(this), map, { cursor: '', drawing: { mode: "polygon", style: { color: c, fill: true, fillColor: c } } });
+      gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "polygon", style: { color: c, fill: true, fillColor: c } } });
     });
 
     $("#optDrawCircle").on("click", function () {
       var c = getMarkupColor();
-      gpv.selectTool($(this), map, { cursor: '', drawing: { mode: "circle", style: { color: c, fill: true, fillColor: c } } });
+      gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "circle", style: { color: c, fill: true, fillColor: c } } });
     });
 
     $("#optDrawPoint,#optDrawCoordinates").on("click", function () {
-      gpv.selectTool($(this), map, { cursor: '', drawing: { mode: "point" } });
+      gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "point" } });
     });
 
     $("#optDrawText").on("click", function () {
       var c = getMarkupColor();
-      gpv.selectTool($(this), map, { cursor: '', drawing: { mode: "text", text: { color: c } } });
+      gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "text", text: { color: c } } });
     });
 
     $("#optDrawLength").on("click", function () {
       var c = getMarkupColor();
-      gpv.selectTool($(this), map, { cursor: '', drawing: { mode: "polyline", style: { color: c, fill: false } } });
+      gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "polyline", style: { color: c, fill: false } } });
     });
 
     $("#optDrawLine").on("click", function () {
       var c = getMarkupColor();
-      gpv.selectTool($(this), map, { cursor: '', drawing: { mode: "polyline", style: { color: c, fill: false } } });
+      gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "polyline", style: { color: c, fill: false } } });
     });
 
     $("#optDrawPolygon").on("click", function () {
       var c = getMarkupColor();
-      gpv.selectTool($(this), map, { cursor: '', drawing: { mode: "polygon", style: { color: c, fill: true, fillColor: c } } });
+      gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "polygon", style: { color: c, fill: true, fillColor: c } } });
     });
 
     // =====  private functions  =====

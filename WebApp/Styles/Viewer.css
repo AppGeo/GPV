@@ -127,7 +127,7 @@ button {
   bottom: auto;
 }
 
-#cmdHelp{
+#cmdHelp, #cmdShowDetails{
   float: right;
   margin: 8px;
 }

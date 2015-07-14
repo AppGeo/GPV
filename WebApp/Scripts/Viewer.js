@@ -27,6 +27,7 @@ var GPV = (function (gpv) {
     // =====  controls required prior to map control creation  =====
 
     var $ddlExternalMap = $("#ddlExternalMap").on("change", setExternalMap);
+    var $pnlDataDisplay = $("#pnlDataDisplay");
 
     // =====  map control  =====
 
@@ -152,15 +153,27 @@ var GPV = (function (gpv) {
       $form.submit();
     });
 
+    $("#cmdShowDetails").on("click", function () {
+      if ($pnlDataDisplay.css("right").substring(0, 1) === "-") {
+        $pnlDataDisplay.show();
+        $pnlDataDisplay.animate({ right: 0, opacity: "1.0" }, 600, function () {
+          $(".DataExit").addClass("DataExitOpen");
+        });
+      }
+      else {
+        $(".DataHeader").trigger("click");
+      }
+    });
+
     $("#cmdZoomSelect").on("click", function () {
       zoomToSelection(1.6);
     });
 
     $(".DataHeader").on("click", function () {
-      var width = "-" + $("#pnlDataDisplay").css("width");
-      $("#pnlDataDisplay").animate({ right: width, opacity: "0" }, 600, function () {
+      var width = "-" + $pnlDataDisplay.css("width");
+      $pnlDataDisplay.animate({ right: width, opacity: "0" }, 600, function () {
         $(".DataExit").removeClass("DataExitOpen");
-        $("#pnlDataDisplay").hide();
+        $pnlDataDisplay.hide();
       });
     });
 
@@ -223,8 +236,9 @@ var GPV = (function (gpv) {
     });
 
     $("#optPan").on("click", function () {
-      gpv.selectTool($(this), map, { cursor: 'grab', drawing: { mode: 'off' } });
+      gpv.selectTool($(this), map, { cursor: '', drawing: { mode: 'off' } });
     });
+
 
     // =====  component events  =====
 
