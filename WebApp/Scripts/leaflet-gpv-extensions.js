@@ -310,7 +310,7 @@ L.ShingleLayer = L.Layer.extend({
 
   getEvents: function () {
     var events = {
-      dragend: this._update
+      dragend: function () { this._update(); }
     };
 
     if (this._zoomAnimated) {
