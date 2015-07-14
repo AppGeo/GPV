@@ -110,7 +110,7 @@ li.MapTool span:not(.glyphicon), #selectedTool span:not(.glyphicon){
 }
 
 .pan{
-    background-position: -768px 0px;  /* Select.gif */
+  background-position: -768px 0px;  /* Select.gif */
 }
 
 .select

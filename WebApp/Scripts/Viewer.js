@@ -156,7 +156,7 @@ var GPV = (function (gpv) {
       zoomToSelection(1.6);
     });
 
-    $(".DataExit").on("click", function () {
+    $(".DataHeader").on("click", function () {
       var width = "-" + $("#pnlDataDisplay").css("width");
       $("#pnlDataDisplay").animate({ right: width, opacity: "0" }, 600, function () {
         $(".DataExit").removeClass("DataExitOpen");
@@ -169,7 +169,7 @@ var GPV = (function (gpv) {
       shingleLayer.redraw();
     });
 
-    $(".FunctionExit").on("click", function () {
+    $(".FunctionHeader").on("click", function () {
       $("#pnlFunction").animate({ left: "-400px", opacity: "0" }, 600, function () {
         $("#pnlFunctionTabs").animate({ left: "12px" }, 600);
         $(".share").hide();
@@ -219,11 +219,11 @@ var GPV = (function (gpv) {
     var $MapTool = $(".MapTool");
 
     $("#optIdentify").on("click", function () {
-      gpv.selectTool($(this), map, { cursor: 'pointer', drawing: { mode: 'off' } });
+      gpv.selectTool($(this), map, { cursor: 'default', drawing: { mode: 'off' } });
     });
 
     $("#optPan").on("click", function () {
-      gpv.selectTool($(this), map, { cursor: '', drawing: { mode: 'off' } });
+      gpv.selectTool($(this), map, { cursor: 'grab', drawing: { mode: 'off' } });
     });
 
     // =====  component events  =====

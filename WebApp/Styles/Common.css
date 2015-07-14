@@ -67,35 +67,35 @@ input, textarea, select
 font-family: Lora;
 font-weight: normal;
 font-style: normal;
-src: url("fonts/lora/Lora-Regular.otf") format("opentype");
+src: url("../Styles/fonts/lora/Lora-Regular.otf") format("opentype");
 }
 
 @font-face {
 font-family: Lora;
 font-weight: bold;
 font-style: normal;
-src: url("fonts/lora/Lora-Bold.otf") format("opentype");
+src: url("../Styles/fonts/lora/Lora-Bold.otf") format("opentype");
 }
 
 @font-face {
 font-family: OpenSans;
 font-weight: normal;
 font-style: normal;
-src: url("fonts/open-sans/OpenSans-Regular.eot") format('embedded-opentype'), url('fonts/open-sans/OpenSans-Regular.otf') format("opentype");
+src: url("../Styles/fonts/open-sans/OpenSans-Regular.eot") format('embedded-opentype'), url('../Styles/fonts/open-sans/OpenSans-Regular.otf') format("opentype");
 }
 
 @font-face {
 font-family: OpenSans;
 font-weight: bold;
 font-style: normal;
-src: url("fonts/open-sans/OpenSans-Bold.eot") format('embedded-opentype'), url("fonts/open-sans/OpenSans-Bold.eot") format('embedded-opentype'), url('fonts/open-sans/OpenSans-Bold.otf') format("opentype");
+src: url("../Styles/fonts/open-sans/OpenSans-Bold.eot") format('embedded-opentype'), url("../Styles/fonts/open-sans/OpenSans-Bold.eot") format('embedded-opentype'), url('fonts/open-sans/OpenSans-Bold.otf') format("opentype");
 }
 
 @font-face {
 font-family: OpenSans;
 font-weight: lighter;
 font-style: normal;
-src: url("fonts/open-sans/OpenSans-Light.eot") format('embedded-opentype'), url('fonts/open-sans/OpenSans-Light.otf') format("opentype");
+src: url("../Styles/fonts/open-sans/OpenSans-Light.eot") format('embedded-opentype'), url('../Styles/fonts/open-sans/OpenSans-Light.otf') format("opentype");
 }
 
 /* =====  common styles  ===== */

@@ -64,7 +64,7 @@ var GPV = (function (gpv) {
       $(".MapTool").not($tool.addClass("Selected")).removeClass("Selected");
 
       mapOptions = mapOptions || {};
-      $(map.getPanes().mapPane).css("cursor", mapOptions.cursor || "");
+      $(map.getPanes().mapPane).css("default", mapOptions.cursor || "");
       delete mapOptions.cursor;
 
       $.extend(true, map.options, mapOptions);

@@ -55,6 +55,7 @@
   float: right;
   width: 44%;
   margin: 2px;
+  border-left: solid 6px;
 }
 
 #ddlQuery{

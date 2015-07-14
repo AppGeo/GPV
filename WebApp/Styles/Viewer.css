@@ -154,7 +154,6 @@ button {
   width: 400px;
   min-width: 374px;
   z-index: 2;
-  background-color: white;
 }
 
 .FunctionLabel, .Title, .DataLabel{
@@ -213,6 +212,7 @@ button {
   letter-spacing: .25px;
   height: 40px;
   padding: 3px 0;
+  cursor: pointer;
 }
 
 .FunctionExit, .DataExit{
@@ -282,9 +282,9 @@ button {
   background-color: #FFFFFF;
   display: none;
   left: auto;
-  right: -405px;
+  right: -355px;
   height: 100%;
-  width: 400px;
+  width: 350px;
   box-shadow: -4px 0px 5px -2px #b9b9b9;
   -webkit-box-shadow: -4px 0px 5px -2px #b9b9b9;
   -mox-box-shadow: -4px 0px 5px -2px #b9b9b9;
@@ -295,9 +295,10 @@ button {
   font-family: Lora;
   font-size: 24px;
   letter-spacing: .25px;
+  text-align: right;
   height: 40px;
   padding: 3px 10px;
-  text-align: right;
+  cursor: pointer;
 }
 
 .DataLabel {
@@ -306,8 +307,8 @@ button {
 
 #ddlDataTheme{
   margin: 5px;
-  font-size: 18px;
-  width: 225px
+  font-size: 14px;
+  width: 190px
 }
 
 

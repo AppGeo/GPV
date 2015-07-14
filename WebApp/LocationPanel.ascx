@@ -21,7 +21,7 @@
 
 <div id="pnlLocationContent" class="Panel">
 
-  <select id="ddlZoneLevelSelect">
+  <select id="ddlZoneLevelSelect" class="Input">
     <option id="optTabZone" runat="server" style="display: none" data-table="tblZone"></option>
     <option id="optTabLevel" runat="server" style="display: none" data-table="tblLevel"></option>
     <option id="optTabLevelByZone" runat="server" style="display: none" data-table="tblLevelByZone"></option>

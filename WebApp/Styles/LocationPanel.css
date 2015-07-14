@@ -18,11 +18,8 @@
   bottom: 0;
 }
 
-#pnlOverviewSizer
-{
-  bottom: auto;
-  height: 250px;
-  min-height: 212px;
+#ddlZoneLevelSelect{
+  margin: 10px
 }
 
 /*#mapOverview

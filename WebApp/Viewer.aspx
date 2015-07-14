@@ -81,7 +81,7 @@
                 <form id="form1" runat="server">
                   <div class="FunctionLabel">Create Printable PDF Map</div><br>
                   <label for="ddlPrintTemplate">Format</label>
-                  <asp:DropDownList id="ddlPrintTemplate" runat="server" Width="216px" AutoPostBack="true" />
+                  <asp:DropDownList id="ddlPrintTemplate" runat="server" Width="216px" AutoPostBack="true" CssClass="Input" />
 		              <button id="cmdCreate" runat="server" Enabled="false" style="left: 139px; top: 48px">Create</button>
                 </form>
               </div>
@@ -137,7 +137,7 @@
 
           <div id="pnlMapTools">
             <button class="btn btn-default dropdown-toggle" type="button" id="btnToolMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-              <span id="selectedTool"><span class="glyphicon glyphicon-hand-up"></span> Pan</span>
+              <span id="selectedTool"><span class="pan"></span> Pan</span>
               <span class="caret"></span>
             </button>
             <ul id="selectMapTools" class="dropdown-menu" aria-labelledby="btnToolMenu">
@@ -180,7 +180,7 @@
         <div class="DataHeader">Details<span class="glyphicon glyphicon-menu-right DataExit" aria-hidden="true"></span></div>
           <div id="pnlData" class="Panel">
           <span class="DataLabel">Data Set</span>
-          <select id="ddlDataTheme">
+          <select id="ddlDataTheme" class="Input">
           </select><br>
             <button id="cmdDataPrint" class="Disabled">Print</button>
             <div id="pnlDataList" class="Panel"></div>
