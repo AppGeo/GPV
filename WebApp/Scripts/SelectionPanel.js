@@ -87,7 +87,7 @@ var GPV = (function (gpv) {
     // =====  map tools  =====
 
     var $optSelect = $("#optSelect").on("click", function () {
-      gpv.selectTool($(this), map, { cursor: 'pointer', drawing: { mode: 'point' } });
+      gpv.selectTool($(this), map, { cursor: 'default', drawing: { mode: 'point' } });
     });
 
     // =====  component events

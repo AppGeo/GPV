@@ -27,7 +27,7 @@ var GPV = (function (gpv) {
 
     // =====  control events  =====
 
-    $("#pnlZoneLevelTabs .Tab").on("click", function () {
+    $("#ddlZoneLevelSelect").on("change", function () {
       var id = $(this).attr("data-table");
 
       $(".ZoneLevelTable").each(function () {
