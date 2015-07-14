@@ -179,7 +179,7 @@
       <div id="pnlDataDisplay" class="Panel">
         <div class="DataHeader">Details<span class="glyphicon glyphicon-menu-right DataExit" aria-hidden="true"></span></div>
           <div id="pnlData" class="Panel">
-          <span class="DataLabel">Data Set</span>
+          <span id="spnDataTheme" class="DataLabel">Data Set</span>
           <select id="ddlDataTheme">
           </select><br>
             <button id="cmdDataPrint" class="Disabled">Print</button>

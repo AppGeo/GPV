@@ -65,7 +65,7 @@ var GPV = (function (gpv) {
       }
     });
 
-    map.on("shapedrawn", mapShape);
+    map.on("click", identify);
 
     var shingleLayer = L.shingleLayer({ urlBuilder: refreshMap }).on("shingleload", function () {
       gpv.progress.clear();
@@ -239,7 +239,60 @@ var GPV = (function (gpv) {
 
     // =====  private functions  =====
 
-    function mapShape(e) {
+    function identify(e) {
+      if ($MapTool.filter(".Selected").attr("id") === "optIdentify") {
+        var visibleLayers = gpv.legendPanel.getVisibleLayers(appState.MapTab);
+
+        if (visibleLayers.length) {
+          var p = map.options.crs.project(e.latlng);
+
+          $.ajax({
+            url: "Services/MapIdentify.ashx",
+            data: {
+              maptab: appState.MapTab,
+              visiblelayers: visibleLayers.join("\x01"),
+              level: appState.Level,
+              x: p.x,
+              y: p.y,
+              distance: 4,
+              scale: map.getProjectedPixelSize()
+            },
+            type: "POST",
+            dataType: "html",
+            success: function (html) {
+              $("#pnlDataList").empty().append(html);
+              $("#cmdDataPrint").removeClass("Disabled").data("printdata", [
+                "maptab=", encodeURIComponent(appState.MapTab), 
+                "&visiblelayers=", encodeURIComponent(visibleLayers.join("\x01")),
+                "&level=", appState.Level, 
+                "&x=", p.x, 
+                "&y=", p.y, 
+                "&distance=4", 
+                "&scale=", map.getProjectedPixelSize(),
+                "&print=1"
+              ].join(""));
+
+              var $pnlDataDisplay = $("#pnlDataDisplay");
+
+              $pnlDataDisplay.show();
+              $pnlDataDisplay.find("#spnDataTheme").text("Identify");
+              $pnlDataDisplay.find("#ddlDataTheme").hide();
+
+              if ($pnlDataDisplay.css("right").substring(0, 1) === "-") {
+                $pnlDataDisplay.animate({ right: 0, opacity: "1.0" }, 600, function () {
+                  $(".DataExit").addClass("DataExitOpen");
+                });
+              }
+            },
+            error: function (xhr, status, message) {
+              alert(message);
+            }
+          });
+        }
+      }
+    }
+
+    //function mapShape(e) {
       //switch ($MapTool.filter(".Selected").attr("id")) {
       //  case "optCoordinates":
       //    appState.Coordinates.push({ coordinates: geo.coordinates });
@@ -263,7 +316,7 @@ var GPV = (function (gpv) {
       //    window.open("Identify.aspx?" + data, windowName, features, true);
       //    return;
       //}
-    }
+    //}
 
     function refreshMap(size, bbox, callback) {
       var same = sameBox(appState.Extent.bbox, bbox);
