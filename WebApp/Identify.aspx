@@ -25,7 +25,7 @@
   <link href="Styles/Common.css" type="text/css" rel="stylesheet" />
   <link href="Styles/Customize.css" type="text/css" rel="stylesheet" />
   <link href="Styles/DataList.css" type="text/css" rel="stylesheet" />
-  <script type="text/javascript" src="Scripts/jquery-1.7.2.min.js"></script>
+  <script type="text/javascript" src="Scripts/jquery-2.1.4.min.js"></script>
   <script type="text/javascript" src="Scripts/Identify.js"></script>
 </head>
 <body>

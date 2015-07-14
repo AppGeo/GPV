@@ -250,8 +250,16 @@ var GPV = (function (gpv) {
           dataType: "html",
           success: function (html) {
             $pnlDataList.empty().append(html);
-            $cmdDataPrint.removeClass("Disabled");
+            $cmdDataPrint.removeClass("Disabled").data("printdata", [
+              "datatab=", encodeURIComponent(appState.DataTab), 
+              "&id=", encodeURIComponent(appState.ActiveDataId), 
+              "&print=1"
+            ].join(""));
+
             $pnlDataDisplay.show();
+            $pnlDataDisplay.find("#spnDataTheme").text("Data Set");
+            $pnlDataDisplay.find("#ddlDataTheme").show();
+
             if($pnlDataDisplay.css("right").substring(0, 1) === "-"){
               $pnlDataDisplay.animate({ right: 0, opacity: "1.0" }, 600, function () {
                 $(".DataExit").addClass("DataExitOpen");
@@ -386,7 +394,7 @@ var GPV = (function (gpv) {
 
     function printData() {
       if (!$cmdDataPrint.hasClass("Disabled")) {
-        var data = ["datatab=", encodeURIComponent(appState.DataTab), "&id=", encodeURIComponent(appState.ActiveDataId), "&print=1"].join("");
+        var data = $cmdDataPrint.data("printdata");
         var windowName = "identify" + (new Date()).getTime();
         var features = "width=700,height=500,menubar=no,titlebar=no,toolbar=no,status=no,scrollbars=no,location=no,resizable=no";
         window.open("Identify.aspx?" + data, windowName, features, true);
