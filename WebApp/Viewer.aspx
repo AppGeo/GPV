@@ -162,12 +162,13 @@
             </ul>
           </div>
 
-<%--            <div id="pnlOverviewSizer">
-              <div id="pnlOverview">
-                <div id="mapOverview"></div>
-              </div>
-            </div>--%>
-
+<%--          <div id="pnlOverviewSizer">
+            <span id="iconOverview" class="glyphicon glyphicon-chevron-left"></span>
+            <div id="pnlOverview">
+              <div id="mapOverview"></div>
+            </div>
+          </div>--%>
+ 
           <div id="mapMain" runat="server" class="Panel">
           </div>
           <div id="mapTip" style="display: none"></div>
@@ -181,7 +182,7 @@
         <div class="DataHeader">Details<span class="glyphicon glyphicon-menu-right DataExit" aria-hidden="true"></span></div>
           <div id="pnlData" class="Panel">
           <span id="spnDataTheme" class="DataLabel">Data Set</span>
-          <select id="ddlDataTheme">
+          <select id="ddlDataTheme" class="Input">
           </select><br>
             <button id="cmdDataPrint" class="Disabled">Print</button>
             <div id="pnlDataList" class="Panel"></div>

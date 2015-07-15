@@ -190,6 +190,17 @@ var GPV = (function (gpv) {
       });
     });
 
+    //$("#iconOverview").on("click", function () {
+    //  if ($(this).hasClass("iconOpen")) {
+    //    $("#pnlOverviewSizer").animate({ height: "26px", width: "26px" }, 600);
+    //    $("#iconOverview").removeClass('iconOpen');
+    //  }
+    //  else {
+    //    $("#pnlOverviewSizer").animate({ height: "300px", width: "300px" }, 600);
+    //    $("#iconOverview").addClass('iconOpen');
+    //  }
+    //});
+
     $(".MenuItem").on("click", function(){
       var name = $(this).text();
       $("#pnlFunctionTabs").animate({ left: "-400px" }, 600, function () {
