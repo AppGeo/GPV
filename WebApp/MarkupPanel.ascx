@@ -26,7 +26,7 @@
   <gpv:Select id="ddlMarkupCategory" runat="server" CssClass="Input" /><br />
             
   <label>Markup Group</label>
-  <button id="cmdNewMarkup" runat="server" class="CommandLink Disabled MarkupGroup" style="margin-left: 0">New</button>
+  <gpv:Button id="cmdNewMarkup" runat="server" class="CommandLink Disabled MarkupGroup" style="margin-left: 0">New</gpv:Button>
   <button id="cmdZoomToMarkup" class="CommandLink Disabled MarkupGroup Toggleable">Zoom To</button>  
   <button id="cmdDeleteMarkup" class="CommandLink Disabled MarkupGroup Toggleable">Delete</button>  
   <button id="cmdExportMarkup" class="CommandLink Disabled MarkupGroup Toggleable">To KML</button><br />
