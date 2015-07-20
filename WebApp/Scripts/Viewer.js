@@ -20,6 +20,13 @@ var GPV = (function (gpv) {
     var resizeHandle;
     var redrawPost;
 
+    var $mapOverview = $("#mapOverview");
+    var $locatorBox = $("#locatorBox");
+    var overviewMapHeight = $("#pnlOverview").height();
+    var overviewMapWidth = $("#pnlOverview").width();
+
+    var locatorPanning = false;
+
     var mapTabChangedHandlers = [];
     var functionTabChangedHandlers = [];
     var extentChangedHandlers = [];
@@ -28,6 +35,7 @@ var GPV = (function (gpv) {
 
     var $ddlExternalMap = $("#ddlExternalMap").on("change", setExternalMap);
     var $pnlDataDisplay = $("#pnlDataDisplay");
+
 
     // =====  map control  =====
 
@@ -70,6 +78,8 @@ var GPV = (function (gpv) {
 
     var shingleLayer = L.shingleLayer({ urlBuilder: refreshMap }).on("shingleload", function () {
       gpv.progress.clear();
+      showLocatorExtent(map.extent);
+      refreshOverviewExtent();
     }).addTo(map);
 
     if (gpv.settings.showScaleBar) {
@@ -82,6 +92,7 @@ var GPV = (function (gpv) {
     gpv.mapTip.setMap(map);
     gpv.selectionPanel.setMap(map);
     gpv.markupPanel.setMap(map);
+
 
     // =====  control events  =====
     
@@ -97,6 +108,7 @@ var GPV = (function (gpv) {
     });
 
     $("#cmdEmail").on("click", function () {
+      var $this = $(this)
       gpv.post({
         url: "Services/SaveAppState.ashx",
         data: {
@@ -106,7 +118,9 @@ var GPV = (function (gpv) {
           if (result && result.id) {
             var loc = document.location;
             var url = [loc.protocol, "//", loc.hostname, loc.port.length && loc.port != "80" ? ":" + loc.port : "", loc.pathname, "?state=", result.id];
-            loc.href = "mailto:?subject=Map&body=" + encodeURIComponent(url.join(""));
+            loc.href = "mailto:" + $("#tboEmail").val() + "?subject=Map&body=" + encodeURIComponent(url.join(""));
+            $("#tboEmail").val("");
+            $(".share").fadeIn(600);
           }
         }
       });
@@ -190,16 +204,17 @@ var GPV = (function (gpv) {
       });
     });
 
-    //$("#iconOverview").on("click", function () {
-    //  if ($(this).hasClass("iconOpen")) {
-    //    $("#pnlOverviewSizer").animate({ height: "26px", width: "26px" }, 600);
-    //    $("#iconOverview").removeClass('iconOpen');
-    //  }
-    //  else {
-    //    $("#pnlOverviewSizer").animate({ height: "300px", width: "300px" }, 600);
-    //    $("#iconOverview").addClass('iconOpen');
-    //  }
-    //});
+    $("#cmdOverview").on("click", function () {
+      if ($("#iconOverview").hasClass("iconOpen")) {
+        $("#pnlOverview").animate({ height: "26px", width: "26px" }, 600);
+        $("#iconOverview").removeClass('iconOpen');
+      }
+      else {
+        $("#pnlOverview").animate({ height: overviewMapHeight + "px", width: overviewMapWidth + "px" }, 600);
+        $("#iconOverview").addClass('iconOpen');
+        refreshOverviewExtent();
+      }
+    });
 
     $(".MenuItem").on("click", function(){
       var name = $(this).text();
@@ -317,32 +332,6 @@ var GPV = (function (gpv) {
       }
     }
 
-    //function mapShape(e) {
-      //switch ($MapTool.filter(".Selected").attr("id")) {
-      //  case "optCoordinates":
-      //    appState.Coordinates.push({ coordinates: geo.coordinates });
-      //    appState.CoordinateLabels.push("1");
-      //    shingleLayer.redraw();
-      //    return;
-
-      //  case "optIdentify":
-      //    var data = ["maptab=", appState.MapTab, "&visiblelayers=", encodeURIComponent(gpv.legendPanel.getVisibleLayers(appState.MapTab).join("\x01")),
-      //      "&level=", appState.Level, "&x=", geo.coordinates[0], "&y=", geo.coordinates[1], "&distance=4",
-      //      "&scale=", $map.geomap("option", "pixelSize")].join("");
-
-      //    var windowName = "identify";
-      //    var settings = gpv.settings;
-
-      //    if (settings.identifyPopup == "multiple") {
-      //      windowName += (new Date()).getTime();
-      //    }
-
-      //    var features = "width=" + settings.identifyWindowWidth + ",height=" + settings.identifyWindowHeight + ",menubar=no,titlebar=no,toolbar=no,status=no,scrollbars=yes,location=yes,resizable=yes";
-      //    window.open("Identify.aspx?" + data, windowName, features, true);
-      //    return;
-      //}
-    //}
-
     function refreshMap(size, bbox, callback) {
       var same = sameBox(appState.Extent.bbox, bbox);
       appState.Extent.bbox = bbox;
@@ -440,6 +429,94 @@ var GPV = (function (gpv) {
       });
     }
 
+    // =====  overvew map  =====
+    $("#locatorBox,#locatorBoxFill").mousedown(function (e) {
+      e.preventDefault();
+    });
+
+    $mapOverview.mousedown(function (e) {
+      locatorPanning = true;
+      panLocatorBox(e);
+    });
+
+    $mapOverview.mousemove(function (e) {
+      if (locatorPanning) {
+        panLocatorBox(e);
+      }
+    });
+
+    $mapOverview.mouseup(function (e) {
+      if (locatorPanning) {
+        panLocatorBox(e);
+        locatorPanning = false;
+      }
+    });
+
+    $mapOverview.mouseleave(function () {
+      locatorPanning = false;
+    });
+
+    function setOverviewMap() {
+      var viewWidth = $mapOverview.width();
+      var viewHeight = $mapOverview.height();
+
+      url = "Services/MapImage.ashx?" + $.param({
+        m: "GetOverviewImage",
+        application: appState.Application,
+        width: viewWidth,
+        height: viewHeight,
+        bbox: fullExtent
+      });
+
+      $mapOverview.css("backgroundImage", "url(" + url + ")");
+    }
+
+    function panLocatorBox(e) {
+      var x = e.pageX - $mapOverview.offset().left;
+      var y = e.pageY - $mapOverview.offset().top;
+      var left = Math.round(x - $locatorBox.width() * 0.5) - 2;
+      var top = Math.round(y - $locatorBox.height() * 0.5) - 2;
+      $locatorBox.css({ left: left + "px", top: top + "px" });
+
+      x = fullExtent[0] + (x / $mapOverview.width()) * (fullExtent[2] - fullExtent[0]);
+      y = fullExtent[3] - (y / $mapOverview.height()) * (fullExtent[3] - fullExtent[1]);
+      //TAMC not sure here if this is correct.
+      map.panTo([x, y]);
+      shingleLayer.redraw();
+    }
+
+    function showLocatorExtent() {
+      var extent = map.getProjectedBounds().toArray();
+
+      function toScreenX(x) {
+        return Math.round($mapOverview.width() * (x - fullExtent[0]) / (fullExtent[2] - fullExtent[0]));
+      }
+
+      function toScreenY(y) {
+        return Math.round($mapOverview.height() * (fullExtent[3] - y) / (fullExtent[3] - fullExtent[1]));
+      }
+
+      if (!locatorPanning) {
+        var left = toScreenX(extent[0]);
+        var top = toScreenY(extent[3]);
+        var right = toScreenX(extent[2]);
+        var bottom = toScreenY(extent[1]);
+        var width = $mapOverview.width();
+        var height = $mapOverview.height();
+
+        if (((0 <= left && left <= width) || (0 <= right && right <= width) || (left < 0 && width < right)) &&
+          ((0 <= top && top <= height) || (0 <= bottom && bottom <= height) || (top < 0 && height < bottom))) {
+          $locatorBox.css({ left: left - 2 + "px", top: top - 2 + "px", width: right - left + "px", height: bottom - top + "px" });
+        }
+      }
+    }
+
+    function refreshOverviewExtent() {
+      if ($("#iconOverview").hasClass('iconOpen')) {
+        showLocatorExtent(map.extent);
+      }
+    }
+
     // =====  public interface  =====
 
     gpv.viewer = {
@@ -455,10 +532,13 @@ var GPV = (function (gpv) {
     // =====  finish initialization  =====
 
     zoomToFullExtent();
-    gpv.loadComplete();
 
+    gpv.loadComplete();
     $MapTool.filter(".Selected").trigger("click");
     triggerMapTabChanged();
+    setOverviewMap();
+    
+
   });
 
   return gpv;

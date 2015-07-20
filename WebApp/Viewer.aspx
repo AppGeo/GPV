@@ -162,12 +162,16 @@
             </ul>
           </div>
 
-<%--          <div id="pnlOverviewSizer">
-            <span id="iconOverview" class="glyphicon glyphicon-chevron-left"></span>
-            <div id="pnlOverview">
-              <div id="mapOverview"></div>
+          <div id="pnlOverview">
+            <div id="cmdOverview" class="iconWrapper">
+            <span id="iconOverview" class="glyphicon glyphicon-triangle-left iconOpen"></span></div>
+              <div id="mapOverview">
+                <div id="locatorBox" class="UI">
+                  <div id="locatorBoxFill" class="UI">
+                  </div>
+                </div>
             </div>
-          </div>--%>
+          </div>
  
           <div id="mapMain" runat="server" class="Panel">
           </div>

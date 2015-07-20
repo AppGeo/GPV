@@ -17,14 +17,6 @@ var GPV = (function (gpv) {
     var appState = gpv.appState;
     var service = "Services/LocationPanel.ashx";
 
-    var $mapOverview = null;
-    var fullExtent = gpv.configuration.fullExtent;
-
-    var lastWidth = null;
-    var lastHeight = null;
-    var lastUrl = null;
-    var extentDragging = false;
-
     // =====  control events  =====
 
     $("#ddlZoneLevelSelect").on("change", function () {
@@ -53,12 +45,6 @@ var GPV = (function (gpv) {
       }
     });
 
-    //$(".MapTool").on("click", function () {
-    //  if ($mapOverview) {
-    //    $mapOverview.geomap("option", "mode", $(this).attr("id") == "optPan" ? "static" : "dragBox");
-    //  }
-    //});
-
     // =====  component events  =====
 
     //gpv.on("viewer", "functionTabChanged", refreshOverviewMap);
@@ -66,99 +52,6 @@ var GPV = (function (gpv) {
     gpv.on("selectionPanel", "gridFilled", showZoneLevelCounts);
 
     // =====  private functions  =====
-
-    //function dragExtentStart(e) {
-    //  extentDragging = $mapOverview.geomap("option", "mode") == "static";
-    //  dragExtent(e);
-    //}
-
-    //function dragExtent(e) {
-    //  var bbox = null;
-
-    //  if (extentDragging) {
-    //    var offset = $mapOverview.offset();
-    //    var p = $mapOverview.geomap("toMap", [e.pageX - offset.left, e.pageY - offset.top]);
-    //    var bbox = $.geo.recenter(gpv.viewer.getExtent(), p);
-    //    drawMainExtent(bbox);
-    //  }
-
-    //  return bbox;
-    //}
-
-    //function dragExtentEnd(e) {
-    //  if (extentDragging) {
-    //    gpv.viewer.setExtent(dragExtent(e));
-    //    extentDragging = false;
-    //  }
-    //}
-
-    //function drawMainExtent(bbox) {
-    //  if ($mapOverview) {
-    //    var c = [[[bbox[0], bbox[1]], [bbox[0], bbox[3]], [bbox[2], bbox[3]], [bbox[2], bbox[1]], [bbox[0], bbox[1]]]];
-    //    $mapOverview.geomap("empty").geomap("append", { type: "Polygon", coordinates: c }, { fill: "Red", fillOpacity: 0.4, stroke: "Red" });
-    //  }
-    //}
-
-    //function initialize() {
-    //  if (!$mapOverview) {
-    //    $mapOverview = $("#mapOverview").geomap({
-    //      zoom: 0,
-    //      bboxMax: fullExtent,
-    //      pannable: false,
-    //      services: [
-    //        {
-    //          type: "shingled",
-    //          src: loadOverviewMap
-    //        }
-    //      ],
-    //      drawStyle: { strokeWidth: "2px", stroke: "Gray", fill: "White", fillOpacity: 0.5 },
-    //      tilingScheme: null,
-    //      mode: $("#optPan").hasClass("Selected") ? "static" : "dragBox",
-    //      shape: mapShape
-    //    })
-    //    .on("touchstart mousedown", dragExtentStart)
-    //    .on("touchmove mousemove", dragExtent)
-    //    .on("touchend touchcancel mouseup touchleave mouseleave", dragExtentEnd);
-
-    //    var handle = setInterval(function () {
-    //      if (gpv.viewer) {
-    //        clearInterval(handle);
-    //        drawMainExtent(gpv.viewer.getExtent());
-    //      }
-    //    }, 10);
-    //  }
-    //}
-
-    //function loadOverviewMap(view) {
-    //  var viewWidth = parseInt(view.width, 10);
-    //  var viewHeight = parseInt(view.height, 10);
-
-    //  if (viewWidth == lastWidth && viewHeight == lastHeight) {
-    //    return lastUrl;
-    //  } else {
-    //    lastWidth = viewWidth;
-    //    lastHeight = viewHeight;
-    //    lastUrl = "Services/MapImage.ashx?" + $.param({
-    //      m: "GetOverviewImage",
-    //      application: appState.Application,
-    //      width: viewWidth,
-    //      height: viewHeight,
-    //      bbox: view.bbox.toString()
-    //    });
-
-    //    return lastUrl;
-    //  }
-    //}
-
-    function mapShape(e, geo) {
-      var bbox = geo.bbox;
-
-      if ($.geo.width(bbox) == 0 && $.geo.height(bbox) == 0) {
-        bbox = $.geo.recenter(gpv.viewer.getExtent(), $.geo.center(bbox));
-      }
-
-      gpv.viewer.setExtent(bbox);
-    }
 
     function post(args) {
       args.url = service;
@@ -224,16 +117,6 @@ var GPV = (function (gpv) {
       });
     }
 
-    //function refreshOverviewMap(name) {
-    //  if (!name || name == "Location") {
-    //    if (!$mapOverview) {
-    //      initialize();
-    //    } else {
-    //      $mapOverview.geomap("resize");
-    //    }
-    //  }
-    //}
-
     function zoomToZone(zone, level) {
       var data = {
         m: "GetZoneExtent",
@@ -260,11 +143,6 @@ var GPV = (function (gpv) {
     gpv.locationPanel = {
     };
 
-    // =====  finish initialization  =====
-
-    if ($("#tabLocation").hasClass("Selected")) {
-      initialize();
-    }
   });
 
   return gpv;

@@ -108,11 +108,11 @@ public class MapImageHandler : WebServiceHandler
   [WebServiceMethod]
   private void GetOverviewImage()
   {
-    Configuration.ApplicationRow application = Configuration.Application.First(o => o.ApplicationID == Request.QueryString["application"]);
+    Configuration.ApplicationRow application = Configuration.Application.First(o => o.ApplicationID == Request.Params["application"]);
 
-    int width = Convert.ToInt32(Request.QueryString["width"]);
-    int height = Convert.ToInt32(Request.QueryString["height"]);
-    string[] bbox = Request.QueryString["bbox"].Split(',');
+    int width = Convert.ToInt32(Request.Params["width"]);
+    int height = Convert.ToInt32(Request.Params["height"]);
+    string[] bbox = Request.Params["bbox[]"].Split(',');
     
     AppState appState = new AppState()
     {
