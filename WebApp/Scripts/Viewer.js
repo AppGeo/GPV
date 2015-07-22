@@ -31,6 +31,8 @@ var GPV = (function (gpv) {
     var functionTabChangedHandlers = [];
     var extentChangedHandlers = [];
 
+    var panelAnimationTime = 400;
+
     // =====  controls required prior to map control creation  =====
 
     var $ddlExternalMap = $("#ddlExternalMap").on("change", setExternalMap);
@@ -197,11 +199,7 @@ var GPV = (function (gpv) {
     });
 
     $(".FunctionHeader").on("click", function () {
-      $("#pnlFunction").animate({ left: "-400px", opacity: "0" }, 600, function () {
-        $("#pnlFunctionTabs").animate({ left: "12px" }, 600);
-        $(".share").hide();
-        $(".FunctionExit").removeClass("FunctionExitOpen");
-      });
+      hideFunctionPanel(showFunctionMenu);
     });
 
     $("#cmdOverview").on("click", function () {
@@ -219,13 +217,9 @@ var GPV = (function (gpv) {
 
     $(".MenuItem").on("click", function(){
       var name = $(this).text();
-      $("#pnlFunctionTabs").animate({ left: "-400px" }, 600, function () {
-        $(".FunctionPanel").hide();
-        $("#pnl" + name).show();
-        $("#pnlFunction").animate({ left: "0", opacity: "1.0" }, 600, function () {
-          $(".FunctionExit").addClass("FunctionExitOpen");
-        });
-      });
+      
+      hideFunctionMenu(function () { showFunctionPanel(name); });
+
       $.each(functionTabChangedHandlers, function () {
         this(name);
       });
@@ -279,6 +273,14 @@ var GPV = (function (gpv) {
     });
 
     // =====  private functions  =====
+
+    function hideFunctionMenu(callback) {
+      $("#pnlFunctionTabs").animate({ left: "-400px", opacity: "0" }, panelAnimationTime, callback);
+    }
+
+    function hideFunctionPanel(callback) {
+      $("#pnlFunction").animate({ left: "-400px", opacity: "0" }, panelAnimationTime, callback);
+    }
 
     function identify(e) {
       if ($MapTool.filter(".Selected").attr("id") === "optIdentify") {
@@ -404,6 +406,29 @@ var GPV = (function (gpv) {
       });
     }
 
+    function showFunctionMenu() {
+      $("#pnlFunctionTabs").animate({ left: "12px", opacity: "1.0" }, panelAnimationTime);
+      $(".share").hide();
+      $(".FunctionExit").removeClass("FunctionExitOpen");
+    }
+
+    function showFunctionPanel(name) {
+      $(".FunctionPanel").hide();
+      $("#pnl" + name).show();
+      $("#pnlFunction").animate({ left: "0px", opacity: "1.0" }, panelAnimationTime, function () {
+        $(".FunctionExit").addClass("FunctionExitOpen");
+      });
+    }
+
+    function switchToPanel(name) {
+      if (parseInt($("#pnlFunctionTabs").css("left"), 10) >= 0) {
+        hideFunctionMenu(function () { showFunctionPanel(name); });
+      }
+      else {
+        hideFunctionPanel(function () { showFunctionPanel(name); });
+      }
+    }
+
     function triggerMapTabChanged() {
       $.each(mapTabChangedHandlers, function () {
         this();
@@ -527,6 +552,7 @@ var GPV = (function (gpv) {
       mapTabChanged: function (fn) { mapTabChangedHandlers.push(fn); },
       refreshMap: function () { $ddlLevel.val(appState.Level); shingleLayer.redraw(); },
       setExtent: setExtent,
+      switchToPanel: switchToPanel,
       zoomToActive: zoomToActive
     };
 
