@@ -98,7 +98,7 @@ button {
 .DataGrid th
 {
   color: #404040;
-  font-weight: bold;
+  font-family: OpenSansBold;
 }
 
 .Resizer

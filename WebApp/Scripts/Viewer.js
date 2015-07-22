@@ -78,7 +78,7 @@ var GPV = (function (gpv) {
 
     var shingleLayer = L.shingleLayer({ urlBuilder: refreshMap }).on("shingleload", function () {
       gpv.progress.clear();
-      showLocatorExtent(map.extent);
+      showLocatorExtent();
       refreshOverviewExtent();
     }).addTo(map);
 
@@ -210,9 +210,10 @@ var GPV = (function (gpv) {
         $("#iconOverview").removeClass('iconOpen');
       }
       else {
-        $("#pnlOverview").animate({ height: overviewMapHeight + "px", width: overviewMapWidth + "px" }, 600);
-        $("#iconOverview").addClass('iconOpen');
-        refreshOverviewExtent();
+        $("#pnlOverview").animate({ height: overviewMapHeight + "px", width: overviewMapWidth + "px" }, 600, function () {
+          $("#iconOverview").addClass('iconOpen');
+          refreshOverviewExtent();
+        });
       }
     });
 
@@ -481,7 +482,7 @@ var GPV = (function (gpv) {
       x = fullExtent[0] + (x / $mapOverview.width()) * (fullExtent[2] - fullExtent[0]);
       y = fullExtent[3] - (y / $mapOverview.height()) * (fullExtent[3] - fullExtent[1]);
       //TAMC not sure here if this is correct.
-      map.panTo([x, y]);
+      map.setView([x, y]);
       shingleLayer.redraw();
     }
 
@@ -513,7 +514,7 @@ var GPV = (function (gpv) {
 
     function refreshOverviewExtent() {
       if ($("#iconOverview").hasClass('iconOpen')) {
-        showLocatorExtent(map.extent);
+        showLocatorExtent();
       }
     }
 
