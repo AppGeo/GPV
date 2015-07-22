@@ -513,7 +513,9 @@ var GPV = (function (gpv) {
               $("#cmdMailingLabels,#cmdExportData").addClass("Disabled");
             }
             else {
-              gpv.viewer.switchToPanel("Selection");
+              if ($("#pnlSelection").css("display") === "none") {
+                gpv.viewer.switchToPanel("Selection");
+              }
 
               post({
                 data: {

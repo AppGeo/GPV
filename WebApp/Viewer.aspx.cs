@@ -128,7 +128,7 @@ public partial class Viewer : CustomStyledPage
 
         if (_appState.ActiveFunctionTab == FunctionTab.Selection)
         {
-          pnlSelection.Style["display"] = "block";
+          //pnlSelection.Style["display"] = "block";
           //tabSelection.Attributes["class"] = "Tab Selected";
         }
       }

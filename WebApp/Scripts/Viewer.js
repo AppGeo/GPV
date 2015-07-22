@@ -120,9 +120,9 @@ var GPV = (function (gpv) {
           if (result && result.id) {
             var loc = document.location;
             var url = [loc.protocol, "//", loc.hostname, loc.port.length && loc.port != "80" ? ":" + loc.port : "", loc.pathname, "?state=", result.id];
-            loc.href = "mailto:" + $("#tboEmail").val() + "?subject=Map&body=" + encodeURIComponent(url.join(""));
+            window.open("mailto:" + $("#tboEmail").val() + "?subject=Map&body=" + encodeURIComponent(url.join("")), "_blank");
             $("#tboEmail").val("");
-            $(".share").fadeIn(600);
+            $(".share").fadeOut(600);
           }
         }
       });
