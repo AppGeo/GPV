@@ -34,7 +34,8 @@
           <div style="margin-left: 20px; margin-top: 20px">
             <asp:Login ID="Login1" runat="server" OnAuthenticate="Login1_Authenticate"
               DisplayRememberMe="False" PasswordLabelText="Password" UserNameLabelText="User Name" TitleText="">
-              <TextBoxStyle CssClass="TextBox" />
+              <TextBoxStyle CssClass="Input" />
+              <LabelStyle CssClass="Label" />
               <LoginButtonStyle CssClass="LoginButton" />
               <FailureTextStyle CssClass="Error" />
               <ValidatorTextStyle CssClass="Error" />

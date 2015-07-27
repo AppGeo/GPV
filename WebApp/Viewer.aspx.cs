@@ -107,6 +107,13 @@ public partial class Viewer : CustomStyledPage
       //pnlFunctionSizer.Style["display"] = "none";
       //contentDivider.Visible = false;
     }
+    //else if (_appState.FunctionTabs == FunctionTab.All)
+    //{
+    //  pnlContent.Style["min-width"] = "548px";
+    //  //pnlMapSizer.Style["right"] = "0px";
+    //  //pnlFunctionSizer.Style["display"] = "none";
+    //  //contentDivider.Visible = false;
+    //}
     else
     {
       if ((_appState.FunctionTabs & FunctionTab.Search) == FunctionTab.Search)
@@ -117,7 +124,7 @@ public partial class Viewer : CustomStyledPage
         if (_appState.ActiveFunctionTab == FunctionTab.Search)
         {
           pnlSearch.Style["display"] = "block";
-          tabSearch.Attributes["class"] = "Tab Selected";
+          //tabSearch.Attributes["class"] = "Tab Selected";
         }
       } 
       
@@ -128,7 +135,7 @@ public partial class Viewer : CustomStyledPage
 
         if (_appState.ActiveFunctionTab == FunctionTab.Selection)
         {
-          //pnlSelection.Style["display"] = "block";
+          pnlSelection.Style["display"] = "block";
           //tabSelection.Attributes["class"] = "Tab Selected";
         }
       }
@@ -1278,7 +1285,11 @@ public partial class Viewer : CustomStyledPage
 
     if (_appState.FunctionTabs != FunctionTab.None && _appState.ActiveFunctionTab == FunctionTab.None)
     {
-      if ((_appState.FunctionTabs & FunctionTab.Selection) == FunctionTab.Selection)
+      if ((_appState.FunctionTabs & FunctionTab.All) == FunctionTab.All)
+      {
+        _appState.ActiveFunctionTab = FunctionTab.All;
+      }
+      else if ((_appState.FunctionTabs & FunctionTab.Selection) == FunctionTab.Selection)
       {
         _appState.ActiveFunctionTab = FunctionTab.Selection;
       }

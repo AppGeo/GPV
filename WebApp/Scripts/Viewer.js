@@ -95,6 +95,14 @@ var GPV = (function (gpv) {
     gpv.selectionPanel.setMap(map);
     gpv.markupPanel.setMap(map);
 
+    debugger;
+    if ($("#pnlFunction div.FunctionPanel[style='display: block;']").length === 0) {
+      showFunctionMenu();
+    }
+    else {
+      var panel = $("#pnlFunction div.FunctionPanel[style='display: block;']")[0].id.replace("pnl", "");
+      showFunctionPanel(panel);
+    }
 
     // =====  control events  =====
     
