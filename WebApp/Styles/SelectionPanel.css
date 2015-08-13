@@ -70,18 +70,16 @@
   height: 35px;
 }
 #pnlSelectTools button{
-  position: relative;
-  padding-left: 25px;
-  margin: 5px 6px;
+  display: inline-block;
+  margin: 2px;
 }
 
-#pnlSelectTools button span{
-  position: absolute;
+.select-view, .select-zoom, .select-clear{
+  position: relative;
+  display: inline-block;
   left: 0;
-  top: 0;
-  bottom: auto;
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 16px;
   background-image: url(../Images/UI/Icons.png);
   background-repeat: no-repeat;
   cursor: default;
@@ -103,7 +101,7 @@
 
 .select-zoom
 {
-  background-position: -936px 0px;  /* ZoomSelected.gif */
+  background-position: -936px -1px;  /* ZoomSelected.gif */
 }
 
 .select-clear

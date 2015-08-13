@@ -64,6 +64,7 @@ div.Button.Selected, div.Button.Selected:hover
 
 button {
   margin: 10px;
+  border-width: 1px;
   padding: 2px 5px;
 }
 
@@ -98,7 +99,7 @@ button {
 .DataGrid th
 {
   color: #404040;
-  font-family: OpenSansBold;
+  font-weight: bold;
 }
 
 .Resizer
@@ -161,6 +162,10 @@ button {
   margin-top: 8px;
   display: inline-block;
   text-align: right;
+}
+
+.DataLabel{
+  font-size: 14px;
 }
 
 #pnlTheme .FunctionLabel, #pnlDataDisplay .FunctionLabel {
@@ -284,7 +289,7 @@ button {
   left: auto;
   right: -355px;
   height: 100%;
-  width: 350px;
+  width: 285px;
   box-shadow: -4px 0px 5px -2px #b9b9b9;
   -webkit-box-shadow: -4px 0px 5px -2px #b9b9b9;
   -mox-box-shadow: -4px 0px 5px -2px #b9b9b9;
@@ -308,7 +313,7 @@ button {
 #ddlDataTheme{
   margin: 5px;
   font-size: 14px;
-  width: 190px
+  width: 150px
 }
 
 
@@ -347,7 +352,7 @@ button {
 #cmdDataPrint
 {
   position: absolute;
-  top: 10px;
+  top: 6px;
   right: 10px;
   margin: 0;
 }
@@ -395,4 +400,11 @@ button {
   .FunctionExit, .DataExit{
     margin: 5px;
   }
+  button{
+    margin: 10px 8px;
+  }
+  #ddlDataTheme{
+  font-size: 1.5em;
+  width: 135px
+}
 }

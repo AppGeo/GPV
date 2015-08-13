@@ -53,6 +53,9 @@
 
 #iconOverview{
   transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
   font-size: 18px;
   z-index: 12;
   color: #000000;
@@ -61,6 +64,9 @@
 
 #iconOverview.iconOpen{
   transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+  -moz-transform: rotate(-135deg);
+  -ms-transform: rotate(-135deg);
   font-size: 18px;
   margin: 6px 8px;
 }
