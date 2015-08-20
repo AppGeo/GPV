@@ -227,14 +227,10 @@ button {
   -webkit-transition: 0.5s;
   -moz-transition: 0.5s;  
   transition: 0.5s;  
-  -webkit-transform: translate(3em,0);
-  -moz-transform: translate(3em,0);
-  -ms-transform: translate(3em,0);
-  transform: translate(3em,0);
-  transform: rotate(180deg);
-  -webkit-transform: rotate(180deg);
-  -moz-transform: rotate(180deg);
-  -ms-transform: rotate(180deg);
+  -webkit-transform: translate(3em,0) rotate(180deg);
+  -moz-transform: translate(3em,0) rotate(180deg);
+  -ms-transform: translate(3em,0) rotate(180deg);
+  transform: translate(3em,0) rotate(180deg);
 }
 
 .FunctionExitOpen{
