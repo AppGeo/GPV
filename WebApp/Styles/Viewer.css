@@ -365,7 +365,7 @@ button {
     transform: scale(0.8) translate(-12.5%, -12.5%);
     -webkit-transform: scale(0.8) translate(-12.5%, -12.5%);
   }*/
-  #cmdFullView{
+  #cmdFullView, #cmdLocation{
     transform: scale(1) translate(2%, 20%);
     -webkit-transform: scale(1) translate(2%, 20%);
     box-shadow: none;

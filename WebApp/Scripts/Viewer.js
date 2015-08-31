@@ -145,6 +145,23 @@ var GPV = (function (gpv) {
       zoomToFullExtent();
     });
 
+    $("#cmdLocation").on("click", function () {
+      if (navigator && navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (pos) {
+          var latlng = L.latLng(pos.coords.latitude, pos.coords.longitude);
+          map.setView(latlng, 16);
+        }, showGpsError);
+      }
+      else {
+        showGpsError();
+      }
+    }).popover({
+      content: 'GPS is not enabled on this device',
+      delay: { show: 500, hide: 500 },
+      placement: 'right',
+      trigger: 'manual'
+    });
+
     $("#cmdMenu").on("click", function () {
       var hide = $("#pnlFunctionSidebar").css("left") === "0px";
       $("#pnlFunctionSidebar").animate({ left: hide ? "-400px" : "0px" }, { duration: 800 });
@@ -548,6 +565,14 @@ var GPV = (function (gpv) {
       if ($("#iconOverview").hasClass('iconOpen')) {
         showLocatorExtent();
       }
+    }
+
+    function showGpsError() {
+      $("#cmdLocation").popover('show');
+
+      setTimeout(function () {
+        $("#cmdLocation").popover('hide');
+      }, 2000);
     }
 
     // =====  public interface  =====

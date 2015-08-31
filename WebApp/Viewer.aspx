@@ -114,6 +114,7 @@
         <div id="pnlMap" class="MainPanel Panel">
 
            <div id="cmdFullView" class="Button" title="Full View"><span class="glyphicon glyphicon-globe"></span></div>
+           <div id="cmdLocation" class="Button" title="Current Location"><i class="fa fa-crosshairs"></i></div>
 
            <div id="pnlMapThemes">
             <button class="btn btn-default dropdown-toggle" type="button" id="btnMapTheme" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">

@@ -39,3 +39,6 @@
 .fa-tag:before {
   content: "\f02b";
 }
+.fa-crosshairs:before {
+  content: "\f05b";
+}
