@@ -82,7 +82,10 @@
                 <form id="form1" runat="server">
                   <div class="FunctionLabel">Create Printable PDF Map</div><br>
                   <label for="ddlPrintTemplate">Format</label>
-                  <asp:DropDownList id="ddlPrintTemplate" runat="server" Width="216px" AutoPostBack="true" CssClass="Input" />
+                  <asp:DropDownList id="ddlPrintTemplate" runat="server" CssClass="Input">
+                    <asp:ListItem Value="" Text="Select a print template"></asp:ListItem>
+                  </asp:DropDownList>
+                  <div id="pnlPrintInputs" runat="server"></div>
 		              <button id="cmdCreate" runat="server" Enabled="false" style="left: 139px; top: 48px">Create</button>
                 </form>
               </div>

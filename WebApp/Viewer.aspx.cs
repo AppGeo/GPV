@@ -31,6 +31,7 @@ public partial class Viewer : CustomStyledPage
 {
   private AppState _appState;
   private Configuration _config = null;
+  Dictionary<String, List<int>> _inputPrintFields = new Dictionary<String, List<int>>();
 
   protected void Page_Init(object sender, EventArgs e)
   {
@@ -62,6 +63,7 @@ public partial class Viewer : CustomStyledPage
     }
 
     _config = AppContext.GetConfiguration();
+
 	}
 
   protected void Page_Load(object sender, EventArgs e)
@@ -213,6 +215,29 @@ public partial class Viewer : CustomStyledPage
     TrackingManager.TrackUse(launchParams, false);
   }
 
+  protected void Page_PreRender(object sender, EventArgs e)
+  {
+    if (AppState.IsIn(ViewState))
+    {
+      int top = 62;
+
+      foreach (string key in _inputPrintFields.Keys)
+      {
+        foreach (int i in _inputPrintFields[key])
+        {
+          HtmlGenericControl div = FindControl(String.Format("pnlInput{0}", i)) as HtmlGenericControl;
+          div.Visible = key == ddlPrintTemplate.SelectedValue;
+
+          if (div.Visible)
+          {
+            div.Style["top"] = String.Format("{0}px", top);
+            top += 20;
+          }
+        }
+      }
+    }
+  }
+
   private void CreateActiveSelectionStyle()
   {
     HtmlGenericControl style = new HtmlGenericControl("style");
@@ -229,20 +254,6 @@ public partial class Viewer : CustomStyledPage
     scriptElem.Attributes["type"] = "text/javascript";
     scriptElem.InnerHtml = String.Format(script, application.ToJson(), AppSettings.ToJson(), _appState.ToJson());
   }
-
-  //private void CreateMapTabs(Configuration.ApplicationRow application)
-  //{
-  //  // add map tabs
-
-  //  foreach (Configuration.ApplicationMapTabRow appMapTabRow in application.GetApplicationMapTabRows())
-  //  {
-  //    HtmlGenericControl tab = new HtmlGenericControl("div");
-  //    plhMapTabs.Controls.Add(tab);
-  //    tab.InnerHtml = appMapTabRow.MapTabRow.DisplayName.Replace(" ", "&nbsp;");
-  //    tab.Attributes["class"] = "Tab " + (appMapTabRow.MapTabID == _appState.MapTab ? "Selected" : "Normal");
-  //    tab.Attributes["data-maptab"] = appMapTabRow.MapTabID;
-  //  }
-  //}
 
   private void CreateMapThemes(Configuration.ApplicationRow application)
   {
@@ -274,6 +285,38 @@ public partial class Viewer : CustomStyledPage
       {
         ddlPrintTemplate.Items.Add(new ListItem(template.TemplateTitle, template.TemplateID));
       }
+
+      int i = 1;
+      List<int> indexes = new List<int>();
+      foreach (Configuration.PrintTemplateContentRow element in template.GetPrintTemplateContentRows().Where(o => o.ContentType == "input"))
+      {
+        HtmlGenericControl div = new HtmlGenericControl("div");
+        div.Attributes["data-templateID"] = template.TemplateID;
+        div.Attributes["class"] = "printInput";
+        div.Style["width"] = "100%";
+        div.Style["display"] = "none";
+
+        HtmlGenericControl label = new HtmlGenericControl("span");
+        div.Controls.Add(label);
+        label.Attributes["class"] = "Label";
+        label.InnerText = element.DisplayName;
+
+        TextBox tbo = new TextBox();
+        div.Controls.Add(tbo);
+        tbo.ID = String.Format("tbo{0}Input{1}", template.TemplateID, i);
+        tbo.Attributes["class"] = "Input Text";
+
+        pnlPrintInputs.Controls.Add(div);
+
+        indexes.Add(i);
+        ++i;
+      }
+
+      if (indexes.Count > 0)
+      {
+        _inputPrintFields.Add(template.TemplateID, indexes);
+      }
+
     }
   }
 

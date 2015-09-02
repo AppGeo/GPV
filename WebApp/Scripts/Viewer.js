@@ -36,6 +36,7 @@ var GPV = (function (gpv) {
     // =====  controls required prior to map control creation  =====
 
     var $ddlExternalMap = $("#ddlExternalMap").on("change", setExternalMap);
+    var $ddlPrintTemplate = $("#ddlPrintTemplate").on("change", showPrintTemplateInputs);
     var $pnlDataDisplay = $("#pnlDataDisplay");
 
 
@@ -442,6 +443,11 @@ var GPV = (function (gpv) {
       $("#pnlFunction").animate({ left: "0px", opacity: "1.0" }, panelAnimationTime, function () {
         $(".FunctionExit").addClass("FunctionExitOpen");
       });
+    }
+
+    function showPrintTemplateInputs() {
+      $(".printInput").hide()
+      $('[data-templateid="' + $ddlPrintTemplate.val() + '"]').fadeIn();
     }
 
     function switchToPanel(name) {
