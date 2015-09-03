@@ -23,6 +23,40 @@
 <html>
 <head id="head" runat="server">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript">
+      WebFontConfig = {
+        google: { families: ['Lora:400,700:latin'] }
+      };
+      (function () {
+        var wf = document.createElement('script');
+        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+          '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+        wf.type = 'text/javascript';
+        wf.async = 'true';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(wf, s);
+      })(); </script>
+
+  <noscript>
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700' rel='stylesheet' type='text/css'>
+  </noscript>
+  <script type="text/javascript">
+    WebFontConfig = {
+      google: { families: ['Open+Sans:400,300,700:latin'] }
+    };
+    (function () {
+      var wf = document.createElement('script');
+      wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+        '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+      wf.type = 'text/javascript';
+      wf.async = 'true';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(wf, s);
+    })(); </script>
+
+  <noscript>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+  </noscript>
   <title>General Purpose Viewer</title>
   <link href="Styles/Common.css" type="text/css" rel="stylesheet" />
   <link href="Styles/Customize.css" type="text/css" rel="stylesheet" />

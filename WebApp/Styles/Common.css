@@ -72,7 +72,7 @@ button::-moz-focus-inner {
 
 body, div, span, td, th, input, select
 {
-  font-family: OpenSans, Helvetica, San-Serif;
+  font-family: 'Open Sans', Helvetica, San-Serif;
   font-size: 14px;
   letter-spacing: .2px;
   color: Black;

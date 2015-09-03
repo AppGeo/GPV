@@ -28,7 +28,6 @@ public class MinifiedStylesheetsHandler : IHttpHandler
   public static List<String> GetList()
   {
     return new List<String>(new string[] { 
-      "Styles/Fonts.css",
       "Styles/bootstrap.min.css",
       "Styles/Common.css",
       "Styles/Customize.css",

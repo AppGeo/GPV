@@ -192,7 +192,7 @@ button {
 
 .MenuItem{
   display: block;
-  font-family: Lora;
+  font-family: Lora, Times, serif;
   font-size: 24px;
   padding: 8px;
   cursor: pointer;
@@ -212,7 +212,7 @@ button {
 }
 
 .FunctionHeader{
-  font-family: Lora;
+  font-family: Lora, Times, serif;
   font-size: 24px;
   letter-spacing: .25px;
   height: 40px;
@@ -317,7 +317,7 @@ button {
 }
 
 .DataHeader{
-  font-family: Lora;
+  font-family: Lora, Times, serif;
   font-size: 24px;
   letter-spacing: .25px;
   text-align: right;
