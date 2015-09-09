@@ -88,7 +88,7 @@ L.Map.prototype.on('click', function (e) {
   var isPolyline = mode === 'polyline';
   var modifiers = { shiftKey: e.originalEvent.shiftKey, ctrlKey: e.originalEvent.ctrlKey };
   var unclickable = { clickable: false, pointerEvents: "none" };
-  var latlngs, p0, p1;
+  var p0, p1;
 
   switch (mode) {
     case 'point':
@@ -150,7 +150,7 @@ L.Map.prototype.on('click', function (e) {
       else {
         map.removeLayer(map._drawing.shape);
 
-        var center = map._drawing.shape.getLatLngs()[0];
+        var center = map._drawing.shape.getLatLngs()[0][0];
         p0 = map.options.crs.project(center);
         p1 = map.options.crs.project(e.latlng);
         
@@ -191,7 +191,12 @@ L.Map.prototype.on('click', function (e) {
 
   function addPolyLatLng() {
     delete map._drawingTimeout;
-    latlngs = map._drawing.shape.getLatLngs();
+    var latlngs = map._drawing.shape.getLatLngs();
+
+    if (mode === 'polygon') {
+      latlngs = latlngs[0];
+    }
+
     latlngs.push(e.latlng);
     map._drawing.shape.setLatLngs(latlngs);
   }

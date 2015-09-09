@@ -413,6 +413,12 @@ var GPV = (function (gpv) {
       gpv.post(args);
     }
 
+    function projectLatLngs(latlngs) {
+      return latlngs.map(function (latlng) {
+        return map.options.crs.project(latlng);
+      });
+    }
+
     function selectionChanged() {
       appState.MarkupGroups = $grdMarkup.dataGrid("getSelection");
       var numGroups = appState.MarkupGroups.length;
@@ -566,15 +572,13 @@ var GPV = (function (gpv) {
       }
 
       if (shape instanceof L.Polyline) {
-        points = shape.getLatLngs().map(function (latlng) {
-          return map.options.crs.project(latlng);
-        });
-
         if (shape instanceof L.Polygon) {
+          points = projectLatLngs(shape.getLatLngs()[0]);
           points.push(points[0]);
           return "POLYGON((" + toWktCoordinates(points) + "))";
         }
         else {
+          points = projectLatLngs(shape.getLatLngs());
           return "LINESTRING(" + toWktCoordinates(points) + ")";
         }
       }
