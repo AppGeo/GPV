@@ -46,7 +46,7 @@ L.Map.prototype.fitProjectedBounds = function (bounds) {   // (Bounds)
   var newBounds = L.latLngBounds(L.latLng(minLat, minLng), L.latLng(maxLat, maxLng));
   this.fitBounds(newBounds);
 
-  return newBounds !== oldBounds;
+  return !(oldBounds && this.getBounds().equals(oldBounds));
 }
 
 L.Map.prototype.getProjectedBounds = function () {   // -> Bounds
@@ -316,6 +316,7 @@ L.ShingleLayer = L.Layer.extend({
     if (this._zoomAnimated) {
       events.zoomanim = this._animateZoom;
       events.zoomend = this._zoomEnd;
+      events.moveend = this._zoomEnd;
     }
 
     return events;
@@ -456,7 +457,7 @@ L.ShingleLayer = L.Layer.extend({
     layer._zoomHandle = setTimeout(function () {
       layer._zoomHandle = undefined;
       layer._update();
-    }, 250);
+    }, 500);
   }
 });
 
