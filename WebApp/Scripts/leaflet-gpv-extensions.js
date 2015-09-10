@@ -18,6 +18,25 @@ L.Bounds.prototype.pad = function (bufferRatio) {   // (Number) -> Bounds
   return new L.Bounds(min, max);
 };
 
+L.Bounds.prototype.fit = function (w, h) {    //  (Number, Number) -> Bounds
+  var newRatio = !h ? w : w / h;
+  var dx = (this.max.x - this.min.x) * 0.5;
+  var dy = (this.max.y - this.min.y) * 0.5;
+  var oldRatio = dx / dy;
+
+  if (newRatio > oldRatio) {
+    dy = dx / newRatio;
+  }
+  else {
+    dx = dy * newRatio;
+  }
+
+  var cx = (this.min.x + this.max.x) * 0.5;
+  var cy = (this.min.y + this.max.y) * 0.5;
+
+  return L.bounds(L.point(cx - dx, cy - dy), L.point(cx + dx, cy + dy));
+};
+
 L.Bounds.prototype.toArray = function () {
   return [ this.min.x, this.min.y, this.max.x, this.max.y ];
 };

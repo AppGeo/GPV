@@ -16,7 +16,7 @@ var GPV = (function (gpv) {
   $(function () {
     var appState = gpv.appState;
 
-    var fullExtent = gpv.configuration.fullExtent;
+    var fullExtent = L.Bounds.fromArray(gpv.configuration.fullExtent);
     var resizeHandle;
     var redrawPost;
 
@@ -24,8 +24,8 @@ var GPV = (function (gpv) {
     var $locatorBox = $("#locatorBox");
     var overviewMapHeight = $("#pnlOverview").height();
     var overviewMapWidth = $("#pnlOverview").width();
-
     var locatorPanning = false;
+    var overviewExtent = fullExtent.fit($mapOverview.width(), $mapOverview.height());
 
     var mapTabChangedHandlers = [];
     var functionTabChangedHandlers = [];
@@ -38,7 +38,6 @@ var GPV = (function (gpv) {
     var $ddlExternalMap = $("#ddlExternalMap").on("change", setExternalMap);
     var $ddlPrintTemplate = $("#ddlPrintTemplate").on("change", showPrintTemplateInputs);
     var $pnlDataDisplay = $("#pnlDataDisplay");
-
 
     // =====  map control  =====
 
@@ -86,8 +85,7 @@ var GPV = (function (gpv) {
 
     var shingleLayer = L.shingleLayer({ urlBuilder: refreshMap }).on("shingleload", function () {
       gpv.progress.clear();
-      showLocatorExtent();
-      refreshOverviewExtent();
+      updateOverviewExtent();
     }).addTo(map);
 
     if (gpv.settings.showScaleBar) {
@@ -240,7 +238,7 @@ var GPV = (function (gpv) {
       else {
         $("#pnlOverview").animate({ height: overviewMapHeight + "px", width: overviewMapWidth + "px" }, 600, function () {
           $("#iconOverview").addClass('iconOpen');
-          refreshOverviewExtent();
+          updateOverviewExtent();
         });
       }
     });
@@ -479,7 +477,7 @@ var GPV = (function (gpv) {
     }
 
     function zoomToFullExtent() {
-      map.fitProjectedBounds(L.Bounds.fromArray(fullExtent)) || shingleLayer.redraw();
+      map.fitProjectedBounds(fullExtent) || shingleLayer.redraw();
     }
 
     function zoomToSelection(scaleBy) {
@@ -511,6 +509,14 @@ var GPV = (function (gpv) {
       if (locatorPanning) {
         panLocatorBox(e);
         locatorPanning = false;
+
+        var x = e.pageX - $mapOverview.offset().left;
+        var y = e.pageY - $mapOverview.offset().top;
+
+        x = (x * overviewExtent.getSize().x / $mapOverview.width()) + overviewExtent.min.x;
+        y = overviewExtent.max.y - (y * overviewExtent.getSize().y / $mapOverview.height());
+
+        map.panTo(map.options.crs.unproject(L.point(x, y)));
       }
     });
 
@@ -519,15 +525,12 @@ var GPV = (function (gpv) {
     });
 
     function setOverviewMap() {
-      var viewWidth = $mapOverview.width();
-      var viewHeight = $mapOverview.height();
-
-      url = "Services/MapImage.ashx?" + $.param({
+      var url = "Services/MapImage.ashx?" + $.param({
         m: "GetOverviewImage",
         application: appState.Application,
-        width: viewWidth,
-        height: viewHeight,
-        bbox: fullExtent
+        width: $mapOverview.width(),
+        height: $mapOverview.height(),
+        bbox: overviewExtent.toArray()
       });
 
       $mapOverview.css("backgroundImage", "url(" + url + ")");
@@ -539,44 +542,31 @@ var GPV = (function (gpv) {
       var left = Math.round(x - $locatorBox.width() * 0.5) - 2;
       var top = Math.round(y - $locatorBox.height() * 0.5) - 2;
       $locatorBox.css({ left: left + "px", top: top + "px" });
-
-      x = fullExtent[0] + (x / $mapOverview.width()) * (fullExtent[2] - fullExtent[0]);
-      y = fullExtent[3] - (y / $mapOverview.height()) * (fullExtent[3] - fullExtent[1]);
-      //TAMC not sure here if this is correct.
-      map.setView([x, y]);
-      shingleLayer.redraw();
     }
 
-    function showLocatorExtent() {
-      var extent = map.getProjectedBounds().toArray();
+    function updateOverviewExtent() {
+      if (!$("#iconOverview").hasClass('iconOpen') || locatorPanning) {
+        return;
+      }
 
       function toScreenX(x) {
-        return Math.round($mapOverview.width() * (x - fullExtent[0]) / (fullExtent[2] - fullExtent[0]));
+        return Math.round($mapOverview.width() * (x - overviewExtent.min.x) / overviewExtent.getSize().x);
       }
 
       function toScreenY(y) {
-        return Math.round($mapOverview.height() * (fullExtent[3] - y) / (fullExtent[3] - fullExtent[1]));
+        return Math.round($mapOverview.height() * (overviewExtent.max.y - y) / overviewExtent.getSize().y);
       }
 
-      if (!locatorPanning) {
-        var left = toScreenX(extent[0]);
-        var top = toScreenY(extent[3]);
-        var right = toScreenX(extent[2]);
-        var bottom = toScreenY(extent[1]);
-        var width = $mapOverview.width();
-        var height = $mapOverview.height();
+      var extent = map.getProjectedBounds();
 
-        if (((0 <= left && left <= width) || (0 <= right && right <= width) || (left < 0 && width < right)) &&
-          ((0 <= top && top <= height) || (0 <= bottom && bottom <= height) || (top < 0 && height < bottom))) {
-          $locatorBox.css({ left: left - 2 + "px", top: top - 2 + "px", width: right - left + "px", height: bottom - top + "px" });
-        }
-      }
-    }
+      var left = toScreenX(extent.min.x);
+      var top = toScreenY(extent.max.y);
+      var right = toScreenX(extent.max.x);
+      var bottom = toScreenY(extent.min.y);
+      var width = $mapOverview.width();
+      var height = $mapOverview.height();
 
-    function refreshOverviewExtent() {
-      if ($("#iconOverview").hasClass('iconOpen')) {
-        showLocatorExtent();
-      }
+      $locatorBox.css({ left: left - 2 + "px", top: top - 2 + "px", width: right - left + "px", height: bottom - top + "px" });
     }
 
     function showGpsError() {
@@ -608,8 +598,6 @@ var GPV = (function (gpv) {
     $MapTool.filter(".Selected").trigger("click");
     triggerMapTabChanged();
     setOverviewMap();
-    
-
   });
 
   return gpv;

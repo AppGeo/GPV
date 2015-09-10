@@ -205,7 +205,7 @@
             <div id="cmdOverview" class="iconWrapper">
             <span id="iconOverview" class="glyphicon glyphicon-triangle-left iconOpen"></span></div>
               <div id="mapOverview">
-                <div id="locatorBox" class="UI">
+                <div id="locatorBox" class="UI" style="width: 1px; height: 1px; left: -10px">
                   <div id="locatorBoxFill" class="UI">
                   </div>
                 </div>
