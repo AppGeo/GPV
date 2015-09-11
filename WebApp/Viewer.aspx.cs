@@ -97,7 +97,7 @@ public partial class Viewer : CustomStyledPage
     SetHelpLink();
     //CreateMapTabs(application);
     CreateMapThemes(application);
-    CreatePrintLayoutList();
+    CreatePrintLayoutList(application);
 
     bool isPublic = AppAuthentication.Mode == AuthenticationMode.None;
     ucLegendPanel.Initialize(_config, _appState, application);
@@ -215,29 +215,6 @@ public partial class Viewer : CustomStyledPage
     TrackingManager.TrackUse(launchParams, false);
   }
 
-  protected void Page_PreRender(object sender, EventArgs e)
-  {
-    if (AppState.IsIn(ViewState))
-    {
-      int top = 62;
-
-      foreach (string key in _inputPrintFields.Keys)
-      {
-        foreach (int i in _inputPrintFields[key])
-        {
-          HtmlGenericControl div = FindControl(String.Format("pnlInput{0}", i)) as HtmlGenericControl;
-          div.Visible = key == ddlPrintTemplate.SelectedValue;
-
-          if (div.Visible)
-          {
-            div.Style["top"] = String.Format("{0}px", top);
-            top += 20;
-          }
-        }
-      }
-    }
-  }
-
   private void CreateActiveSelectionStyle()
   {
     HtmlGenericControl style = new HtmlGenericControl("style");
@@ -268,26 +245,17 @@ public partial class Viewer : CustomStyledPage
     }
   }
 
-  private void CreatePrintLayoutList()
+  private void CreatePrintLayoutList(Configuration.ApplicationRow application)
   {
     AppState appState = _appState;
 
-    foreach (Configuration.PrintTemplateRow template in _config.PrintTemplate)
+    foreach (Configuration.PrintTemplateRow template in application.GetPrintTemplates())
     {
-      bool add = template.IsAlwaysAvailableNull() || template.AlwaysAvailable == 1;
+      HtmlGenericControl option = new HtmlGenericControl("option");
+      option.InnerText = template.TemplateTitle;
+      option.Attributes["value"] = template.TemplateID;
+      ddlPrintTemplate.Controls.Add(option);
 
-      if (!add)
-      {
-        add = template.GetApplicationPrintTemplateRows().Any(o => o.ApplicationID == appState.Application);
-      }
-
-      if (add)
-      {
-        ddlPrintTemplate.Items.Add(new ListItem(template.TemplateTitle, template.TemplateID));
-      }
-
-      int i = 1;
-      List<int> indexes = new List<int>();
       foreach (Configuration.PrintTemplateContentRow element in template.GetPrintTemplateContentRows().Where(o => o.ContentType == "input"))
       {
         HtmlGenericControl div = new HtmlGenericControl("div");
@@ -296,27 +264,18 @@ public partial class Viewer : CustomStyledPage
         div.Style["width"] = "100%";
         div.Style["display"] = "none";
 
-        HtmlGenericControl label = new HtmlGenericControl("span");
+        HtmlGenericControl label = new HtmlGenericControl("label");
         div.Controls.Add(label);
-        label.Attributes["class"] = "Label";
         label.InnerText = element.DisplayName;
 
-        TextBox tbo = new TextBox();
+        HtmlGenericControl tbo = new HtmlGenericControl("input");
         div.Controls.Add(tbo);
-        tbo.ID = String.Format("tbo{0}Input{1}", template.TemplateID, i);
+        tbo.Attributes["type"] = "text";
+        tbo.Attributes["name"] = String.Format("input_{0}_{1}", template.TemplateID, element.SequenceNo);
         tbo.Attributes["class"] = "Input Text";
 
         pnlPrintInputs.Controls.Add(div);
-
-        indexes.Add(i);
-        ++i;
       }
-
-      if (indexes.Count > 0)
-      {
-        _inputPrintFields.Add(template.TemplateID, indexes);
-      }
-
     }
   }
 

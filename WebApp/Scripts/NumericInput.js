@@ -15,7 +15,10 @@
 // requires Extensions.js
 
 (function ($) {
-  $.fn.numericInput = function () {
+  $.fn.numericInput = function (options) {
+    var negative = !options || options.negative;
+    var decimal = !options || options.decimal;
+
     this.filter("input[type='text']").each(function () {
       var $this = $(this).on("keydown", function (e) {
         var numeric = $this.data("numeric");
@@ -31,7 +34,7 @@
         // allow ctrl sequences, backspace, tab, arrow keys, home, end, delete, digits, minus as the first character and one decimal point
 
         if (numeric.ctrl || e.which == 8 || e.which == 9 || (e.which >= 35 && e.which <= 40) || e.which == 46 || (!numeric.shift && e.which >= 48 && e.which <= 57) ||
-            (e.which == 189 && $this.prop("selectionStart") == 0) || (e.which == 190 && numeric.previousValue.indexOf(".") < 0)) {
+            (negative && e.which == 189 && $this.prop("selectionStart") == 0) || (decimal && e.which == 190 && numeric.previousValue.indexOf(".") < 0)) {
 
           // prevent key hold-down repetition
 
@@ -111,5 +114,7 @@
         previousValue: "" 
       });
     });
+
+    return this;
   };
 })(jQuery);
