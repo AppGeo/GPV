@@ -35,6 +35,28 @@ public partial class Configuration
       return IsFullExtentNull() ? AppSettings.DefaultFullExtent : EnvelopeExtensions.FromDelimitedString(FullExtent);
     }
 
+    public PrintTemplateRow[] GetPrintTemplates()
+    {
+      List<PrintTemplateRow> printTemplates = new List<PrintTemplateRow>();
+
+      foreach (PrintTemplateRow template in Configuration.PrintTemplate)
+      {
+        bool add = template.IsAlwaysAvailableNull() || template.AlwaysAvailable == 1;
+
+        if (!add)
+        {
+          add = template.GetApplicationPrintTemplateRows().Any(o => o.ApplicationID == ApplicationID);
+        }
+
+        if (add)
+        {
+          printTemplates.Add(template);
+        }
+      }
+
+      return printTemplates.ToArray();
+    }
+
     public string ToJson()
     {
       Dictionary<String, Object> mapTabs = new Dictionary<String, Object>();
@@ -99,6 +121,13 @@ public partial class Configuration
         searches.Add(search.SearchID, search.ToJsonData());
       }
 
+      Dictionary<String, Object> printTemplates = new Dictionary<String, Object>();
+
+      foreach (PrintTemplateRow template in GetPrintTemplates())
+      {
+        printTemplates.Add(template.TemplateID, template.ToJsonData());
+      }
+
       Dictionary<String, Object> jsonData = new Dictionary<String, Object>();
       jsonData.Add("fullExtent", GetFullExtentEnvelope().ToArray());
       jsonData.Add("mapTab", mapTabs);
@@ -107,6 +136,7 @@ public partial class Configuration
       jsonData.Add("query", queries);
       jsonData.Add("dataTab", dataTabs);
       jsonData.Add("search", searches);
+      jsonData.Add("printTemplate", printTemplates);
 
       JavaScriptSerializer serializer = new JavaScriptSerializer();
       return serializer.Serialize(jsonData);

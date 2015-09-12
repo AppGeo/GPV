@@ -36,8 +36,11 @@ var GPV = (function (gpv) {
     // =====  controls required prior to map control creation  =====
 
     var $ddlExternalMap = $("#ddlExternalMap").on("change", setExternalMap);
-    var $ddlPrintTemplate = $("#ddlPrintTemplate").on("change", showPrintTemplateInputs);
     var $pnlDataDisplay = $("#pnlDataDisplay");
+    var $ddlPrintTemplate = $("#ddlPrintTemplate").on("change", function () {
+      showPrintTemplateInputs();
+      updatePrintScale();
+    });
 
     // =====  map control  =====
 
@@ -86,6 +89,7 @@ var GPV = (function (gpv) {
     var shingleLayer = L.shingleLayer({ urlBuilder: refreshMap }).on("shingleload", function () {
       gpv.progress.clear();
       updateOverviewExtent();
+      updatePrintScale();
     }).addTo(map);
 
     if (gpv.settings.showScaleBar) {
@@ -310,6 +314,10 @@ var GPV = (function (gpv) {
       $(panel).fadeIn(600);
     });
 
+    var $tboPrintScale = $("#tboPrintScale").numericInput({ negative: false, decimal: false }).on("keyup", function () {
+      $("#optPrintScaleInput").trigger("click");
+    });
+
     // =====  map tools  =====
 
     $("#selectMapTools li").click(function () {
@@ -507,6 +515,18 @@ var GPV = (function (gpv) {
         this();
       });
     }
+    
+    function updatePrintScale() {
+      if (map) {
+        var extent = map.getProjectedBounds();
+        var extentWidth = (extent.max.x - extent.min.x) / (gpv.settings.mapUnits === "feet" ? 1 : 0.3048);
+        var mapWidth = map.getSize().x;
+        $("#labPrintScaleCurrent").text("Current (1\" = " + Math.round(extentWidth * 96 / mapWidth).format() + " ft)");
+
+        mapWidth = gpv.configuration.printTemplate[$("#ddlPrintTemplate").val()].mapWidth || 7;
+        $("#labPrintScaleWidth").text("Preserve extent width (1\" = " + Math.round(extentWidth / mapWidth).format() + " ft)");
+      }
+    }
 
     function zoomToActive() {
       gpv.selection.getActiveExtent(function (bbox) {
@@ -632,6 +652,7 @@ var GPV = (function (gpv) {
 
     // =====  finish initialization  =====
 
+    showPrintTemplateInputs();
     zoomToFullExtent();
 
     gpv.loadComplete();

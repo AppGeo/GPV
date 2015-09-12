@@ -287,8 +287,14 @@ button {
   margin-left: -4px;
 }
 
-#pnlPrint input, #pnlPrint select{
+#pnlPrint input[type="text"], #pnlPrint select{
   width: 75%;
+}
+
+#pnlPrint .PrintOptionLabel {
+  text-align: left;
+  width: auto;
+  font-weight: normal;
 }
 
 #cmdEmail

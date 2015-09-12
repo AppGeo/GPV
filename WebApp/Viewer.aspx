@@ -15,6 +15,7 @@
 --%>
 
 <%@ Page Language="C#" AutoEventWireup="true" CodeFile="Viewer.aspx.cs" Inherits="Viewer" EnableViewState="false" EnableSessionState="true" EnableEventValidation="false" %>
+<%@ Register TagPrefix="gpv" Assembly="App_Code" Namespace="GPV" %>
 <%@ Register TagPrefix="uc1" TagName="Footer" Src="Footer.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="Header" Src="Header.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="SearchPanel" Src="SearchPanel.ascx" %>
@@ -114,14 +115,25 @@
               <button id="cmdForExport" class="share-type" title="Export Map Extent"><i class="fa fa-external-link"></i> Export</button>
               <button id="cmdForDownload" class="share-type" title="Download Map"><i class="fa fa-download"></i> Download</button>
               <div id="pnlPrint" class="share">
-                <form id="form1" runat="server">
-                  <div class="FunctionLabel">Create Printable PDF Map</div><br>
+                <div class="FunctionLabel">Create Printable PDF Map</div><br>
+                <form id="frmPrint" method="post" action="PrintableMap.ashx" target="print">
                   <label for="ddlPrintTemplate">Format</label>
-                  <asp:DropDownList id="ddlPrintTemplate" runat="server" CssClass="Input">
-                    <asp:ListItem Value="" Text="Select a print template"></asp:ListItem>
-                  </asp:DropDownList>
+                  <gpv:Select id="ddlPrintTemplate" runat="server" name="template" CssClass="Input">
+                  </gpv:Select>
                   <div id="pnlPrintInputs" runat="server"></div>
-		              <button id="cmdCreate" runat="server" Enabled="false" style="left: 139px; top: 48px">Create</button>
+                  <label>Scale</label>
+                  <input type="radio" id="optPrintScaleCurrent" name="scalemode" value="scale" checked="checked" />
+                  <label id="labPrintScaleCurrent" for="optPrintScaleInput" class="PrintOptionLabel">Current</label><br/>
+                  <label> </label>
+                  <input type="radio" id="optPrintScaleWidth" name="scalemode" value="width" />
+                  <label id="labPrintScaleWidth" for="optPrintScaleWidth" class="PrintOptionLabel">Preserve width</label><br/>
+                  <label> </label>
+                  <input type="radio" id="optPrintScaleInput" name="scalemode" value="input" />
+                  <label id="labPrintScaleInput" for="optPrintScaleInput" class="PrintOptionLabel">1" =</label>
+                  <input type="text" id="tboPrintScale" name="scale" value="100" style="width: 60px" /> ft<br/>
+                  <input type="hidden" name="state" />
+                  <input type="hidden" name="width" />
+		              <button id="cmdPrint">Create</button>
                 </form>
               </div>
               <div id="pnlEmail" class="share">
@@ -239,10 +251,6 @@
       <input type="hidden" name="state" />
       <input type="hidden" name="width" />
       <input type="hidden" name="height" />
-    </form>
-    <form id="frmPrint" method="post" action="PrintableMap.aspx" target="print">
-      <input type="hidden" name="state" />
-      <input type="hidden" name="width" />
     </form>
   </div>
 </body>
