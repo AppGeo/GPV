@@ -31,6 +31,8 @@ var GPV = (function (gpv) {
 
     // =====  controls  =====
 
+    $("#tboMarkupUser").attr("placeholder", "Enter name.");
+    
     var $colorSelectors = $(".Color").colorSelector({
       enabled: false,
       selectorClass: "ColorSelector",
