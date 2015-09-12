@@ -201,9 +201,9 @@
             </ul>
           </div>
 
-          <div id="pnlOverview">
+          <div id="pnlOverview" class="overviewInitial">
             <div id="cmdOverview" class="iconWrapper">
-            <span id="iconOverview" class="glyphicon glyphicon-triangle-left iconOpen"></span></div>
+            <span id="iconOverview" class="glyphicon glyphicon-triangle-left"></span></div>
               <div id="mapOverview">
                 <div id="locatorBox" class="UI" style="width: 1px; height: 1px; left: -10px">
                   <div id="locatorBoxFill" class="UI">

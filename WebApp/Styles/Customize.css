@@ -223,7 +223,7 @@ li.MapTool:hover, #selectMapTheme li:hover{
   background-color: #B2DFDB;
 }
 
-#pnlOverview{
+.overviewMap{
   height: 250px;
   width: 175px;
 }

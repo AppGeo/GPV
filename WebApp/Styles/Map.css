@@ -39,6 +39,11 @@
   -mox-border-radius: 4px;
 }
 
+.overviewInitial{
+  height: 26px;
+  width: 26px;
+}
+
 .iconWrapper{
   position: absolute;
   height: 26px;
@@ -86,6 +91,8 @@
   -webkit-border-radius: 4px;
   -mox-border-radius: 4px;
 }
+
+
 #cmdFullView, #cmdLocation
 {
   left: 10px;

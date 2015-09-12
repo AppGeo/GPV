@@ -22,10 +22,10 @@ var GPV = (function (gpv) {
 
     var $mapOverview = $("#mapOverview");
     var $locatorBox = $("#locatorBox");
-    var overviewMapHeight = $("#pnlOverview").height();
-    var overviewMapWidth = $("#pnlOverview").width();
+    var overviewMapHeight = null;
+    var overviewMapWidth = null;
     var locatorPanning = false;
-    var overviewExtent = fullExtent.fit($mapOverview.width(), $mapOverview.height());
+    var overviewExtent;
 
     var mapTabChangedHandlers = [];
     var functionTabChangedHandlers = [];
@@ -231,15 +231,55 @@ var GPV = (function (gpv) {
     });
 
     $("#cmdOverview").on("click", function () {
-      if ($("#iconOverview").hasClass("iconOpen")) {
-        $("#pnlOverview").animate({ height: "26px", width: "26px" }, 600);
-        $("#iconOverview").removeClass('iconOpen');
+      if ($("#mapOverview").css("background-image") === "none") {
+        $("#pnlOverview").removeClass("overviewInitial").addClass("overviewMap");
+        $("#iconOverview").addClass('iconOpen');
+        overviewMapHeight = $("#pnlOverview").height();
+        overviewMapWidth = $("#pnlOverview").width();
+        $mapOverview = $("#mapOverview");
+        $('div.leaflet-control-attribution.leaflet-control').css({
+          "transition": "0.3s",
+          "-webkit-transition": "0.3s",
+          "-moz-transition": "0.3s", 
+          "transform": 'translate(-' + (overviewMapWidth - 30) + 'px)',
+          "-webkit-transform": 'translate(-' + (overviewMapWidth - 30) + 'px)',
+          "-moz-transform": 'translate(-' + (overviewMapWidth - 30) + 'px)',
+          "-ms-transform": 'translate(-' + (overviewMapWidth - 30) + 'px)'
+        });
+        overviewExtent = fullExtent.fit($mapOverview.width(), $mapOverview.height());
+        setOverviewMap();
+        updateOverviewExtent();
       }
       else {
-        $("#pnlOverview").animate({ height: overviewMapHeight + "px", width: overviewMapWidth + "px" }, 600, function () {
-          $("#iconOverview").addClass('iconOpen');
-          updateOverviewExtent();
-        });
+        if ($("#iconOverview").hasClass("iconOpen")) {
+          $("#pnlOverview").animate({ height: "26px", width: "26px" }, 600, function () {
+            $("#iconOverview").removeClass('iconOpen');
+          });
+          $('div.leaflet-control-attribution.leaflet-control').css({
+            "transition": "1s",
+            "-webkit-transition": "1s",
+            "-moz-transition": "1s",
+            "transform": 'translate(0px)',
+            "-webkit-transform": 'translate(0px)',
+            "-moz-transform": 'translate(0px)',
+            "-ms-transform": 'translate(0px)'
+          });
+        }
+        else {
+          $("#pnlOverview").animate({ height: overviewMapHeight + "px", width: overviewMapWidth + "px" }, 600, function () {
+            $("#iconOverview").addClass('iconOpen');
+            updateOverviewExtent();
+          });
+          $('div.leaflet-control-attribution.leaflet-control').css({
+            "transition": "0.75s",
+            "-webkit-transition": "0.75s",
+            "-moz-transition": "0.75s",
+            "transform": 'translate(-' + (overviewMapWidth - 30) + 'px)',
+            "-webkit-transform": 'translate(-' + (overviewMapWidth - 30) + 'px)',
+            "-moz-transform": 'translate(-' + (overviewMapWidth - 30) + 'px)',
+            "-ms-transform": 'translate(-' + (overviewMapWidth - 30) + 'px)'
+          });
+        }
       }
     });
 
@@ -597,7 +637,6 @@ var GPV = (function (gpv) {
     gpv.loadComplete();
     $MapTool.filter(".Selected").trigger("click");
     triggerMapTabChanged();
-    setOverviewMap();
   });
 
   return gpv;
