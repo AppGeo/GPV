@@ -401,7 +401,7 @@ button {
     -webkit-box-shadow: none;
     border: 2px solid rgba(0,0,0,.3);
   }
-  #btnToolMenu, #btnMapTheme, #selectMapTools, #selectMapTheme{
+  #btnToolMenu, #btnMapTheme, #btnMapLevel, #selectMapTools, #selectMapTheme, #selectMapLevel{
     transform: scale(1) translate(10%, 10%);
     -webkit-transform: scale(1) translate(10%, 10%);
     box-shadow: none;
@@ -409,6 +409,10 @@ button {
     border: 2px solid rgba(0,0,0,.3);
   }
   #selectMapTheme {
+    transform: scale(1) translate(3%, 2.5%);
+    -webkit-transform: scale(1) translate(3%, 2.5%);
+  }
+  #selectMapLevel {
     transform: scale(1) translate(3%, 2.5%);
     -webkit-transform: scale(1) translate(3%, 2.5%);
   }

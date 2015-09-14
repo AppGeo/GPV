@@ -116,21 +116,19 @@
   color: #7b7b7b;
 }
 
-#pnlMapThemes{
-  position: relative;
-  z-index: 10;
-  width: auto;
-  float: left;
-  margin-left: 40px;
-}
-#pnlMapTools{
+.MapMenu
+{
   position: relative;
   z-index: 10;
   width: auto;
   float: left;
 }
 
-#btnToolMenu, #btnMapTheme{
+#pnlMapThemes{
+  margin-left: 40px;
+}
+
+#btnToolMenu, #btnMapTheme, #btnMapLevel{
   border: none;
   margin-left: 10px;
   box-shadow: 0 1px 5px rgba(0,0,0,.65);
@@ -144,20 +142,20 @@
   padding: 0 10px;
 }
 
-#selectedTool, #selectedTheme{
+#selectedTool, #selectedTheme, #selectedLevel{
   letter-spacing: .5px;
   margin-right: 5px;
   vertical-align: middle;
 }
 
-#selectMapTools, #selectMapTheme{
+#selectMapTools, #selectMapTheme, #selectMapLevel{
   left: 10px;
   font-size: 13px;
   padding: 8px;
   width: 190px;
 }
 
-li.MapTool, #selectMapTheme li{
+li.MapTool, #selectMapTheme li, #selectMapLevel li{
   cursor: pointer;
   display: inline-block;
   height: 28px;

@@ -225,11 +225,6 @@ var GPV = (function (gpv) {
       });
     });
 
-    var $ddlLevel = $("#ddlLevel").on("change", function () {
-      appState.Level = $(this).val();
-      shingleLayer.redraw();
-    });
-
     $(".FunctionHeader").on("click", function () {
       hideFunctionPanel(showFunctionMenu);
     });
@@ -297,13 +292,17 @@ var GPV = (function (gpv) {
       });
     });
 
-    $("#selectedTheme").html($("#selectMapTheme li").first().html());
-
     $("#selectMapTheme li").click(function () {
       $("#selectedTheme").html($(this).html());
       var mapTab = $(this).attr("data-maptab");
       appState.MapTab = mapTab;
       triggerMapTabChanged();
+      shingleLayer.redraw();
+    });
+
+    $("#selectMapLevel li").click(function () {
+      $("#selectedLevel").html($(this).html());
+      appState.Level = $(this).attr("data-level");
       shingleLayer.redraw();
     });
 
@@ -449,7 +448,7 @@ var GPV = (function (gpv) {
     }
 
     function setExtent(extent) {
-      $ddlLevel.val(appState.Level); 
+      showLevel();
       map.fitProjectedBounds(L.Bounds.fromArray(extent));
       return map.getProjectedBounds().toArray();
     }
@@ -494,6 +493,11 @@ var GPV = (function (gpv) {
       $("#pnlFunction").animate({ left: "0px", opacity: "1.0" }, panelAnimationTime, function () {
         $(".FunctionExit").addClass("FunctionExitOpen");
       });
+    }
+
+    function showLevel() {
+      var $li = $("#selectMapLevel li[data-level=\"" + appState.Level + "\"]");
+      $("#selectedLevel").html($li.html());
     }
 
     function showPrintTemplateInputs() {
@@ -644,7 +648,7 @@ var GPV = (function (gpv) {
       getExtent: function () { return map.getProjectedBounds().toArray(); },
       functionTabChanged: function (fn) { functionTabChangedHandlers.push(fn); },
       mapTabChanged: function (fn) { mapTabChangedHandlers.push(fn); },
-      refreshMap: function () { $ddlLevel.val(appState.Level); shingleLayer.redraw(); },
+      refreshMap: function () { showLevel(); shingleLayer.redraw(); },
       setExtent: setExtent,
       switchToPanel: switchToPanel,
       zoomToActive: zoomToActive

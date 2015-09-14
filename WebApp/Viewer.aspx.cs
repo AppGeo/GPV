@@ -242,6 +242,11 @@ public partial class Viewer : CustomStyledPage
       phlMapTheme.Controls.Add(li);
       li.InnerHtml = appMapTabRow.MapTabRow.DisplayName.Replace(" ", "&nbsp;");
       li.Attributes["data-maptab"] = appMapTabRow.MapTabID;
+
+      if (_appState.MapTab == appMapTabRow.MapTabID)
+      {
+        selectedTheme.InnerHtml = appMapTabRow.MapTabRow.DisplayName.Replace(" ", "&nbsp;");
+      }
     }
   }
 
@@ -1852,34 +1857,27 @@ public partial class Viewer : CustomStyledPage
 
       if (levels.Length > 0)
       {
-
-        //HtmlGenericControl li = new HtmlGenericControl("li");
-        //phlMapTheme.Controls.Add(li);
-        //li.InnerHtml = appMapTabRow.MapTabRow.DisplayName.Replace(" ", "&nbsp;");
-        //li.Attributes["data-maptab"] = appMapTabRow.MapTabID;
-
-        //labLevel.Style["display"] = "inline";
-        ddlLevel.Style["display"] = "inline";
-
-        //labLevel.InnerText = levelName;
-        ddlLevel.DataSource = levels;
-        ddlLevel.DataTextField = "DisplayName";
-        ddlLevel.DataValueField = "LevelID";
-        ddlLevel.DataBind();
-
-        foreach (Configuration.ApplicationMapTabRow appMapTabRow in application.GetApplicationMapTabRows())
+        if (String.IsNullOrEmpty(_appState.Level))
         {
-          HtmlGenericControl li = new HtmlGenericControl("li");
-          phlMapTheme.Controls.Add(li);
-          li.InnerHtml = appMapTabRow.MapTabRow.DisplayName.Replace(" ", "&nbsp;");
-          li.Attributes["data-maptab"] = appMapTabRow.MapTabID;
+          _appState.Level = levels[0].LevelID;
         }
 
-        int index = ddlLevel.Items.Cast<ListItem>().ToList().FindIndex(o => o.Value == _appState.Level);
+        pnlMapLevels.Style["display"] = "block";
+        selectedLevel.Attributes["title"] = levelName;
 
-        if (index > -1)
+        foreach (Configuration.LevelRow levelRow in levels)
         {
-          ddlLevel.SelectedIndex = index;
+          string displayName = levelRow.IsDisplayNameNull() ? levelRow.LevelID : levelRow.DisplayName;
+
+          HtmlGenericControl li = new HtmlGenericControl("li");
+          phlMapLevel.Controls.Add(li);
+          li.InnerHtml = levelName + "&nbsp;" + displayName.Replace(" ", "&nbsp;");
+          li.Attributes["data-level"] = levelRow.LevelID;
+
+          if (_appState.Level == levelRow.LevelID)
+          {
+            selectedLevel.InnerHtml = levelName + "&nbsp;" + displayName.Replace(" ", "&nbsp;");
+          }
         }
       }
     }

@@ -22,9 +22,9 @@
 <div id="pnlLocationContent" class="Panel">
 
   <select id="ddlZoneLevelSelect" class="Input">
-    <option id="optTabZone" runat="server" style="display: none" data-table="tblZone"></option>
-    <option id="optTabLevel" runat="server" style="display: none" data-table="tblLevel"></option>
-    <option id="optTabLevelByZone" runat="server" style="display: none" data-table="tblLevelByZone"></option>
+    <gpv:Option id="optTabZone" runat="server" style="display: none" data-table="tblZone"></gpv:Option>
+    <gpv:Option id="optTabLevel" runat="server" style="display: none" data-table="tblLevel"></gpv:Option>
+    <gpv:Option id="optTabLevelByZone" runat="server" style="display: none" data-table="tblLevelByZone"></gpv:Option>
   </select>
 
   <div id="pnlZoneLevel">

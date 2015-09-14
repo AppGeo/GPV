@@ -166,9 +166,9 @@
            <div id="cmdFullView" class="Button" title="Full View"><span class="glyphicon glyphicon-globe"></span></div>
            <div id="cmdLocation" class="Button" title="Current Location"><i class="fa fa-crosshairs"></i></div>
 
-           <div id="pnlMapThemes">
-            <button class="btn btn-default dropdown-toggle" type="button" id="btnMapTheme" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-              <span id="selectedTheme"></span>
+           <div id="pnlMapThemes" class="MapMenu">
+            <button class="btn btn-default dropdown-toggle" type="button" id="btnMapTheme" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Theme">
+              <span id="selectedTheme" runat="server"></span>
               <span class="caret"></span>
             </button>
             <ul id="selectMapTheme" class="dropdown-menu" aria-labelledby="btnMapTheme">
@@ -176,19 +176,18 @@
             </ul>
           </div>
 
-          <div id="pnlMapLevels">
-<%--            <button class="btn btn-default dropdown-toggle" type="button" id="btnMapLevel" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-              <span id="selectedLevel"></span>
+          <div id="pnlMapLevels" runat="server" class="MapMenu" style="display: none">
+            <button class="btn btn-default dropdown-toggle" type="button" id="btnMapLevel" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Level">
+              <span id="selectedLevel" runat="server"></span>
               <span class="caret"></span>
             </button>
             <ul id="selectMapLevel" class="dropdown-menu" aria-labelledby="btnMapLevel">
               <asp:PlaceHolder id="phlMapLevel" runat="server"></asp:PlaceHolder>
-            </ul>--%>
-          <select id="ddlLevel" runat="server" class="Input" style="width: 70px; display: none"></select>
+            </ul>
           </div>
 
-          <div id="pnlMapTools">
-            <button class="btn btn-default dropdown-toggle" type="button" id="btnToolMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+          <div id="pnlMapTools" class="MapMenu">
+            <button class="btn btn-default dropdown-toggle" type="button" id="btnToolMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Tool">
               <span id="selectedTool"><span class="pan"></span> Pan</span>
               <span class="caret"></span>
             </button>

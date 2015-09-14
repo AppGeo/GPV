@@ -20,7 +20,7 @@ var GPV = (function (gpv) {
     // =====  control events  =====
 
     $("#ddlZoneLevelSelect").on("change", function () {
-      var id = $(this).attr("data-table");
+      var id = $(this).find("option:selected").attr("data-table");
 
       $(".ZoneLevelTable").each(function () {
         $(this).toggle(this.id == id);
@@ -47,8 +47,6 @@ var GPV = (function (gpv) {
 
     // =====  component events  =====
 
-    //gpv.on("viewer", "functionTabChanged", refreshOverviewMap);
-    //gpv.on("viewer", "extentChanged", drawMainExtent);
     gpv.on("selectionPanel", "gridFilled", showZoneLevelCounts);
 
     // =====  private functions  =====
@@ -100,7 +98,10 @@ var GPV = (function (gpv) {
       });
 
       var $zoneRows = $ZoneLevelTable.find("tr.Zone");
+      $zoneRows.find("td.Value").text("");
+
       var $zoneLevelRows = $ZoneLevelTable.find("tr.ZoneLevel");
+      $zoneLevelRows.find("td.Value").text("");
 
       $.each(zone, function (z, v) {
         showCount($zoneRows.filter("tr[data-zone='" + z + "']"), v.count);
@@ -111,6 +112,7 @@ var GPV = (function (gpv) {
       });
 
       var $levelRows = $ZoneLevelTable.find("tr.Level");
+      $levelRows.find("td.Value").text("");
 
       $.each(level, function (lev, c) {
         showCount($levelRows.filter("tr[data-level='" + lev + "']"), c);

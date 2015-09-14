@@ -219,7 +219,7 @@ a.VersionText
   color: #FFFFFF;
 }
 
-li.MapTool:hover, #selectMapTheme li:hover{
+li.MapTool:hover, #selectMapTheme li:hover, #selectMapLevel li:hover{
   background-color: #B2DFDB;
 }
 
