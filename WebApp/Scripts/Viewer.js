@@ -450,7 +450,7 @@ var GPV = (function (gpv) {
 
     function setExtent(extent) {
       $ddlLevel.val(appState.Level); 
-      map.fitProjectedBounds(L.Bounds.fromArray(extent)) || shingleLayer.redraw();
+      map.fitProjectedBounds(L.Bounds.fromArray(extent));
       return map.getProjectedBounds().toArray();
     }
 
@@ -531,19 +531,19 @@ var GPV = (function (gpv) {
     function zoomToActive() {
       gpv.selection.getActiveExtent(function (bbox) {
         if (bbox) {
-          map.fitProjectedBounds(L.Bounds.fromArray(bbox).pad(1.6)) || shingleLayer.redraw();
+          map.fitProjectedBounds(L.Bounds.fromArray(bbox).pad(1.6));
         }
       });
     }
 
     function zoomToFullExtent() {
-      map.fitProjectedBounds(fullExtent) || shingleLayer.redraw();
+      map.fitProjectedBounds(fullExtent);
     }
 
     function zoomToSelection(scaleBy) {
       gpv.selection.getSelectionExtent(function (bbox) {
         if (bbox) {
-          map.fitProjectedBounds(L.Bounds.fromArray(bbox).pad(scaleBy)) || shingleLayer.redraw();
+          map.fitProjectedBounds(L.Bounds.fromArray(bbox).pad(scaleBy));
         }
       });
     }
