@@ -157,7 +157,7 @@ var GPV = (function (gpv) {
       if (navigator && navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (pos) {
           var latlng = L.latLng(pos.coords.latitude, pos.coords.longitude);
-          map.setView(latlng, 16);
+          map.setView(latlng, maxZoom - 2);
         }, showGpsError);
       }
       else {
