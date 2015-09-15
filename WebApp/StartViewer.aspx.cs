@@ -52,33 +52,18 @@ public partial class StartViewer : CustomStyledPage
       Session["LaunchParams"] = launchParams;
 		}
 
-    if (!String.IsNullOrEmpty(AppSettings.DefaultApplication) || launchParams.ContainsKey("application") || launchParams.ContainsKey("state"))
+    bool isDebugging = launchParams.Count == 0 && System.Diagnostics.Debugger.IsAttached;
+    bool hasShowApps = AppSettings.AllowShowApps && launchParams.Count == 1 && launchParams.ContainsKey("showapps");
+    bool hasApplication = (!hasShowApps && !String.IsNullOrEmpty(AppSettings.DefaultApplication)) || launchParams.ContainsKey("application") || launchParams.ContainsKey("state");
+
+    if (hasApplication)
 		{
 			Response.Redirect("Viewer.aspx");
 		}
 
     Session["LaunchParams"] = null;
-    bool showApps = launchParams.Count == 0 && System.Diagnostics.Debugger.IsAttached;
 
-    if (!showApps && launchParams.Count == 1 && launchParams.ContainsKey("showapps"))
-		{
-      showApps = true;
-
-      if (AppSettings.AdminOnlyShowApps && AppAuthentication.Mode == AuthenticationMode.None)
-      {
-        if (!Context.User.Identity.IsAuthenticated)
-        {
-          showApps = String.IsNullOrEmpty(launchParams["showapps"]) ? false : FormsAuthentication.Authenticate("admin", launchParams["showapps"]);
-
-          if (showApps)
-          {
-            FormsAuthentication.SetAuthCookie("admin", false);
-          }
-        }
-      }
-		}
-
-		if (showApps)
+    if (isDebugging || hasShowApps)
 		{
       ShowApplications();
 		}
