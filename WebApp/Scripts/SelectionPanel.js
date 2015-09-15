@@ -580,7 +580,7 @@ var GPV = (function (gpv) {
 
       if ($ddl.val() != appState[prop]) {
         if ($ddl.find("option").length) {
-          $ddl.attr("selectedIndex", 0);
+          $ddl.prop("selectedIndex", 0);
           appState[prop] = $ddl.val();
         }
         else {

@@ -69,6 +69,8 @@ public class WebServiceHandler : IHttpHandler
     Response.ContentType = "text/plain";
     Response.Cache.SetCacheability(HttpCacheability.NoCache);
 
+    string fullMethodName;
+
     try
     {
       string method = Request.Form["m"];
@@ -87,7 +89,7 @@ public class WebServiceHandler : IHttpHandler
       // on the parent class of the current ASHX class via reflection if not found on the current class
 
       Type handlerType = this.GetType();
-
+ 
       BindingFlags bindingFlags = BindingFlags.DeclaredOnly | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.InvokeMethod;
 
       MemberInfo[] memberInfo = handlerType.GetMember(method, MemberTypes.Method, bindingFlags);
@@ -100,6 +102,7 @@ public class WebServiceHandler : IHttpHandler
 
       if (memberInfo.Length > 0 && memberInfo[0].GetCustomAttributes(false).FirstOrDefault(o => o is WebServiceMethodAttribute) != null)
       {
+        fullMethodName = String.Format("{0}.{1}()", handlerType.Name, memberInfo[0].Name);
         handlerType.InvokeMember(method, bindingFlags, null, this, null);
       }
       else
