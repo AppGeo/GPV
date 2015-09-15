@@ -214,7 +214,7 @@ var GPV = (function (gpv) {
     });
 
     $("#cmdZoomSelect").on("click", function () {
-      zoomToSelection(1.6);
+      zoomToSelection(1.2);
     });
 
     $(".DataHeader").on("click", function () {
@@ -535,7 +535,7 @@ var GPV = (function (gpv) {
     function zoomToActive() {
       gpv.selection.getActiveExtent(function (bbox) {
         if (bbox) {
-          map.fitProjectedBounds(L.Bounds.fromArray(bbox).pad(1.6));
+          map.fitProjectedBounds(L.Bounds.fromArray(bbox).pad(1.2));
         }
       });
     }
@@ -657,7 +657,7 @@ var GPV = (function (gpv) {
     // =====  finish initialization  =====
 
     showPrintTemplateInputs();
-    zoomToFullExtent();
+    map.fitProjectedBounds(L.Bounds.fromArray(gpv.appState.Extent.bbox));
 
     gpv.loadComplete();
     $MapTool.filter(".Selected").trigger("click");

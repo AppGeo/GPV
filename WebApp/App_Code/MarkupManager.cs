@@ -50,7 +50,7 @@ public static class MarkupManager
           extent = new Envelope(new Coordinate(extent.MinX - 50, extent.MinY - 50), new Coordinate(extent.MaxX + 50, extent.MaxY + 50));
         }
 
-        extent.ScaleBy(1.6);
+        extent.ScaleBy(1.2);
       }
     }
 

@@ -565,7 +565,7 @@ var GPV = (function (gpv) {
             appState.DataTab = v.id;
           }
 
-          $("<option value='" + v.name + "' data-datatab='" + v.id + "'>" + v.name + "</option>").appendTo($ddlDataTheme);
+          $("<option value='" + v.name + "' data-datatab='" + v.id + "'>" + v.name + "</option>").prop("selected", appState.DataTab === v.id).appendTo($ddlDataTheme);
         });
       }
     }

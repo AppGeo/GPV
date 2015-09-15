@@ -269,8 +269,8 @@ var GPV = (function (gpv) {
       function complete(canLock, isLocked) {
         var $tools = $(".Button.MarkupTool");
 
-        if (!enable && $tools.filter(".Selected").removeClass("Selected").length) {
-          $("#optPan").addClass("Selected");
+        if (!enable && $tools.filter(".Selected").length) {
+          $("#optPan").trigger("click");
         }
 
         if (!isPublic) {

@@ -172,7 +172,7 @@ var GPV = (function (gpv) {
     function updateTargets(ids) {
       var layerID = config.search[currentSearch].layer.id;
       var targetIds = $.map(ids, function (id) { return id.m; }).join(",");
-      var url = "application:action=0&selectionlayer=&selectionids=&scaleby=1.6&targetlayer=" + layerID + "&targetids=" + targetIds;
+      var url = "application:action=0&selectionlayer=&selectionids=&scaleby=1.2&targetlayer=" + layerID + "&targetids=" + targetIds;
 
       if (ids.length == 1) {
         url += "&activemapid=" + ids[0].m;

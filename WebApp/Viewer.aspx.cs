@@ -63,7 +63,6 @@ public partial class Viewer : CustomStyledPage
     }
 
     _config = AppContext.GetConfiguration();
-
 	}
 
   protected void Page_Load(object sender, EventArgs e)
@@ -95,107 +94,86 @@ public partial class Viewer : CustomStyledPage
     Title = application.DisplayName;
 
     SetHelpLink();
-    //CreateMapTabs(application);
     CreateMapThemes(application);
     CreatePrintLayoutList(application);
 
     bool isPublic = AppAuthentication.Mode == AuthenticationMode.None;
     ucLegendPanel.Initialize(_config, _appState, application);
 
-    if (_appState.FunctionTabs == FunctionTab.None)
+    if (_appState.ActiveFunctionTab != FunctionTab.None)
     {
-      pnlContent.Style["min-width"] = "548px";
-      //pnlMapSizer.Style["right"] = "0px";
-      //pnlFunctionSizer.Style["display"] = "none";
-      //contentDivider.Visible = false;
+      pnlFunctionTabs.Style["left"] = "-400px";
+      pnlFunctionTabs.Style["opacity"] = "0";
     }
-    //else if (_appState.FunctionTabs == FunctionTab.All)
-    //{
-    //  pnlContent.Style["min-width"] = "548px";
-    //  //pnlMapSizer.Style["right"] = "0px";
-    //  //pnlFunctionSizer.Style["display"] = "none";
-    //  //contentDivider.Visible = false;
-    //}
-    else
+
+    if ((_appState.FunctionTabs & FunctionTab.Search) == FunctionTab.Search)
     {
-      if ((_appState.FunctionTabs & FunctionTab.Search) == FunctionTab.Search)
-      {
-        tabSearch.Style["display"] = "block";
-        ucSearchPanel.Initialize(application);
+      tabSearch.Style["display"] = "block";
+      ucSearchPanel.Initialize(application);
 
-        if (_appState.ActiveFunctionTab == FunctionTab.Search)
-        {
-          pnlSearch.Style["display"] = "block";
-          //tabSearch.Attributes["class"] = "Tab Selected";
-        }
-      } 
+      if (_appState.ActiveFunctionTab == FunctionTab.Search)
+      {
+        pnlSearch.Style["display"] = "block";
+      }
+    } 
       
-      if ((_appState.FunctionTabs & FunctionTab.Selection) == FunctionTab.Selection)
-      {
-        tabSelection.Style["display"] = "block";
-        ucSelectionPanel.Initialize(launchParams);
+    if ((_appState.FunctionTabs & FunctionTab.Selection) == FunctionTab.Selection)
+    {
+      tabSelection.Style["display"] = "block";
+      ucSelectionPanel.Initialize(launchParams);
 
-        if (_appState.ActiveFunctionTab == FunctionTab.Selection)
-        {
-          pnlSelection.Style["display"] = "block";
-          //tabSelection.Attributes["class"] = "Tab Selected";
-        }
+      if (_appState.ActiveFunctionTab == FunctionTab.Selection)
+      {
+        pnlSelection.Style["display"] = "block";
       }
+    }
 
-      if ((_appState.FunctionTabs & FunctionTab.Legend) == FunctionTab.Legend)
+    if ((_appState.FunctionTabs & FunctionTab.Legend) == FunctionTab.Legend)
+    {
+      tabLegend.Style["display"] = "block";
+
+      if (_appState.ActiveFunctionTab == FunctionTab.Legend)
       {
-        tabLegend.Style["display"] = "block";
-
-        if (_appState.ActiveFunctionTab == FunctionTab.Legend)
-        {
-          pnlLegend.Style["display"] = "block";
-          //tabLegend.Attributes["class"] = "Tab Selected";
-        }
+        pnlLegend.Style["display"] = "block";;
       }
+    }
 
-      if ((_appState.FunctionTabs & FunctionTab.Location) == FunctionTab.Location)
+    if ((_appState.FunctionTabs & FunctionTab.Location) == FunctionTab.Location)
+    {
+      tabLocation.Style["display"] = "block";
+      ucLocationPanel.Initialize(_config, _appState, application);
+
+      if (_appState.ActiveFunctionTab == FunctionTab.Location)
       {
-        tabLocation.Style["display"] = "block";
-        ucLocationPanel.Initialize(_config, _appState, application);
-
-        if (_appState.ActiveFunctionTab == FunctionTab.Location)
-        {
-          pnlLocation.Style["display"] = "block";
-          //tabLocation.Attributes["class"] = "Tab Selected";
-        }
+        pnlLocation.Style["display"] = "block";
       }
+    }
 
-      if ((_appState.FunctionTabs & FunctionTab.Markup) == FunctionTab.Markup)
+    if ((_appState.FunctionTabs & FunctionTab.Markup) == FunctionTab.Markup)
+    {
+      tabMarkup.Style["display"] = "block";
+      ucMarkupPanel.Initialize(_config, _appState, application);
+
+      if (_appState.ActiveFunctionTab == FunctionTab.Markup)
       {
-        tabMarkup.Style["display"] = "block";
-        ucMarkupPanel.Initialize(_config, _appState, application);
-
-        if (_appState.ActiveFunctionTab == FunctionTab.Markup)
-        {
-          pnlMarkup.Style["display"] = "block";
-          //tabMarkup.Attributes["class"] = "Tab Selected";
-        }
+        pnlMarkup.Style["display"] = "block";
       }
     }
 
     ShowLevelSelector(application);
 
-    // set the default tool (also set in SelectionPanel and MarkupPanel)
+    // set the default tool
 
     HtmlControl defaultTool = null;
 
     if (launchParams.ContainsKey("tool"))
     {
       defaultTool = Page.FindControl("opt" + launchParams["tool"], false) as HtmlControl;
-    }
-    else if ((_appState.FunctionTabs & FunctionTab.Selection) == FunctionTab.None)
-    {
-      defaultTool = Page.FindControl("optPan") as HtmlControl;
-    }
-
-    if (defaultTool != null)
-    {
-      defaultTool.Attributes["class"] = "Button MapTool Selected";
+      
+      if (defaultTool != null)
+      {
+        defaultTool.Attributes["class"] += " Selected";
+      }
     }
 
     if (launchParams.ContainsKey("mapscale"))
@@ -1072,7 +1050,7 @@ public partial class Viewer : CustomStyledPage
 
       if (!extent.IsNull)
       {
-        extent.ScaleBy(1.6);
+        extent.ScaleBy(1.2);
         _appState.Extent = extent;
       }
     }
@@ -1290,34 +1268,6 @@ public partial class Viewer : CustomStyledPage
       _appState.ActiveFunctionTab = functionTab;
     }
 
-    if (_appState.FunctionTabs != FunctionTab.None && _appState.ActiveFunctionTab == FunctionTab.None)
-    {
-      if ((_appState.FunctionTabs & FunctionTab.All) == FunctionTab.All)
-      {
-        _appState.ActiveFunctionTab = FunctionTab.All;
-      }
-      else if ((_appState.FunctionTabs & FunctionTab.Selection) == FunctionTab.Selection)
-      {
-        _appState.ActiveFunctionTab = FunctionTab.Selection;
-      }
-      else if ((_appState.FunctionTabs & FunctionTab.Search) == FunctionTab.Search)
-      {
-        _appState.ActiveFunctionTab = FunctionTab.Search;
-      }
-      else if ((_appState.FunctionTabs & FunctionTab.Legend) == FunctionTab.Legend)
-      {
-        _appState.ActiveFunctionTab = FunctionTab.Legend;
-      }
-      else if ((_appState.FunctionTabs & FunctionTab.Location) == FunctionTab.Location)
-      {
-        _appState.ActiveFunctionTab = FunctionTab.Location;
-      }
-      else
-      {
-        _appState.ActiveFunctionTab = FunctionTab.Markup;
-      }
-    }
-
     // === markup category ===
 
     Configuration.ApplicationMarkupCategoryRow markupCategory = null;
@@ -1439,7 +1389,7 @@ public partial class Viewer : CustomStyledPage
       }
       else
       {
-        _appState.Extent.ScaleBy(1.6);
+        _appState.Extent.ScaleBy(1.2);
       }
     }
 
@@ -1705,7 +1655,7 @@ public partial class Viewer : CustomStyledPage
         ShowError("Invalid 'scale by' value specified, must be greater than zero");
       }
 
-      _appState.Extent.ScaleBy(scaleBy / 1.6);
+      _appState.Extent.ScaleBy(scaleBy / 1.2);
     }
 
     // === tool ==
