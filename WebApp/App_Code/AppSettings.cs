@@ -85,11 +85,11 @@ public static class AppSettings
     }
   }
 
-  public static bool AdminOnlyShowApps
+  public static bool AllowShowApps
   {
     get
     {
-      return GetConfigBoolean("AdminOnlyShowApps");
+      return GetConfigBoolean("AllowShowApps");
     }
   }
 

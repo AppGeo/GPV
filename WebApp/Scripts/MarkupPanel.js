@@ -82,7 +82,7 @@ var GPV = (function (gpv) {
       if (appState.MarkupGroups.length > 0) {
         appState.MarkupGroups = [];
         $tboMarkupTitle.val("");
-        $chkMarkupLock.attr("checked", false);
+        $chkMarkupLock.prop("checked", false);
         enableControls();
         gpv.viewer.refreshMap();
       }
@@ -198,7 +198,7 @@ var GPV = (function (gpv) {
           if (result) {
             appState.MarkupGroups = [result.id];
             $tboMarkupTitle.val(result.title);
-            $chkMarkupLock.attr("checked", result.locked);
+            $chkMarkupLock.prop("checked", result.locked);
             enableControls();
             fillGrid();
             gpv.viewer.refreshMap();
@@ -274,11 +274,11 @@ var GPV = (function (gpv) {
         }
 
         if (!isPublic) {
-          $chkMarkupLock.attr("disabled", !canLock).attr("checked", isLocked);
+          $chkMarkupLock.prop("disabled", !canLock).prop("checked", isLocked);
         }
 
         $container.find(".Toggleable").add($tools).toggleClass("Disabled", !enable);
-        $tboMarkupTitle.add("#tboMarkupText").attr("disabled", !enable);
+        $tboMarkupTitle.add("#tboMarkupText").prop("disabled", !enable);
         $colorSelectors.colorSelector("enabled", enable);
       }
     }
@@ -321,7 +321,7 @@ var GPV = (function (gpv) {
         color: getMarkupColor()
       };
 
-      if ($chkTextGlow.attr("checked")) {
+      if ($chkTextGlow.prop("checked")) {
         data.glow = $cmdTextGlowColor.colorSelector("color");
       }
 
@@ -343,7 +343,7 @@ var GPV = (function (gpv) {
       var data = {
         m: "LockMarkupGroup",
         id: appState.MarkupGroups[0],
-        locked: $chkMarkupLock.attr("checked") == "checked"
+        locked: $chkMarkupLock.prop("checked")
       };
 
       post({
@@ -399,11 +399,11 @@ var GPV = (function (gpv) {
             $cmdMarkupColor.colorSelector("color", result.color);
 
             if (result.glow) {
-              $chkTextGlow.attr("checked", true);
+              $chkTextGlow.prop("checked", true);
               $cmdTextGlowColor.colorSelector("color", result.glow);
             }
             else {
-              $chkTextGlow.attr("checked", false);
+              $chkTextGlow.prop("checked", false);
             }
           }
         }
