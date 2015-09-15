@@ -31,11 +31,11 @@
   <button id="cmdDeleteMarkup" class="CommandLink Disabled MarkupGroup Toggleable">Delete</button>  
   <button id="cmdExportMarkup" class="CommandLink Disabled MarkupGroup Toggleable">To KML</button><br />
 
+  <gpv:Input type="checkbox" id="chkMarkupLock" runat="server" disabled="disabled" style="visibility: hidden" />
+  <gpv:Label id="labMarkupLock" runat="server" for="chkMarkupLock" style="visibility: hidden">Lock</gpv:Label>
   <label>Title</label>
-  <input type="text" id="tboMarkupTitle" class="Input" disabled="disabled" />
+  <input type="text" id="tboMarkupTitle" class="Input" disabled="disabled" /><br />
 
-  <gpv:Input type="checkbox" id="chkMarkupLock" runat="server" disabled="disabled" style="display: none" />
-  <gpv:Label id="labMarkupLock" runat="server" for="chkMarkupLock" style="display: none">Lock</gpv:Label><br />
 
   <label>Style</label>
     <button id="btnMarkupColor" style="margin-left: 0"><span id="cmdMarkupColor" class="Button Disabled Color" title="Markup Color"></span> Color</button>

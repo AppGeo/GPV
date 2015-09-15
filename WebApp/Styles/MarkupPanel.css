@@ -25,12 +25,16 @@
   text-align: right;
 }
 
+#pnlMarkupContent label:nth-of-type(5){
+  width: 10%;
+}
+
 #chkMarkupLock{
   margin-left:10px;
 }
 
 label#labMarkupLock {
-  width: 10%;
+  width: 9%;
 }
 
 #pnlMarkupContent .Input {

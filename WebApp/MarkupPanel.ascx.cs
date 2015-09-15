@@ -33,8 +33,8 @@ public partial class MarkupPanel : System.Web.UI.UserControl
       {
         tboMarkupUser.Attributes["value"] = AppUser.GetDisplayName(connection);
         tboMarkupUser.Attributes["disabled"] = "disabled";
-        chkMarkupLock.Style["display"] = null;
-        labMarkupLock.Style["display"] = null;
+        chkMarkupLock.Style["visibility"] = "visibile";
+        labMarkupLock.Style["visibility"] = "visible";
         cmdNewMarkup.Attributes["class"] = "CommandLink";
       }
     }
