@@ -1674,7 +1674,7 @@ public partial class Viewer : CustomStyledPage
     // === printtemplate and printtitle ===
 
     string templateID = null;
-    string title = null;
+    string title = "";
 
     if (launchParams.ContainsKey("printtemplate"))
     {
@@ -1686,7 +1686,7 @@ public partial class Viewer : CustomStyledPage
       title = launchParams["printtitle"];
     }
 
-    if (title != null && templateID == null)
+    if (!String.IsNullOrEmpty(title) && templateID == null)
     {
       ShowError("When providing a print title, a print template must also be specified");
     }
