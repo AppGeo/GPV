@@ -95,10 +95,10 @@ public partial class Viewer : CustomStyledPage
 
     SetHelpLink();
     CreateMapThemes(application);
-    CreatePrintLayoutList(application);
 
     bool isPublic = AppAuthentication.Mode == AuthenticationMode.None;
     ucLegendPanel.Initialize(_config, _appState, application);
+    ucSharePanel.Initialize(_config, application);
 
     if (_appState.ActiveFunctionTab != FunctionTab.None)
     {
@@ -160,6 +160,16 @@ public partial class Viewer : CustomStyledPage
       }
     }
 
+    if ((_appState.FunctionTabs & FunctionTab.Share) == FunctionTab.Share)
+    {
+      tabShare.Style["display"] = "block";
+
+      if (_appState.ActiveFunctionTab == FunctionTab.Share)
+      {
+        pnlShare.Style["display"] = "block";
+      }
+    } 
+
     ShowLevelSelector(application);
 
     // set the default tool
@@ -175,15 +185,6 @@ public partial class Viewer : CustomStyledPage
         defaultTool.Attributes["class"] += " Selected";
       }
     }
-
-    if (launchParams.ContainsKey("mapscale"))
-    {
-      //tboScale.Value = launchParams["mapscale"];
-    }
-
-    ddlExternalMap.DataSource = _config.ExternalMap;
-    ddlExternalMap.DataValueField = "DisplayName";
-    ddlExternalMap.DataBind();
 
     CreateAppStateScript(application);
     CreateActiveSelectionStyle();
@@ -224,40 +225,6 @@ public partial class Viewer : CustomStyledPage
       if (_appState.MapTab == appMapTabRow.MapTabID)
       {
         selectedTheme.InnerHtml = appMapTabRow.MapTabRow.DisplayName.Replace(" ", "&nbsp;");
-      }
-    }
-  }
-
-  private void CreatePrintLayoutList(Configuration.ApplicationRow application)
-  {
-    AppState appState = _appState;
-
-    foreach (Configuration.PrintTemplateRow template in application.GetPrintTemplates())
-    {
-      HtmlGenericControl option = new HtmlGenericControl("option");
-      option.InnerText = template.TemplateTitle;
-      option.Attributes["value"] = template.TemplateID;
-      ddlPrintTemplate.Controls.Add(option);
-
-      foreach (Configuration.PrintTemplateContentRow element in template.GetPrintTemplateContentRows().Where(o => o.ContentType == "input"))
-      {
-        HtmlGenericControl div = new HtmlGenericControl("div");
-        div.Attributes["data-templateID"] = template.TemplateID;
-        div.Attributes["class"] = "printInput";
-        div.Style["width"] = "100%";
-        div.Style["display"] = "none";
-
-        HtmlGenericControl label = new HtmlGenericControl("label");
-        div.Controls.Add(label);
-        label.InnerText = element.DisplayName;
-
-        HtmlGenericControl tbo = new HtmlGenericControl("input");
-        div.Controls.Add(tbo);
-        tbo.Attributes["type"] = "text";
-        tbo.Attributes["name"] = String.Format("input_{0}_{1}", template.TemplateID, element.SequenceNo);
-        tbo.Attributes["class"] = "Input Text";
-
-        pnlPrintInputs.Controls.Add(div);
       }
     }
   }

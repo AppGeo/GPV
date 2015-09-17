@@ -30,17 +30,13 @@ var GPV = (function (gpv) {
     var mapTabChangedHandlers = [];
     var functionTabChangedHandlers = [];
     var extentChangedHandlers = [];
+    var mapRefreshedHandlers = [];
 
     var panelAnimationTime = 400;
 
     // =====  controls required prior to map control creation  =====
 
-    var $ddlExternalMap = $("#ddlExternalMap").on("change", setExternalMap);
     var $pnlDataDisplay = $("#pnlDataDisplay");
-    var $ddlPrintTemplate = $("#ddlPrintTemplate").on("change", function () {
-      showPrintTemplateInputs();
-      updatePrintScale();
-    });
 
     // =====  map control  =====
 
@@ -89,7 +85,10 @@ var GPV = (function (gpv) {
     var shingleLayer = L.shingleLayer({ urlBuilder: refreshMap }).on("shingleload", function () {
       gpv.progress.clear();
       updateOverviewExtent();
-      updatePrintScale();
+
+      $.each(mapRefreshedHandlers, function () {
+        this();
+      });
     }).addTo(map);
 
     if (gpv.settings.showScaleBar) {
@@ -102,6 +101,7 @@ var GPV = (function (gpv) {
     gpv.mapTip.setMap(map);
     gpv.selectionPanel.setMap(map);
     gpv.markupPanel.setMap(map);
+    gpv.sharePanel.setMap(map);
 
     if ($("#pnlFunction div.FunctionPanel[style='display: block;']").length === 0) {
       showFunctionMenu();
@@ -123,31 +123,6 @@ var GPV = (function (gpv) {
         shingleLayer.redraw();
       }, 250);
     });
-
-    $("#cmdEmail").on("click", function () {
-      var $this = $(this)
-      gpv.post({
-        url: "Services/SaveAppState.ashx",
-        data: {
-          state: appState.toJson()
-        },
-        success: function (result) {
-          if (result && result.id) {
-            var loc = document.location;
-            var url = [loc.protocol, "//", loc.hostname, loc.port.length && loc.port != "80" ? ":" + loc.port : "", loc.pathname, "?state=", result.id];
-            window.open("mailto:" + $("#tboEmail").val() + "?subject=Map&body=" + encodeURIComponent(url.join("")), "_blank");
-            $("#tboEmail").val("");
-            $(".share").fadeOut(600);
-          }
-        }
-      });
-    });
-
-    $("#cmdExternalMap").on("click", function(e){
-      e.preventDefault();
-      var url = $(this).attr("href");
-      window.open(url, "_blank");
-    })
 
     $("#cmdFullView").on("click", function () {
       zoomToFullExtent();
@@ -185,22 +160,6 @@ var GPV = (function (gpv) {
       });
     });
 
-    $("#cmdPrint").on("click", function () {
-      var $form = $("#frmPrint");
-      $form.find('[name="state"]').val(appState.toJson());
-      $form.find('[name="width"]').val(map.getSize().x);
-      $form.submit();
-    });
-
-    $("#cmdSaveMap").on("click", function () {
-      var $form = $("#frmSaveMap");
-      $form.find('[name="m"]').val($("#ddlSaveMap").val() == "image" ? "SaveMapImage" : "SaveMapKml");
-      $form.find('[name="state"]').val(appState.toJson());
-      $form.find('[name="width"]').val(map.getSize().x);
-      $form.find('[name="height"]').val(map.getSize().y);
-      $form.submit();
-    });
-
     $("#cmdShowDetails").on("click", function () {
       if ($pnlDataDisplay.css("right").substring(0, 1) === "-") {
         $pnlDataDisplay.show();
@@ -236,15 +195,7 @@ var GPV = (function (gpv) {
         overviewMapHeight = $("#pnlOverview").height();
         overviewMapWidth = $("#pnlOverview").width();
         $mapOverview = $("#mapOverview");
-        $('div.leaflet-control-attribution.leaflet-control').css({
-          "transition": "0.3s",
-          "-webkit-transition": "0.3s",
-          "-moz-transition": "0.3s", 
-          "transform": 'translate(-' + (overviewMapWidth - 30) + 'px)',
-          "-webkit-transform": 'translate(-' + (overviewMapWidth - 30) + 'px)',
-          "-moz-transform": 'translate(-' + (overviewMapWidth - 30) + 'px)',
-          "-ms-transform": 'translate(-' + (overviewMapWidth - 30) + 'px)'
-        });
+        moveAttribution(0.3, -(overviewMapWidth - 30));
         overviewExtent = fullExtent.fit($mapOverview.width(), $mapOverview.height());
         setOverviewMap();
         updateOverviewExtent();
@@ -254,30 +205,14 @@ var GPV = (function (gpv) {
           $("#pnlOverview").animate({ height: "26px", width: "26px" }, 600, function () {
             $("#iconOverview").removeClass('iconOpen');
           });
-          $('div.leaflet-control-attribution.leaflet-control').css({
-            "transition": "1s",
-            "-webkit-transition": "1s",
-            "-moz-transition": "1s",
-            "transform": 'translate(0px)',
-            "-webkit-transform": 'translate(0px)',
-            "-moz-transform": 'translate(0px)',
-            "-ms-transform": 'translate(0px)'
-          });
+          moveAttribution(1, 0);
         }
         else {
           $("#pnlOverview").animate({ height: overviewMapHeight + "px", width: overviewMapWidth + "px" }, 600, function () {
             $("#iconOverview").addClass('iconOpen');
             updateOverviewExtent();
           });
-          $('div.leaflet-control-attribution.leaflet-control').css({
-            "transition": "0.75s",
-            "-webkit-transition": "0.75s",
-            "-moz-transition": "0.75s",
-            "transform": 'translate(-' + (overviewMapWidth - 30) + 'px)',
-            "-webkit-transform": 'translate(-' + (overviewMapWidth - 30) + 'px)',
-            "-moz-transform": 'translate(-' + (overviewMapWidth - 30) + 'px)',
-            "-ms-transform": 'translate(-' + (overviewMapWidth - 30) + 'px)'
-          });
+          moveAttribution(0.75, -(overviewMapWidth - 30));
         }
       }
     });
@@ -304,17 +239,6 @@ var GPV = (function (gpv) {
       $("#selectedLevel").html($(this).html());
       appState.Level = $(this).attr("data-level");
       shingleLayer.redraw();
-    });
-
-    $(".share-type").on("click", function (e) {
-      e.preventDefault();
-      $(".share").hide();
-      var panel = "#pnl" + e.target.id.replace("cmdFor", "");
-      $(panel).fadeIn(600);
-    });
-
-    var $tboPrintScale = $("#tboPrintScale").numericInput({ negative: false, decimal: false }).on("keyup", function () {
-      $("#optPrintScaleInput").trigger("click");
     });
 
     // =====  map tools  =====
@@ -410,12 +334,25 @@ var GPV = (function (gpv) {
       }
     }
 
+    function moveAttribution(interval, xTranslation) {
+      interval += "s";
+      xTranslation = "translate(" + xTranslation + "px)";
+
+      $("div.leaflet-control-attribution.leaflet-control").css({
+        "transition": interval,
+        "-webkit-transition": interval,
+        "-moz-transition": interval, 
+        "transform": xTranslation,
+        "-webkit-transform": xTranslation,
+        "-moz-transform": xTranslation,
+        "-ms-transform": xTranslation
+      });
+    }
+
     function refreshMap(size, bbox, callback) {
       var same = sameBox(appState.Extent.bbox, bbox);
       appState.Extent.bbox = bbox;
       appState.VisibleLayers[appState.MapTab] = gpv.legendPanel.getVisibleLayers(appState.MapTab);
-
-      setExternalMap();
 
       if (!same) {
         $.each(extentChangedHandlers, function () {
@@ -453,34 +390,6 @@ var GPV = (function (gpv) {
       return map.getProjectedBounds().toArray();
     }
 
-    function setExternalMap() {
-      var externalName = $ddlExternalMap.val();
-      var cmd = $("#cmdExternalMap");
-      var extent = appState.Extent.bbox;
-
-      if (!externalName || !extent) {
-        cmd.attr("href", "#").addClass("Disabled");
-        return;
-      }
-
-      gpv.post({
-        url: "Services/ExternalMap.ashx",
-        data: {
-          name: externalName,
-          minx: extent[0],
-          miny: extent[1],
-          maxx: extent[2],
-          maxy: extent[3],
-          pixelSize: map.getProjectedPixelSize()
-        },
-        success: function (result) {
-          if (result && result.url) {
-            cmd.attr("href", result.url).removeClass("Disabled");
-          }
-        }
-      });
-    }
-
     function showFunctionMenu() {
       $("#pnlFunctionTabs").animate({ left: "12px", opacity: "1.0" }, panelAnimationTime);
       $(".share").hide();
@@ -500,11 +409,6 @@ var GPV = (function (gpv) {
       $("#selectedLevel").html($li.html());
     }
 
-    function showPrintTemplateInputs() {
-      $(".printInput").hide()
-      $('[data-templateid="' + $ddlPrintTemplate.val() + '"]').fadeIn();
-    }
-
     function switchToPanel(name) {
       if (parseInt($("#pnlFunctionTabs").css("left"), 10) >= 0) {
         hideFunctionMenu(function () { showFunctionPanel(name); });
@@ -518,18 +422,6 @@ var GPV = (function (gpv) {
       $.each(mapTabChangedHandlers, function () {
         this();
       });
-    }
-    
-    function updatePrintScale() {
-      if (map) {
-        var extent = map.getProjectedBounds();
-        var extentWidth = (extent.max.x - extent.min.x) / (gpv.settings.mapUnits === "feet" ? 1 : 0.3048);
-        var mapWidth = map.getSize().x;
-        $("#labPrintScaleCurrent").text("Current (1\" = " + Math.round(extentWidth * 96 / mapWidth).format() + " ft)");
-
-        mapWidth = gpv.configuration.printTemplate[$("#ddlPrintTemplate").val()].mapWidth || 7;
-        $("#labPrintScaleWidth").text("Preserve extent width (1\" = " + Math.round(extentWidth / mapWidth).format() + " ft)");
-      }
     }
 
     function zoomToActive() {
@@ -645,6 +537,7 @@ var GPV = (function (gpv) {
 
     gpv.viewer = {
       extentChanged: function (fn) { extentChangedHandlers.push(fn); },
+      mapRefreshed: function (fn) { mapRefreshedHandlers.push(fn); },
       getExtent: function () { return map.getProjectedBounds().toArray(); },
       functionTabChanged: function (fn) { functionTabChangedHandlers.push(fn); },
       mapTabChanged: function (fn) { mapTabChangedHandlers.push(fn); },
@@ -656,7 +549,6 @@ var GPV = (function (gpv) {
 
     // =====  finish initialization  =====
 
-    showPrintTemplateInputs();
     map.fitProjectedBounds(L.Bounds.fromArray(gpv.appState.Extent.bbox));
 
     gpv.loadComplete();

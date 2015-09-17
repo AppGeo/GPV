@@ -1,0 +1,47 @@
+﻿#pnlShareContent{
+  top: 40px;
+}
+
+.share{
+  width: 380px;
+  margin: 10px;
+  display: none;
+}
+
+#pnlPrint span, #pnlPrint label{
+  display: inline-block;
+  width: 25%;
+  text-align: right;
+  padding-right: 5px;
+}
+
+#pnlPrint input[type="text"], #pnlPrint select{
+  width: 75%;
+}
+
+#pnlPrint .PrintOptionLabel {
+  text-align: left;
+  width: auto;
+  font-weight: normal;
+}
+
+#ddlPrintTemplate{
+  padding: 0;
+  margin-left: -4px;
+}
+
+.printInput{
+  margin-bottom: 5px
+}
+
+#cmdPrint
+{
+  left: 12px;
+  top: 5px;
+}
+
+#cmdEmail
+{
+  left: 42px;
+  top: 35px;
+}

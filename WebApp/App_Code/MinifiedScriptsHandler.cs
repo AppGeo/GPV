@@ -51,6 +51,7 @@ public class MinifiedScriptsHandler : IHttpHandler
       new ScriptItem("Scripts/LegendPanel.js", true, true),
       new ScriptItem("Scripts/LocationPanel.js", true, true),
       new ScriptItem("Scripts/MarkupPanel.js", true, true),
+      new ScriptItem("Scripts/SharePanel.js", true, true),
       new ScriptItem("Scripts/MapTip.js", true, true),
       new ScriptItem("Scripts/Progress.js", true, true),
       new ScriptItem("Scripts/Viewer.js", true, true)

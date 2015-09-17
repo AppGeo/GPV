@@ -85,7 +85,7 @@ public partial class Identify : System.Web.UI.Page
 
       bool print = !String.IsNullOrEmpty(Request.QueryString["print"]);
 
-      cmdPrint.Visible = !print;
+      cmdIdentifyPrint.Visible = !print;
       autoPrint.Visible = print;
 
       if (print)

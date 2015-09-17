@@ -23,6 +23,7 @@
 <%@ Register TagPrefix="uc1" TagName="LegendPanel" Src="LegendPanel.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="LocationPanel" Src="LocationPanel.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="MarkupPanel" Src="MarkupPanel.ascx" %>
+<%@ Register TagPrefix="uc1" TagName="SharePanel" Src="SharePanel.ascx" %>
 
 <!DOCTYPE html>
 
@@ -31,40 +32,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AppGeo GPV</title>
   <script type="text/javascript"> if (typeof(JSON) == "undefined") { location.href = "Incompatible.htm"; } </script>
-  <script type="text/javascript">
-    WebFontConfig = {
-      google: { families: ['Lora:400,700:latin'] }
-    };
-    (function () {
-      var wf = document.createElement('script');
-      wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
-        '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
-      wf.type = 'text/javascript';
-      wf.async = 'true';
-      var s = document.getElementsByTagName('script')[0];
-      s.parentNode.insertBefore(wf, s);
-    })(); </script>
-
-  <noscript>
-    <link href='http://fonts.googleapis.com/css?family=Lora:400,700' rel='stylesheet' type='text/css'>
-  </noscript>
-  <script type="text/javascript">
-    WebFontConfig = {
-      google: { families: ['Open+Sans:400,300,700:latin'] }
-    };
-    (function () {
-      var wf = document.createElement('script');
-      wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
-        '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
-      wf.type = 'text/javascript';
-      wf.async = 'true';
-      var s = document.getElementsByTagName('script')[0];
-      s.parentNode.insertBefore(wf, s);
-    })(); </script>
-
-  <noscript>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
-  </noscript>
+  <script type="text/javascript" src="Scripts/WebFonts.js"></script>
 </head>
 <body>
   <div id="pnlBody" class="container-fluid">
@@ -83,7 +51,7 @@
             <li id="tabLegend" runat="server" class="MenuItem Normal" style="display: none">Legend</li>
             <li id="tabLocation" runat="server" class="MenuItem Normal" style="display: none">Location</li>
             <li id="tabMarkup" runat="server" class="MenuItem Normal" style="display: none">Markup</li>
-            <li id="tabShare" runat="server" class="MenuItem Normal">Share</li>
+            <li id="tabShare" runat="server" class="MenuItem Normal" style="display: none">Share</li>
           </ul>
            <div id="pnlAttribution" class="Panel">
             <span id="spnVersion" runat="server" class="VersionText"></span>&nbsp;&nbsp;
@@ -108,61 +76,12 @@
             <uc1:MarkupPanel ID="ucMarkupPanel" runat="server" />
           </div>
           <div id="pnlShare" runat="server" class="FunctionPanel Panel" style="display: none">
-            <div class="FunctionHeader"><span class="glyphicon glyphicon-menu-left FunctionExit" aria-hidden="true"></span>Share</div>
-            <div id="pnlShareContent" class="Panel">
-              <button id="cmdForPrint" class="share-type" title="Printable Map"><i class="fa fa-print"></i> Print</button>
-              <button id="cmdForEmail" class="share-type" title="Email This Page"><i class="fa fa-envelope-o"></i> Email</button>
-              <button id="cmdForExport" class="share-type" title="Export Map Extent"><i class="fa fa-external-link"></i> Export</button>
-              <button id="cmdForDownload" class="share-type" title="Download Map"><i class="fa fa-download"></i> Download</button>
-              <div id="pnlPrint" class="share">
-                <div class="FunctionLabel">Create Printable PDF Map</div><br>
-                <form id="frmPrint" method="post" action="PrintableMap.ashx" target="print">
-                  <label for="ddlPrintTemplate">Format</label>
-                  <gpv:Select id="ddlPrintTemplate" runat="server" name="template" CssClass="Input">
-                  </gpv:Select>
-                  <div id="pnlPrintInputs" runat="server"></div>
-                  <label>Scale</label>
-                  <input type="radio" id="optPrintScaleCurrent" name="scalemode" value="scale" checked="checked" />
-                  <label id="labPrintScaleCurrent" for="optPrintScaleInput" class="PrintOptionLabel">Current</label><br/>
-                  <label> </label>
-                  <input type="radio" id="optPrintScaleWidth" name="scalemode" value="width" />
-                  <label id="labPrintScaleWidth" for="optPrintScaleWidth" class="PrintOptionLabel">Preserve width</label><br/>
-                  <label> </label>
-                  <input type="radio" id="optPrintScaleInput" name="scalemode" value="input" />
-                  <label id="labPrintScaleInput" for="optPrintScaleInput" class="PrintOptionLabel">1" =</label>
-                  <input type="text" id="tboPrintScale" name="scale" value="100" style="width: 60px" /> ft<br/>
-                  <input type="hidden" name="state" />
-                  <input type="hidden" name="width" />
-		              <button id="cmdPrint">Create</button>
-                </form>
-              </div>
-              <div id="pnlEmail" class="share">
-                <div class="FunctionLabel">Email a Map</div><br>
-                <label for="tboEmail">Email Address</label>
-                <input id="tboEmail" />
-                <button id="cmdEmail">Send</button>
-              </div>
-              <div id="pnlExport" class="share">
-              <div class="FunctionLabel">Export Map Extent</div><br>
-              <select id="ddlExternalMap" runat="server" class="Input" style="width: 200px"></select>
-                <button id="cmdExternalMap">Go</button>
-              </div>
-              <div id="pnlDownload" class="share">
-                <div class="FunctionLabel">Download a Map</div><br>
-                <label for="ddlSaveMap">Save as</label>
-                <select id="ddlSaveMap" runat="server" class="Input" style="width: 90px">
-                  <option value="image">as Image</option>
-                  <option value="kml">as KML</option>
-                </select>
-                <button id="cmdSaveMap">Save</button>
-              </div>
-            </div>
+            <uc1:SharePanel ID="ucSharePanel" runat="server" />
           </div>
         </div>
       </div>
       <div id="pnlMapSizer" runat="server" class="Panel">
         <div id="pnlMap" class="MainPanel Panel">
-
            <div id="cmdFullView" class="Button" title="Full View"><span class="glyphicon glyphicon-globe"></span></div>
            <div id="cmdLocation" class="Button" title="Current Location"><i class="fa fa-crosshairs"></i></div>
 

@@ -14,7 +14,7 @@ $(function () {
     else {
       window.focus();
 
-      $("#cmdPrint").on("click", function () {
+      $("#cmdIdentifyPrint").on("click", function () {
         window.print();
       });
 

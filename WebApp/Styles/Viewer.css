@@ -13,8 +13,6 @@
  *  limitations under the License.
  */
 
-
-
 body
 {
   overflow: hidden;
@@ -253,54 +251,6 @@ button {
 
 .FunctionPanel{
   right: 1px;
-}
-
-#pnlShareContent{
-  top: 40px;
-}
-
-.share{
-  width: 380px;
-  margin: 10px;
-  display: none;
-}
-
-#cmdPrint
-{
-  left: 12px;
-  top: 5px;
-}
-
-.printInput{
-  margin-bottom: 5px
-}
-
-#pnlPrint span, #pnlPrint label{
-  display: inline-block;
-  width: 25%;
-  text-align: right;
-  padding-right: 5px;
-}
-
-#ddlPrintTemplate{
-  padding: 0;
-  margin-left: -4px;
-}
-
-#pnlPrint input[type="text"], #pnlPrint select{
-  width: 75%;
-}
-
-#pnlPrint .PrintOptionLabel {
-  text-align: left;
-  width: auto;
-  font-weight: normal;
-}
-
-#cmdEmail
-{
-  left: 42px;
-  top: 35px;
 }
 
 #pnlAttribution {
