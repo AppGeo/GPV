@@ -18,23 +18,21 @@
 <%@ Register TagPrefix="gpv" Assembly="App_Code" Namespace="GPV" %>
 
 <div class="FunctionHeader"><span class="glyphicon glyphicon-menu-left FunctionExit" aria-hidden="true"></span>Search</div>
-  <div id="pnlSearchFields" class="Panel">
-    <div id="pnlSearchInputField" class="Panel">
-      <gpv:Select ID="ddlSearches" runat="server" CssClass="Input" ToolTip="Choose a search to perform" />
-      <gpv:Div id="pnlSearchScroll" runat="server" class="Panel" ></gpv:Div>
-      <div class="searchCommand Panel">
-        <button id="cmdSearch" title="Seach">Search</button>
-        <button id="cmdReset" title="Reset">Reset</button>
-      </div>
-    </div>
-      <div id="pnlSearchGrid" class="Panel">
-        <table id="grdSearch" class="DataGrid"></table>
-      </div>
-      <div id="pnlSearchCommand" class="searchCommand Panel">
-        <div id="labSearchCount">None found</div>
-        <button id="cmdShowOnMap" class="Disabled" title="Show on Map">Show on Map</button>
-        <button id="cmdShowAllOnMap" class="Disabled" title="Show All on Map">Show All on Map</button>
-        <%--<div id="cmdShowOnMap" class="CommandLink Disabled">Show on Map</div>
-        <div id="cmdShowAllOnMap" class="CommandLink Disabled">Show All on Map</div>--%>
+<div id="pnlSearchFields" class="Panel">
+  <div id="pnlSearchInputField" class="Panel">
+    <gpv:Select ID="ddlSearches" runat="server" CssClass="Input" ToolTip="Choose a search to perform" />
+    <gpv:Div id="pnlSearchScroll" runat="server" class="Panel" ></gpv:Div>
+    <div class="searchCommand Panel">
+      <button id="cmdSearch" title="Seach">Search</button>
+      <button id="cmdReset" title="Reset">Reset</button>
     </div>
   </div>
+  <div id="pnlSearchGrid" class="Panel">
+    <table id="grdSearch" class="DataGrid"></table>
+  </div>
+  <div id="pnlSearchCommand" class="searchCommand Panel">
+    <div id="labSearchCount">None found</div>
+    <button id="cmdShowOnMap" class="Disabled" title="Show on Map">Show on Map</button>
+    <button id="cmdShowAllOnMap" class="Disabled" title="Show All on Map">Show All on Map</button>
+  </div>
+</div>
