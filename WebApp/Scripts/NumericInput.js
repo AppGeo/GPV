@@ -31,10 +31,17 @@
           numeric.selectionEnd = $this.prop("selectionEnd");
         }
 
-        // allow ctrl sequences, backspace, tab, arrow keys, home, end, delete, digits, minus as the first character and one decimal point
+        // allow any of the following
 
-        if (numeric.ctrl || e.which == 8 || e.which == 9 || (e.which >= 35 && e.which <= 40) || e.which == 46 || (!numeric.shift && e.which >= 48 && e.which <= 57) ||
-            (negative && e.which == 189 && $this.prop("selectionStart") == 0) || (decimal && e.which == 190 && numeric.previousValue.indexOf(".") < 0)) {
+        if (numeric.ctrl ||                                      // ctrl sequences
+          e.which == 8 ||                                        // backspace
+          e.which == 9 ||                                        // tab
+          (e.which >= 35 && e.which <= 40) ||                    // arrow keys, home, end
+          e.which == 46 ||                                       // delete
+          (!numeric.shift && e.which >= 48 && e.which <= 57) ||  // digits from keyboard
+          (e.which >= 96 && e.which <= 105) ||                   // digits from keypad
+          (negative && (e.which == 189 || e.which == 109) && $this.prop("selectionStart") == 0) ||       // minus as the first character
+          (decimal && (e.which == 190 || e.which == 110)  && numeric.previousValue.indexOf(".") < 0)) {  // one decimal point
 
           // prevent key hold-down repetition
 
