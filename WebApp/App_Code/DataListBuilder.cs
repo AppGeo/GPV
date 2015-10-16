@@ -24,7 +24,7 @@ public class DataListBuilder
   private HtmlGenericControl _container = new HtmlGenericControl("div");
   private string _defaultLinkTarget = "_blank";
 
-  private Regex _linkRegex = new Regex("\\[((?:http|https|ftp|mailto|application):[^\\s]+)\\s+([^\\]]*)\\]", RegexOptions.IgnoreCase);
+  private Regex _linkRegex = new Regex("\\[((?:http|https|ftp|file|mailto|application):[^\\s]+)\\s+([^\\]]*)\\]", RegexOptions.IgnoreCase);
   private Regex _targetRegex = new Regex("^{([^\\s]+)}\\s+(.*)$", RegexOptions.IgnoreCase);
   private Regex _imageRegex = new Regex("^((?:http|https|ftp):[^\\s]+(?:\\.jpg|\\.gif|\\.png))(?:\\s*(\\d+))?$", RegexOptions.IgnoreCase);
 
