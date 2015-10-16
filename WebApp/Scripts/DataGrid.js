@@ -339,11 +339,15 @@
         }
 
         if (aType == "string") {
-          return dir * settings.stringCompare(aValue, bValue);
+          if (!aValue.isNumeric(true) || !bValue.isNumeric(true)) {
+            return dir * settings.stringCompare(aValue, bValue);
+          }
+
+          aValue = parseFloat(aValue.replace(',', ''));
+          bValue = parseFloat(bValue.replace(',', ''));
         }
-        else {
-          return aValue < bValue ? -dir : aValue > bValue ? dir : 0;
-        }
+
+        return aValue < bValue ? -dir : aValue > bValue ? dir : 0;
       });
 
       $.each(rows, function () {
