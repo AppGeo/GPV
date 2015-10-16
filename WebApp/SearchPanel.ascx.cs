@@ -125,6 +125,14 @@ public partial class SearchPanel : System.Web.UI.UserControl
           case "text":
             AddInputControl(searchInputField, new HtmlInputText("text"), searchInputFieldRow, "Text", "Enter some text");
             break;
+
+          case "textcontains":
+            AddInputControl(searchInputField, new HtmlInputText("text"), searchInputFieldRow, "Text", "Enter some text (contains)");
+            break;
+
+          case "textstarts":
+            AddInputControl(searchInputField, new HtmlInputText("text"), searchInputFieldRow, "Text", "Enter some text (starts with)");
+            break;
         }
 
         search.Controls.Add(new LiteralControl("<br/>"));

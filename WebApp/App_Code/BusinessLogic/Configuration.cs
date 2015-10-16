@@ -1514,7 +1514,7 @@ public partial class Configuration
 
   private bool ValidateSearchInputField()
   {
-    string[] validTypes = new string[] { "autocomplete", "date", "daterange", "list", "number", "numberrange", "text" };
+    string[] validTypes = new string[] { "autocomplete", "date", "daterange", "list", "number", "numberrange", "text", "textcontains", "textstarts" };
     string[] procedureTypes = new string[] { "autocomplete", "list" };
 
     bool newErrorsFound = false;
