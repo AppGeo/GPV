@@ -136,11 +136,6 @@ button {
   margin: 8px;
 }
 
-#pnlContent
-{
-  min-width: 930px;
-}
-
 #pnlMapSizer
 {
   left: 400px;

@@ -1,0 +1,25 @@
+﻿@media only screen and (min-device-width: 300px) and (max-device-width: 736px) {
+  body, div, span, td, th, input, select {
+    font-size: 1.03em; /*16px/16px bumped up a little*/
+  }
+
+  #cmdMenu {
+    visibility: hidden;
+  }
+
+  #pnlFunctionSidebar {
+    left: -400px;
+  }
+
+  #pnlMapSizer {
+    left: 0;
+  }
+
+  li.dropdown-header, li.MapTool:not(#optIdentify):not(#optPan) {
+    display: none;
+  }
+
+  #cmdDataPrint {
+    display: none;
+  }
+}

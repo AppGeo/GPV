@@ -44,7 +44,8 @@ public class MinifiedStylesheetsHandler : IHttpHandler
       "Styles/SharePanel.css",
       "Styles/font-awesome.css",
       "Styles/leaflet.css",
-      "Styles/jquery-ui-datepicker.css"
+      "Styles/jquery-ui-datepicker.css",
+      "Styles/Mobile.css"
     });
   }
 
