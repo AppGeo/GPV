@@ -238,15 +238,17 @@
 
       case 'polyline':
       case 'polygon':
-        if (!map._drawing.shape) {
-          var latlngs = isMobile ? [ e.latlng ] :  [ e.latlng, e.latlng ];
-          map._drawing.shape = L[mode](latlngs, getShapeOptions(map)).addTo(map);
-        }
-        else {
-          updateDrawingShape(map, e.latlng, mode, true);
-        }
+        if (!map._drawing.dblclickTimeout) {
+          if (!map._drawing.shape) {
+            var latlngs = isMobile ? [ e.latlng ] :  [ e.latlng, e.latlng ];
+            map._drawing.shape = L[mode](latlngs, getShapeOptions(map)).addTo(map);
+          }
+          else {
+            updateDrawingShape(map, e.latlng, mode, true);
+          }
 
-        fireShapeEvent(map, 'shapedrawing', e, mode);
+          fireShapeEvent(map, 'shapedrawing', e, mode);
+        }
         break;
 
       case 'text':
@@ -286,6 +288,10 @@
     if (mode === 'polyline' || mode === 'polygon') {
       fireShapeEvent(map, 'shapedrawn', e, mode);
       delete map._drawing.shape;
+
+      map._drawing.dblclickTimeout = setTimeout(function () {
+        delete map._drawing.dblclickTimeout;
+      }, 10);
     }
   });
 
@@ -469,7 +475,6 @@
 
         var position = map._latLngToNewLayerPoint(nw, e.zoom, e.center);
         var size = map._latLngToNewLayerPoint(se, e.zoom, e.center)._subtract(position);
-        position = position._add(size._multiplyBy(0.5 - 1 / (scale * 2))).round();
 
         L.DomUtil.setTransform(img, position, scale);
       }

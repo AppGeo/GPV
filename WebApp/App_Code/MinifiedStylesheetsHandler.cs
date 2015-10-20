@@ -29,6 +29,9 @@ public class MinifiedStylesheetsHandler : IHttpHandler
   {
     return new List<String>(new string[] { 
       "Styles/bootstrap.min.css",
+      "Styles/font-awesome.css",
+      "Styles/leaflet.css",
+      "Styles/jquery-ui-datepicker.css",
       "Styles/Common.css",
       "Styles/Customize.css",
       "Styles/DataList.css",
@@ -42,9 +45,6 @@ public class MinifiedStylesheetsHandler : IHttpHandler
       "Styles/LocationPanel.css",
       "Styles/MarkupPanel.css",
       "Styles/SharePanel.css",
-      "Styles/font-awesome.css",
-      "Styles/leaflet.css",
-      "Styles/jquery-ui-datepicker.css",
       "Styles/Mobile.css"
     });
   }
