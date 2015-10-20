@@ -26,7 +26,6 @@ var GPV = (function (gpv) {
     var feetPerMile = 5280;
     var squareFeetPerAcre = 43560;
 
-    var measureCoordinates;
     var measureText;
 
     // =====  controls  =====
@@ -121,12 +120,12 @@ var GPV = (function (gpv) {
 
     $("#optDrawArea").on("click", function () {
       var c = getMarkupColor();
-      gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "polygon", style: { color: c, fill: true, fillColor: c } } });
+      gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "polygon", style: { color: c, fill: true, fillColor: c } }, doubleClickZoom: false });
     });
 
     $("#optDrawCircle").on("click", function () {
       var c = getMarkupColor();
-      gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "circle", style: { color: c, fill: true, fillColor: c } } });
+      gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "circle", style: { color: c, fill: true, fillColor: c } }, dragging: false });
     });
 
     $("#optDrawPoint,#optDrawCoordinates").on("click", function () {
@@ -140,17 +139,17 @@ var GPV = (function (gpv) {
 
     $("#optDrawLength").on("click", function () {
       var c = getMarkupColor();
-      gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "polyline", style: { color: c, fill: false } } });
+      gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "polyline", style: { color: c, fill: false } }, doubleClickZoom: false });
     });
 
     $("#optDrawLine").on("click", function () {
       var c = getMarkupColor();
-      gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "polyline", style: { color: c, fill: false } } });
+      gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "polyline", style: { color: c, fill: false } }, doubleClickZoom: false });
     });
 
     $("#optDrawPolygon").on("click", function () {
       var c = getMarkupColor();
-      gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "polygon", style: { color: c, fill: true, fillColor: c } } });
+      gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "polygon", style: { color: c, fill: true, fillColor: c } }, doubleClickZoom: false });
     });
 
     // =====  private functions  =====
@@ -216,7 +215,7 @@ var GPV = (function (gpv) {
           id: appState.MarkupGroups[0],
           x: p.x,
           y: p.y,
-          distance: 4,
+          distance: gpv.searchDistance(),
           scale: map.getProjectedPixelSize()
         },
         success: function (result) {
@@ -316,7 +315,7 @@ var GPV = (function (gpv) {
         id: appState.MarkupGroups[0],
         x: p.x,
         y: p.y,
-        distance: 4,
+        distance: gpv.searchDistance(),
         scale: map.getProjectedPixelSize(),
         color: getMarkupColor()
       };
@@ -352,10 +351,6 @@ var GPV = (function (gpv) {
     }
 
     function mapShape(e) {
-      if (measureCoordinates) {
-        measureCoordinates = undefined;
-      }
-
       if (measureText) {
         map.removeLayer(measureText);
         measureText = undefined;
@@ -391,7 +386,7 @@ var GPV = (function (gpv) {
           id: appState.MarkupGroups[0],
           x: p.x,
           y: p.y,
-          distance: 4,
+          distance: gpv.searchDistance(),
           scale: map.getProjectedPixelSize()
         },
         success: function (result) {
@@ -460,7 +455,6 @@ var GPV = (function (gpv) {
       });
     }
 
-
     function shapeDrawing(e) {
       var currentTool = $MapTool.filter(".Selected").attr("id");
 
@@ -470,15 +464,12 @@ var GPV = (function (gpv) {
         var inMeters = units == "meters" || units == "both";
         var convert = 1 / (gpv.settings.mapUnits == "feet" ? 1 : metersPerFoot);
 
-        if (!measureCoordinates) {
-          measureCoordinates = [];
-        }
-        
-        var c = measureCoordinates;
-
-        var latlngs = e.shape.getLatLngs();
+        var latlngs = currentTool === 'optDrawLength' ? e.shape.getLatLngs() : e.shape.getLatLngs()[0];
         var lastLatLng = latlngs[latlngs.length - 1];
-        c.push(map.options.crs.project(lastLatLng));
+
+        var c = $.map(latlngs, function (latlng) {
+          return map.options.crs.project(latlng);
+        });
 
         if (measureText) {
           map.removeLayer(measureText);
@@ -512,7 +503,8 @@ var GPV = (function (gpv) {
               measureText = L.text({ 
                 latlng: lastLatLng,
                 className: "MeasureText",
-                value: value.join("\n")
+                value: value.join("\n"), 
+                pointerEvents: 'none' 
               }).addTo(map);
             }
           }
@@ -558,7 +550,8 @@ var GPV = (function (gpv) {
               measureText = L.text({ 
                 latlng: map.options.crs.unproject(L.point(x, y)),
                 className: "MeasureText " + (inFeet ? "Area3" : "Area2"),
-                value: value.join("\n")
+                value: value.join("\n"), 
+                pointerEvents: 'none' 
               }).addTo(map);
             }
           }

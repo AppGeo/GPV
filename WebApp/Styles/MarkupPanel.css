@@ -87,12 +87,13 @@ label#labMarkupLock {
 }
 
 .MeasureText {
+  left: 3px;
+  top: 1px;
   font-family: Verdana, sans-serif;
   font-size: 11px;
   color: #404040;
   width: 200px;
   line-height: 13px;
-  text-align: center;
   cursor: default;
   text-shadow: 0px 0px 4px white;
 }
@@ -100,11 +101,13 @@ label#labMarkupLock {
 .MeasureText.Area2 {
   left: -100px;
   top: -13px;
+  text-align: center;
 }
 
 .MeasureText.Area3 {
   left: -100px;
   top: -19px;
+  text-align: center;
 }
 
 @media screen and (max-width: 1024px) {

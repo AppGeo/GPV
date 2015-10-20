@@ -85,7 +85,7 @@ var GPV = (function (gpv) {
     // =====  map tools  =====
 
     var $optSelect = $("#optSelect").on("click", function () {
-      gpv.selectTool($(this), map, { cursor: 'default', drawing: { mode: 'point' } });
+      gpv.selectTool($(this), map, { cursor: 'default', dragging: false, boxZoom: false, drawing: { mode: 'rectangle',style: { color: '#c0c0c0', fill: true, fillColor: '#e0e0e0' } } });
     });
 
     // =====  component events
@@ -344,13 +344,26 @@ var GPV = (function (gpv) {
     }
 
     function mapShape(e) {
-      // TODO: select by box
-
       if ($optSelect.hasClass("Selected") && appState.TargetLayer.length > 0) {
-        var p = map.options.crs.project(e.shape);
-        var geo = [ p.x, p.y ];
-        var pixelSize = map.getProjectedPixelSize();
-        gpv.selection.selectByGeometry(geo, e.shiftKey ? "add" : e.ctrlKey ? "remove" : "new", pixelSize * 4);
+        map.removeLayer(e.shape);
+
+        var latLngs = e.shape.getLatLngs();
+        var p0 = map.options.crs.project(latLngs[0][0]);
+        var p1 = map.options.crs.project(latLngs[0][2]);
+        var dx = Math.abs(p0.x - p1.x);
+        var dy = Math.abs(p0.y - p1.y);
+        
+        var searchDistance = map.getProjectedPixelSize() * gpv.searchDistance();
+        var geo;
+
+        if (dx <= searchDistance && dy <= searchDistance) {
+          geo = [ (p0.x + p1.x) * 0.5, (p0.y + p1.y) * 0.5 ];
+        }
+        else {
+          geo = [ Math.min(p0.x, p1.x), Math.min(p0.y, p1.y), Math.max(p0.x, p1.x), Math.max(p0.y, p1.y) ];
+        }
+
+        gpv.selection.selectByGeometry(geo, e.shiftKey ? "add" : e.ctrlKey ? "remove" : "new", searchDistance);
       }
     }
 
