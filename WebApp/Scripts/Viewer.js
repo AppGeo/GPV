@@ -551,6 +551,9 @@ var GPV = (function (gpv) {
 
     map.fitProjectedBounds(L.Bounds.fromArray(gpv.appState.Extent.bbox));
 
+    //need to add title attribute due to bootstrap overwriting title with popover
+    $("#cmdLocation").attr("title", "Current Location");
+
     gpv.loadComplete();
     $MapTool.filter(".Selected").trigger("click");
     triggerMapTabChanged();

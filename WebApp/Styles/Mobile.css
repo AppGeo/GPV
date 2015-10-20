@@ -3,6 +3,11 @@
     font-size: 1.03em; /*16px/16px bumped up a little*/
   }
 
+  #pnlBody{
+    padding: 0;
+    min-height: unset;
+  }
+
   #cmdMenu {
     visibility: hidden;
   }

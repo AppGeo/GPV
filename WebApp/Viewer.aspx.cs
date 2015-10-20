@@ -1779,7 +1779,7 @@ public partial class Viewer : CustomStyledPage
           _appState.Level = levels[0].LevelID;
         }
 
-        pnlMapLevels.Style["display"] = "block";
+        pnlMapLevels.Style["display"] = "inline-block";
         selectedLevel.Attributes["title"] = levelName;
 
         foreach (Configuration.LevelRow levelRow in levels)

@@ -165,11 +165,6 @@ button {
   width: 130px;
 }
 
-#ddlMapTheme, #ddlLevel{
-  font-size: 18px;
-  margin: 12px 0 0 5px;
-}
-
 #pnlFunctionTabs
 {
   left: 12px;
@@ -334,11 +329,7 @@ button {
 }
 
 @media screen and (max-width: 1024px){
-/*#pnlFunctionSidebar, #pnlDataDisplay {
-    height: 125%;
-    transform: scale(0.8) translate(-12.5%, -12.5%);
-    -webkit-transform: scale(0.8) translate(-12.5%, -12.5%);
-  }*/
+
   #cmdFullView, #cmdLocation{
     transform: scale(1) translate(2%, 20%);
     -webkit-transform: scale(1) translate(2%, 20%);
