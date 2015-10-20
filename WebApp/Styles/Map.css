@@ -112,8 +112,12 @@
 }
 
 #cmdLocation{
-  top: 115px;
+  top: 114px;
   color: #7b7b7b;
+}
+
+#cmdLocation .fa-crosshairs {
+  margin-left: 1px;
 }
 
 .MapMenu
@@ -125,7 +129,7 @@
 }
 
 #pnlMapThemes{
-  margin-left: 40px;
+  margin-left: 46px;
 }
 
 #btnToolMenu, #btnMapTheme, #btnMapLevel{

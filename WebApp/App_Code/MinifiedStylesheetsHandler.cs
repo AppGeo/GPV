@@ -29,10 +29,10 @@ public class MinifiedStylesheetsHandler : IHttpHandler
   {
     return new List<String>(new string[] { 
       "Styles/bootstrap.min.css",
+      "Styles/Common.css",
       "Styles/font-awesome.css",
       "Styles/leaflet.css",
       "Styles/jquery-ui-datepicker.css",
-      "Styles/Common.css",
       "Styles/Customize.css",
       "Styles/DataList.css",
       "Styles/Viewer.css",

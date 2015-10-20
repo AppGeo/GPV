@@ -92,6 +92,7 @@ button {
   border-right: solid 1px #D0D0D0;
   white-space: nowrap;
   height: 20px;
+  cursor: default;
 }
 
 .DataGrid th
@@ -129,6 +130,10 @@ button {
 #cmdHelp, #cmdShowDetails{
   float: right;
   margin: 8px;
+}
+
+#cmdShowDetails {
+  cursor: pointer;
 }
 
 #cmdMenu {
