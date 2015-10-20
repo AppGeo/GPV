@@ -68,6 +68,12 @@ button::-moz-focus-inner {
     margin: 0;
 }
 
+/* proper placeholder default color in IE */
+
+:-ms-input-placeholder {  
+   color: #A0A0A0;  
+}
+
 /* =====  common styles  ===== */
 
 body, div, span, td, th, input, select

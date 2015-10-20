@@ -296,7 +296,7 @@ var GPV = (function (gpv) {
               level: appState.Level,
               x: p.x,
               y: p.y,
-              distance: 4,
+              distance: gpv.searchDistance(),
               scale: map.getProjectedPixelSize()
             },
             type: "POST",
@@ -309,7 +309,7 @@ var GPV = (function (gpv) {
                 "&level=", appState.Level, 
                 "&x=", p.x, 
                 "&y=", p.y, 
-                "&distance=4", 
+                "&distance=", gpv.searchDistance(),
                 "&scale=", map.getProjectedPixelSize(),
                 "&print=1"
               ].join(""));

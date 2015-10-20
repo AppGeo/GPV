@@ -67,8 +67,17 @@ var GPV = (function (gpv) {
       $(map.getPanes().mapPane).css("cursor", mapOptions.cursor || "");
       delete mapOptions.cursor;
 
+      $.each(['dragging', 'touchZoom', 'doubleClickZoom', 'scrollWheelZoom', 'boxZoom'], function (i, handler) {
+        var toggle = handler in mapOptions ? mapOptions[handler] : true;
+        map[handler][toggle ? 'enable' : 'disable']();
+      });
+
       $.extend(true, map.options, mapOptions);
     }
+  }
+
+  function searchDistance() {
+    return L.Browser.mobile && L.Browser.touch ? 16 : 4;
   }
 
   function store(name, value) {
@@ -91,6 +100,7 @@ var GPV = (function (gpv) {
   gpv.on = on;
   gpv.post = post;
   gpv.selectTool = selectTool;
+  gpv.searchDistance = searchDistance;
   gpv.store = store;
 
   return gpv;

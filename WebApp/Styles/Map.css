@@ -28,7 +28,7 @@
   position: absolute;
   bottom: 5px;
   right: 5px;
-  z-index: 10;
+  z-index: 1000;
   overflow: hidden;
   background-color: #EEEEEE;
   box-shadow: 0 1px 5px rgba(0,0,0,.65);
@@ -96,7 +96,7 @@
 #cmdFullView, #cmdLocation
 {
   left: 10px;
-  z-index: 10;
+  z-index: 1000;
   background: #FFFFFF;
   top: 75px;
   width: 26px;
@@ -112,20 +112,24 @@
 }
 
 #cmdLocation{
-  top: 115px;
+  top: 114px;
   color: #7b7b7b;
+}
+
+#cmdLocation .fa-crosshairs {
+  margin-left: 1px;
 }
 
 .MapMenu
 {
   position: relative;
-  z-index: 10;
+  z-index: 1000;
   width: auto;
   float: left;
 }
 
 #pnlMapThemes{
-  margin-left: 40px;
+  margin-left: 46px;
 }
 
 #btnToolMenu, #btnMapTheme, #btnMapLevel{
