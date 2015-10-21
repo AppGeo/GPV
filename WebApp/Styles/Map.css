@@ -94,10 +94,7 @@
 
 #cmdFullView, #cmdLocation
 {
-  /*left: 10px;
-  z-index: 1000;*/
   background: #FFFFFF;
-  top: 60px;
   width: 26px;
   height: 26px;
   padding: 4px 6px;
@@ -110,15 +107,6 @@
   -moz-border-radius: 4px;
 }
 
-
-#cmdLocation{
-  top: 99px;
-  /*color: #7b7b7b;*/
-}
-
-/*#cmdLocation .fa-crosshairs {
-  margin-left: 1px;
-}*/
 
 .MapMenu
 {

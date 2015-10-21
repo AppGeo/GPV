@@ -103,7 +103,7 @@ var GPV = (function (gpv) {
         position: 'topleft'
       },
       onAdd: function ($map) {
-        var button = L.DomUtil.create('div', 'Button');
+        var button = L.DomUtil.create('div', 'mapButton');
         $(button).attr('id', 'cmdFullView');
         $(button).attr('title', 'Full Extent');
         $(button).html('<span class="glyphicon glyphicon-globe"></span>');
@@ -116,7 +116,7 @@ var GPV = (function (gpv) {
         position: 'topleft'
       },
       onAdd: function ($map) {
-        var button = L.DomUtil.create('div', 'Button');
+        var button = L.DomUtil.create('div', 'mapButton');
         $(button).attr('id', 'cmdLocation');
         $(button).attr('title', 'Current Location');
         $(button).html('<span class="glyphicon glyphicon-screenshot"></span>');

@@ -82,8 +82,6 @@
       </div>
       <div id="pnlMapSizer" runat="server" class="Panel">
         <div id="pnlMap" class="MainPanel Panel">
-           <%--<div id="cmdFullView" class="Button" title="Full View"><span class="glyphicon glyphicon-globe"></span></div>
-           <div id="cmdLocation" class="Button"><span class="glyphicon glyphicon-screenshot"></span></div>--%>
 
            <div id="pnlMapThemes" class="MapMenu">
             <button class="btn btn-default dropdown-toggle" type="button" id="btnMapTheme" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Theme">

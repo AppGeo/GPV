@@ -93,7 +93,7 @@ var GPV = (function (gpv) {
     function reset() {
       if (!$cmdReset.hasClass("Disabled")) {
         $("#pnlSearchScroll").find("input:text").val('');
-        $("#pnlSearchScroll").find("select")[0].selectedIndex = 0;
+        $("#pnlSearchScroll").find("select").prop('selectedIndex', 0);
         $cmdSearch.toggleClass("Disabled");
         $cmdReset.toggleClass("Disabled");
         emptyResultGrid();
