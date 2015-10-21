@@ -117,7 +117,7 @@
     return map;
   }
 
-  var isMobile = L.Browser.mobile;
+  var isMobile = L.Browser.mobile && L.Browser.touch;
 
   function updateDrawingShape(map, latlng, mode, append) {
     var crs = map.options.crs;
@@ -413,13 +413,13 @@
 
     getEvents: function () {
       var events = {
-        dragend: function () { this._update(); }
+        dragend: this._dragEnd
       };
 
       if (this._zoomAnimated) {
         events.zoomanim = this._animateZoom;
         events.zoomend = this._zoomEnd;
-        events.moveend = this._zoomEnd;
+        events.moveend = this._moveEnd;
       }
 
       return events;
@@ -448,16 +448,6 @@
     redraw: function () {
       if (this._map) {
         this._update(true);
-      }
-
-      return this;
-    },
-
-    setUrlBuilder: function (urlBuilder, noRedraw) {
-      this._urlBuilder = urlBuilder;
-
-      if (!noRedraw) {
-        this.redraw();
       }
 
       return this;
@@ -492,6 +482,30 @@
       img.onload = this._shingleOnLoad;
 
       return img;
+    },
+
+    _dragEnd: function () {
+      this._dragged = true;
+    },
+
+    _moveEnd: function () {
+      if (!this._dragged && !this._zoomed) {
+        this._update(true);
+        return;
+      }
+
+      delete this._dragged;
+      delete this._zoomed;
+      var layer = this;
+
+      if (layer._changeHandle) {
+        clearTimeout(layer._changeHandle);
+      }
+
+      layer._changeHandle = setTimeout(function () {
+        delete layer._changeHandle;
+        layer._update();
+      }, 500);
     },
 
     _shingleOnLoad: function () {
@@ -550,16 +564,7 @@
     },
 
     _zoomEnd: function () {
-      var layer = this;
-
-      if (layer._zoomHandle) {
-        clearTimeout(layer._zoomHandle);
-      }
-
-      layer._zoomHandle = setTimeout(function () {
-        layer._zoomHandle = undefined;
-        layer._update();
-      }, 500);
+      this._zoomed = true;
     }
   });
 

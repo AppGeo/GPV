@@ -191,7 +191,7 @@ public partial class Viewer : CustomStyledPage
 
     spnVersion.InnerText = Version.ToString();
 
-    TrackingManager.TrackUse(launchParams, false);
+    TrackingManager.TrackUse(launchParams);
   }
 
   private void CreateActiveSelectionStyle()
@@ -979,6 +979,11 @@ public partial class Viewer : CustomStyledPage
 
     if (launchParams.ContainsKey("selectionids"))
     {
+      if (_appState.TargetIds.Count > 0)
+      {
+        ShowError("When providing target IDs or target parameters, selection IDs are not allowed");
+      }
+
       // a selection Layer must be available
 
       if (selectionLayer == null)

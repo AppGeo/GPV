@@ -20,7 +20,7 @@ using System.Web;
 
 public static class TrackingManager
 {
-  public static void TrackUse(Dictionary<String, String> launchParams, bool isMobile)
+  public static void TrackUse(Dictionary<String, String> launchParams)
   {
     HttpRequest request = HttpContext.Current.Request;
 
@@ -40,7 +40,7 @@ public static class TrackingManager
 
           using (OleDbCommand command = new OleDbCommand(sql, connection))
           {
-            command.Parameters.Add("@1", OleDbType.VarWChar).Value = applicationID + (isMobile && applicationID.Length < 46 ? " [m]" : "");
+            command.Parameters.Add("@1", OleDbType.VarWChar).Value = applicationID;
             command.Parameters.Add("@2", OleDbType.VarWChar).Value = urlQuery.Length < 1000 ? urlQuery : urlQuery.Substring(0, 1000);
             command.Parameters.Add("@3", OleDbType.Date).Value = DateTime.Now;
             command.Parameters.Add("@4", OleDbType.VarWChar).Value = request.UserAgent.Length < 400 ? request.UserAgent : request.UserAgent.Substring(0, 400);
