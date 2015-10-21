@@ -132,14 +132,6 @@ var GPV = (function (gpv) {
     gpv.markupPanel.setMap(map);
     gpv.sharePanel.setMap(map);
 
-    if ($("#pnlFunction div.FunctionPanel[style='display: block;']").length === 0) {
-      showFunctionMenu();
-    }
-    else {
-      var panel = $("#pnlFunction div.FunctionPanel[style='display: block;']")[0].id.replace("pnl", "");
-      showFunctionPanel(panel);
-    }
-
     // =====  control events  =====
     
     $(window).on("resize", function () {

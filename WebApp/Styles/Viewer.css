@@ -177,6 +177,7 @@ button {
   width: 376px;
   bottom: 0;
   overflow: hidden;
+  opacity: 1;
 }
 
 .Menu{
@@ -202,6 +203,7 @@ button {
   width: 400px;
   bottom: 0;
   overflow: hidden;
+  opacity: 0;
 }
 
 .FunctionHeader{
