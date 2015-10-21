@@ -191,7 +191,7 @@ public partial class Viewer : CustomStyledPage
 
     spnVersion.InnerText = Version.ToString();
 
-    TrackingManager.TrackUse(launchParams, false);
+    TrackingManager.TrackUse(launchParams);
   }
 
   private void CreateActiveSelectionStyle()

@@ -44,8 +44,7 @@ public class MinifiedStylesheetsHandler : IHttpHandler
       "Styles/LegendPanel.css",
       "Styles/LocationPanel.css",
       "Styles/MarkupPanel.css",
-      "Styles/SharePanel.css",
-      "Styles/Mobile.css"
+      "Styles/SharePanel.css"
     });
   }
 

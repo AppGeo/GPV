@@ -24,6 +24,9 @@
 <head id="head" runat="server">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>General Purpose Viewer - Login</title>
+  <link href="Styles/Common.css" type="text/css" rel="stylesheet" />
+  <link href="Styles/Customize.css" type="text/css" rel="stylesheet" />
+  <link href="Styles/Login.css" type="text/css" rel="stylesheet" />
 </head>
 <body id="body" runat="server">
   <div id="pnlBody" data-role="page">

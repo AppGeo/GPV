@@ -117,7 +117,7 @@
     return map;
   }
 
-  var isMobile = L.Browser.mobile;
+  var isMobile = L.Browser.mobile && L.Browser.touch;
 
   function updateDrawingShape(map, latlng, mode, append) {
     var crs = map.options.crs;
