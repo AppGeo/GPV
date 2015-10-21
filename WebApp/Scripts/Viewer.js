@@ -61,7 +61,6 @@ var GPV = (function (gpv) {
 
     var map = L.map("mapMain", {
       crs: crs,
-      doubleClickZoom: false,
       maxZoom: maxZoom,
       drawing: {
         mode: 'off',

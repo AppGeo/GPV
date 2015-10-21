@@ -85,6 +85,14 @@ public static class AppSettings
     }
   }
 
+  public static bool AllowDevScriptCaching
+  {
+    get
+    {
+      return GetConfigBoolean("AllowDevScriptCaching");
+    }
+  }
+
   public static bool AllowShowApps
   {
     get
@@ -550,7 +558,7 @@ public static class AppSettings
   public static bool GetConfigBoolean(string name)
   {
     string value = GetConfigSetting(name);
-    return String.Compare(value, "true", false) == 0 || String.Compare(value, "yes", false) == 0;
+    return value != null && (String.Compare(value, "true", false) == 0 || String.Compare(value, "yes", false) == 0);
   }
 
   public static Color GetConfigColor(string name)

@@ -49,7 +49,7 @@ public partial class Viewer : CustomStyledPage
 
     if (System.Diagnostics.Debugger.IsAttached)
     {
-      string query = GetCacheControl();
+      string query = AppSettings.AllowDevScriptCaching ? "" : GetCacheControl();
 
       foreach (ScriptItem scriptItem in MinifiedScriptsHandler.GetList())
       {
