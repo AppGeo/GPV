@@ -98,6 +98,35 @@ var GPV = (function (gpv) {
       }).addTo(map);
     }
 
+    var fullViewTool = L.Control.extend({
+      options: {
+        position: 'topleft'
+      },
+      onAdd: function ($map) {
+        var button = L.DomUtil.create('div', 'Button');
+        $(button).attr('id', 'cmdFullView');
+        $(button).attr('title', 'Full Extent');
+        $(button).html('<span class="glyphicon glyphicon-globe"></span>');
+        return button;
+      }
+    });
+
+    var locationTool = L.Control.extend({
+      options: {
+        position: 'topleft'
+      },
+      onAdd: function ($map) {
+        var button = L.DomUtil.create('div', 'Button');
+        $(button).attr('id', 'cmdLocation');
+        $(button).attr('title', 'Current Location');
+        $(button).html('<span class="glyphicon glyphicon-screenshot"></span>');
+        return button;
+      }
+    });
+
+    map.addControl(new fullViewTool())
+       .addControl(new locationTool());
+
     gpv.mapTip.setMap(map);
     gpv.selectionPanel.setMap(map);
     gpv.markupPanel.setMap(map);
