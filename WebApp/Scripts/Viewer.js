@@ -61,7 +61,6 @@ var GPV = (function (gpv) {
 
     var map = L.map("mapMain", {
       crs: crs,
-      doubleClickZoom: false,
       maxZoom: maxZoom,
       drawing: {
         mode: 'off',
@@ -131,14 +130,6 @@ var GPV = (function (gpv) {
     gpv.selectionPanel.setMap(map);
     gpv.markupPanel.setMap(map);
     gpv.sharePanel.setMap(map);
-
-    if ($("#pnlFunction div.FunctionPanel[style='display: block;']").length === 0) {
-      showFunctionMenu();
-    }
-    else {
-      var panel = $("#pnlFunction div.FunctionPanel[style='display: block;']")[0].id.replace("pnl", "");
-      showFunctionPanel(panel);
-    }
 
     // =====  control events  =====
     

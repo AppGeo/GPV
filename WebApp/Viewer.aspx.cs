@@ -49,7 +49,7 @@ public partial class Viewer : CustomStyledPage
 
     if (System.Diagnostics.Debugger.IsAttached)
     {
-      string query = GetCacheControl();
+      string query = AppSettings.AllowDevScriptCaching ? "" : GetCacheControl();
 
       foreach (ScriptItem scriptItem in MinifiedScriptsHandler.GetList())
       {
@@ -104,6 +104,8 @@ public partial class Viewer : CustomStyledPage
     {
       pnlFunctionTabs.Style["left"] = "-400px";
       pnlFunctionTabs.Style["opacity"] = "0";
+      pnlFunction.Style["left"] = "0px";
+      pnlFunction.Style["opacity"] = "1";
     }
 
     if ((_appState.FunctionTabs & FunctionTab.Search) == FunctionTab.Search)

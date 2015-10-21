@@ -58,7 +58,7 @@
             <a class="VersionText" href="http://www.appgeo.com" target="AppGeo">AppGeo</a>
           </div>
         </div>
-        <div id="pnlFunction" class="Panel">
+        <div id="pnlFunction" runat="server" class="Panel">
           <%-- Fuction tab name with < to click to return to main menu --%>
           <div id="pnlSearch" runat="server" class="FunctionPanel Panel" style="display: none">
             <uc1:SearchPanel ID="ucSearchPanel" runat="server" />
