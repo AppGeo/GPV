@@ -270,7 +270,9 @@
               value: text.options.value
             }).addTo(map);
 
+            map._drawing.shape = text;
             fireShapeEvent(map, 'shapedrawn', e, mode);
+            delete map._drawing.shape;
           }
         });
         break;
