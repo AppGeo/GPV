@@ -1,583 +1,442 @@
 ﻿<%-- 
-  Copyright 2012 Applied Geographics, Inc.
+ Copyright 2012 Applied Geographics, Inc.
 
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
 
-      http://www.apache.org/licenses/LICENSE-2.0
+   http://www.apache.org/licenses/LICENSE-2.0
 
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
 --%>
 
 <%@ Page Language="C#" AutoEventWireup="true" CodeFile="Help.aspx.cs" Inherits="Help" %>
 
 <!DOCTYPE html>
 
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
   <title>Help</title>
-  <%--<link href="Styles/Common.css" type="text/css" rel="stylesheet" />--%>
   <link href="Styles/Help.css" type="text/css" rel="stylesheet" />
+  <link href="Styles/Customize.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript"> if (typeof (JSON) == "undefined") { location.href = "Incompatible.htm"; } </script>
+  <script type="text/javascript" src="Scripts/WebFonts.js"></script>
 </head>
 <body>
   <form id="form1" runat="server">
-    <div class="BodyText" style="width: 600px">
-      <div id="pnlAbout" runat="server" visible="false">
-        <p><asp:Label id="labAboutTitle" runat="server" CssClass="TitleText"/></p>
-        <div id="labAboutText" runat="server"></div>
-        <hr/>
-      </div>
-      <p class="TitleText">How to Use the General Purpose 
-        Viewer</p>
-      <p class="BodyText">The General Purpose Viewer (GPV) 
-        is a mapping web site that provides a consistent set of mapping functions 
-        across a variety of applications.&nbsp; This document describes these mapping 
-        functions.&nbsp; For specific information regarding the configuration, content 
-        and use of the GPV for a particular application, please contact the <a class="BodyLink" id="lnkAdminEmail" runat="server">
-        administrator</a> of this web site.</p>
-      <div class="BodyText"><br/>
-      </div>
-      <p class="SubtitleText">Major Components of the 
-        General Purpose Viewer</p>
-      <p class="BodyText">The interface for the GPV is 
-        divided into several panels controlled by tabs. Depending on how your 
-        application has been configured, some of these&nbsp;panels may not be 
-        available.</p>
-      <p class="BodyText"><span class="BoldText">Map Panel</span>
-        -&nbsp;A GPV application will always have a map panel. This contains the map 
-        itself and the basic controls needed to manage it.&nbsp; At the top left of 
-        this panel are one or more map tabs. Clicking on a map tab will change the map 
-        to show different thematic layers.&nbsp; If there are more tabs than can fit above the map, you can
-        hold down on any tab and slide the set right or left to reveal the hidden tabs.&nbsp; When the viewer
-			  is busy retrieving a new map an animated clock icon will appear temporarily
-			  toward the upper-left of the map.</p>
-      <p class="BodyText">
-        You can resize the map panel relative to the function panel to its right by dragging the white space
-        between them to the right or left.
+    <div id="pnlTableofContents">
+      <ul class="Menu" id="listContents">
+        <li class="MenuItem"><a href="#uicomponents">Major UI Components</a></li>
+        <li class="MenuItem"><a href="#functionpanel">Function Panel Features</a></li>
+        <li class="MenuItem"><a href="#maptools">Interacting with the Map</a></li>
+        <%--<li class="MenuItem"><a href="#search">Searching for Features on the Map</a></li>--%>
+        <li class="MenuItem"><a href="#select">Selecting Features on the Map</a></li>
+        <li class="MenuItem"><a href="#markup">Creating and Managing Map Markup</a></li>
+        <li class="MenuItem"><a href="#share">Sharing Maps</a></li>
+        <li class="MenuItem"><a href="#other">Other Capabilities</a></li>
+      </ul>
+    </div>
+    <div id="pnlHelpContent">
+
+      <%--UI Components--%>
+      <h2 class="MenuItem" id="uicomponents">Major UI Components</h2>
+      <p>The user interface(UI) for the General Purpose Viewer(GPV) is divided into several panels.</p>
+      <img src="Images/Help/Interface.png" class="interface" alt="Interface" />
+      <p>
+        <span class="component">Map Panel:</span> The GPV application will always have a Map Panel. This is the map 
+        itself and the basic controls needed to navigate, identify features, and change map themes. When the viewer 
+        is updating the map, an animated progress bar will appear at the top of the map panel.
       </p>
-			<p id="pMapLevel" runat="server" class="BodyText" visible="false">The current application provides an additional 
-        <span id="spnMapLevel" runat="server">Level</span> pulldown list above the map which is not shown on the image below.</p>
-      <img src="Images/Help/MapPanel.png" alt="" width="555" height="528"/>
-      <p class="BodyText"><span class="BoldText">Selection 
-          Panels</span> - <span id="spnNoSelection" runat="server">Some applications, but not this 
-        one, provide</span><span id="spnHasSelection" runat="server" visible="false">The current 
-        application provides</span> two panels that let you select 
-        features (mapped objects) on the map and retrieve information about them.&nbsp; 
-        The top panel lets you choose one or two map layers from which you can select 
-        features and a filter for limiting the data shown.&nbsp; It also has a grid for 
-        displaying the data.&nbsp; The bottom panel has one or more tabs and shows 
-        detailed data for one of the objects highlighted on the map and in the grid.
+      <p>
+        <span class="component">Function Panel:</span> To the left of Map Panel is he Function Panel which provides 
+        access to various GPV functions. Selecting a function from the menu, will update the panel with additional features in
+        the same panel. To return to the initial function menu click the < icon in the header.
       </p>
-      <p class="BodyText">
-        You can resize the two panels relative to each other by dragging the white space
-        between them up or down.
+      <p>
+        <span class="component">Details Panel:</span> The Details Panel will appear with more informaion about a feature
+        when it is selected, either through the Selection Panel or using the identify tool. To hide the panel click the > icon in the header.
       </p>
-      <img src="Images/Help/SelectionPanel.png" alt="" width="382" height="530"/>
-      <p class="BodyText"><span class="BoldText">Legend Panel</span>
-        - <span id="spnNoLegend" runat="server">Some applications, but not this 
-        one, provide</span><span id="spnHasLegend" runat="server" visible="false">The current 
-        application provides</span> a panel which displays the legend for the current map.&nbsp; 
-        Depending on its configuration, you may be able to expand and collapse parts of the legend.&nbsp;
-        You may also be able to click check boxes or radio buttons to turn thematic layers on and off.&nbsp; The changes to
-        the layers do not appear immediately on the map when you click a check box&mdash;you must click 
-        Refresh Map at the top of the legend to see those changes.&nbsp; Clicking on a layer name that appears as a link
-        should lead you to a page containing detailed information about that layer.
+      <table>
+        <tr>
+          <td>
+            <img src="Images/Help/FunctionToggle.png" alt="function panel toggle" /></td>
+          <td><span class="component">Function Panel Toggle:</span> Click to toggle the Function Panel in and out of the page.</td>
+        </tr>
+        <tr>
+          <td>
+            <img src="Images/Help/DetailsToggle.png" alt="detail panel toggle" /></td>
+          <td><span class="component">Details Panel Toggle:</span> Click to toggle the identify / selection Details Panel in and out of the page</td>
+        </tr>
+        <tr>
+          <td>
+            <img src="Images/Help/Help.png" alt="zoom in and out" /></td>
+          <td><span class="component">Help:</span> Click to get access to help documents.</td>
+        </tr>
+      </table>
+
+      <%--Function Panels--%>
+      <h2 class="MenuItem" id="functionpanel">Function Panel Features</h2>
+
+      <p class="txtLeft">
+        <img class="imgRight" src="Images/Help/SearchPanel.png" alt="search panel" />
+        <span class="component">Search:</span> There are two sections of the Search Panel. The top section 
+        allows users to define there search criteria and the bottom section presents the results of the search. 
+        Users can select one or more of the search results from the bottom section any see each on the map using 
+        the “Show on Map” buttons. This visualization of search results will automatically open the Selection Panel 
+        with the features selected from the search results. At any time users can navigate back to the Search panel 
+        to continue searching for additional results, where the original search criteria and results will be preserved until reset.
       </p>
-      <img src="Images/Help/LegendPanel.png" alt="" width="382" height="530"/>
-      <p class="BodyText"><span class="BoldText">Location Panel</span>
-        - <span id="spnNoLocation" runat="server">Some applications, but not this 
-        one, provide</span><span id="spnHasLocation" runat="server" visible="false">The current 
-        application provides</span> a panel with an overview map of your area of interest.&nbsp; The red box
-        shows the current location of the main map.&nbsp; You can move and resize this box to change the
-        extent of the main map.
+      <p class="txtRight">
+        <img class="imgLeft" src="Images/Help/SelectionPanel.png" alt="Selection Panel" />
+        <span class="component">Selection:</span> There are two sections of the Selection Panels. The top section 
+        allows users to select features (mapped objects) from the map and bottom section presents information about 
+        the selected features. The top panel contains drop down lists that control the selection of one or two map 
+        layers and a filter for limiting the data shown. The bottom panel has one or more columns and shows detailed 
+        data for the objects highlighted on the map.
       </p>
-      <p class="BodyText">Depending on the configuration of the application, you may also have additional tabs and links
-        in the bottom panel which let you zoom to an area<span id="spnZoneName" runat="server"></span>, set
-        the map to a particular level<span id="spnLevelName" runat="server"></span>, or do both operations simultaneously.
+      <p class="txtLeft">
+        <img class="imgRight" src="Images/Help/LegendPanel.png" alt="legend panel" />
+        <span class="component">Legend Panel:</span> The current application provides a panel which displays the legend 
+        for the current map. Depending on its configuration, parts of the legend may be expandable and collapseable. 
+        Click check boxes or radio buttons to turn thematic layers on and off. The changes to the 
+        layers do not appear immediately on the map.  Click the Refresh Map button at 
+        the top of the legend to see those changes. Layer names that appear as a link are clickable and will open a window
+        that contains more information about that layer.
       </p>
-      <p class="BodyText">
-        You can resize the two panels relative to each other by dragging the white space
-        between them up or down.
+      <p class="txtRight">
+        <img class="imgLeft" src="Images/Help/LocationPanel.png" alt="location panel" />
+        <span class="component">Location Panel:</span> There are two sections of the Selection Panels. The top section 
+        allows users to select features (mapped objects) from the map and bottom section presents information about the 
+        selected features. The top panel contains drop down lists that control the selection of one or two map layers and a 
+        filter for limiting the data shown. The bottom panel has one or more columns and shows detailed data for the 
+        objects highlighted on the map. 
       </p>
-      <img src="Images/Help/LocationPanel.png" alt="" width="375" height="508"/>
-      <p class="BodyText"><span class="BoldText">Markup Panel</span>
-        - <span id="spnNoMarkup" runat="server">Some applications, but not this 
-        one, provide</span><span id="spnHasMarkup" runat="server" visible="false">The current 
-        application provides</span> a panel for creating and managing markups on the 
-        map.&nbsp; You can draw groups of points, lines, polygons and text which are 
-        saved in a database and can be retrieved for viewing by others.
+      <p class="txtLeft">
+        <img class="imgRight" src="Images/Help/MarkupPanel.png" alt="markup panel" />
+        <span class="component">Markup Panel:</span> The current application provides a panel for creating and managing 
+        markups on the map. Groups of points, lines and polygons and text can be added to the map and saved in a database and can 
+        later be retrieved and viewed by other users.
       </p>
-      <img src="Images/Help/MarkupPanel.png" alt="" width="383" height="519"/>
-      <p class="BodyText">The Selection Panels, Legend Panel, Location Panel and Markup 
-        Panel occupy the same space on the interface.&nbsp; When more than one are available in 
-        an application, you can use tabs at the top to switch between them.</p>
-      <div class="BodyText"><br/>
-      </div>
-      <p class="SubtitleText">Navigating Around the Map</p>
-      <p class="BodyText">The following controls are available on the Map Panel.</p>
-      <p class="BodyText"><span class="BoldText">Zoom In/Out</span>
-        - Slide the vertical bar left or right to quickly zoom in or out on the center of 
-        the map.&nbsp; You can click the minus button to zoom in one level and the plus button
-        to zoom out one level.  Every two divisions of the bar represent a zoom factor of two.</p>
-      <img src="Images/Help/ZoomBar.png" alt="" height="24" width="188" style="margin-left: 20px"/>
-      <div id="pnlLevel" runat="server" visible="false">
-        <p class="BodyText"><span id="spnLevel1" runat="server" class="BoldText">Level</span>
-        - Lets you set the display of the map to a particular <span id="spnLevel2" runat="server">level</span>.
-        </p>
-        <table cellpadding="0" cellspacing="0" style="margin-left: 20px">
+      <p class="txtRight">
+        <img class="imgLeft" src="Images/Help/SharePanel.png" alt="share panel" />
+        <span class="component">Share Panel:</span> The current application provides a panel for communicating the content 
+        presented. There are a number of communication options including printing and electronic output formats. Additional 
+        details about these features can be found in the <a href="#other">Communicating with Others Section</a>.
+      </p>
+      <p>The Search, Selection, Legend, Location, Markup, and Share Panels occupy the same space on the UI.</p>
+
+      <%--Map Tools--%>
+      <h2 class="MenuItem" id="maptools">Interacting with the Map</h2>
+
+      <table>
+        <tr>
+          <td>
+            <img src="Images/Help/ZoomButtons.png" alt="zoom in and out" /></td>
+          <td><span class="component">Zoom In/Out:</span> Click the 
+            minus button to zoom in and the plus button to zoom out.</td>
+        </tr>
+        <tr>
+          <td>
+            <img src="Images/Help/FullExtentButton.png" alt="full extent" /></td>
+          <td><span class="component">Full Map Extent:</span> Click to zoom 
+             to the full extent of the map.</td>
+        </tr>
+        <tr>
+          <td>
+            <img src="Images/Help/CurrentLocation.png" alt="zoom to current location" /></td>
+          <td>
+            <span class="component">Zoom to Current Location:</span> The map will recenter on the location provided by the browser or device. 
+            GPS must be enabled.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <img src="Images/Help/Overview.png" alt="overview map" /></td>
+          <td>
+            <span class="component">Overview Map:</span> This will expand or contract the overview map. The highlighted box in the overview map 
+            shows the current map extent in relation to the full extent. This box can be dragged to change the map extent.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <img src="Images/Help/MapTheme.png" alt="map theme" /></td>
+          <td>
+            <span class="component">Map Theme:</span> This drop down list contains a list of available map themes. The text will contain the name of the 
+            selected theme. Choose a new theme from the list to update the map.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <img src="Images/Help/PanTool.png" alt="map tools / pan tool" /></td>
+          <td><span class="component">Map Tools:</span> By default 
+            the Pan tool is selected. The pan tool allows draging of the map to change the current extent. Clicking on this 
+            will also expand the map tool menu.</td>
+        </tr>
+        <tr>
+          <td>
+            <img src="Images/Help/IdentifyTool.png" alt="identify tool" /></td>
+          <td><span class="component">Identify Tool:</span> When 
+            this is selected, hover over a map feature will display a popup with information abotu that feature. Clicking on a 
+            feature will open the Details Panel with more information. The Details Panel contains a print button to print this 
+            information. *NOTE: Not all map features are identifiable.</td>
+        </tr>
+        <tr>
+          <td>
+            <img src="Images/Help/SelectFeatures.png" alt="select features tool" /></td>
+          <td><span class="component">Select Features Tool:</span> When this is selected click on features from the target or 
+            selection layers on the map. Either click features individually or drag a box to pick multiple features. Hold down 
+            on the Shift key while clicking or dragging to add features to the selected set. Hold down on the Control (Ctrl) key to remove features.</td>
+        </tr>
+        <tr>
+          <td>
+            <img src="Images/Help/DrawPoint.png" alt="draw point" /></td>
+          <td><span class="component">Draw Point:</span> Click on the map to draw a small, circular point symbol. <span class="alert">Markup only.</span></td>
+        </tr>
+        <tr>
+          <td>
+            <img src="Images/Help/DrawLine.png" alt="draw line" /></td>
+          <td><span class="component">Draw Line:</span> Click on the map multiple times to draw a line with multiple vertices. 
+            Double-click to end the line. <span class="alert">Markup only.</span></td>
+        </tr>
+        <tr>
+          <td>
+            <img src="Images/Help/DrawPolygon.png" alt="draw polygon" /></td>
+          <td><span class="component">Draw Polygon:</span> Click on the map multiple times to draw a semi-transparent polygon. 
+            Double-click to end the polygon. <span class="alert">Markup only.</span></td>
+        </tr>
+        <tr>
+          <td>
+            <img src="Images/Help/DrawCircle.png" alt="draw circle" /></td>
+          <td><span class="component">Draw Circle:</span> Hold the mouse down on the map to define the center of a circle, 
+            drag to size the circle, and release to finish drawing the circle. <span class="alert">Markup only.</span></td>
+        </tr>
+        <tr>
+          <td>
+            <img src="Images/Help/DrawText.png" alt="draw text" /></td>
+          <td><span class="component">Draw Text:</span> Click on the map to place text and show input box. 
+            Type text in input box. Press enter to complete the placement of text. To add a text glow with a background color, 
+            check the box next to the Text Glow color selector on the Markup Panel and select glow color prior to placing text on the map. <span class="alert">Markup only.</span></td>
+        </tr>
+        <tr>
+          <td>
+            <img src="Images/Help/DrawCoordinates.png" alt="draw coordinates" /></td>
+          <td><span class="component">Draw Coordinates:</span> Click on the map to draw a point with coordinates. <span class="alert">Markup only.</span></td>
+        </tr>
+        <tr>
+          <td>
+            <img src="Images/Help/MeasureLength.png" alt="draw measured length" /></td>
+          <td><span class="component">Draw Measured Length:</span> Click on the map multiple times to draw a line with 
+            multiple vertices. Text showing the length of the line will display with the line. Double-click to end the line. <span class="alert">Markup only.</span></td>
+        </tr>
+        <tr>
+          <td>
+            <img src="Images/Help/MeasureArea.png" alt="draw measured area" /></td>
+          <td><span class="component">Draw Measured Area:</span>
+          Click on the map multiple times to draw a semi-transparent polygon. 
+            Text showing the area of the polygon will display inside the polygon. Double-click to end the polygon.
+        </tr>
+        <tr>
+          <td>
+            <img src="Images/Help/DeleteMarkup.png" alt="delete markup" /></td>
+          <td><span class="component">Delete Markup:</span> Click on individual markup shapes and text to delete them. <span class="alert">Markup only.</span></td>
+        </tr>
+        <tr>
+          <td>
+            <img src="Images/Help/PickColor.png" alt="pick color" /></td>
+          <td><span class="component">Pick Color:</span> Click on a markup shape to set its color as the current drawing color. <span class="alert">Markup only.</span></td>
+        </tr>
+        <tr>
+          <td>
+            <img src="Images/Help/FillwColor.png" alt="fill with color" /></td>
+          <td><span class="component">Fill With Color:</span> Click on a markup shapes to change its color to the current drawing color. <span class="alert">Markup only.</span></td>
+        </tr>
+      </table>
+
+
+      <%--<h2 class="MenuItem" id="search">Searching for Features on the Map</h2>--%>
+
+      <%--Selection Panel--%>
+      <h2 class="MenuItem" id="select">Selecting Features on the Map</h2>
+
+      <p>
+        Features on the map from certain layers can be clicked to display information about them. Depending on how the GPV 
+      is configured and linked to other web applications, a set of selected features may be preset 
+      when the GPV opens - the functions on the Selection Panel allow for changeing this selected set.
+      </p>
+
+      <p>
+        <img src="Images/Help/SelectingFeaturesOptions.png" class="imgLeft" alt="selecting features" />The top Selection Panel 
+      sepcifies how to pick features on the map. This is done by setting the five pulldown lists, to the right, so that together 
+      a readable sentence is formed which describes how the Select Features map tool will function.
+      </p>
+
+      <p>
+        <span class="component">Action:</span> Specify what the Select Feature map tool will do when a the map is clicked. 
+        Three types of actions are supported:
+      </p>
+      <ul class="bullet-list">
+        <li><span class="component">Select:</span> Pick features directly from the Target layer.</li>
+        <li><span class="component">Find all [within a distance]:</span> Pick features from the Selection layer and let the application find features on the 
+          Target layer within the distance specified by Proximity.</li>
+        <li><span class="component">Find the one...five [nearest]:</span> Pick features from the Selection layer and let the application find the 
+          nearest features on the Target layer, regardless of their distance.</li>
+      </ul>
+
+      <p>
+        <span class="component">Target:</span> Specifies the target layer. Data for features picked from this layer 
+        will be shown in the data grid below. Target features will highlight with the same color as the background of 
+        this pulldown list (unless they have been filtered, in which case they will appear gray).
+      </p>
+
+      <p>
+        <span class="component">Proximity:</span> "Find all" specifies the distance around features 
+        in the selection layer to search for features in the target layer. If set to zero, target features will only be found inside or 
+        directly adjacent to the selection features.
+      </p>
+      <p>
+        <span class="component">Selection:</span> Will set the choosen selection layer. Features picked from this layer will be used to 
+        search for features in the target layer. Selection features will highlight with the same color as the background of this pulldown list.
+      </p>
+      <p>
+        <span class="component">Filter:</span> Applies a filter to the set of target features picked on the map. Data for 
+        features that fulfill the criteria of the filter will be displayed in the grid below this control.
+      </p>
+
+      <table>
+        <tbody>
           <tr>
-            <td style="padding-left: 6px; padding-right: 6px; padding-top: 3px; padding-bottom: 3px; border: none; background-color: #DEE0D5"">
-              <asp:Label ID="labLevel" runat="server" CssClass="BodyText" Text="Level" />
-              <select id="ddlLevel" runat="server" class="BodyText" style="width: 70px">
-	            </select>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <p class="BodyText"><span class="BoldText">Scale 1" = [feet]'</span>
-        - Shows the current scale of the map.&nbsp; You can enter a different scale here to zoom the map in and out.</p>
-      <img src="Images/Help/Scale.png" alt="" style="margin-left: 20px" width="133" height="25"/>
-      <div class="BodyText">
-        <table cellspacing="0" cellpadding="0" border="0">
-          <tr>
-            <td class="Icon" valign="top"><div class="Button" style="background-position: -600px 0px"></div></td>
-            <td class="Description" valign="top"><span class="BoldText">Full View</span> - 
-              Zooms out to the full extent of the map.</td>
+            <td>
+              <img src="Images/Help/SelectAllButton.png" alt="select all" /></td>
+            <td><span class="component">Select All in View:</span> Select all features from the target or selection layers within the current view of the map.</td>
           </tr>
           <tr>
-            <td class="Icon" valign="top"><div class="Button" style="background-position: 0px 0px"></div></td>
-            <td class="Description" valign="top"><span class="BoldText">Return to Previous 
-                Extent</span> - Returns the map view to the last extent before the current 
-              one.&nbsp; Every extent from the beginning of the mapping session is 
-              remembered, so you can click this repeatly to undo multiple pan/zoom 
-              operations.
-            </td>
+            <td>
+              <img src="Images/Help/ClearSelectedFeatures.png" alt="clear selection" /></td>
+            <td><span class="component">Clear Selected Features:</span> Clear the selected sets of target and selection features.</td>
           </tr>
           <tr>
-            <td class="Icon" valign="top"><div class="Button" style="background-position: -912px 0px"></div></td>
-            <td class="Description" valign="top"><span class="BoldText">Zoom In</span> - When 
-              this is selected you can click on the main map, or on the overview map if the Location tab is available, to zoom in by a factor of two on that 
-              point.&nbsp; You can also click, hold down, and drag a box on either map to specify
-              a new extent for the main map.
-            </td>
+            <td>
+              <img src="Images/Help/ZoomToSelection.png" alt="select all" /></td>
+            <td><span class="component">Zoom To Selected Features:</span> (on the Map Panel) Zoom to the combined extent of all target and selection features.</td>
           </tr>
-          <tr>
-            <td class="Icon" valign="top"><div class="Button" style="background-position: -768px 0px"></div></td>
-            <td class="Description" valign="top"><span class="BoldText">Pan</span> - When 
-              this is selected you can click and hold down on the main map to drag it in any 
-              direction.&nbsp; If the overview map is available, you can use this tool to drag the
-              red box to a new location, which will recenter the main map.</td>
-          </tr>
-        </table>
-      </div>
-      <div id="pnlZoneLevel" runat="server" visible="false">
-        <p class="BodyText">The following controls are available on the Location Panel</p>
-        <p id="pZoneTab" runat="server" visible="false">
-          <span id="spnZoneTabName" runat="server" class="BoldText">Zone</span> - Clicking on a link under this tab
-          will zoom the map to a particular <asp:Literal id="litZoneName1" runat="server">zone</asp:Literal>.
-        </p> 
-        <p id="pLevelTab" runat="server" visible="false">
-          <span id="spnLevelTabName" runat="server" class="BoldText">Level</span> - Clicking on a link under this tab
-          will set the display of the map to a particular <asp:Literal id="litLevelName1" runat="server">level</asp:Literal>. 
-        </p> 
-        <p id="pComboTab" runat="server" visible="false">
-          <span id="spnComboTabName" runat="server" class="BoldText">Level by Zone</span> - Clicking on a link under this tab
-          will zoom the map to a <asp:Literal id="litZoneName2" runat="server">zone</asp:Literal> and 
-          set the display of the map to a <asp:Literal id="litLevelName2" runat="server">level</asp:Literal> at the same time.  Only
-          valid combinations of <asp:Literal id="litZoneName3" runat="server">zone</asp:Literal> and 
-          <asp:Literal id="litLevelName3" runat="server">level</asp:Literal> are shown.
-        </p> 
-        <p><span class="BoldText">All / Containing Selection Only</span> - Depending on the configuration of this application, you may see 
-          a count of the number of selected features found in each <asp:Literal id="litZoneLevel" runat="server">zone and level</asp:Literal> next
-          to the corresponding link.  Click Containing Selection Only to show only those links that have selected features.
-        </p>
-      </div>
-      <p></p>
-      <p class="SubtitleText">Getting Information</p>
-      <div class="BodyText">
-        <table cellspacing="0" cellpadding="0" border="0">
-          <tr>
-            <td class="Icon" valign="top"><div class="Button" style="background-position: -648px 0px"></div></td>
-            <td class="Description" valign="top"><span class="BoldText">Identify</span> - 
-              When this is selected, pointing at an object on the map will display a small 
-              box of information about that object.&nbsp; Clicking on
-						  the object will popup a separate window with more detailed information.  The popup
-						  will contain a link that lets you print the information.&nbsp; Depending on how the GPV has been set up, 
-              it is possible that some objects on the map cannot be identified.</td>
-          </tr>
-          <tr>
-            <td class="Icon" valign="top"><div class="Button" style="background-position: -120px 0px"></div></td>
-            <td class="Description" valign="top"><span class="BoldText">Display Coordinates</span> - 
-              Displays the coordinates of the point you click on the map.</td>
-          </tr>
-          <tr>
-            <td class="Icon" valign="top"><div class="Button" style="background-position: -48px 0px"></div></td>
-            <td class="Description" valign="top"><span class="BoldText">Erase Coordinates</span> - 
-              Removes coordinates you have placed on the map with the Display Coordinates tool.</td>
-          </tr>
-          <tr>
-            <td class="Icon" valign="top"><div class="Button" style="background-position: -696px 0px"></div></td>
-            <td class="Description" valign="top"><span class="BoldText">Measure Area</span> - 
-              When this is selected you can click on the map multiple times to measure the 
-              area of a shape. The area will be shown inside the shape. Double-click to end 
-              the measurement.</td>
-          </tr>
-          <tr>
-            <td class="Icon" valign="top"><div class="Button" style="background-position: -672px 0px"></div></td>
-            <td class="Description" valign="top"><span class="BoldText">Measure Distance</span>
-              - When this is selected you can click on the map multiple times to measure the 
-              accumulated length of a set of lines. The length will be shown where you first 
-              clicked. Double-click to end the measurement.</td>
-          </tr>
-        </table>
-      <p class="BodyText"><span class="BoldText">Help</span> - Displays the help for the General Purpose Viewer in a pop-up window.</p>
-      </div>
-      <p></p>
-      <p class="SubtitleText">Communicating with Others</p>
-      <div class="BodyText">
-        <table cellspacing="0" cellpadding="0" border="0">
-          <tr>
-            <td class="Icon" valign="top"><div class="Button" style="background-position: -792px 0px"></div></td>
-            <td class="Description" valign="top"><span class="BoldText">Printable Map</span> - 
-              Pops up a utility for creating a PDF version of the current map suitable for 
-              printing or archiving.&nbsp; You can select which page 
-              layout you prefer and specify whether you wish to preserve either the scale or 
-              the width of the current map.&nbsp; Depending on the configuration, you may also
-              be able to provide text, such as a title, that will appear at specific locations
-              on the printable page.<br/>
-              <br/>
-              <img src="Images/Help/Print.png" alt="" width="490" height="185"/>
-            </td>
-          </tr>
-          <tr>
-            <td class="Icon" valign="top"><div class="Button" style="background-position: -576px 0px"></div></td>
-            <td class="Description" valign="top"><span class="BoldText">Email This Page</span>
-              - Starts your email client with a message containing a link to your current map 
-              page. All the information about your page - the current map tab, zoom level, 
-              selected object, and markup - are encrypted in this link. You can add text to 
-              this message and mail it to anyone that also has access to this General Purpose 
-              Viewer. When they click on the link in the message, the General Purpose Viewer 
-              will appear exactly as you had set it.</td>
-          </tr>
-        </table>
-      </div>
-      <p></p>
-      <div id="pnlSelection" runat="server" visible="false">
-        <p class="SubtitleText">Selecting Features on the 
-          Map</p>
-        <p class="BodyText">You can pick features on the map from certain layers and display 
-          information about them.&nbsp; Depending on how your GPV is configured and 
-          linked to other web applications, you may be brought automatically to a set of 
-          selected features when the GPV comes up&mdash;the functions on the Selection Panels 
-          let you change this selected set.</p>
-        <p class="BodyText">The top Selection Panel lets you specify how you would like to pick features 
-          on the map.&nbsp; This is done by setting the five pulldown lists, shown below,
-			    so that together they form a readable sentence which describes how the Select Features
-			    tool to the left will function.&nbsp; See the picture under Selection Panels (above) for an example.
-        </p>
-        <div style="width: 355px; height: 80px; background-color: #DEE0D5">
-            <div style="position: relative">
-            <div class="Button" title="Select Features" style="position: absolute; left: 10px; top: 3px; background-position: -816px 0px"></div>
-            <div class="Button"  title="Select All in View" style="position: absolute; left: 10px; top: 28px; background-position: -864px 0px"></div>
-            <div class="Button"  title="Clear Selection" style="position: absolute; left: 10px; top: 53px; background-position: -24px 0px"></div>
-            <select id="ddlAction" class="BodyText" style="position: absolute; left: 38px; top: 8px; width: 188px">
-				      <option value="Action">Action</option>
-			      </select>
-            <select id="ddlTarget" class="BodyText" style="position: absolute; left: 229px; top: 8px; width: 105px" runat="server">
-				      <option value="Target">Target</option>
-			      </select>
-			      <select id="ddlProximity" class="BodyText" style="position: absolute; left: 38px; top: 30px; width: 188px">
-				      <option value="Proximity">Proximity</option>
-			      </select>
-            <select id="ddlSelection" class="BodyText" style="position: absolute; left: 229px; top: 30px; width: 105px" runat="server">
-				      <option value="Selection">Selection</option>
-			      </select>
-            <select id="ddlQuery" class="BodyText" style="left: 38px; position: absolute; top: 52px; width: 296px">
-				      <option value="Filter">Filter</option>
-			      </select>
-			    </div>
-        </div>
-        <p class="BodyText"><span class="BoldText">Action</span> - Lets you specify what the Select Features tool to the left
-        will do when you click on the map.&nbsp; Three types of action are supported:</p>
-        <ul>
-          <li class="BodyText"><span class="EmphasizeText">Select</span> - Pick features directly
-				    from the <span class="EmphasizeText">Target</span>
-          layer.</li>
-          <li class="BodyText"><span class="EmphasizeText">Find all [within a distance]</span> - Pick features from the <span class="EmphasizeText">Selection</span> layer 
-            and let the application find features on the <span class="EmphasizeText">Target</span> layer within the distance specified by <span class="EmphasizeText">Proximity</span>.
-          </li>
-          <li class="BodyText"><span class="EmphasizeText">Find the one...five [nearest]</span> - Pick features from the <span class="EmphasizeText">Selection</span> layer 
-            and let the application find the nearest features on the <span class="EmphasizeText">Target</span> layer, regardless of their distance.
-          </li>
-        </ul>
-        <p class="BodyText"><span class="BoldText">Target</span> - Lets you choose the target layer.&nbsp; Data
-			    for features picked from this layer will be shown in the data grid below.&nbsp;
-			    Target features will highlight with the same color as the background of this pulldown
-			    list (unless they have been filtered, in which case they will appear gray).</p>
-		    <p class="BodyText">
-			    <span class="BoldText">Proximity</span> - When <span class="EmphasizeText">Action</span> is set to "Find all",
-			    this lets you specify the distance around features in the 
-          selection layer to search for features in the target layer.&nbsp; If set to 
-          zero, target features will only be found inside or directly adjacent to the 
-          selection features.</p>
-        <p class="BodyText"><span class="BoldText">Selection</span> - Lets you choose the selection layer.&nbsp; Features 
-          picked from this layer will be used to&nbsp;search for&nbsp;features in the 
-          target layer.&nbsp; Selection features will highlight with the same color as
-			    the background of this pulldown list.</p>
-		    <p class="BodyText">
-			    <span class="BoldText">Filter</span> - Applies a filter to the set of target features you picked 
-          on the map.&nbsp; Data for features that fulfill the criteria of the filter 
-          will be displayed in the grid below this control.</p>
-        <p></p>
-        <div class="BodyText">
-          <table cellspacing="0" cellpadding="0" border="0">
-            <tr>
-              <td class="Icon" valign="top"><div class="Button" style="background-position: -816px 0px"></div></td>
-              <td class="Description" valign="top"><span class="BoldText">Select Features</span>
-                - When this is selected you can pick features from the target or selection layers on the map.&nbsp; Either click
-						    features individually or drag a box to pick multiple features.&nbsp; Hold down on
-						    the Shift key while clicking or dragging to add features to the selected set.&nbsp;
-						    Hold down on the Control (Ctrl) key to remove features.
-              </td>
-            </tr>
-            <tr>
-              <td class="Icon" valign="top"><div class="Button" style="background-position: -864px 0px"></div></td>
-              <td class="Description" valign="top"><span class="BoldText">Select All in View</span>
-                - Select all features from the target or selection layers within the current view of the map.
-              </td>
-            </tr>
-            <tr>
-              <td class="Icon" valign="top"><div class="Button" style="background-position: -24px 0px"></div></td>
-              <td class="Description" valign="top"><span class="BoldText">Clear Selected Features</span>
-                - Clear the selected sets of target and selection 
-                features.
-              </td>
-            </tr>
-            <tr>
-              <td class="Icon" valign="top"><div class="Button" style="background-position: -936px 0px"></div></td>
-              <td class="Description" valign="top"><span class="BoldText">Zoom To Selected 
-                  Features</span> - (on the Map Panel) Zoom to the combined extent of all 
-                target and selection features.
-              </td>
-            </tr>
-          </table>
-        </div>
-        <p class="SubtitleText">Using Selected Features</p>
-        <p class="BodyText">If the Selection Panels are available in your GPV application and you have 
-          picked some target features on the map, you can use the capabilities below to 
-          show data about those features.</p>
-        <p class="BodyText"><span class="BoldText">Data Grid</span>
-          &nbsp;- This displays data about the selected target features that have passed 
-          the filter criteria.&nbsp; The columns of data shown will vary with the target 
-          layer and the selected filter.&nbsp; Clicking on a row in this grid will 
-          highlight that row, highlight the corresponding feature on the map, and bring 
-          up detailed&nbsp;data in the bottom panel.&nbsp; Double-clicking will do the same plus zoom to
-          the feature.&nbsp; The total number of rows in the grid is displayed at the lower left of the grid.</p>
-        <img src="Images/Help/DataGrid.png" alt="" width="361" height="171"/>
-        <p class="BodyText"><span class="BoldText">To Mailing Labels</span> - When enabled, this lets you generate mailing labels 
-          for the selected target features.&nbsp; A window will&nbsp;popup which let's 
-          you select the label format, printing direction and font characteristics.&nbsp; The labels 
-          are&nbsp;delivered as a PDF file which can be printed or saved to disk.&nbsp; 
-          It is likely that only certain layers (such as parcels or buildings) will be 
-          enabled for mailing labels in your application.</p>
-        <img src="Images/Help/MailingLabels.png" alt="" width="322" height="307"/>
-        <p class="BodyText"><span class="BoldText">To Spreadsheet</span> - This exports 
-          the data for the selected target features currently shown in the data grid to a 
-          comma-separated value (CSV) file or an Excel spreadsheet (XLS) depending on the
-          configuration of this application.&nbsp; This may launch a program, such as Microsoft 
-          Excel or OpenOffice Calc, for viewing the spreadsheet.&nbsp; If not, you will be 
-          prompted to save the file to disk.&nbsp; Please note that later versions of Excel
-          may display a notice regarding the XLS file format.&nbsp; You can safely ignore this
-          and open the file.</p>
-        <p class="BodyText"><span class="BoldText">Detailed 
-            Data</span> - The bottom Selection Panel shows detailed data from the feature 
-          highlighted in the data grid.&nbsp; Depending on your application, one or more 
-          tabs will be provided for different types of data.&nbsp; If there are more tabs than can fit above the data, you can
-          hold down on any tab and slide the set right or left to reveal the hidden tabs.&nbsp; Some of the 
-          data shown in the panel may be displayed as links to other pages (which will popup in another 
-          window) or which change the target layer, selection layer, and selected features.&nbsp; It 
-          is also possible to have small images within the listed 
-          data.&nbsp; These may act as links to other pages or documents.&nbsp; The panel
-          contains a link that lets you print the data.</p>
-        <img src="Images/Help/DataTab.png" alt="" width="382" height="211"/>
-      </div>
-      <div id="pnlMarkup" runat="server" visible="false">
-        <p class="SubtitleText">Creating and Managing Map 
-          Markup</p>
-        <p class="BodyText">You can draw shapes and text (markup) on the map for others to 
-          see.&nbsp; <span id="spnMarkupOpen" runat="server" visible="true">Every user has the 
-          ability to edit and delete the markup 
-          created by other users.&nbsp; Given the wide-open nature of this environment, 
-          your organization may set guidelines for the proper treatment of markup.&nbsp;
-          Please contact your <a class="BodyLink" id="lnkAdminEmail2" runat="server">administrator</a>
-          for details.</span>
-          <span id="spnMarkupSecure" runat="server" visible="false">You have the option of allowing other users
-          to edit and delete your markup.</span></p>
-        <p class="BodyText"><span class="BoldText">Your Name</span>
-          - <span id="spnMarkupNameOpen" runat="server" visible="true">You must provide a name or identifier for yourself to create markup.&nbsp;</span> 
-          <span id="spnMarkupNameSecure" runat="server" visible="false">Your login name appears here and cannot be changed.&nbsp;</span> 
-          This name will appear in the grid below for all markup that you create.</p>
-        &nbsp;&nbsp;&nbsp;<img src="Images/Help/MarkupName.png" alt="" alt="" width="289" height="25"/>
-        <p class="BodyText"><span class="BoldText">Category</span>
-          - Markup is placed in categories for ease of management.&nbsp; Select an 
-          appropriate category from this list before creating new markup.&nbsp; Upon 
-          selecting a category the grid will update to show all available markup 
-          groups in that category.</p>
-        &nbsp;&nbsp;&nbsp;<img src="Images/Help/MarkupCategory.png" alt="" width="278" height="27"/>
-        <p class="BodyText"><span class="BoldText">Markup Group</span>
-          - Shapes and text that you create are stored in named 
-          groups.&nbsp; The following functions let you manage these markup 
-          groups.</p>
-        <ul>
-          <li class="BodyText">
-            <span class="BoldText">New</span> - Creates a new, untitled markup group in the 
-            selected category assigned to your name.&nbsp; Once you click this you can use 
-            the various tools described below to create the markup graphics.<br/></li>
-          <li class="BodyText">
-            <span class="BoldText">Zoom To</span> - Zooms the map to the extent of all the 
-            shapes and text in the current markup group.&nbsp; Use this if you have panned 
-            away from the markup group and wish to return to it.<br/></li>
-          <li class="BodyText">
-            <span class="BoldText">Delete</span> - Deletes the current markup group.&nbsp; 
-            The markup will be removed from the map and grid.<br/></li>
-          <li class="BodyText">
-            <span class="BoldText">To KML</span> - Exports the current markup group to a file
-            which can be displayed in Google Earth.<br/></li>
-          <li class="BodyText">
-            <span class="BoldText">Title</span> - The title of the current markup 
-            group.&nbsp; This defaults to [untitled] for new markup groups.&nbsp; Change 
-            this to a short phase which accurately describes the markup group.<br/>
-          </li>
-          <li id="liLock" runat="server" class="BodyText" visible="false">
-            <span class="BoldText">Lock</span> - When checked, only you can edit or delete
-            the current markup group.  When unchecked, all users can make such edits.  [not shown below]<br/>
-          </li>
-        </ul>
-        &nbsp;&nbsp;&nbsp;<img src="Images/Help/MarkupGroup.png" alt="" width="304" height="39"/>
-        <p></p>
-        <div class="BodyText">
-          <table cellspacing="0" cellpadding="0" border="0">
-            <tr>
-              <td class="Icon" valign="top"><div class="Button" style="background-position: -432px 0px"></div></td>
-              <td class="Description" valign="top"><span class="BoldText">Draw Point</span> &nbsp;- 
-                When this is selected, click on the map&nbsp;to draw&nbsp;a small, circular 
-                point symbol.
-              </td>
-            </tr>
-            <tr>
-              <td class="Icon" valign="top"><div class="Button" style="background-position: -384px 0px"></div></td>
-              <td class="Description" valign="top"><span class="BoldText">Draw Line</span> &nbsp;- 
-                When this is selected, click on the map multiple times to draw a line with 
-                multiple vertices.&nbsp; Double-click to end the line.
-              </td>
-            </tr>
-            <tr>
-              <td class="Icon" valign="top"><div class="Button" style="background-position: -480px 0px"></div></td>
-              <td class="Description" valign="top"><span class="BoldText">Draw Polygon</span>&nbsp;- 
-                When this is selected, click on the map multiple times to draw a 
-                semi-transparent polygon.&nbsp; Double-click to end the polygon.&nbsp;
-              </td>
-            </tr>
-            <tr>
-              <td class="Icon" valign="top"><div class="Button" style="background-position: -240px 0px"></div></td>
-              <td class="Description" valign="top"><span class="BoldText">Draw Circle</span>&nbsp;- 
-                When this is selected, press the mouse button on the map to define the center of a circle, drag to size the circle,
-						    and release to finish drawing the circle.
-              </td>
-            </tr>
-            <tr>
-              <td class="Icon" valign="top"><div class="Button" style="background-position: -288px 0px"></div></td>
-              <td class="Description" valign="top"><span class="BoldText">Draw Coordinates</span>&nbsp;- 
-                When this is selected, click on the map to draw a point with coordinates.  This works like the Display Coordinates
-                tool above the map except that the coordinates are saved as markup.
-              </td>
-            </tr>
-            <tr>
-              <td class="Icon" valign="top"><div class="Button" style="background-position: -336px 0px"></td>
-              <td class="Description" valign="top"><span class="BoldText">Draw Measured Length</span>&nbsp;- 
-                When this is selected, click on the map multiple times to draw a line with 
-                multiple vertices.&nbsp; Text showing the length of the line will display with the line.&nbsp; Double-click to end the line.
-              </td>
-            </tr>
-            <tr>
-              <td class="Icon" valign="top"><div class="Button" style="background-position: -192px 0px"></div></td>
-              <td class="Description" valign="top"><span class="BoldText">Draw Measured Area</span>&nbsp;- 
-                When this is selected, click on the map multiple times to draw a 
-                semi-transparent polygon.&nbsp; Text showing the area of the polygon will display inside the polygon.&nbsp; Double-click to end the polygon.&nbsp;
-              </td>
-            </tr>
-            <tr>
-              <td class="Icon" valign="top"><div class="Button" style="background-position: -144px 0px"></div></td>
-              <td class="Description" valign="top"><span class="BoldText">Delete&nbsp;Markup</span>&nbsp;- 
-                When this is selected, click on individual markup shapes and text&nbsp;to 
-                delete them.&nbsp;
-              </td>
-            </tr>
-            <tr>
-              <td class="Icon" valign="top"><div class="Button" style="background-position: -72px 0px"></div></td>
-              <td class="Description" valign="top"><span class="BoldText">Pick Color</span>&nbsp;- 
-                When this is selected, click on a markup shape to set its color as the current drawing color.
-              </td>
-            </tr>
-            <tr>
-              <td class="Icon" valign="top"><div class="Button" style="background-position: -720px 0px"></div></td>
-              <td class="Description" valign="top"><span class="BoldText">Fill With Color</span>&nbsp;- 
-                When this is selected, click on a markup shapes to change its color to the current
-                drawing color.
-              </td>
-            </tr>
-            <tr>
-              <td class="Icon" valign="top"><div class="Button" style="background-color: red; background-position: 24px 0px"></div></td>
-              <td class="Description" valign="top"><span class="BoldText">Markup&nbsp;Color</span>&nbsp;- 
-                Click on this to set the current drawing color for any new markup you place on the map.&nbsp; 
-                A color selection panel will display the hue, saturation and value of the current color.&nbsp; 
-                Move the sliders to change any of these color properties then click OK to set this as the new color.<br/>
-                <br/>
-                <img src="Images/Help/ColorSelector.png" alt="" width="130" height="130"/>
-              </td>
-            </tr>
-            <tr>
-              <td class="Icon" valign="top"><div class="Button" style="background-position: -528px 0px"></div></td>
-              <td class="Description" valign="top"><span class="BoldText">Draw Text</span>&nbsp;- 
-                When this is selected, click on the map to place the text you specified in the 
-                box to the right.&nbsp; To make the text glow with a background color, check the Glow box
-                and click the color selector next to Glow to choose the color.<br/>
-                <br/>
-                <img src="Images/Help/MarkupText.png" alt="" width="293" height="32"/>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <p class="BodyText"><span class="BoldText">Markup&nbsp;Grid</span>
-          -&nbsp;This displays all of the available markup groups in the selected 
-          category.&nbsp; Clicking on one or more rows
-          in this grid will zoom the map to the extent of those markup groups and draw their
-          markup.&nbsp; Clicking on just one group will 
-          <span id="spnMarkupSelectOpen" runat="server" visible="true"> also open that group for editing.</span>
-          <span id="spnMarkupSelectSecure" runat="server" visible="false"> open that group for editing if you are its creator.</span></p>
-        <img src="Images/Help/MarkupGrid.png" alt="" width="360" height="219"/>
-      </div>
-      <p class="SubtitleText">Other Capabilities</p>
-      <p class="BodyText"><span class="BoldText">Mobile</span> - Launches the mobile version of the GPV with the same map and extent.&nbsp; The mobile
-        version has a button which returns you to this desktop version.</p>
-      <p class="BodyText"><span class="BoldText">External Map Viewers</span> - The pulldown list to the lower left of the
-			  map lets you launch other web-based map viewers centered and zoomed to the same
-			  location as the current map.&nbsp; Select the map viewer and click Go to pop it
-			  up in a new browser window.</p>
-      <img src="Images/Help/ExternalMap.png" alt="" style="margin-left: 20px"" width="167" height="27"/>
-      <p class="BodyText"><span class="BoldText">Save Map</span> - The pulldown list to the lower right of the
-			  map lets you save the current map image to a file.  Select "as Image" to save the map as a PNG or JPEG image file.  
-			  Select "as KML" to save the map in a format that can be viewed in Google Earth.  Click Save Map to download and save the file.</p>
-      <img src="Images/Help/SaveMap.png" alt="" style="margin-left: 20px" width="147" height="27"/>
-      <br/>
-      <br/>
-      <p id="pVersion" runat="server" class="SubduedText"></p>
-      </div>
+        </tbody>
+      </table>
+
+      <h2 class="MenuItem sub">Using Selected Features</h2>
+      <p>
+        If the Selection Function is available in the GPV application instance and a feature has been selected on the map, the capabilities below 
+        can be used to show data about those features.
+      </p>
+      <p>
+        <img src="Images/Help/SelectionDataGrid.png" class="imgRight" alt="selection data grid" />
+        <span class="component">Data Grid:</span> This displays data about the selected target features that have passed the filter criteria. 
+        The columns of data shown will vary with the target layer and the selected filter. Clicking on a row in this grid will highlight that row, 
+        highlight the corresponding feature on the map, and bring up detailed data in the Details Panel on the right side of the UI. 
+        Double-clicking will do the same plus zoom to the feature. The total number of rows in the grid is displayed at the lower left of the grid.
+      </p>
+      <p>
+        <img src="Images/Help/CreateMailingLabels.png" alt="mailing labels" class="imgRight" /><span class="component">To Mailing Labels:</span> When enabled, this allows for the generation of mailing labels for the selected target features. 
+        A window will popup with options for setting label format, printing direction and font characteristics. The labels are delivered as a PDF file which 
+        can be printed or saved to disk. It is likely that only certain layers (such as parcels or buildings) will be enabled for mailing labels in 
+        the application.
+      </p>
+      <p>
+        <span class="component">To Spreadsheet:</span> This exports the data for the selected target features currently shown in the data grid to a 
+        comma-separated value (CSV) file or an Excel spreadsheet (XLS) depending on the configuration of this application. This may launch a program, 
+        such as Microsoft Excel or OpenOffice Calc, for viewing the spreadsheet. If not, a prompt will appear to save the file to disk. 
+        NOTE: Later versions of Excel may display a notice regarding the XLS file format. This can be safely ignored and the file can be opened.
+      </p>
+      <p>
+        <span class="component">Details Panel:</span>The Panel opens from the left side of the UI and shows detailed data from the 
+        feature highlighted in the selection data grid. Depending on the application, one or more data set options will be available in the 
+        dropdown list for different types of data. Some of the data shown in the panel may be displayed as links to other pages (which will 
+        popup in another window) or which change the target layer, selection layer, and selected features. It is also possible to have small 
+        images within the listed data. These may be links to other pages or documents. Next to the data set dropdown is a button that allows for printing
+        the data shown in the Details Panel.
+      </p>
+
+      <%--Markup Panel--%>
+      <h2 class="MenuItem" id="markup">Creating and Managing Map Markup</h2>
+
+      <p>
+        <img src="Images/Help/MarkupPanelOptions.png" alt="markup panel options" class="imgRight" />
+        Drawn shapes and text (markup) can be added to the map for others to 
+        see. Everyone has the ability to edit and delete the markup created by any users. Given the wide-open nature of this environment, 
+        organizations may set guidelines for the proper treatment of markup. Please contact your administrator for details.
+      </p>
+
+      <p>
+        <span class="component">Your Name:</span> A name or identifier must be provided to create markup. This 
+        name will appear in the grid below for all markup created.
+      </p>
+      <p>
+        <span class="component">Category:</span> Markup is placed in categories for ease of management. Select an appropriate 
+        category from this list before creating new markup. Upon selecting a category the grid will update to show all available 
+        markup groups in that category.
+      </p>
+      <p>
+        <span class="component">Markup Group:</span> Shapes and text that created are stored in named groups. 
+        The following functions help manage these markup groups.
+      </p>
+      <ul class="bullet-list">
+        <li><span class="component">New:</span> Creates a new, untitled markup group in the selected category assigned to your name. Once clicked the tools relating to markup in the Map
+          Tools list above are available to create the markup graphics.</li>
+        <li><span class="component">Zoom To:</span> Zooms the map to the extent of all the shapes and text in the current markup group. Use this return to the markup group if the map 
+          extent has changed.</li>
+        <li><span class="component">Delete:</span> Deletes the current markup group. The markup will be removed from the map and grid.</li>
+        <li><span class="component">To KML:</span> Exports the current markup group to a file which can be displayed in Google Earth.</li>
+      </ul>
+      <p>
+        <span class="component">Title:</span> The title of the current markup group. This defaults to [untitled] for new markup groups. 
+        Change this to a short phase which accurately describes the markup group.
+      </p>
+      <p>
+        <img src="Images/Help/MarkupColorSelector.png" alt="color selector" class="imgRight" />
+        <span class="component">Style:</span> Style colors can be applied separately to both new markup and new text glow color by clicking on the 
+        respective buttons in the Markup Panel. A color Selection Panel will display the hue, saturation and value of the current color. Move the sliders to change 
+        any of these color properties then click OK to set this as the new color.
+      </p>
+
+      <%--Share Panel--%>
+      <h2 class="MenuItem" id="share">Sharing Maps</h2>
+
+      <p>
+        <img src="Images/Help/PrintPanel.png" alt="print map" class="imgLeft" /><span class="component">Print Map:</span> Displays a utility for 
+        creating a PDF version of the current map suitable for printing or archiving. Options can be set to select page layout and 
+        preservation of either the scale or the width of the current map. Dependant on the configuration, options may be enabled to provide text, 
+        such as a title and/or notes, that will appear in specific locations on the printable page.
+      </p>
+
+      <p>
+        <span class="component">Email This Page:</span> Starts the local email client with a message containing a link to the current map page. 
+        All the information about the page - the current map tab, zoom level, selected object, and markup - are encrypted in this link. Text can 
+        be added to this message and it can be mailed to anyone that has access to this GPV. When the link is clicked, 
+        the GPV will appear in its current state.
+      </p>
+
+      <p>
+        <span class="component">External Map Viewers:</span> The Export button presents a pulldown list of other web-based 
+        map viewers. When one is selected, a new widow opens that map viewer and the map centered and zoomed to the same location.
+      </p>
+
+      <p>
+        <span class="component">Save Map:</span> The Download button presents a pulldown list with image format options 
+        that allow for saving of the the current map view to a file. Select "as Image" to save the map as a PNG or JPEG image file. Select "as KML" to save 
+        the map in a format that can be viewed in Google Earth. Click Save Map to download and save the file.
+      </p>
+
+      <%--Other Capabilities--%>
+      <h2 class="MenuItem" id="other">Other Capabilities</h2>
+      <p>
+        <span class="component">Mobile</span> When the application is launched from a mobile phone, a responsive mobile version is presented. 
+        This mobile version has a limited subset of features, users of the mobile version can only perform basic map navication, identify key features, 
+        change the map theme, and zoom to their current location.
+      </p>
+    </div>
   </form>
 </body>
 </html>

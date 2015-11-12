@@ -1,79 +1,160 @@
-/* Copyright 2012 Applied Geographics, Inc.  Licensed under the Apache License, Version 2.0 http://www.apache.org/licenses/LICENSE-2.0 */
+﻿/*  Copyright 2012 Applied Geographics, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 
-body
-{
-	text-align: left;
-  margin-left: 20px;
+/* =====  CSS reset  ===== */
+
+html {
+  color: #000;
+  background: #FFF;
+}
+
+body, div, ul, li, form, input, textarea, p, th, td {
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 80%;
+  height: 100%;
+  margin: 0 auto;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+img {
+  border: 0;
+}
+
+th {
+  font-style: normal;
+  font-weight: normal;
+  text-align: left;
+}
+
+ul {
+  list-style: none;
   margin-top: 20px;
-  margin-right: 20px;
+}
+
+input, textarea, select {
+  font-family: inherit;
+  font-weight: inherit;
+  font-size: 100%;
+}
+
+body, div, span, td, th, input, select {
+  font-family: 'Open Sans', Helvetica, San-Serif;
+  font-size: 18px;
+  letter-spacing: .2px;
+  color: Black;
+}
+
+li a {
+  display: inline-block;
+  font-family: Lora, Times, serif;
+  font-size: 22px;
+  padding: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+  li a:hover {
+    text-decoration: underline;
+  }
+
+h2 {
+  font-family: Lora, Times, serif;
+  font-size: 24px;
+  font-weight: normal;
+  margin: 25px 0;
+  padding-bottom: 10px;
+  color: inherit;
+  border-bottom: solid 1px #CECECE;
+}
+
+.sub {
+  font-family: 'Open Sans', Helvetica, San-Serif;
+  font-size: 20px;
+  color: inherit;
+  padding-bottom: inherit;
+  border-bottom: none;
+}
+
+p {
+  margin-bottom: 20px;
+  color: #212121;
+  text-align: justify;
+  letter-spacing: .4px;
+  line-height: 30px;
+}
+
+.component {
+  font-weight: bold;
+}
+
+.interface {
+  width: 100%;
+  box-shadow: 0px 0px 3px 2px #CECECE;
   margin-bottom: 20px;
 }
 
-td.Icon
-{
-  padding-right: 10px;
-  padding-bottom: 5px;
+ul.bullet-list {
+  margin: 0 0 20px 30px;
 }
 
-td.Description
-{
-  font-family: Verdana, Arial, Helvetica, Sans-Serif;
-  font-size: 11px;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  ul.bullet-list li {
+    list-style-type: disc;
+  }
+
+.imgRight {
+  display: inline-block;
+  float: right;
+  margin-left: 15px;
+  margin-top: 10px;
+  box-shadow: 0px 0px 3px 2px #CECECE;
 }
 
-div.Button
-{
-  left: auto;
-  right: auto;
-  bottom: auto;
-  width: 23px;
-  height: 22px;
-  background-image: url(../Images/UI/Icons.png);
-  background-position: 0px 24px;
-  background-repeat: no-repeat;
-  border: solid 1px transparent;
-  cursor: default;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
+.imgLeft {
+  display: inline-block;
+  float: left;
+  margin-right: 15px;
+  margin-top: 10px;
+  box-shadow: 0px 0px 3px 2px #CECECE;
 }
 
-.BodyText, div.BodyText td
-{
-  font-family: Verdana, Arial, Helvetica, Sans-Serif;
-  font-size: 11px;
-  color: black;
+
+.txtLeft {
+  float: left;
 }
 
-.TitleText
-{
-  font-family: Verdana, Arial, Helvetica, Sans-Serif;
-  font-size: 13px;
-  font-weight: bold;
-  color: black;
+.txtRight {
+  float: right;
 }
 
-.SubtitleText
-{
-  font-family: Verdana, Arial, Helvetica, Sans-Serif;
-  font-size: 13px;
-  font-style: italic;
-  color: black;
+td {
+  padding: 10px 5px;
 }
 
-.BoldText
-{
-  font-family: Verdana, Arial, Helvetica, Sans-Serif;
-  font-size: 11px;
-  font-weight: bold;
-  color: black;
-}
+  td img {
+    float: right;
+  }
 
-.SubduedText
-{
-  font-family: Verdana, Arial, Helvetica, Sans-Serif;
-  font-size: 9px;
-  color: #A0A685;
+.alert {
+  color: #DB4437;
 }
