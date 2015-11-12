@@ -171,7 +171,7 @@
   };
 
   L.Map.prototype.on('mousedown', function (e) {
-    if (!this.options.drawing || e.originalEvent.buttons !== 1) {
+    if (!this.options.drawing || e.originalEvent.button !== 0) {
       return;
     }
 
@@ -200,7 +200,7 @@
     var draggable = mode === 'rectangle' || mode === 'circle';
     var stretchable = mode === 'polyline' || mode === 'polygon';
 
-    if ((e.originalEvent.buttons === 1 && draggable) || (!isMobile && stretchable)) {
+    if ((e.originalEvent.button === 0 && draggable) || (!isMobile && stretchable)) {
       updateDrawingShape(map, e.latlng, mode, false);
       fireShapeEvent(map, 'shapedrawing', e, mode);
     }
