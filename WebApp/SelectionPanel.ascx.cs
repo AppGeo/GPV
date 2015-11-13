@@ -21,14 +21,7 @@ public partial class SelectionPanel : System.Web.UI.UserControl
 {
   public void Initialize(Dictionary<String, String> launchParams)
   {
-    ddlTargetLayer.Style["background-color"] = ColorTranslator.ToHtml(AppSettings.TargetColorUI);
-    ddlSelectionLayer.Style["background-color"] = ColorTranslator.ToHtml(AppSettings.SelectionColorUI);
-
-    // activate the selection tool if necessary
-
-    if (!launchParams.ContainsKey("tool") || String.Compare(launchParams["tool"], "select", true) == 0)
-    {
-      ((Div)FindControl("optSelect")).CssClass = "Button MapTool Selected";
-    }
+    ddlTargetLayer.Style["border-left-color"] = ColorTranslator.ToHtml(AppSettings.TargetColorUI);
+    ddlSelectionLayer.Style["border-left-color"] = ColorTranslator.ToHtml(AppSettings.SelectionColorUI);
   }
 }

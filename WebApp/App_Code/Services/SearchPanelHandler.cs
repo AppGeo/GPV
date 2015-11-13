@@ -93,6 +93,16 @@ public class SearchPanelHandler : WebServiceHandler
           parameters.Add(criteria[criteriaID]);
           break;
 
+        case "textcontains":
+          where.Add(searchInputFieldRow.ColumnName + " like ?");
+          parameters.Add("%" + criteria[criteriaID].ToString() + "%");
+          break;
+
+        case "textstarts":
+          where.Add(searchInputFieldRow.ColumnName + " like ?");
+          parameters.Add(criteria[criteriaID].ToString() + "%");
+          break;
+
         case "daterange":
         case "numberrange":
           ArrayList values = (ArrayList)criteria[criteriaID];

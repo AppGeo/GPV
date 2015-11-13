@@ -20,11 +20,11 @@ using System.Web;
 public static class Version
 {
   public const int Major = 4;
-  public const int Minor = 1;
+  public const int Minor = 2;
   public const int BugFix = 0;
 
-  public const string Release = "beta";
-  public const int Number = 1;
+  public const string Release = "production";
+  public const int Number = 0;
 
   public static new string ToString()
   {

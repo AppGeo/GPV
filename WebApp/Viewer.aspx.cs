@@ -31,6 +31,7 @@ public partial class Viewer : CustomStyledPage
 {
   private AppState _appState;
   private Configuration _config = null;
+  Dictionary<String, List<int>> _inputPrintFields = new Dictionary<String, List<int>>();
 
   protected void Page_Init(object sender, EventArgs e)
   {
@@ -38,17 +39,17 @@ public partial class Viewer : CustomStyledPage
 
     DateTime lastWriteTime = MinifiedStylesheetsHandler.GetLastWriteTime();
 
-    HtmlGenericControl link = new HtmlGenericControl("link");
+    HtmlLink link = new HtmlLink();
     link.Attributes["type"] = "text/css";
     link.Attributes["rel"] ="stylesheet";
-    link.Attributes["href"] = "Styles/MinifiedStylesheets.ashx" + GetCacheControl(lastWriteTime) + "&ext=.css";
+    link.Href = "Styles/MinifiedStylesheets.ashx" + GetCacheControl(lastWriteTime) + "&ext=.css";
     head.Controls.Add(link);
 
     // reference minified scripts if not in debug mode
 
     if (System.Diagnostics.Debugger.IsAttached)
     {
-      string query = GetCacheControl();
+      string query = AppSettings.AllowDevScriptCaching ? "" : GetCacheControl();
 
       foreach (ScriptItem scriptItem in MinifiedScriptsHandler.GetList())
       {
@@ -93,117 +94,106 @@ public partial class Viewer : CustomStyledPage
     Title = application.DisplayName;
 
     SetHelpLink();
-    CreateMapTabs(application);
+    CreateMapThemes(application);
 
     bool isPublic = AppAuthentication.Mode == AuthenticationMode.None;
     ucLegendPanel.Initialize(_config, _appState, application);
+    ucSharePanel.Initialize(_config, application);
 
-    if (_appState.FunctionTabs == FunctionTab.None)
+    if (_appState.ActiveFunctionTab != FunctionTab.None)
     {
-      pnlContent.Style["min-width"] = "548px";
-      pnlMapSizer.Style["right"] = "0px";
-      pnlFunctionSizer.Style["display"] = "none";
-      contentDivider.Visible = false;
+      pnlFunctionTabs.Style["left"] = "-400px";
+      pnlFunctionTabs.Style["opacity"] = "0";
+      pnlFunction.Style["left"] = "0px";
+      pnlFunction.Style["opacity"] = "1";
     }
-    else
-    {
-      if ((_appState.FunctionTabs & FunctionTab.Search) == FunctionTab.Search)
-      {
-        tabSearch.Style["display"] = "block";
-        ucSearchPanel.Initialize(application);
 
-        if (_appState.ActiveFunctionTab == FunctionTab.Search)
-        {
-          pnlSearch.Style["display"] = "block";
-          tabSearch.Attributes["class"] = "Tab Selected";
-        }
-      } 
+    if ((_appState.FunctionTabs & FunctionTab.Search) == FunctionTab.Search)
+    {
+      tabSearch.Style["display"] = "block";
+      ucSearchPanel.Initialize(application);
+
+      if (_appState.ActiveFunctionTab == FunctionTab.Search)
+      {
+        pnlSearch.Style["display"] = "block";
+      }
+    } 
       
-      if ((_appState.FunctionTabs & FunctionTab.Selection) == FunctionTab.Selection)
+    if ((_appState.FunctionTabs & FunctionTab.Selection) == FunctionTab.Selection)
+    {
+      tabSelection.Style["display"] = "block";
+      ucSelectionPanel.Initialize(launchParams);
+
+      if (_appState.ActiveFunctionTab == FunctionTab.Selection)
       {
-        tabSelection.Style["display"] = "block";
-        ucSelectionPanel.Initialize(launchParams);
-
-        if (_appState.ActiveFunctionTab == FunctionTab.Selection)
-        {
-          pnlSelection.Style["display"] = "block";
-          tabSelection.Attributes["class"] = "Tab Selected";
-        }
-      }
-
-      if ((_appState.FunctionTabs & FunctionTab.Legend) == FunctionTab.Legend)
-      {
-        tabLegend.Style["display"] = "block";
-
-        if (_appState.ActiveFunctionTab == FunctionTab.Legend)
-        {
-          pnlLegend.Style["display"] = "block";
-          tabLegend.Attributes["class"] = "Tab Selected";
-        }
-      }
-
-      if ((_appState.FunctionTabs & FunctionTab.Location) == FunctionTab.Location)
-      {
-        tabLocation.Style["display"] = "block";
-        ucLocationPanel.Initialize(_config, _appState, application);
-
-        if (_appState.ActiveFunctionTab == FunctionTab.Location)
-        {
-          pnlLocation.Style["display"] = "block";
-          tabLocation.Attributes["class"] = "Tab Selected";
-        }
-      }
-
-      if ((_appState.FunctionTabs & FunctionTab.Markup) == FunctionTab.Markup)
-      {
-        tabMarkup.Style["display"] = "block";
-        ucMarkupPanel.Initialize(_config, _appState, application);
-
-        if (_appState.ActiveFunctionTab == FunctionTab.Markup)
-        {
-          pnlMarkup.Style["display"] = "block";
-          tabMarkup.Attributes["class"] = "Tab Selected";
-        }
+        pnlSelection.Style["display"] = "block";
       }
     }
+
+    if ((_appState.FunctionTabs & FunctionTab.Legend) == FunctionTab.Legend)
+    {
+      tabLegend.Style["display"] = "block";
+
+      if (_appState.ActiveFunctionTab == FunctionTab.Legend)
+      {
+        pnlLegend.Style["display"] = "block";;
+      }
+    }
+
+    if ((_appState.FunctionTabs & FunctionTab.Location) == FunctionTab.Location)
+    {
+      tabLocation.Style["display"] = "block";
+      ucLocationPanel.Initialize(_config, _appState, application);
+
+      if (_appState.ActiveFunctionTab == FunctionTab.Location)
+      {
+        pnlLocation.Style["display"] = "block";
+      }
+    }
+
+    if ((_appState.FunctionTabs & FunctionTab.Markup) == FunctionTab.Markup)
+    {
+      tabMarkup.Style["display"] = "block";
+      ucMarkupPanel.Initialize(_config, _appState, application);
+
+      if (_appState.ActiveFunctionTab == FunctionTab.Markup)
+      {
+        pnlMarkup.Style["display"] = "block";
+      }
+    }
+
+    if ((_appState.FunctionTabs & FunctionTab.Share) == FunctionTab.Share)
+    {
+      tabShare.Style["display"] = "block";
+
+      if (_appState.ActiveFunctionTab == FunctionTab.Share)
+      {
+        pnlShare.Style["display"] = "block";
+      }
+    } 
 
     ShowLevelSelector(application);
-    CreateZoomBar();
-    pnlScaleBar.Style["display"] = AppSettings.ShowScaleBar ? "block" : "none";
 
-    // set the default tool (also set in SelectionPanel and MarkupPanel)
+    // set the default tool
 
     HtmlControl defaultTool = null;
 
     if (launchParams.ContainsKey("tool"))
     {
       defaultTool = Page.FindControl("opt" + launchParams["tool"], false) as HtmlControl;
+      
+      if (defaultTool != null)
+      {
+        defaultTool.Attributes["class"] += " Selected";
+      }
     }
-    else if ((_appState.FunctionTabs & FunctionTab.Selection) == FunctionTab.None)
-    {
-      defaultTool = Page.FindControl("optZoomIn") as HtmlControl;
-    }
-
-    if (defaultTool != null)
-    {
-      defaultTool.Attributes["class"] = "Button MapTool Selected";
-    }
-
-    if (launchParams.ContainsKey("mapscale"))
-    {
-      tboScale.Value = launchParams["mapscale"];
-    }
-
-    ddlExternalMap.DataSource = _config.ExternalMap;
-    ddlExternalMap.DataValueField = "DisplayName";
-    ddlExternalMap.DataBind();
 
     CreateAppStateScript(application);
     CreateActiveSelectionStyle();
 
     spnVersion.InnerText = Version.ToString();
 
-    TrackingManager.TrackUse(launchParams, false);
+    TrackingManager.TrackUse(launchParams);
   }
 
   private void CreateActiveSelectionStyle()
@@ -223,29 +213,21 @@ public partial class Viewer : CustomStyledPage
     scriptElem.InnerHtml = String.Format(script, application.ToJson(), AppSettings.ToJson(), _appState.ToJson());
   }
 
-  private void CreateMapTabs(Configuration.ApplicationRow application)
+  private void CreateMapThemes(Configuration.ApplicationRow application)
   {
     // add map tabs
 
     foreach (Configuration.ApplicationMapTabRow appMapTabRow in application.GetApplicationMapTabRows())
     {
-      HtmlGenericControl tab = new HtmlGenericControl("div");
-      plhMapTabs.Controls.Add(tab);
-      tab.InnerHtml = appMapTabRow.MapTabRow.DisplayName.Replace(" ", "&nbsp;");
-      tab.Attributes["class"] = "Tab " + (appMapTabRow.MapTabID == _appState.MapTab ? "Selected" : "Normal");
-      tab.Attributes["data-maptab"] = appMapTabRow.MapTabID;
-    }
-  }
+      HtmlGenericControl li = new HtmlGenericControl("li");
+      phlMapTheme.Controls.Add(li);
+      li.InnerHtml = appMapTabRow.MapTabRow.DisplayName.Replace(" ", "&nbsp;");
+      li.Attributes["data-maptab"] = appMapTabRow.MapTabID;
 
-  private void CreateZoomBar()
-  {
-    zoomBar.Attributes["data-maxlevel"] = AppSettings.ZoomLevels.ToString();
-
-    for (int i = 0; i < AppSettings.ZoomLevels - 2; ++i)
-    {
-      HtmlGenericControl span = new HtmlGenericControl("span");
-      plhZoomBar.Controls.Add(span);
-      span.Attributes["class"] = "ZoomBar Middle";
+      if (_appState.MapTab == appMapTabRow.MapTabID)
+      {
+        selectedTheme.InnerHtml = appMapTabRow.MapTabRow.DisplayName.Replace(" ", "&nbsp;");
+      }
     }
   }
 
@@ -274,7 +256,7 @@ public partial class Viewer : CustomStyledPage
     // otherwise, if no application was specified, show the
     // available applications or an error
 
-    if (!launchParams.ContainsKey("application"))
+    if (String.IsNullOrEmpty(AppSettings.DefaultApplication) && !launchParams.ContainsKey("application"))
     {
       ShowError("An application has not been specified");
     }
@@ -284,11 +266,6 @@ public partial class Viewer : CustomStyledPage
     if (AppSettings.DefaultFullExtent == null)
     {
       ShowError("FullExtent has not been provided or is invalid in Web.config");
-    }
-
-    if (AppSettings.ZoomLevels == Int32.MinValue)
-    {
-      ShowError("ZoomLevels has not been provided in Web.config");
     }
 
     if (AppSettings.MapUnits == null)
@@ -322,16 +299,6 @@ public partial class Viewer : CustomStyledPage
     if (AppSettings.CoordinateSystem == null)
     {
       ShowError("Projection parameters have not been provided or are invalid in Web.config");
-    }
-
-    if (Double.IsNaN(AppSettings.DatumShiftX))
-    {
-      ShowError("DatumShiftX has not been provided in Web.config");
-    }
-
-    if (Double.IsNaN(AppSettings.DatumShiftY))
-    {
-      ShowError("DatumShiftY has not been provided in Web.config");
     }
 
     // -- Active --
@@ -592,28 +559,6 @@ public partial class Viewer : CustomStyledPage
       ShowError("PreserveOnActionChange is invalid in Web.config, must be \"target\" or \"selection\"");
     }
 
-    if (AppSettings.IdentifyPopup == null)
-    {
-      ShowError("IdentifyPopup has not been provided in Web.config");
-    }
-    else
-    {
-      if (AppSettings.IdentifyPopup != "single" && AppSettings.IdentifyPopup != "multiple")
-      {
-        ShowError("IdentifyPopup is invalid in Web.config, must be \"single\" or \"multiple\"");
-      }
-    }
-
-    if (AppSettings.IdentifyWindowWidth == Int32.MinValue)
-    {
-      ShowError("IdentifyWindowWidth has not been provided in Web.config");
-    }
-
-    if (AppSettings.IdentifyWindowHeight == Int32.MinValue)
-    {
-      ShowError("IdentifyWindowHeight has not been provided in Web.config");
-    }
-
     if (AppSettings.MarkupTimeout == Int32.MinValue)
     {
       ShowError("MarkupTimeout has not been provided in Web.config");
@@ -624,7 +569,7 @@ public partial class Viewer : CustomStyledPage
 
     // === application ===
 
-    _appState.Application = launchParams["application"];
+    _appState.Application = launchParams.ContainsKey("application") ? launchParams["application"] : AppSettings.DefaultApplication;
 
     Configuration.ApplicationRow application = _config.Application.FindByApplicationID(_appState.Application);
     Configuration.MapTabRow mapTab;
@@ -1036,6 +981,11 @@ public partial class Viewer : CustomStyledPage
 
     if (launchParams.ContainsKey("selectionids"))
     {
+      if (_appState.TargetIds.Count > 0)
+      {
+        ShowError("When providing target IDs or target parameters, selection IDs are not allowed");
+      }
+
       // a selection Layer must be available
 
       if (selectionLayer == null)
@@ -1074,7 +1024,7 @@ public partial class Viewer : CustomStyledPage
 
       if (!extent.IsNull)
       {
-        extent.ScaleBy(1.6);
+        extent.ScaleBy(1.2);
         _appState.Extent = extent;
       }
     }
@@ -1292,30 +1242,6 @@ public partial class Viewer : CustomStyledPage
       _appState.ActiveFunctionTab = functionTab;
     }
 
-    if (_appState.FunctionTabs != FunctionTab.None && _appState.ActiveFunctionTab == FunctionTab.None)
-    {
-      if ((_appState.FunctionTabs & FunctionTab.Selection) == FunctionTab.Selection)
-      {
-        _appState.ActiveFunctionTab = FunctionTab.Selection;
-      }
-      else if ((_appState.FunctionTabs & FunctionTab.Search) == FunctionTab.Search)
-      {
-        _appState.ActiveFunctionTab = FunctionTab.Search;
-      }
-      else if ((_appState.FunctionTabs & FunctionTab.Legend) == FunctionTab.Legend)
-      {
-        _appState.ActiveFunctionTab = FunctionTab.Legend;
-      }
-      else if ((_appState.FunctionTabs & FunctionTab.Location) == FunctionTab.Location)
-      {
-        _appState.ActiveFunctionTab = FunctionTab.Location;
-      }
-      else
-      {
-        _appState.ActiveFunctionTab = FunctionTab.Markup;
-      }
-    }
-
     // === markup category ===
 
     Configuration.ApplicationMarkupCategoryRow markupCategory = null;
@@ -1437,7 +1363,7 @@ public partial class Viewer : CustomStyledPage
       }
       else
       {
-        _appState.Extent.ScaleBy(1.6);
+        _appState.Extent.ScaleBy(1.2);
       }
     }
 
@@ -1675,9 +1601,6 @@ public partial class Viewer : CustomStyledPage
         y *= Constants.FeetPerMeter;
       }
 
-      x += AppSettings.DatumShiftX;
-      y += AppSettings.DatumShiftY;
-
       double dx = _appState.Extent.Width / 2;
       double dy = _appState.Extent.Height / 2;
 
@@ -1706,7 +1629,7 @@ public partial class Viewer : CustomStyledPage
         ShowError("Invalid 'scale by' value specified, must be greater than zero");
       }
 
-      _appState.Extent.ScaleBy(scaleBy / 1.6);
+      _appState.Extent.ScaleBy(scaleBy / 1.2);
     }
 
     // === tool ==
@@ -1725,7 +1648,7 @@ public partial class Viewer : CustomStyledPage
     // === printtemplate and printtitle ===
 
     string templateID = null;
-    string title = null;
+    string title = "";
 
     if (launchParams.ContainsKey("printtemplate"))
     {
@@ -1737,7 +1660,7 @@ public partial class Viewer : CustomStyledPage
       title = launchParams["printtitle"];
     }
 
-    if (title != null && templateID == null)
+    if (!String.IsNullOrEmpty(title) && templateID == null)
     {
       ShowError("When providing a print title, a print template must also be specified");
     }
@@ -1858,20 +1781,27 @@ public partial class Viewer : CustomStyledPage
 
       if (levels.Length > 0)
       {
-        labLevel.Style["display"] = "inline";
-        ddlLevel.Style["display"] = "inline";
-
-        labLevel.InnerText = levelName;
-        ddlLevel.DataSource = levels;
-        ddlLevel.DataTextField = "DisplayName";
-        ddlLevel.DataValueField = "LevelID";
-        ddlLevel.DataBind();
-
-        int index = ddlLevel.Items.Cast<ListItem>().ToList().FindIndex(o => o.Value == _appState.Level);
-
-        if (index > -1)
+        if (String.IsNullOrEmpty(_appState.Level))
         {
-          ddlLevel.SelectedIndex = index;
+          _appState.Level = levels[0].LevelID;
+        }
+
+        pnlMapLevels.Style["display"] = "inline-block";
+        selectedLevel.Attributes["title"] = levelName;
+
+        foreach (Configuration.LevelRow levelRow in levels)
+        {
+          string displayName = levelRow.IsDisplayNameNull() ? levelRow.LevelID : levelRow.DisplayName;
+
+          HtmlGenericControl li = new HtmlGenericControl("li");
+          phlMapLevel.Controls.Add(li);
+          li.InnerHtml = levelName + "&nbsp;" + displayName.Replace(" ", "&nbsp;");
+          li.Attributes["data-level"] = levelRow.LevelID;
+
+          if (_appState.Level == levelRow.LevelID)
+          {
+            selectedLevel.InnerHtml = levelName + "&nbsp;" + displayName.Replace(" ", "&nbsp;");
+          }
         }
       }
     }

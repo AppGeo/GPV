@@ -170,7 +170,7 @@ public class AppState
 				}
 
 				appState.FunctionTabs = functionTabs;
-				appState.ActiveFunctionTab = functionTabs == FunctionTab.All ? FunctionTab.Selection : functionTabs;
+        appState.ActiveFunctionTab = functionTabs == FunctionTab.All ? FunctionTab.Selection : functionTabs;
         appState.Extent = EnvelopeExtensions.FromDelimitedString((string)values.Dequeue(), Separator2);
 				break;
 
@@ -201,7 +201,7 @@ public class AppState
 				}
 
 				appState.FunctionTabs = functionTabs;
-				appState.ActiveFunctionTab = functionTabs == FunctionTab.All ? FunctionTab.Selection : functionTabs;
+        appState.ActiveFunctionTab = functionTabs == FunctionTab.All ? FunctionTab.Selection : functionTabs;
         appState.Extent = EnvelopeExtensions.FromDelimitedString((string)values.Dequeue(), Separator2);
         appState.Coordinates = CoordinatesFromString((string)values.Dequeue());
 				break;

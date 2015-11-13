@@ -14,8 +14,9 @@
 
 var GPV = (function (gpv) {
   $(function () {
-    var $map = $("#mapMain");
+    var map;
     var $container = $("#pnlSelection");
+    var $pnlDataDisplay = $("#pnlDataDisplay");
     var config = gpv.configuration;
     var appState = gpv.appState;
     var selection = gpv.selection;
@@ -75,20 +76,20 @@ var GPV = (function (gpv) {
       }
     });
 
-    var $pnlDataTabScroll = $("#pnlDataTabScroll").on("click", ".Tab", function () {
-      appState.DataTab = $(this).attr("data-datatab");
+    var $ddlDataTheme = $("#ddlDataTheme").on("change", function () {
+      var dataTab = $("#ddlDataTheme :selected").attr("data-datatab");
+      appState.DataTab = dataTab;
       fillDataList();
     });
 
     // =====  map tools  =====
 
     var $optSelect = $("#optSelect").on("click", function () {
-      gpv.selectTool($(this), { mode: "dragBox", pannable: false, shift: "dragBox", drawStyle: { strokeWidth: "2px", stroke: "Gray", fill: "White"} }, "default");
+      gpv.selectTool($(this), map, { cursor: 'default', dragging: false, boxZoom: false, drawing: { mode: 'rectangle',style: { color: '#c0c0c0', fill: true, fillColor: '#e0e0e0' } } });
     });
 
     // =====  component events
 
-    gpv.on("viewer", "mapShape", mapShape);
     gpv.on("viewer", "mapTabChanged", mapTabChanged);
     gpv.on("selection", "changed", selectionChanged);
 
@@ -247,7 +248,21 @@ var GPV = (function (gpv) {
           dataType: "html",
           success: function (html) {
             $pnlDataList.empty().append(html);
-            $cmdDataPrint.removeClass("Disabled");
+            $cmdDataPrint.removeClass("Disabled").data("printdata", [
+              "datatab=", encodeURIComponent(appState.DataTab), 
+              "&id=", encodeURIComponent(appState.ActiveDataId), 
+              "&print=1"
+            ].join(""));
+
+            $pnlDataDisplay.show();
+            $pnlDataDisplay.find("#spnDataTheme").text("Data Set");
+            $pnlDataDisplay.find("#ddlDataTheme").show();
+
+            if($pnlDataDisplay.css("right").substring(0, 1) === "-"){
+              $pnlDataDisplay.animate({ right: 0, opacity: "1.0" }, 600, function () {
+                $(".DataExit").addClass("DataExitOpen");
+              });
+            }
           },
           error: function (xhr, status, message) {
             alert(message);
@@ -328,16 +343,27 @@ var GPV = (function (gpv) {
       fillDataList();
     }
 
-    function mapShape(e, geo) {
+    function mapShape(e) {
       if ($optSelect.hasClass("Selected") && appState.TargetLayer.length > 0) {
-        var g = geo.bbox;
-        var pixelSize = $map.geomap("option", "pixelSize");
+        map.removeLayer(e.shape);
 
-        if ($.geo.width(g) <= pixelSize * 6 && $.geo.height(g) <= pixelSize * 6) {
-          g = $.geo.center(g);
+        var latLngs = e.shape.getLatLngs();
+        var p0 = map.options.crs.project(latLngs[0][0]);
+        var p1 = map.options.crs.project(latLngs[0][2]);
+        var dx = Math.abs(p0.x - p1.x);
+        var dy = Math.abs(p0.y - p1.y);
+        
+        var searchDistance = map.getProjectedPixelSize() * gpv.searchDistance();
+        var geo;
+
+        if (dx <= searchDistance && dy <= searchDistance) {
+          geo = [ (p0.x + p1.x) * 0.5, (p0.y + p1.y) * 0.5 ];
+        }
+        else {
+          geo = [ Math.min(p0.x, p1.x), Math.min(p0.y, p1.y), Math.max(p0.x, p1.x), Math.max(p0.y, p1.y) ];
         }
 
-        gpv.selection.selectByGeometry(g, e.shiftKey ? "add" : e.ctrlKey ? "remove" : "new", pixelSize * 4);
+        gpv.selection.selectByGeometry(geo, e.shiftKey ? "add" : e.ctrlKey ? "remove" : "new", searchDistance);
       }
     }
 
@@ -379,7 +405,7 @@ var GPV = (function (gpv) {
 
     function printData() {
       if (!$cmdDataPrint.hasClass("Disabled")) {
-        var data = ["datatab=", encodeURIComponent(appState.DataTab), "&id=", encodeURIComponent(appState.ActiveDataId), "&print=1"].join("");
+        var data = $cmdDataPrint.data("printdata");
         var windowName = "identify" + (new Date()).getTime();
         var features = "width=700,height=500,menubar=no,titlebar=no,toolbar=no,status=no,scrollbars=no,location=no,resizable=no";
         window.open("Identify.aspx?" + data, windowName, features, true);
@@ -498,6 +524,10 @@ var GPV = (function (gpv) {
               $("#cmdMailingLabels,#cmdExportData").addClass("Disabled");
             }
             else {
+              if ($("#pnlSelection").css("display") === "none") {
+                gpv.viewer.switchToPanel("Selection");
+              }
+
               post({
                 data: {
                   m: "GetLayerProperties",
@@ -531,7 +561,7 @@ var GPV = (function (gpv) {
     }
 
     function setDataTabs() {
-      $pnlDataTabScroll.empty();
+      $ddlDataTheme.empty();
 
       if (appState.TargetLayer) {
         var layer = config.layer[appState.TargetLayer];
@@ -546,10 +576,14 @@ var GPV = (function (gpv) {
             appState.DataTab = v.id;
           }
 
-          var mode = appState.DataTab == v.id ? "Selected" : "Normal";
-          $("<div class='Tab " + mode + "'/>").attr("data-datatab", v.id).text(v.name).appendTo($pnlDataTabScroll);
+          $("<option value='" + v.name + "' data-datatab='" + v.id + "'>" + v.name + "</option>").prop("selected", appState.DataTab === v.id).appendTo($ddlDataTheme);
         });
       }
+    }
+
+    function setMap(m) {
+      map = m;
+      map.on("shapedrawn", mapShape);
     }
 
     function syncAppState($ddl, prop) {
@@ -557,7 +591,7 @@ var GPV = (function (gpv) {
 
       if ($ddl.val() != appState[prop]) {
         if ($ddl.find("option").length) {
-          $ddl.attr("selectedIndex", 0);
+          $ddl.prop("selectedIndex", 0);
           appState[prop] = $ddl.val();
         }
         else {
@@ -588,7 +622,8 @@ var GPV = (function (gpv) {
     gpv.selectionPanel = {
       gridFilled: function (fn) { gridFilledHandlers.push(fn); },
       reinitialize: reinitialize,
-      reinitialized: function (fn) { reinitializedHandlers.push(fn); }
+      reinitialized: function (fn) { reinitializedHandlers.push(fn); },
+      setMap: setMap
     };
 
     initialize();

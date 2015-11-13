@@ -50,12 +50,12 @@ public partial class Admin_CheckConfiguration : CustomStyledPage
 
       LayoutColumns();
 
-      int errorCount = WriteWebConfigBlock();
-
       Configuration config = Configuration.GetCurrent();
       config.CascadeDeactivated();
       config.RemoveDeactivated();
       config.ValidateConfiguration();
+
+      int errorCount = WriteWebConfigBlock(config);
 
       errorCount += WriteReportBlock(config.Application, "ApplicationID", null);
       errorCount += WriteReportBlock(config.ApplicationMapTab, "ApplicationID", "MapTabID");
@@ -170,10 +170,16 @@ public partial class Admin_CheckConfiguration : CustomStyledPage
     td.Height = "0px";
   }
 
-  private int WriteWebConfigBlock()
+  private int WriteWebConfigBlock(Configuration config)
   {
     List<String> name = new List<String>();
     List<String> message = new List<String>();
+
+    // check DefaultApplication
+
+    name.Add("DefaultApplication");
+    bool hasApplication = !String.IsNullOrEmpty(AppSettings.DefaultApplication) && config.Application.Any(o => String.Compare(o.ApplicationID, AppSettings.DefaultApplication, true) == 0);
+    message.Add(!hasApplication ? "Not set to a valid application ID" : null);
 
     // check FullExtent and ZoomLevel
 
@@ -231,14 +237,6 @@ public partial class Admin_CheckConfiguration : CustomStyledPage
     name.Add("FalseNorthing");
     message.Add(CheckIsSet(AppSettings.GetConfigDouble("FalseNorthing")));
 
-    // check datum shift
-
-    name.Add("DatumShiftX");
-    message.Add(CheckIsSet(AppSettings.GetConfigDouble("DatumShiftX")));
-
-    name.Add("DatumShiftY");
-    message.Add(CheckIsSet(AppSettings.GetConfigDouble("DatumShiftY")));
-
     // check highlight colors, opacities and sizes
     
     values = new List<String>(new string[] { "fill", "outline" });
@@ -289,16 +287,6 @@ public partial class Admin_CheckConfiguration : CustomStyledPage
     name.Add("ExportFormat");
     values = new List<String>(new string[] { "csv", "xls" });
     message.Add(CheckInValues(AppSettings.ExportFormat, values));
-
-    name.Add("IdentifyPopup");
-    values = new List<String>(new string[] { "single", "multiple" });
-    message.Add(CheckInValues(AppSettings.IdentifyPopup, values));
-
-    name.Add("IdentifyWindowWidth");
-    message.Add(CheckGreaterThanZero(AppSettings.IdentifyWindowWidth));
-
-    name.Add("IdentifyWindowHeight");
-    message.Add(CheckGreaterThanZero(AppSettings.IdentifyWindowHeight));
 
     name.Add("MarkupTimeout");
     message.Add(CheckGreaterThanZero(AppSettings.MarkupTimeout));

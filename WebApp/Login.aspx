@@ -24,6 +24,9 @@
 <head id="head" runat="server">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>General Purpose Viewer - Login</title>
+  <link href="Styles/Common.css" type="text/css" rel="stylesheet" />
+  <link href="Styles/Customize.css" type="text/css" rel="stylesheet" />
+  <link href="Styles/Login.css" type="text/css" rel="stylesheet" />
 </head>
 <body id="body" runat="server">
   <div id="pnlBody" data-role="page">
@@ -34,7 +37,8 @@
           <div style="margin-left: 20px; margin-top: 20px">
             <asp:Login ID="Login1" runat="server" OnAuthenticate="Login1_Authenticate"
               DisplayRememberMe="False" PasswordLabelText="Password" UserNameLabelText="User Name" TitleText="">
-              <TextBoxStyle CssClass="TextBox" />
+              <TextBoxStyle CssClass="Input" />
+              <LabelStyle CssClass="Label" />
               <LoginButtonStyle CssClass="LoginButton" />
               <FailureTextStyle CssClass="Error" />
               <ValidatorTextStyle CssClass="Error" />

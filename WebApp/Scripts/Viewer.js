@@ -14,346 +14,389 @@
 
 var GPV = (function (gpv) {
   $(function () {
-    var metersPerFoot = 0.3048;
-    var zoomFactor = 1.414213562373095;
     var appState = gpv.appState;
 
-    var $map = $("#mapMain");
+    var fullExtent = L.Bounds.fromArray(gpv.configuration.fullExtent);
+    var resizeHandle;
+    var redrawPost;
 
-    var fullExtent = gpv.configuration.fullExtent;
-    var previousExtents = [];
-    var zoomPreviousClicked = false;
-    var defaultDrawStyle = { width: "0px", height: "0px", strokeWidth: "2px", stroke: "Gray", fill: "White", fillOpacity: 0.5 };
+    var $mapOverview = $("#mapOverview");
+    var $locatorBox = $("#locatorBox");
+    var overviewMapHeight = null;
+    var overviewMapWidth = null;
+    var locatorPanning = false;
+    var overviewExtent;
 
     var mapTabChangedHandlers = [];
     var functionTabChangedHandlers = [];
     var extentChangedHandlers = [];
-    var mapShapeHandlers = [];
+    var mapRefreshedHandlers = [];
+
+    var panelAnimationTime = 400;
 
     // =====  controls required prior to map control creation  =====
 
-    var $tboScale = $("#tboScale");
-
-    if ($tboScale.val()) {
-      var initialExtent = appState.Extent.bbox;
-      initialExtent = $.geo.scaleBy(initialExtent, parseInt($tboScale.val(), 10) / getScaleFor(initialExtent));
-      appState.Extent.bbox = initialExtent;
-    }
-
-    var $ddlExternalMap = $("#ddlExternalMap").on("change", setExternalMap);
+    var $pnlDataDisplay = $("#pnlDataDisplay");
 
     // =====  map control  =====
 
-    $.geo.length = function (geo) {
-      var c = geo.coordinates;
-      var d = 0, dx, dy;
+    var maxZoom = gpv.settings.zoomLevels - 1;
+    var resolutions = [ 0.25 * Math.pow(2, maxZoom) ];
 
-      for (var i = 1; i < c.length; ++i) {
-        dx = c[i][0] - c[i - 1][0];
-        dy = c[i][1] - c[i - 1][1];
-        d += Math.sqrt(dx * dx + dy * dy)
-      };
+    for (var i = 0; i < maxZoom; ++i) {
+      resolutions.push(resolutions[i] * 0.5);
+    }
 
-      var t = [];
-
-      if (gpv.settings.measureUnits != "meters") {
-        var ft = d / (gpv.settings.mapUnits == "feet" ? 1 : metersPerFoot);
-        t.push(d < 5280 ? ft.format() + " ft" : (ft / 5280).format(1) + " mi");
-      }
-
-      if (gpv.settings.measureUnits != "feet") {
-        var m = d * (gpv.settings.mapUnits == "feet" ? metersPerFoot : 1);
-        t.push(m < 1000 ? m.format() + " m" : (m / 1000).format(1) + " km");
-      }
-
-      return t.join("<br/>");
-    };
-
-    $.geo.area = function (shape) {
-      var c = shape.coordinates[0];
-      var a = 0;
-
-      if (c.length > 2) {
-        var oy = c[0][1] * 2;
-
-        for (var i = 1; i < c.length; ++i) {
-          a += (c[i][0] - c[i - 1][0]) * (c[i][1] + c[i - 1][1] - oy);
-        }
-      }
-
-      if (a != 0) {
-        a = Math.abs(a * 0.5);
-      }
-
-      var t = [];
-      var acres;
-
-      if (gpv.settings.measureUnits != "meters") {
-        var u = gpv.settings.mapUnits == "feet" ? 1 : metersPerFoot;
-        var sf = a / (u * u);
-        t.push(sf <= 27878400 ? sf.format() + " sq ft" : (sf / 27878400).format(2) + " sq mi");
-        acres = sf / 43560;
-      }
-
-      if (gpv.settings.measureUnits != "feet") {
-        var u = gpv.settings.mapUnits == "feet" ? metersPerFoot : 1;
-        var sm = a * (u * u);
-        t.push(sm <= 1000000 ? sm.format() + " sq m" : (sm / 1000000).format(2) + " sq km");
-      }
-
-      if (gpv.settings.measureUnits != "meters") {
-        t.push(acres.format(2) + " acres");
-      }
-
-      return t.join("<br/>");
-    };
-
-    $map.geomap({
-      bbox: appState.Extent.bbox,
-      bboxMax: fullExtent,
-      services: [
-        {
-          type: "shingled",
-          src: refreshMap
-        }
-      ],
-      measureLabels: {
-        length: "{{:length!}}",
-        area: "{{:area!}}"
-      },
-      drawStyle: defaultDrawStyle,
-      tilingScheme: null,
-      shape: mapShape,
-      loadstart: gpv.waitClock.start,
-      loadend: gpv.waitClock.finish
+    var crs = new L.Proj.CRS("GPV:1", gpv.settings.coordinateSystem, {
+      resolutions: resolutions
     });
+
+    crs.distance = function (a, b) {
+      a = crs.project(a);
+      b = crs.project(b);
+      var dx = a.x - b.x;
+      var dy = a.y - b.y;
+      return Math.sqrt(dx * dx + dy * dy) * (gpv.settings.mapUnits === "feet" ? 0.3048 : 1);
+    };
+
+    var map = L.map("mapMain", {
+      crs: crs,
+      maxZoom: maxZoom,
+      drawing: {
+        mode: 'off',
+        style: {
+          color: '#808080',
+          weight: 2,
+          opacity: 1,
+          fill: true,
+          fillColor: '#808080',
+          fillOpacity: 0.5
+        },
+        text: {
+          className: 'MarkupText',
+          color: '#FF0000'
+        }
+      }
+    });
+
+    map.on("click", identify);
+
+    var shingleLayer = L.shingleLayer({ urlBuilder: refreshMap }).on("shingleload", function () {
+      gpv.progress.clear();
+      updateOverviewExtent();
+
+      $.each(mapRefreshedHandlers, function () {
+        this();
+      });
+    }).addTo(map);
+
+    if (gpv.settings.showScaleBar) {
+      L.control.scale({
+        imperial: gpv.settings.measureUnits !== "meters",
+        metric: gpv.settings.measureUnits !== "feet"
+      }).addTo(map);
+    }
+
+    var fullViewTool = L.Control.extend({
+      options: {
+        position: 'topleft'
+      },
+      onAdd: function ($map) {
+        var button = L.DomUtil.create('div', 'mapButton');
+        $(button).attr('id', 'cmdFullView');
+        $(button).attr('title', 'Full Extent');
+        $(button).html('<span class="glyphicon glyphicon-globe"></span>');
+        return button;
+      }
+    });
+
+    var locationTool = L.Control.extend({
+      options: {
+        position: 'topleft'
+      },
+      onAdd: function ($map) {
+        var button = L.DomUtil.create('div', 'mapButton');
+        $(button).attr('id', 'cmdLocation');
+        $(button).attr('title', 'Current Location');
+        $(button).html('<span class="glyphicon glyphicon-screenshot"></span>');
+        return button;
+      }
+    });
+
+    map.addControl(new fullViewTool())
+       .addControl(new locationTool());
+
+    gpv.mapTip.setMap(map);
+    gpv.selectionPanel.setMap(map);
+    gpv.markupPanel.setMap(map);
+    gpv.sharePanel.setMap(map);
 
     // =====  control events  =====
+    
+    $(window).on("resize", function () {
+      if (resizeHandle) {
+        clearTimeout(resizeHandle);
+      }
 
-    $("#cmdClearGraphics").on("click", function () {
-      appState.Coordinates = [];
-      appState.CoordinateLabels = [];
-      $map.geomap("refresh");
-    });
-
-    $("#cmdEmail").on("click", function () {
-      gpv.post({
-        url: "Services/SaveAppState.ashx",
-        data: {
-          state: appState.toJson()
-        },
-        success: function (result) {
-          if (result && result.id) {
-            var loc = document.location;
-            var url = [loc.protocol, "//", loc.hostname, loc.port.length && loc.port != "80" ? ":" + loc.port : "", loc.pathname, "?state=", result.id];
-            loc.href = "mailto:?subject=Map&body=" + encodeURIComponent(url.join(""));
-          }
-        }
-      });
+      resizeHandle = setTimeout(function () {
+        resizeHandle = undefined;
+        shingleLayer.redraw();
+      }, 250);
     });
 
     $("#cmdFullView").on("click", function () {
-      $map.geomap("option", "bbox", fullExtent);
+      zoomToFullExtent();
     });
 
-    $("#cmdHelp").on("click", function () {
+    $("#cmdLocation").on("click", function () {
+      if (navigator && navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (pos) {
+          var latlng = L.latLng(pos.coords.latitude, pos.coords.longitude);
+          map.setView(latlng, maxZoom - 2);
+        }, showGpsError);
+      }
+      else {
+        showGpsError();
+      }
+    }).popover({
+      content: 'GPS is not enabled on this device',
+      delay: { show: 500, hide: 500 },
+      placement: 'right',
+      trigger: 'manual'
     });
 
-    $("#cmdMobile").on("click", function () {
-      window.location.href = "MobileViewer.aspx?application=" + appState.Application + "&maptab=" + appState.MapTab + "&extent=" + appState.Extent.bbox.join(",");
+    $("#cmdMenu").on("click", function () {
+      var hide = $("#pnlFunctionSidebar").css("left") === "0px";
+      $("#pnlFunctionSidebar").animate({ left: hide ? "-400px" : "0px" }, { duration: 800 });
+      $("#pnlMapSizer").animate({ left: hide ? "0px" : "400px" }, { 
+          duration: 800,
+          progress: function () {
+            map.invalidateSize();
+          },
+          complete: function () {
+            map.invalidateSize();
+            shingleLayer.redraw();
+          }
+      });
     });
 
-    $("#cmdPrint").on("click", function () {
-      var $form = $("#frmPrint");
-      $form.find('[name="state"]').val(appState.toJson());
-      $form.find('[name="width"]').val($map.width());
-      $form.submit();
-    });
-
-    $("#cmdSaveMap").on("click", function () {
-      var $form = $("#frmSaveMap");
-      $form.find('[name="m"]').val($("#ddlSaveMap").val() == "image" ? "SaveMapImage" : "SaveMapKml");
-      $form.find('[name="state"]').val(appState.toJson());
-      $form.find('[name="width"]').val($map.width());
-      $form.find('[name="height"]').val($map.height());
-      $form.submit();
-    });
-
-    $("#cmdZoomPrevious").on("click", function () {
-      if (previousExtents.length) {
-        zoomPreviousClicked = true;
-        $map.geomap("option", "bbox", previousExtents.pop());
+    $("#cmdShowDetails").on("click", function () {
+      if ($pnlDataDisplay.css("right").substring(0, 1) === "-") {
+        $pnlDataDisplay.show();
+        $pnlDataDisplay.animate({ right: 0, opacity: "1.0" }, 600, function () {
+          $(".DataExit").addClass("DataExitOpen");
+        });
+      }
+      else {
+        $(".DataHeader").trigger("click");
       }
     });
 
     $("#cmdZoomSelect").on("click", function () {
-      zoomToSelection(1.6);
+      zoomToSelection(1.2);
     });
 
-    var $ddlLevel = $("#ddlLevel").on("change", function () {
-      appState.Level = $(this).val();
-      $map.geomap("refresh");
+    $(".DataHeader").on("click", function () {
+      var width = "-" + $pnlDataDisplay.css("width");
+      $pnlDataDisplay.animate({ right: width, opacity: "0" }, 600, function () {
+        $(".DataExit").removeClass("DataExitOpen");
+        $pnlDataDisplay.hide();
+      });
     });
 
-    $("#pnlMapTabs .Tab").on("click", function () {
-      var mapTab = $(this).attr("data-maptab");
-      appState.MapTab = mapTab;
-      triggerMapTabChanged();
-      $map.geomap("refresh");
+    $(".FunctionHeader").on("click", function () {
+      hideFunctionPanel(showFunctionMenu);
     });
 
-    $("#pnlFunctionTabs .Tab").on("click", function () {
-      $(".FunctionPanel").hide();
+    $("#cmdOverview").on("click", function () {
+      if ($("#mapOverview").css("background-image") === "none") {
+        $("#pnlOverview").removeClass("overviewInitial").addClass("overviewMap");
+        $("#iconOverview").addClass('iconOpen');
+        overviewMapHeight = $("#pnlOverview").height();
+        overviewMapWidth = $("#pnlOverview").width();
+        $mapOverview = $("#mapOverview");
+        moveAttribution(0.3, -(overviewMapWidth - 30));
+        overviewExtent = fullExtent.fit($mapOverview.width(), $mapOverview.height());
+        setOverviewMap();
+        updateOverviewExtent();
+      }
+      else {
+        if ($("#iconOverview").hasClass("iconOpen")) {
+          $("#pnlOverview").animate({ height: "26px", width: "26px" }, 600, function () {
+            $("#iconOverview").removeClass('iconOpen');
+          });
+          moveAttribution(1, 0);
+        }
+        else {
+          $("#pnlOverview").animate({ height: overviewMapHeight + "px", width: overviewMapWidth + "px" }, 600, function () {
+            $("#iconOverview").addClass('iconOpen');
+            updateOverviewExtent();
+          });
+          moveAttribution(0.75, -(overviewMapWidth - 30));
+        }
+      }
+    });
+
+    $(".MenuItem").on("click", function(){
       var name = $(this).text();
-      $("#pnl" + name).show();
+      
+      hideFunctionMenu(function () { showFunctionPanel(name); });
 
       $.each(functionTabChangedHandlers, function () {
         this(name);
       });
     });
 
-    $tboScale.on("keydown", function (e) {
-      if (e.keyCode == 13) {
-        setMapScale();
-      };
-    }).on("keypress", function (e) {
-      var keyCode = e.keyCode ? e.keyCode : e.charCode;
+    $("#selectMapTheme li").click(function () {
+      $("#selectedTheme").html($(this).html());
+      var mapTab = $(this).attr("data-maptab");
+      appState.MapTab = mapTab;
+      triggerMapTabChanged();
+      shingleLayer.redraw();
+    });
 
-      if (!(48 <= keyCode && keyCode <= 57)) {
-        return false;
-      }
-    }).on("blur", setMapScale);
+    $("#selectMapLevel li").click(function () {
+      $("#selectedLevel").html($(this).html());
+      appState.Level = $(this).attr("data-level");
+      shingleLayer.redraw();
+    });
 
     // =====  map tools  =====
 
+    $("#selectMapTools li").click(function () {
+      if (!$(this).hasClass('Disabled')) {
+        $("#selectedTool").html($(this).html());
+      }
+    });
+
     var $MapTool = $(".MapTool");
 
-    $("#optCoordinates").on("click", function () {
-      gpv.selectTool($(this), { mode: "drawPoint", pannable: false, drawStyle: { strokeWidth: "0px"} }, "crosshair");
-    });
-
     $("#optIdentify").on("click", function () {
-      gpv.selectTool($(this), { mode: "drawPoint", pannable: false, drawStyle: { strokeWidth: "0px"} }, "default");
-    });
-
-    $("#optMeasureArea").on("click", function () {
-      gpv.selectTool($(this), { mode: "measureArea", pannable: false, drawStyle: { stroke: "Green", fill: "#C0FFC0", fillOpacity: 0.75} });
-    });
-
-    $("#optMeasureLine").on("click", function () {
-      gpv.selectTool($(this), { mode: "measureLength", pannable: false, drawStyle: { stroke: "Green"} });
+      gpv.selectTool($(this), map, { cursor: 'default', drawing: { mode: 'off' } });
     });
 
     $("#optPan").on("click", function () {
-      gpv.selectTool($(this), { mode: "pan", pannable: true, drawStyle: defaultDrawStyle });
+      gpv.selectTool($(this), map, { cursor: '', drawing: { mode: 'off' } });
     });
 
-    $("#optZoomIn").on("click", function () {
-      gpv.selectTool($(this), { mode: "zoom", pannable: false, drawStyle: defaultDrawStyle });
-    });
 
     // =====  component events  =====
-
-    gpv.on("resize", "mapResized", function () {
-      $map.geomap("resize");
-    });
 
     gpv.on("selection", "changed", function (truncated, scaleBy) {
       if (scaleBy) {
         zoomToSelection(scaleBy);
       }
       else {
-        $map.geomap("refresh");
+        shingleLayer.redraw();
       }
-    });
-
-    gpv.on("zoomBar", "levelChanged", function (level) {
-      var extent = reaspectExtent(fullExtent);
-      extent = $.geo.scaleBy(extent, 1 / Math.pow(zoomFactor, level - 1));
-      extent = recenterExtent(extent, $.geo.center(appState.Extent.bbox));
-      $map.geomap("option", "bbox", extent);
     });
 
     // =====  private functions  =====
 
-    function getScaleFor(extent) {
-      var scale = $.geo.width(reaspectExtent(extent)) * 96 / $map.width();
-      return gpv.settings.mapUnits == "meters" ? scale /= metersPerFoot : scale;
+    function hideFunctionMenu(callback) {
+      $("#pnlFunctionTabs").animate({ left: "-400px", opacity: "0" }, panelAnimationTime, callback);
     }
 
-    function mapShape(e, geo) {
-      switch ($MapTool.filter(".Selected").attr("id")) {
-        case "optCoordinates":
-          appState.Coordinates.push({ coordinates: geo.coordinates });
-          appState.CoordinateLabels.push("1");
-          $map.geomap("refresh");
-          return;
+    function hideFunctionPanel(callback) {
+      $("#pnlFunction").animate({ left: "-400px", opacity: "0" }, panelAnimationTime, callback);
+    }
 
-        case "optIdentify":
-          var data = ["maptab=", appState.MapTab, "&visiblelayers=", encodeURIComponent(gpv.legendPanel.getVisibleLayers(appState.MapTab).join("\x01")),
-            "&level=", appState.Level, "&x=", geo.coordinates[0], "&y=", geo.coordinates[1], "&distance=4",
-            "&scale=", $map.geomap("option", "pixelSize")].join("");
+    function identify(e) {
+      if ($MapTool.filter(".Selected").attr("id") === "optIdentify") {
+        var visibleLayers = gpv.legendPanel.getVisibleLayers(appState.MapTab);
 
-          var windowName = "identify";
-          var settings = gpv.settings;
+        if (visibleLayers.length) {
+          var p = map.options.crs.project(e.latlng);
 
-          if (settings.identifyPopup == "multiple") {
-            windowName += (new Date()).getTime();
-          }
+          $.ajax({
+            url: "Services/MapIdentify.ashx",
+            data: {
+              maptab: appState.MapTab,
+              visiblelayers: visibleLayers.join("\x01"),
+              level: appState.Level,
+              x: p.x,
+              y: p.y,
+              distance: gpv.searchDistance(),
+              scale: map.getProjectedPixelSize()
+            },
+            type: "POST",
+            dataType: "html",
+            success: function (html) {
+              $("#pnlDataList").empty().append(html);
+              $("#cmdDataPrint").removeClass("Disabled").data("printdata", [
+                "maptab=", encodeURIComponent(appState.MapTab), 
+                "&visiblelayers=", encodeURIComponent(visibleLayers.join("\x01")),
+                "&level=", appState.Level, 
+                "&x=", p.x, 
+                "&y=", p.y, 
+                "&distance=", gpv.searchDistance(),
+                "&scale=", map.getProjectedPixelSize(),
+                "&print=1"
+              ].join(""));
 
-          var features = "width=" + settings.identifyWindowWidth + ",height=" + settings.identifyWindowHeight + ",menubar=no,titlebar=no,toolbar=no,status=no,scrollbars=yes,location=yes,resizable=yes";
-          window.open("Identify.aspx?" + data, windowName, features, true);
-          return;
+              var $pnlDataDisplay = $("#pnlDataDisplay");
+
+              $pnlDataDisplay.show();
+              $pnlDataDisplay.find("#spnDataTheme").text("Identify");
+              $pnlDataDisplay.find("#ddlDataTheme").hide();
+
+              if ($pnlDataDisplay.css("right").substring(0, 1) === "-") {
+                $pnlDataDisplay.animate({ right: 0, opacity: "1.0" }, 600, function () {
+                  $(".DataExit").addClass("DataExitOpen");
+                });
+              }
+            },
+            error: function (xhr, status, message) {
+              alert(message);
+            }
+          });
+        }
       }
+    }
 
-      $.each(mapShapeHandlers, function () {
-        this(e, geo);
+    function moveAttribution(interval, xTranslation) {
+      interval += "s";
+      xTranslation = "translate(" + xTranslation + "px)";
+
+      $("div.leaflet-control-attribution.leaflet-control").css({
+        "transition": interval,
+        "-webkit-transition": interval,
+        "-moz-transition": interval, 
+        "transform": xTranslation,
+        "-webkit-transform": xTranslation,
+        "-moz-transform": xTranslation,
+        "-ms-transform": xTranslation
       });
     }
 
-    function reaspectExtent(extent, ratio) {
-      if (!ratio) {
-        ratio = $map.width() / $map.height();
-      }
-
-      return $.geo.reaspect(extent, ratio);
-    }
-
-    function recenterExtent(extent, p) {
-      var c = $.geo.center(extent);
-      var dx = p[0] - c[0];
-      var dy = p[1] - c[1];
-      return [extent[0] + dx, extent[1] + dy, extent[2] + dx, extent[3] + dy];
-    }
-
-    function refreshMap(view) {
-      var same = sameBox(appState.Extent.bbox, view.bbox);
-      appState.Extent.bbox = view.bbox;
-      setZoomBarLevel();
-      showMapScale();
-      setExternalMap();
+    function refreshMap(size, bbox, callback) {
+      var same = sameBox(appState.Extent.bbox, bbox);
+      appState.Extent.bbox = bbox;
+      appState.VisibleLayers[appState.MapTab] = gpv.legendPanel.getVisibleLayers(appState.MapTab);
 
       if (!same) {
-        if (!zoomPreviousClicked) {
-          previousExtents.push(appState.Extent.bbox);
-        }
-
         $.each(extentChangedHandlers, function () {
-          this(view.bbox);
+          this(bbox);
         });
       }
 
-      zoomPreviousClicked = false;
-      appState.VisibleLayers[appState.MapTab] = gpv.legendPanel.getVisibleLayers(appState.MapTab);
+      if (redrawPost && redrawPost.readyState !== 4) {
+        redrawPost.abort();
+      }
 
-      return gpv.post({
+      gpv.progress.start();
+
+      redrawPost = gpv.post({
         url: "Services/MapImage.ashx",
         data: {
           m: "MakeMapImage",
           state: appState.toJson(),
-          width: parseInt(view.width, 10),
-          height: parseInt(view.height, 10)
+          width: size.x,
+          height: size.y
         }
+      }).done(function (url) {
+        redrawPost = null;
+        callback(url);
       });
     }
 
@@ -361,60 +404,39 @@ var GPV = (function (gpv) {
       return a[0] == b[0] && a[1] == b[1] && a[2] == b[2] && a[3] == b[3];
     }
 
-    function setExternalMap() {
-      var externalName = $ddlExternalMap.val();
-      var cmd = $("#cmdExternalMap");
-      var extent = reaspectExtent(appState.Extent.bbox);
+    function setExtent(extent) {
+      showLevel();
+      map.fitProjectedBounds(L.Bounds.fromArray(extent));
+      return map.getProjectedBounds().toArray();
+    }
 
-      if (!externalName || !extent) {
-        cmd.attr("href", "#").addClass("Disabled");
-        return;
-      }
+    function showFunctionMenu() {
+      $("#pnlFunctionTabs").animate({ left: "12px", opacity: "1.0" }, panelAnimationTime);
+      $(".share").hide();
+      $(".FunctionExit").removeClass("FunctionExitOpen");
+    }
 
-      gpv.post({
-        url: "Services/ExternalMap.ashx",
-        data: {
-          name: externalName,
-          minx: extent[0],
-          miny: extent[1],
-          maxx: extent[2],
-          maxy: extent[3],
-          pixelSize: $map.geomap("option", "pixelSize")
-        },
-        success: function (result) {
-          if (result && result.url) {
-            cmd.attr("href", result.url).removeClass("Disabled");
-          }
-        }
+    function showFunctionPanel(name) {
+      $(".FunctionPanel").hide();
+      $("#pnl" + name).show();
+      $("#pnlFunction").animate({ left: "0px", opacity: "1.0" }, panelAnimationTime, function () {
+        $(".FunctionExit").addClass("FunctionExitOpen");
       });
     }
 
-    function setMapScale() {
-      var currentScale = getScaleFor(appState.Extent.bbox)
-      var newScale = parseInt($tboScale.val(), 10);
+    function showLevel() {
+      var $li = $("#selectMapLevel li[data-level=\"" + appState.Level + "\"]");
+      $("#selectedLevel").html($li.html());
+    }
 
-      if (!newScale) {
-        $tboScale.val(currentScale);
+    function switchToPanel(name) {
+      if (parseInt($("#pnlFunctionTabs").css("left"), 10) >= 0) {
+        hideFunctionMenu(function () { showFunctionPanel(name); });
       }
       else {
-        $map.geomap("option", "bbox", $.geo.scaleBy(appState.Extent.bbox, newScale / currentScale));
+        hideFunctionPanel(function () { showFunctionPanel(name); });
       }
     }
-
-    function setZoomBarLevel() {
-      var ratio = $map.width() / $map.height();
-      var extent = reaspectExtent(appState.Extent.bbox, ratio);
-      var extentMax = reaspectExtent(fullExtent, ratio);
-      var level = Math.round(Math.log($.geo.width(extentMax) / $.geo.width(extent)) / Math.log(zoomFactor)) + 1;
-      gpv.zoomBar.setLevel(level);
-    }
-
-    function showMapScale() {
-      var scale = Math.round(getScaleFor(appState.Extent.bbox))
-      $tboScale.val(scale);
-      $("#scaleBarText").text(scale + " ft");
-    }
-
 
     function triggerMapTabChanged() {
       $.each(mapTabChangedHandlers, function () {
@@ -425,36 +447,134 @@ var GPV = (function (gpv) {
     function zoomToActive() {
       gpv.selection.getActiveExtent(function (bbox) {
         if (bbox) {
-          $map.geomap("option", "bbox", $.geo.scaleBy(bbox, 1.6));
+          map.fitProjectedBounds(L.Bounds.fromArray(bbox).pad(1.2));
         }
       });
+    }
+
+    function zoomToFullExtent() {
+      map.fitProjectedBounds(fullExtent);
     }
 
     function zoomToSelection(scaleBy) {
       gpv.selection.getSelectionExtent(function (bbox) {
         if (bbox) {
-          $map.geomap("option", "bbox", $.geo.scaleBy(bbox, scaleBy));
+          map.fitProjectedBounds(L.Bounds.fromArray(bbox).pad(scaleBy));
         }
       });
+    }
+
+    // =====  overvew map  =====
+
+    $("#locatorBox,#locatorBoxFill").mousedown(function (e) {
+      e.preventDefault();
+    });
+
+    $mapOverview.mousedown(function (e) {
+      locatorPanning = true;
+      panLocatorBox(e);
+    });
+
+    $mapOverview.mousemove(function (e) {
+      if (locatorPanning) {
+        panLocatorBox(e);
+      }
+    });
+
+    $mapOverview.mouseup(function (e) {
+      if (locatorPanning) {
+        panLocatorBox(e);
+        locatorPanning = false;
+
+        var x = e.pageX - $mapOverview.offset().left;
+        var y = e.pageY - $mapOverview.offset().top;
+
+        x = (x * overviewExtent.getSize().x / $mapOverview.width()) + overviewExtent.min.x;
+        y = overviewExtent.max.y - (y * overviewExtent.getSize().y / $mapOverview.height());
+
+        map.panTo(map.options.crs.unproject(L.point(x, y)));
+      }
+    });
+
+    $mapOverview.mouseleave(function () {
+      locatorPanning = false;
+    });
+
+    function setOverviewMap() {
+      var url = "Services/MapImage.ashx?" + $.param({
+        m: "GetOverviewImage",
+        application: appState.Application,
+        width: $mapOverview.width(),
+        height: $mapOverview.height(),
+        bbox: overviewExtent.toArray()
+      });
+
+      $mapOverview.css("backgroundImage", "url(" + url + ")");
+    }
+
+    function panLocatorBox(e) {
+      var x = e.pageX - $mapOverview.offset().left;
+      var y = e.pageY - $mapOverview.offset().top;
+      var left = Math.round(x - $locatorBox.width() * 0.5) - 2;
+      var top = Math.round(y - $locatorBox.height() * 0.5) - 2;
+      $locatorBox.css({ left: left + "px", top: top + "px" });
+    }
+
+    function updateOverviewExtent() {
+      if (!$("#iconOverview").hasClass('iconOpen') || locatorPanning) {
+        return;
+      }
+
+      function toScreenX(x) {
+        return Math.round($mapOverview.width() * (x - overviewExtent.min.x) / overviewExtent.getSize().x);
+      }
+
+      function toScreenY(y) {
+        return Math.round($mapOverview.height() * (overviewExtent.max.y - y) / overviewExtent.getSize().y);
+      }
+
+      var extent = map.getProjectedBounds();
+
+      var left = toScreenX(extent.min.x);
+      var top = toScreenY(extent.max.y);
+      var right = toScreenX(extent.max.x);
+      var bottom = toScreenY(extent.min.y);
+      var width = $mapOverview.width();
+      var height = $mapOverview.height();
+
+      $locatorBox.css({ left: left - 2 + "px", top: top - 2 + "px", width: right - left + "px", height: bottom - top + "px" });
+    }
+
+    function showGpsError() {
+      $("#cmdLocation").popover('show');
+
+      setTimeout(function () {
+        $("#cmdLocation").popover('hide');
+      }, 2000);
     }
 
     // =====  public interface  =====
 
     gpv.viewer = {
       extentChanged: function (fn) { extentChangedHandlers.push(fn); },
-      getExtent: function () { return $map.geomap("option", "bbox"); },
+      mapRefreshed: function (fn) { mapRefreshedHandlers.push(fn); },
+      getExtent: function () { return map.getProjectedBounds().toArray(); },
       functionTabChanged: function (fn) { functionTabChangedHandlers.push(fn); },
-      mapShape: function (fn) { mapShapeHandlers.push(fn); },
       mapTabChanged: function (fn) { mapTabChangedHandlers.push(fn); },
-      refreshMap: function () { $ddlLevel.val(appState.Level); $map.geomap("refresh"); },
-      setExtent: function (extent) { $ddlLevel.val(appState.Level); return $map.geomap("option", "bbox", extent); },
+      refreshMap: function () { showLevel(); shingleLayer.redraw(); },
+      setExtent: setExtent,
+      switchToPanel: switchToPanel,
       zoomToActive: zoomToActive
     };
 
     // =====  finish initialization  =====
 
-    gpv.loadComplete();
+    map.fitProjectedBounds(L.Bounds.fromArray(gpv.appState.Extent.bbox));
 
+    //need to add title attribute due to bootstrap overwriting title with popover
+    $("#cmdLocation").attr("title", "Current Location");
+
+    gpv.loadComplete();
     $MapTool.filter(".Selected").trigger("click");
     triggerMapTabChanged();
   });

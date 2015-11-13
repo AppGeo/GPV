@@ -25,25 +25,7 @@ public partial class Login : CustomStyledPage
 {
   protected void Page_Init(object sender, EventArgs e)
   {
-    if (Request.RawUrl.ToLower().Contains("mobileviewer.aspx"))
-    {
-      AddStylesheet("Styles/Mobile/jquery.mobile-1.1.1.min.css");
-      AddStylesheet("Styles/Mobile/Mobile.css");
-      AddScriptReference("Scripts/jquery-1.7.2.min.js");
-      AddScriptReference("Scripts/Mobile/jquery.mobile-1.1.1.min.js");
-      AddScript("$('#pnlBody').bind('pagecreate', function () { $('#Form1').attr('data-ajax', 'false'); $('td').css('padding-right', '10pt'); });");
-      Header1.Visible = false;
-      h1.Visible = true;
-    }
-    else
-    {
-      AddStylesheet("Styles/Common.css");
-      AddStylesheet("Styles/Customize.css");
-      AddStylesheet("Styles/Login.css");
-    }
-
-    Login1.UserName = AppAuthentication.GetAdminUserName();
-    string script = String.Format("document.getElementById(\"{0}_{1}\").focus()", Login1.ClientID, String.IsNullOrEmpty(Login1.UserName) ? "UserName" : "Password");
+    string script = String.Format("document.getElementById(\"{0}_UserName\").focus()", Login1.ClientID);
     ClientScript.RegisterStartupScript(typeof(Login), "focus", script, true);
   }
 
@@ -54,28 +36,5 @@ public partial class Login : CustomStyledPage
   protected void Login1_Authenticate(object sender, AuthenticateEventArgs e)
   {
     e.Authenticated = AppAuthentication.FormsAuthenticate(Login1.UserName, Login1.Password);
-  }
-
-  private void AddStylesheet(string stylesheet)
-  {
-    HtmlGenericControl link = new HtmlGenericControl("link");
-    link.Attributes["href"] = stylesheet;
-    link.Attributes["type"] = "text/css";
-    link.Attributes["rel"] = "stylesheet";
-    head.Controls.Add(link);
-  }
-
-  private void AddScript(string scriptText)
-  {
-    HtmlGenericControl script = new HtmlGenericControl("script");
-    script.InnerHtml = scriptText;
-    body.Controls.Add(script);
-  }
-
-  private void AddScriptReference(string url)
-  {
-    HtmlGenericControl script = new HtmlGenericControl("script");
-    script.Attributes["src"] = url;
-    body.Controls.Add(script);
   }
 }

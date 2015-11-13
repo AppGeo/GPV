@@ -15,6 +15,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.OleDb;
+using System.Linq;
 using System.Security.Principal;
 using System.Web;
 
@@ -112,9 +113,9 @@ public static class AppUser
       checkRole = checkRole.ToLower();
     }
 
-    string userRole = GetRole(connection).ToLower();
+    string[] userRole = GetRole(connection).ToLower().Split(',').Select(o => o.Trim()).ToArray();
 
-    return userRole == "admin" || checkRole == "public" || (checkRole == "private" && userRole != "public") || checkRole == userRole;
+    return userRole.Contains("admin") || checkRole == "public" || (checkRole == "private" && !userRole.Contains("public")) || userRole.Contains(checkRole);
   }
 
   public static bool RoleIsInList(string roleList)

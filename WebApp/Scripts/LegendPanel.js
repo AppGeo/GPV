@@ -42,7 +42,7 @@ var GPV = (function (gpv) {
 
       if ($this.is(":checked")) {
         $this.parents(".LegendEntry").each(function (i, e) {
-          $(this).find(".LegendCheck").eq(0).attr("checked", true);
+          $(this).find(".LegendCheck").eq(0).prop("checked", true);
         });
       }
 
@@ -52,7 +52,7 @@ var GPV = (function (gpv) {
       var $children = $this.closest(".LegendEntry").find(".LegendCheck");
 
       for (var i = $children.length - 1; i >= 0; --i) {
-        $children.eq(i).attr("checked", isChecked);
+        $children.eq(i).prop("checked", isChecked);
       }
     });
 
@@ -86,7 +86,7 @@ var GPV = (function (gpv) {
       var $legend = $container.find('.LegendTop[data-maptab="' + gpv.appState.MapTab + '"]');
 
       $.each(list, function () {
-        $legend.find('input[data-layer="' + this + '"]').attr("checked", check);
+        $legend.find('input[data-layer="' + this + '"]').prop("checked", check);
       });
     }
 

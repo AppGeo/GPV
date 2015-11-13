@@ -21,8 +21,8 @@ div
 
 #pnlContent
 {
-  left: 8px;
-  right: 8px;
+  left: 0px;
+  right: 0px;
   min-width: 930px;
 }
 
@@ -31,13 +31,13 @@ div
   font-weight: bold;
   font-size: 13px;
   left: 28px;
-  top: -2px;
+  top: 0px;
 }
 
 #pnlTabs
 {
   left: 200px;
-  top: 0px;
+  top: 10px;
   right: 0px;
   bottom: auto;
   height: 19px;
@@ -46,7 +46,7 @@ div
 #pnlMain
 {
   left: 0px;
-  top: 18px;
+  top: 34px;
   right: 0px;
   bottom: 36px;
 }
@@ -112,10 +112,7 @@ div
 .DataGrid td
 {
   vertical-align: top;
-  padding-left: 3px;
-  padding-right: 3px;
-  padding-bottom: 2px;
-  padding-top: 2px;
+  padding: 2px 3px;
   border-right: solid 1px #D0D0D0;
 }
 
@@ -147,10 +144,7 @@ div
 
 .ReportHeader td, .ReportRow td, .ReportLayout td
 {
-  padding-left: 3px;
-  padding-right: 3px;
-  padding-bottom: 1px;
-  padding-top: 1px;
+  padding: 1px 3px;
   white-space: nowrap;
 }
 

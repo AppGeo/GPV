@@ -85,11 +85,19 @@ public static class AppSettings
     }
   }
 
-  public static bool AdminOnlyShowApps
+  public static bool AllowDevScriptCaching
   {
     get
     {
-      return GetConfigBoolean("AdminOnlyShowApps");
+      return GetConfigBoolean("AllowDevScriptCaching");
+    }
+  }
+
+  public static bool AllowShowApps
+  {
+    get
+    {
+      return GetConfigBoolean("AllowShowApps");
     }
   }
 
@@ -229,27 +237,11 @@ public static class AppSettings
     }
   }
 
-  public static string DataTabLinkWindowName
+  public static string DefaultApplication
   {
     get
     {
-      return GetConfigSetting("DataTabLinkWindowName");
-    }
-  }
-
-  public static double DatumShiftX
-  {
-    get
-    {
-      return GetConfigDouble("DatumShiftX");
-    }
-  }
-
-  public static double DatumShiftY
-  {
-    get
-    {
-      return GetConfigDouble("DatumShiftY");
+      return GetConfigSetting("DefaultApplication");
     }
   }
 
@@ -323,30 +315,6 @@ public static class AppSettings
       }
 
       return polygonMode;
-    }
-  }
-
-  public static string IdentifyPopup
-  {
-    get
-    {
-      return GetConfigSetting("IdentifyPopup");
-    }
-  }
-
-  public static int IdentifyWindowHeight
-  {
-    get
-    {
-      return GetConfigInteger("IdentifyWindowHeight");
-    }
-  }
-
-  public static int IdentifyWindowWidth
-  {
-    get
-    {
-      return GetConfigInteger("IdentifyWindowWidth");
     }
   }
 
@@ -590,7 +558,7 @@ public static class AppSettings
   public static bool GetConfigBoolean(string name)
   {
     string value = GetConfigSetting(name);
-    return String.Compare(value, "true", false) == 0 || String.Compare(value, "yes", false) == 0;
+    return value != null && (String.Compare(value, "true", false) == 0 || String.Compare(value, "yes", false) == 0);
   }
 
   public static Color GetConfigColor(string name)
@@ -649,13 +617,13 @@ public static class AppSettings
   public static string ToJson()
   {
     Dictionary<String, Object> jsonData = new Dictionary<String, Object>();
+    jsonData.Add("showScaleBar", ShowScaleBar);
     jsonData.Add("preserveOnActionChange", PreserveOnActionChange);
-    jsonData.Add("identifyWindowWidth", IdentifyWindowWidth);
-    jsonData.Add("identifyWindowHeight", IdentifyWindowHeight);
-    jsonData.Add("identifyPopup", IdentifyPopup);
     jsonData.Add("isPublic", String.IsNullOrEmpty(AppUser.Name));
     jsonData.Add("mapUnits", MapUnits);
     jsonData.Add("measureUnits", MeasureUnits);
+    jsonData.Add("coordinateSystem", CoordinateSystem.ToProj4String(MapUnits));
+    jsonData.Add("zoomLevels", ZoomLevels);
 
     JavaScriptSerializer serializer = new JavaScriptSerializer();
     return serializer.Serialize(jsonData);

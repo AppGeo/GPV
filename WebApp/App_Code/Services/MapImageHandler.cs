@@ -57,8 +57,8 @@ public class MapImageHandler : WebServiceHandler
   private void MakeMapImage()
   {
     AppState appState = AppState.FromJson(Request.Form["state"]);
-    int width = Convert.ToInt32(Request.Form["width"]);
-    int height = Convert.ToInt32(Request.Form["height"]);
+    int width = Convert.ToInt32(Math.Round(Convert.ToDouble(Request.Form["width"])));
+    int height = Convert.ToInt32(Math.Round(Convert.ToDouble(Request.Form["height"])));
     ReturnJson(GetImageUrl(appState, width, height));
   }
 
@@ -96,8 +96,8 @@ public class MapImageHandler : WebServiceHandler
     appState.MapTab = application.OverviewMapID;
     appState.Extent = application.GetFullExtentEnvelope();
 
-    int width = Convert.ToInt32(Request.Form["width"]);
-    int height = Convert.ToInt32(Request.Form["height"]);
+    int width = Convert.ToInt32(Math.Round(Convert.ToDouble(Request.Form["width"])));
+    int height = Convert.ToInt32(Math.Round(Convert.ToDouble(Request.Form["height"])));
 
     ReturnJson(GetImageUrl(appState, width, height));
   }
@@ -108,11 +108,11 @@ public class MapImageHandler : WebServiceHandler
   [WebServiceMethod]
   private void GetOverviewImage()
   {
-    Configuration.ApplicationRow application = Configuration.Application.First(o => o.ApplicationID == Request.QueryString["application"]);
+    Configuration.ApplicationRow application = Configuration.Application.First(o => o.ApplicationID == Request.Params["application"]);
 
-    int width = Convert.ToInt32(Request.QueryString["width"]);
-    int height = Convert.ToInt32(Request.QueryString["height"]);
-    string[] bbox = Request.QueryString["bbox"].Split(',');
+    int width = Convert.ToInt32(Request.Params["width"]);
+    int height = Convert.ToInt32(Request.Params["height"]);
+    string[] bbox = Request.Params["bbox[]"].Split(',');
     
     AppState appState = new AppState()
     {
@@ -132,8 +132,8 @@ public class MapImageHandler : WebServiceHandler
   private void SaveMapImage()
   {
     AppState appState = AppState.FromJson(Request.Form["state"]);
-    int width = Convert.ToInt32(Request.Form["width"]);
-    int height = Convert.ToInt32(Request.Form["height"]);
+    int width = Convert.ToInt32(Math.Round(Convert.ToDouble(Request.Form["width"])));
+    int height = Convert.ToInt32(Math.Round(Convert.ToDouble(Request.Form["height"])));
 
     MapMaker mapMaker = new MapMaker(appState, width, height);
     MapImageData mapImageData = mapMaker.GetImage();
@@ -147,8 +147,8 @@ public class MapImageHandler : WebServiceHandler
   private void SaveMapKml()
   {
     AppState appState = AppState.FromJson(Request.Form["state"]);
-    int width = Convert.ToInt32(Request.Form["width"]);
-    int height = Convert.ToInt32(Request.Form["height"]);
+    int width = Convert.ToInt32(Math.Round(Convert.ToDouble(Request.Form["width"])));
+    int height = Convert.ToInt32(Math.Round(Convert.ToDouble(Request.Form["height"])));
 
     MapMaker mapMaker = new MapMaker(appState, width, height);
     MapImageData mapImageData = mapMaker.GetImage();
@@ -171,25 +171,25 @@ public class MapImageHandler : WebServiceHandler
     double lat;
     double lon;
 
-    coordSys.ToGeodetic((appState.Extent.MinX - AppSettings.DatumShiftX) * f, (appState.Extent.MinY - AppSettings.DatumShiftY) * f, out lon, out lat);
+    coordSys.ToGeodetic(appState.Extent.MinX * f, appState.Extent.MinY * f, out lon, out lat);
     double minLat = lat;
     double maxLat = lat;
     double minLon = lon;
     double maxLon = lon;
 
-    coordSys.ToGeodetic((appState.Extent.MinX - AppSettings.DatumShiftX) * f, (appState.Extent.MaxY - AppSettings.DatumShiftY) * f, out lon, out lat);
+    coordSys.ToGeodetic(appState.Extent.MinX  * f, appState.Extent.MaxY * f, out lon, out lat);
     minLat = Math.Min(minLat, lat);
     maxLat = Math.Max(maxLat, lat);
     minLon = Math.Min(minLon, lon);
     maxLon = Math.Max(maxLon, lon);
 
-    coordSys.ToGeodetic((appState.Extent.MaxX - AppSettings.DatumShiftX) * f, (appState.Extent.MaxY - AppSettings.DatumShiftY) * f, out lon, out lat);
+    coordSys.ToGeodetic(appState.Extent.MaxX * f, appState.Extent.MaxY * f, out lon, out lat);
     minLat = Math.Min(minLat, lat);
     maxLat = Math.Max(maxLat, lat);
     minLon = Math.Min(minLon, lon);
     maxLon = Math.Max(maxLon, lon);
 
-    coordSys.ToGeodetic((appState.Extent.MaxX - AppSettings.DatumShiftX) * f, (appState.Extent.MinY - AppSettings.DatumShiftY) * f, out lon, out lat);
+    coordSys.ToGeodetic(appState.Extent.MaxX * f, appState.Extent.MinY * f, out lon, out lat);
     minLat = Math.Min(minLat, lat);
     maxLat = Math.Max(maxLat, lat);
     minLon = Math.Min(minLon, lon);
@@ -198,12 +198,12 @@ public class MapImageHandler : WebServiceHandler
     Coordinate p = appState.Extent.Centre;
     double cLat;
     double cLon;
-    coordSys.ToGeodetic((p.X - AppSettings.DatumShiftX) * f, (p.Y - AppSettings.DatumShiftY) * f, out cLon, out cLat);
+    coordSys.ToGeodetic(p.X * f, p.Y * f, out cLon, out cLat);
 
     p.X = appState.Extent.MaxX;
     double eLat;
     double eLon;
-    coordSys.ToGeodetic((p.X - AppSettings.DatumShiftX) * f, (p.Y - AppSettings.DatumShiftY) * f, out eLon, out eLat);
+    coordSys.ToGeodetic(p.X * f, p.Y * f, out eLon, out eLat);
 
     double rotation = Math.Atan2(eLat - cLat, eLon - cLon) * 180 / Math.PI;
 

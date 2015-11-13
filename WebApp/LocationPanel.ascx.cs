@@ -45,9 +45,9 @@ public partial class LocationPanel : System.Web.UI.UserControl
 
         if (zones.Length > 0)
         {
-          optTabZone.Text = zoneName;
+          optTabZone.Controls.Add(new LiteralControl(zoneName));
           optTabZone.Style["display"] = "block";
-          optTabZone.CssClass = "Tab Selected";
+          //optTabZone.CssClass = "Tab Selected";
           tblZone.Controls.Add(zoneBody);
           tblZone.Style["display"] = "block";
 
@@ -55,7 +55,7 @@ public partial class LocationPanel : System.Web.UI.UserControl
 
           if (hasCombos)
           {
-            optTabLevelByZone.Text = String.Format("{0} by {1}", levelName, zoneName);
+            optTabLevelByZone.Controls.Add(new LiteralControl(String.Format("{0} by {1}", levelName, zoneName)));
             optTabLevelByZone.Style["display"] = "block";
             tblLevelByZone.Controls.Add(levelByZoneBody);
           }
@@ -63,13 +63,13 @@ public partial class LocationPanel : System.Web.UI.UserControl
 
         if (levels.Length > 0)
         {
-          optTabLevel.Text = levelName;
+          optTabLevel.Controls.Add(new LiteralControl(levelName));
           optTabLevel.Style["display"] = "block";
           tblLevel.Controls.Add(levelBody);
 
           if (zones.Length == 0)
           {
-            optTabLevel.CssClass = "Tab Selected";
+            //optTabLevel.CssClass = "Tab Selected";
             tblLevel.Style["display"] = "block";
           }
         }

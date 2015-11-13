@@ -28,7 +28,7 @@ public class LocationPanelHandler : WebServiceHandler
 
     if (!extent.IsNull)
     {
-      extent.ScaleBy(1.6);
+      extent.ScaleBy(1.2);
     }
 
     ReturnJson<double[]>("extent", extent.IsNull ? null : extent.ToArray());

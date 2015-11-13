@@ -616,7 +616,7 @@ public partial class Configuration
         {
           if (!validFunctionTabs.Contains(tab) || ((tab == "all" || tab == "none") && tabs.Length > 1))
           {
-            application.ValidationError = "The function tabs must be 'all', 'none', or any combination of 'selection', 'search', 'legend', 'location' and 'markup' separated by commas if set";
+            application.ValidationError = "The function tabs must be 'all', 'none', or any combination of 'selection', 'search', 'legend', 'location', 'markup' and 'share' separated by commas if set";
             break;
           }
         }
@@ -1514,7 +1514,7 @@ public partial class Configuration
 
   private bool ValidateSearchInputField()
   {
-    string[] validTypes = new string[] { "autocomplete", "date", "daterange", "list", "number", "numberrange", "text" };
+    string[] validTypes = new string[] { "autocomplete", "date", "daterange", "list", "number", "numberrange", "text", "textcontains", "textstarts" };
     string[] procedureTypes = new string[] { "autocomplete", "list" };
 
     bool newErrorsFound = false;

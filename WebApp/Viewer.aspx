@@ -15,6 +15,7 @@
 --%>
 
 <%@ Page Language="C#" AutoEventWireup="true" CodeFile="Viewer.aspx.cs" Inherits="Viewer" EnableViewState="false" EnableSessionState="true" EnableEventValidation="false" %>
+<%@ Register TagPrefix="gpv" Assembly="App_Code" Namespace="GPV" %>
 <%@ Register TagPrefix="uc1" TagName="Footer" Src="Footer.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="Header" Src="Header.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="SearchPanel" Src="SearchPanel.ascx" %>
@@ -22,6 +23,7 @@
 <%@ Register TagPrefix="uc1" TagName="LegendPanel" Src="LegendPanel.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="LocationPanel" Src="LocationPanel.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="MarkupPanel" Src="MarkupPanel.ascx" %>
+<%@ Register TagPrefix="uc1" TagName="SharePanel" Src="SharePanel.ascx" %>
 
 <!DOCTYPE html>
 
@@ -29,119 +31,144 @@
 <head id="head" runat="server">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AppGeo GPV</title>
-  <script type="text/javascript"> if (typeof(JSON) == "undefined") { location.href = "Incompatible.htm"; } </script></head>
+  <script type="text/javascript"> if (typeof(JSON) == "undefined") { location.href = "Incompatible.htm"; } </script>
+  <script type="text/javascript" src="Scripts/WebFonts.js"></script>
+</head>
 <body>
-  <div id="pnlBody">
-    <div id="pnlHeader"><uc1:Header ID="Header1" runat="server" /></div>
-    <div id="pnlContent" runat="server">
-      <div id="pnlMapSizer" runat="server">
-        <div id="pnlMapTabs" class="TabPanel">
-          <div class="TabScroll">
-            <asp:PlaceHolder id="plhMapTabs" runat="server"></asp:PlaceHolder>
+  <div id="pnlBody" class="container-fluid">
+    <div id="pnlHeader" class="Panel">
+      <span id="cmdMenu" class="CommandLink" title="Show/hide the menu"><span class="glyphicon glyphicon-menu-hamburger" style="font-size: 22px;"></span></span>
+      <uc1:Header ID="Header1" runat="server" />
+      <span id="cmdShowDetails" class="glyphicon glyphicon-option-vertical" style="font-size: 22px;"></span>
+      <a id="cmdHelp" runat="server" class="CommandLink" title="Show the help pages" href="Help.aspx" target="help"><span class="glyphicon glyphicon-question-sign" style="font-size: 22px;"></span></a>
+    </div>
+    <div id="pnlContent" runat="server" class="Panel">
+      <div id="pnlFunctionSidebar" runat="server" class="Panel">
+        <div id="pnlFunctionTabs" runat="server" class="TabPanel Panel">
+          <ul class="TabScroll Menu">
+            <li id="tabSearch" runat="server" class="MenuItem Normal" style="display: none">Search</li>
+            <li id="tabSelection" runat="server" class="MenuItem Normal" style="display: none">Selection</li>
+            <li id="tabLegend" runat="server" class="MenuItem Normal" style="display: none">Legend</li>
+            <li id="tabLocation" runat="server" class="MenuItem Normal" style="display: none">Location</li>
+            <li id="tabMarkup" runat="server" class="MenuItem Normal" style="display: none">Markup</li>
+            <li id="tabShare" runat="server" class="MenuItem Normal" style="display: none">Share</li>
+          </ul>
+           <div id="pnlAttribution" class="Panel">
+            <span id="spnVersion" runat="server" class="VersionText"></span>&nbsp;&nbsp;
+            <a class="VersionText" href="http://www.appgeo.com" target="AppGeo">AppGeo</a>
           </div>
         </div>
-        <div id="pnlMap" class="MainPanel">
-          <div style="left: 10px; right: 12px; height: 24px">
-            <div style="position: relative; float: left; width: 40%; height: 100%">
-              <div id="zoomBar" runat="server" style="margin-top: 4px"><span id="zoomBarMinus"></span><span id="zoomBarActive"><span id="zoomBarLeft" class="ZoomBar"></span><asp:PlaceHolder ID="plhZoomBar" runat="server" /><span id="zoomBarRight" class="ZoomBar"></span><span id="zoomBarSlider" class="ZoomBar"></span></span><span id="zoomBarPlus"></span></div>
-            </div>
-            <div style="position: relative; float: left; width: 20%; text-align: center; padding-top: 5px; height: 16px">
-              <a id="cmdHelp" runat="server" class="CommandLink" style="margin-right: 15px" title="Show the help pages" href="Help.aspx" target="help">Help</a> <span id="cmdMobile" class="CommandLink" style="margin-left: 15px" title="Launch the mobile version">Mobile</span>
-            </div>
-            <div style="position: relative; float: left; width: 40%; text-align: right; padding-top: 3px; height: 18px">
-              Scale 1" =
-              <input type="text" id="tboScale" runat="server" class="Input" style="width: 45px; cursor: default" />
-              ft
-            </div>
-          </div>
-          <div style="left: 10px; top: 28px; right: 10px; height: 25px">
-            <div id="cmdFullView" class="Button" title="Full View"></div>
-            <div id="cmdZoomPrevious" class="Button" title="Back to Previous Extent"></div>
-            <div id="cmdZoomSelect" class="Button" title="Zoom to Selected Features"></div>
-            <div id="optZoomIn" runat="server" class="Button MapTool" title="Zoom In"></div>
-            <div id="optPan" runat="server" class="Button MapTool" title="Pan"></div>
-
-            <div style="left: 38%">
-              <span id="labLevel" runat="server" style="display: none">Level</span>
-              <select id="ddlLevel" runat="server" class="Input" style="width: 70px; margin-right: 20px; display: none"></select>
-            </div>
-
-            <div id="cmdPrint" class="Button" title="Printable Map"></div>
-            <div id="cmdEmail" class="Button" title="Email This Page"></div>
-            <div id="optIdentify" runat="server" class="Button MapTool" title="Identify"></div>
-            <div id="optCoordinates" runat="server" class="Button MapTool" title="Display Coordinates"></div>
-            <div id="cmdClearGraphics" class="Button" title="Erase Coordinates"></div>
-            <div id="optMeasureArea" runat="server" class="Button MapTool" title="Measure Area"></div>
-            <div id="optMeasureLine" runat="server" class="Button MapTool" title="Measure Distance"></div>
-          </div>
-          <div id="mapMain" runat="server">
-            <div id="mapTip" style="display: none"></div>
-          </div>
-          <div id="waitClock"></div>
-          <div id="pnlScaleBar" runat="server">
-            <div id="pnlScaleBarBackground"> </div>
-            <div id="scaleBar"></div>
-            <div id="scaleBarText"></div>
-          </div>
-          <div style="left: 10px; top: auto; right: 12px; bottom: 0px; height: 24px">
-            <div style="position: relative; float: left; width: 42%; height: 100%">
-              <select id="ddlExternalMap" runat="server" class="Input" style="width: 200px"></select>
-              <a id="cmdExternalMap" href="#" class="CommandLink Disabled" target="external">Go</a>
-            </div>
-            <div style="position: relative; float: left; width: 28%; text-align: center; padding-top: 2px; height: 20px">
-              <span id="spnVersion" runat="server" class="VersionText"></span>&nbsp;&nbsp;
-              <a class="VersionText" href="http://www.appgeo.com" target="AppGeo">AppGeo</a>
-            </div>
-            <div style="position: relative; float: left; width: 30%; text-align: right; height: 100%">
-              <span id="cmdSaveMap" class="CommandLink">Save Map</span>
-              <select id="ddlSaveMap" runat="server" class="Input" style="width: 90px">
-                <option value="image">as Image</option>
-                <option value="kml">as KML</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="pnlFunctionSizer" runat="server">
-        <div id="pnlFunctionTabs" class="TabPanel">
-          <div class="TabScroll">
-            <div id="tabSearch" runat="server" class="Tab Normal" style="display: none">Search</div>
-            <div id="tabSelection" runat="server" class="Tab Normal" style="display: none">Selection</div>
-            <div id="tabLegend" runat="server" class="Tab Normal" style="display: none">Legend</div>
-            <div id="tabLocation" runat="server" class="Tab Normal" style="display: none">Location</div>
-            <div id="tabMarkup" runat="server" class="Tab Normal" style="display: none">Markup</div>
-          </div>
-        </div>
-        <div id="pnlFunction">
-          <div id="pnlSearch" runat="server" class="FunctionPanel" style="display: none">
+        <div id="pnlFunction" runat="server" class="Panel">
+          <%-- Fuction tab name with < to click to return to main menu --%>
+          <div id="pnlSearch" runat="server" class="FunctionPanel Panel" style="display: none">
             <uc1:SearchPanel ID="ucSearchPanel" runat="server" />
           </div>
-          <div id="pnlSelection" runat="server" class="FunctionPanel" style="display: none">
+          <div id="pnlSelection" runat="server" class="FunctionPanel Panel" style="display: none">
             <uc1:SelectionPanel ID="ucSelectionPanel" runat="server" />
           </div>
-          <div id="pnlLegend" runat="server" class="MainPanel FunctionPanel" style="display: none">
+          <div id="pnlLegend" runat="server" class="FunctionPanel Panel" style="display: none">
             <uc1:LegendPanel ID="ucLegendPanel" runat="server" />
           </div>
-          <div id="pnlLocation" runat="server" class="FunctionPanel" style="display: none">
+          <div id="pnlLocation" runat="server" class="FunctionPanel Panel" style="display: none">
             <uc1:LocationPanel ID="ucLocationPanel" runat="server" />
           </div>
-          <div id="pnlMarkup" runat="server" class="MainPanel FunctionPanel" style="display: none">
+          <div id="pnlMarkup" runat="server" class="FunctionPanel Panel" style="display: none">
             <uc1:MarkupPanel ID="ucMarkupPanel" runat="server" />
+          </div>
+          <div id="pnlShare" runat="server" class="FunctionPanel Panel" style="display: none">
+            <uc1:SharePanel ID="ucSharePanel" runat="server" />
           </div>
         </div>
       </div>
-      <div id="contentDivider" runat="server"></div>
+      <div id="pnlMapSizer" runat="server" class="Panel">
+        <div id="pnlMap" class="MainPanel Panel">
+
+          <div id="pnlMapMenus">
+            <div id="pnlMapThemes" class="MapMenu">
+              <button class="btn btn-default dropdown-toggle" type="button" id="btnMapTheme" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Theme">
+                <span id="selectedTheme" runat="server"></span>
+                <span class="caret"></span>
+              </button>
+              <ul id="selectMapTheme" class="dropdown-menu" aria-labelledby="btnMapTheme">
+                <asp:PlaceHolder id="phlMapTheme" runat="server"></asp:PlaceHolder>
+              </ul>
+            </div>
+
+            <div id="pnlMapLevels" runat="server" class="MapMenu" style="display: none">
+              <button class="btn btn-default dropdown-toggle" type="button" id="btnMapLevel" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Level">
+                <span id="selectedLevel" runat="server"></span>
+                <span class="caret"></span>
+              </button>
+              <ul id="selectMapLevel" class="dropdown-menu" aria-labelledby="btnMapLevel">
+                <asp:PlaceHolder id="phlMapLevel" runat="server"></asp:PlaceHolder>
+              </ul>
+            </div>
+
+            <div id="pnlMapTools" class="MapMenu">
+              <button class="btn btn-default dropdown-toggle" type="button" id="btnToolMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Tool">
+                <span id="selectedTool"><span class="pan"></span> Pan</span>
+                <span class="caret"></span>
+              </button>
+              <ul id="selectMapTools" class="dropdown-menu" aria-labelledby="btnToolMenu">
+                <li class="dropdown-header">Map Tools</li>
+                <li id="optPan" runat="server" class="Button MapTool"><span class="pan"></span> Pan</li>
+                <li id="optIdentify" runat="server" class="Button MapTool"><span class="glyphicon glyphicon-info-sign"></span> Identify</li>
+                <li class="dropdown-header">Selection Tools</li>
+                <li id="optSelect" runat="server" class="Button MapTool"><span class="select"></span> Select Features</li>
+                <li class="dropdown-header">Markup Tools</li>
+                <li id="optDrawPoint" runat="server" class="Button MapTool MarkupTool"><span class="draw-point"></span> Draw Point</li>
+                <li id="optDrawLine" runat="server" class="Button MapTool MarkupTool"><span class="draw-line"></span> Draw Line</li>
+                <li id="optDrawPolygon" runat="server" class="Button MapTool MarkupTool"><span class="draw-polygon"></span> Draw Polygon</li>
+                <li id="optDrawCircle" runat="server" class="Button MapTool MarkupTool"><span class="draw-circle"></span> Draw Circle</li>
+                <li id="optDrawText" runat="server" class="Button MapTool MarkupTool"><span class="draw-text"></span> Draw Text</li>
+                <li id="optDrawCoordinates" runat="server" class="Button MapTool MarkupTool"><span class="draw-coordinates"></span> Draw Coordinates</li>
+                <li id="optDrawLength" runat="server" class="Button MapTool MarkupTool"><span class="draw-length"></span> Draw Measured Length</li>
+                <li id="optDrawArea" runat="server" class="Button MapTool MarkupTool"><span class="draw-area"></span> Draw Measured Area</li>
+                <li id="optDeleteMarkup" runat="server" class="Button MapTool MarkupTool"><span class="delete-markup"></span> Delete Markup</li>
+                <li id="optColorPicker" runat="server" class="Button MapTool MarkupTool"><span class="color-picker"></span> Pick Color</li>
+                <li id="optPaintBucket" runat="server" class="Button MapTool MarkupTool"><span class="paint-bucket"></span> Fill With Color</li>
+              </ul>
+            </div>
+          </div>
+
+          <div id="pnlOverview" class="overviewInitial">
+            <div id="cmdOverview" class="iconWrapper">
+            <span id="iconOverview" class="glyphicon glyphicon-triangle-left"></span></div>
+              <div id="mapOverview">
+                <div id="locatorBox" class="UI" style="width: 1px; height: 1px; left: -10px">
+                  <div id="locatorBoxFill" class="UI">
+                  </div>
+                </div>
+            </div>
+          </div>
+ 
+          <div id="mapMain" runat="server" class="Panel">
+          </div>
+          <div id="mapTip" style="display: none"></div>
+          <div id="progress" style="display: none">
+            <div id="progressBar"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="pnlDataDisplay" class="Panel">
+        <div class="DataHeader">Details<span class="glyphicon glyphicon-menu-right DataExit" aria-hidden="true"></span></div>
+          <div id="pnlData" class="Panel">
+          <span id="spnDataTheme" class="DataLabel">Data Set</span>
+          <select id="ddlDataTheme" class="Input">
+          </select><br>
+            <button id="cmdDataPrint" class="Disabled">Print</button>
+            <div id="pnlDataList" class="Panel"></div>
+          </div>
+      </div>
+
     </div>
-    <div id="pnlFooter"><uc1:Footer ID="Footer1" runat="server" /></div>
+    <div id="pnlFooter" class="Panel"><uc1:Footer ID="Footer1" runat="server" /></div>
     <form id="frmSaveMap" method="post" action="Services/MapImage.ashx">
       <input type="hidden" name="m" />
       <input type="hidden" name="state" />
       <input type="hidden" name="width" />
       <input type="hidden" name="height" />
-    </form>
-    <form id="frmPrint" method="post" action="PrintableMap.aspx" target="print">
-      <input type="hidden" name="state" />
-      <input type="hidden" name="width" />
     </form>
   </div>
 </body>

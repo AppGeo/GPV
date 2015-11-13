@@ -65,7 +65,11 @@ var GPV = (function (gpv) {
     // make searches directly reference layers
 
     $.each(config.search, function (searchID, search) {
-      search.layer = config.layer[search.layer];
+      var key = Object.keys(config.layer).filter(function (k) {
+        return k.toLowerCase() === search.layer.toLowerCase();
+      })[0];
+
+      search.layer = config.layer[key];
     });
 
     function sortByProperty(array, prop) {

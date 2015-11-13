@@ -25,13 +25,13 @@
   <link href="Styles/Common.css" type="text/css" rel="stylesheet" />
   <link href="Styles/Customize.css" type="text/css" rel="stylesheet" />
   <link href="Styles/DataList.css" type="text/css" rel="stylesheet" />
-  <script type="text/javascript" src="Scripts/jquery-1.7.2.min.js"></script>
+  <script type="text/javascript" src="Scripts/jquery-2.1.4.min.js"></script>
   <script type="text/javascript" src="Scripts/Identify.js"></script>
 </head>
 <body>
   <div id="labMessage" runat="server" class="Label" style="position: absolute; left: 10px; top: 10px">Invalid parameters, could not perform search.</div>
   <div id="pnlIdentify" runat="server" style="position: absolute; left: 10px; top: 10px; right: 10px; max-width: 600px">
-    <div id="cmdPrint" runat="server" class="CommandLink" style="position: absolute; right: 0px; width: 25px">Print</div>
+    <div id="cmdIdentifyPrint" runat="server" class="CommandLink" style="position: absolute; right: 0px; width: 25px">Print</div>
     <div id="pnlContent" runat="server" style="position: absolute; top: 20px"></div>
   </div>
   <div id="pnlPostBack" runat="server">

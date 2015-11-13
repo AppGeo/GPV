@@ -13,123 +13,84 @@
  *  limitations under the License.
  */
 
-#searchDivider
+#pnlSearchFields
 {
-  left: 8px;
-  right: 8px;
-  bottom: auto;
-  height: 8px;
-  cursor: n-resize;
-  z-index: 3;
-  top: 200px;
+  bottom: 0;
+  top: 40px;
 }
 
 #ddlSearches {
   position: absolute;
+  z-index: 10;
   width: 60%;
-}
-
-#pnlSearchInputFieldSizer
-{
-  bottom: auto;
-  height: 200px;
-  min-height: 106px;
-}
-
-#pnlSearchGridSizer {
-  top: 210px;
-  min-height: 106px;
 }
 
 #pnlSearchInputField
 {
   padding: 5px;
+  height: 285px;
 }
 
-#cmdSearch {
-  position: absolute;
-  top: auto;
-  bottom: 5px;
-  left: 10px;
-  z-index: 2;
-}
-
-#cmdReset {
-  position: absolute;
-  top: auto;
-  bottom: 5px;
-  left: 70px;
-  z-index: 2;
+#cmdSearch, #cmdReset {
+  float: left;
+  margin-left: 10px;
 }
 
 #pnlSearchGrid
 {
-  top: 10px;
-  left: 10px;
-  right: 10px;
-  bottom: 20px;
-  border: solid 1px #C9C9C9;
-   behavior: url(Styles/PIE.htc);
-  -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15);
-  -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.15);
-  box-shadow: 0 1px 1px rgba(0,0,0,0.15);
-  background-color: #F0F0F0;
+  top: 286px;
+  bottom: 37px;
+  border-top: solid 1px #C9C9C9;
+  border-bottom: solid 1px #C9C9C9;
+  background-color: #f4f7f7;
   overflow: auto;
 }
 
-#pnlSearchCommand 
+#grdSearch {
+  width: 98%;
+}
+
+.searchCommand 
 {
-  left: 10px;
+  top: auto;
   bottom: 0;
-  top: auto;
-  height: 11px;
+  height: 41px;
 }
 
-#labSearchCount 
+#labSearchCount
 {
-  position: absolute;
-  top: auto;
-  bottom: 5px;
-  left: 10px;
+  float: left;
+  margin-left: 10px;
+  margin-top: 12px;
 }
 
-#cmdShowOnMap 
+#cmdShowOnMap, #cmdShowAllOnMap 
 {
-  position: absolute;
-  top: auto;
-  bottom: 5px;
-  left: 120px;
-}
-
-#cmdShowAllOnMap 
-{
-  position: absolute;
-  top: auto;
-  bottom: 5px;
-  left: 210px;
+  float: right;
+  margin: 10px 5px;
 }
 
 #pnlSearchScroll
 {
-  top: 35px;
+  top: 40px;
   left: 10px;
-  right: 2px;
+  right: 10px;
   overflow-y: auto;
-  bottom: 20px;
+  bottom: 35px;
   z-index: 5;
 }
 
 .Search
 {
-  width: 345px;
+  width: 100%;
 }
 
 .SearchInputField
 {
   position: static;
-  height: 24px;
   width: 100%;
   float: left;
+  margin: 2px 0;
 }
 
 .SearchInputField .Input.DateRange, .SearchInputField .Input.NumberRange
@@ -141,21 +102,22 @@
 
 .SearchInputField .Input
 {
-  width: 63%;
+  width: 64%;
   margin: 0 2px;
 }
 
 .SearchInputField .Input, .SearchInputField span
 {
-  vertical-align: top;
+  vertical-align: middle;
 }
 
 #pnlSearchScroll span.Label
 {
-  width: 32%;
+  width: 34%;
   display: inline-block;
   text-align: right;
   margin-right: 3px;
+  line-height: 16px;
 }
 
 .autocomplete-suggestions { border: 1px solid #999; background: #FFF; max-height: 150px; overflow: auto; }

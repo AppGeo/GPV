@@ -51,7 +51,8 @@ public enum FunctionTab
   Search = 4,
 	Markup = 8,
 	Location = 16,
-	All = 31
+  Share = 32,
+	All = 63
 }
 
 public enum CheckMode

@@ -1,0 +1,45 @@
+﻿/*  Copyright 2015 Applied Geographics, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
+@media only screen and (min-device-width: 300px) and (max-device-width: 736px) {
+  body, div, span, td, th, input, select {
+    font-size: 1.03em; /*16px/16px bumped up a little*/
+  }
+
+  #pnlBody{
+    padding: 0;
+    min-height: unset;
+  }
+
+  #cmdMenu {
+    visibility: hidden;
+  }
+
+  #pnlFunctionSidebar {
+    left: -400px;
+  }
+
+  #pnlMapSizer {
+    left: 0;
+  }
+
+  li.dropdown-header, li.MapTool:not(#optIdentify):not(#optPan) {
+    display: none;
+  }
+
+  #cmdDataPrint {
+    display: none;
+  }
+}

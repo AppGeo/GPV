@@ -26,17 +26,16 @@ div
   min-width: 930px;
 }
 
-.TextBox
+.Input
 {
-  width: 100px;
-  margin-left: 5px;
+  margin: 4px;
 }
 
 .LoginButton
 {
   width: 60px;
   font-weight: bold;
-  margin-right: 30px;
+  margin: 20px;
 }
 
 .Error

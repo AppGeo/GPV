@@ -2,15 +2,23 @@
 
 div, select, img, input
 {
-  position: absolute;
+  position: relative;
 }
 
 .Label
 {
+  display: inline-block;
   left: 20px;
-  width: 112px; 
-  height: 17px; 
-  text-align: right
+  width: 45%;
+  height: 20px;
+  text-align: right;
+  float: left;
+  font-weight: normal;
+}
+
+.Title{
+  font-size: 16px;
+  display: inline-block;
 }
 
 .PrintDirection
@@ -21,6 +29,7 @@ div, select, img, input
 
 #pnlMain
 {
+  position: absolute;
   left: 8px;
   top: 8px;
   width: 310px;
@@ -45,4 +54,29 @@ div, select, img, input
 #optPrintDown.Selected
 {
   background-image: url(../Images/MailingLabels/LabelsDownSelect.gif);
+}
+
+#optPrintAcross, #optPrintDown{
+  float: left;
+  position: relative;
+  display: inline-block;
+  margin: 2px;
+}
+
+#labLabelsAcross, #labLabelSize{
+  height: 20px;
+}
+
+#ddlManufacturer, #ddlModelNo, #ddlTextFont, #ddlTextSize, #labLabelsAcross, #labLabelSize{
+  float: left;
+  position: relative;
+  display: inline-block;
+  width: 50%;
+  margin: 2px;
+}
+
+#cmdCreate{
+  position: relative;
+  float: right;
+  margin: 15px;
 }

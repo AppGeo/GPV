@@ -39,17 +39,17 @@
 
 #pnlHeader
 {
-  height: 40px;
+  height: 42px;
 }
 
 /* top and bottom of the main content area (map and function panels); */
-/* top should be 8 pixels more than the height of the header above;   */
-/* bottom should be 8 pixels more than the height of the footer below */
+/* top and bottom of the main content area should match the hight of the header */
+/* and the footer respecitvely */
 
 #pnlContent
 {
-  top: 48px;
-  bottom: 28px;
+  top: 42px;
+  bottom: 20px;
 }
 
 /* height of the footer */
@@ -78,7 +78,19 @@
 
 #pnlHeader, #pnlFooter
 {
-  background-color: #F4F5F0;
+  background-color: #f4f7f7;
+}
+
+/* default color of the hamburger menu icon and the help question icon */
+
+#cmdMenu span, #cmdHelp span{
+color: #009688;
+}
+
+/* default color of the details panel three dot icon */
+
+#cmdShowDetails{
+  color: #FFB74D;
 }
 
 /* text color of links (external pages and GPV commands) */
@@ -93,6 +105,7 @@ a, .CommandLink
 .VersionText
 {
   color: #A0A685;
+  margin-left: 10px;
 }
 
 /* text color of the AppGeo link below the map */
@@ -106,7 +119,7 @@ a.VersionText
 
 .Tab.Normal, a.Tab.Normal
 {
-  background-color: White;
+  background-color: #dee0d5;
   color: #A0A0A0;
 }
 
@@ -129,21 +142,21 @@ a.VersionText
 
 .MainPanel, .Tab.Selected, .ColorSelector
 {
-  background-color: #DEE0D5;
+  background-color: #FFFFFF;
 }
 
 /* border color of panels, tabs and color selectors */
 
-.MainPanel, .Tab, .ColorSelector
+.Tab, .ColorSelector
 {
-  border-left: solid 1px #919581;
-  border-top: solid 1px #919581;
-  border-right: solid 1px #919581;
+  border-left: solid 1px #b9b9b9;
+  border-top: solid 1px #b9b9b9;
+  border-right: solid 1px #b9b9b9;
 }
 
-.MainPanel, .ColorSelector
+.ColorSelector
 {
-  border-bottom: solid 1px #919581;
+  border-bottom: solid 1px #b9b9b9;
 }
 
 /* border color of text boxes and drop down lists */
@@ -153,22 +166,23 @@ a.VersionText
   border: solid 1px #AFB2A1;
 }
 
-/* background color for alternating rows in data grids (the base color is always white) */
+/* background color for alternating rows in data grids (the base color is always white)
+ * this is for the alternating rows for data in the search and selection function panels */
 
 .DataGridRowAlternate
 {
-  background-color: #F2F0FA;
+  background-color: #E0F2F1;
 }
 
-/* background and text color of headers in data tabs and identify windows */
+/* background and text color of headers in right data panel */
 
 .DataList .RowSetHeader
 {
-  background-color: #E0E0E0;
+  background-color: #FFE0B2;
   color: Black;
 }
 
-/* background and text color of subheaders in data tabs and identify windows */
+/* background and text color of subheaders in data panel */
 
 .DataList .RowSetSubheader
 {
@@ -176,7 +190,92 @@ a.VersionText
   color: Black;
 }
 
+/* text color for function menu items */
+/* color for function menu left boarder */
 
+.Menu{
+  border-left: solid 4px #B2DFDB; 
+}
+
+/* color of function panel menu items with option to have a border under each menu item */
+
+.MenuItem {
+  color: #00796B;
+  /*border-bottom: solid 1px #B2DFDB;*/
+}
+
+/* Function Panel background color and right border color
+ * should match the .FunctionHeader background color below */
+
+#pnlFunctionSidebar{
+  background-color: #FFFFFF;
+  border-right: solid 1px #009688;
+}
+
+/* function header settings */
+/* color sets the color of the function header text */
+/* border-left sets the color and width of the left boarder of function header
+ * matches function menu boarder on function menu panel */
+/* background-color can be set to change the function header's background color  */
+
+.FunctionHeader {
+  color: #FFFFFF;
+  background-color: #009688;
+  border-left: #B2DFDB solid 6px;
+}
+
+/* sets the color of the < and > icons used to close the function and data panels 
+ * currently set to match the font color in the function header */
+
+.FunctionExit, .DataExit {
+  color: #FFFFFF;
+}
+
+/* data Header settings */
+/* color sets the color of the data header text */
+/* background-color can be set to change the data header's background color  */
+
+.DataHeader {
+  background-color: #FFB74D;
+  color: #FFFFFF;
+}
+
+/* color of the labels used for various options in the Share Panel*/
+
+.FunctionLabel{
+  color: #00796B;
+}
+
+/* sets the color in the map tool menu for when hovering over an active map tool item */
+
+li.MapTool:hover, #selectMapTheme li:hover, #selectMapLevel li:hover{
+  background-color: #B2DFDB;
+}
+
+/* sets the height and width for the overview map popout in the bottom right corner of the map */
+
+.overviewMap{
+  height: 250px;
+  width: 175px;
+}
+
+/* color of the locator box that shows current extent */
+
+#locatorBox{
+ border: solid 2px #FF0000;
+}
+
+#pnlSearchGrid, #pnlQueryGrid{
+  color: #f4f7f7;
+}
+
+/* This is for the MOBILE VERSION ONLY that you would view on a phone - NOT FOR TABLET */
+/* width of the data panel that displays as part of identification */
+@media only screen and (min-device-width: 300px) and (max-device-width: 736px) {
+  #pnlDataDisplay{
+    width: 250px;
+  }
+}
 /* =================================== */
 /*   Custom header and footer styles   */
 /* =================================== */

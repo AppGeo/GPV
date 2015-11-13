@@ -15,7 +15,6 @@
 var GPV = (function (gpv) {
   $(function () {
     var $body = $("body");
-    var $map = $("#mapMain");
     var $container = $("#pnlSearch");
     var config = gpv.configuration;
     var appState = gpv.appState;
@@ -94,7 +93,7 @@ var GPV = (function (gpv) {
     function reset() {
       if (!$cmdReset.hasClass("Disabled")) {
         $("#pnlSearchScroll").find("input:text").val('');
-        $("#pnlSearchScroll").find("select")[0].selectedIndex = 0;
+        $("#pnlSearchScroll").find("select").prop('selectedIndex', 0);
         $cmdSearch.toggleClass("Disabled");
         $cmdReset.toggleClass("Disabled");
         emptyResultGrid();
@@ -131,8 +130,6 @@ var GPV = (function (gpv) {
           }
         });
 
-        gpv.waitClock.start();
-
         gpv.post({
           url: service,
           data: {
@@ -148,7 +145,7 @@ var GPV = (function (gpv) {
             }
           },
           complete: function () {
-            gpv.waitClock.finish();
+
           }
         });
       }
@@ -175,7 +172,7 @@ var GPV = (function (gpv) {
     function updateTargets(ids) {
       var layerID = config.search[currentSearch].layer.id;
       var targetIds = $.map(ids, function (id) { return id.m; }).join(",");
-      var url = "application:action=0&selectionlayer=&selectionids=&scaleby=1.6&targetlayer=" + layerID + "&targetids=" + targetIds;
+      var url = "application:action=0&selectionlayer=&selectionids=&scaleby=1.2&targetlayer=" + layerID + "&targetids=" + targetIds;
 
       if (ids.length == 1) {
         url += "&activemapid=" + ids[0].m;
