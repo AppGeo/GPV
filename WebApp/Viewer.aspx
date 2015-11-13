@@ -83,50 +83,52 @@
       <div id="pnlMapSizer" runat="server" class="Panel">
         <div id="pnlMap" class="MainPanel Panel">
 
-           <div id="pnlMapThemes" class="MapMenu">
-            <button class="btn btn-default dropdown-toggle" type="button" id="btnMapTheme" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Theme">
-              <span id="selectedTheme" runat="server"></span>
-              <span class="caret"></span>
-            </button>
-            <ul id="selectMapTheme" class="dropdown-menu" aria-labelledby="btnMapTheme">
-              <asp:PlaceHolder id="phlMapTheme" runat="server"></asp:PlaceHolder>
-            </ul>
-          </div>
+          <div id="pnlMapMenus">
+            <div id="pnlMapThemes" class="MapMenu">
+              <button class="btn btn-default dropdown-toggle" type="button" id="btnMapTheme" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Theme">
+                <span id="selectedTheme" runat="server"></span>
+                <span class="caret"></span>
+              </button>
+              <ul id="selectMapTheme" class="dropdown-menu" aria-labelledby="btnMapTheme">
+                <asp:PlaceHolder id="phlMapTheme" runat="server"></asp:PlaceHolder>
+              </ul>
+            </div>
 
-          <div id="pnlMapLevels" runat="server" class="MapMenu" style="display: none">
-            <button class="btn btn-default dropdown-toggle" type="button" id="btnMapLevel" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Level">
-              <span id="selectedLevel" runat="server"></span>
-              <span class="caret"></span>
-            </button>
-            <ul id="selectMapLevel" class="dropdown-menu" aria-labelledby="btnMapLevel">
-              <asp:PlaceHolder id="phlMapLevel" runat="server"></asp:PlaceHolder>
-            </ul>
-          </div>
+            <div id="pnlMapLevels" runat="server" class="MapMenu" style="display: none">
+              <button class="btn btn-default dropdown-toggle" type="button" id="btnMapLevel" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Level">
+                <span id="selectedLevel" runat="server"></span>
+                <span class="caret"></span>
+              </button>
+              <ul id="selectMapLevel" class="dropdown-menu" aria-labelledby="btnMapLevel">
+                <asp:PlaceHolder id="phlMapLevel" runat="server"></asp:PlaceHolder>
+              </ul>
+            </div>
 
-          <div id="pnlMapTools" class="MapMenu">
-            <button class="btn btn-default dropdown-toggle" type="button" id="btnToolMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Tool">
-              <span id="selectedTool"><span class="pan"></span> Pan</span>
-              <span class="caret"></span>
-            </button>
-            <ul id="selectMapTools" class="dropdown-menu" aria-labelledby="btnToolMenu">
-              <li class="dropdown-header">Map Tools</li>
-              <li id="optPan" runat="server" class="Button MapTool"><span class="pan"></span> Pan</li>
-              <li id="optIdentify" runat="server" class="Button MapTool"><span class="glyphicon glyphicon-info-sign"></span> Identify</li>
-              <li class="dropdown-header">Selection Tools</li>
-              <li id="optSelect" runat="server" class="Button MapTool"><span class="select"></span> Select Features</li>
-              <li class="dropdown-header">Markup Tools</li>
-              <li id="optDrawPoint" runat="server" class="Button MapTool MarkupTool"><span class="draw-point"></span> Draw Point</li>
-              <li id="optDrawLine" runat="server" class="Button MapTool MarkupTool"><span class="draw-line"></span> Draw Line</li>
-              <li id="optDrawPolygon" runat="server" class="Button MapTool MarkupTool"><span class="draw-polygon"></span> Draw Polygon</li>
-              <li id="optDrawCircle" runat="server" class="Button MapTool MarkupTool"><span class="draw-circle"></span> Draw Circle</li>
-              <li id="optDrawText" runat="server" class="Button MapTool MarkupTool"><span class="draw-text"></span> Draw Text</li>
-              <li id="optDrawCoordinates" runat="server" class="Button MapTool MarkupTool"><span class="draw-coordinates"></span> Draw Coordinates</li>
-              <li id="optDrawLength" runat="server" class="Button MapTool MarkupTool"><span class="draw-length"></span> Draw Measured Length</li>
-              <li id="optDrawArea" runat="server" class="Button MapTool MarkupTool"><span class="draw-area"></span> Draw Measured Area</li>
-              <li id="optDeleteMarkup" runat="server" class="Button MapTool MarkupTool"><span class="delete-markup"></span> Delete Markup</li>
-              <li id="optColorPicker" runat="server" class="Button MapTool MarkupTool"><span class="color-picker"></span> Pick Color</li>
-              <li id="optPaintBucket" runat="server" class="Button MapTool MarkupTool"><span class="paint-bucket"></span> Fill With Color</li>
-            </ul>
+            <div id="pnlMapTools" class="MapMenu">
+              <button class="btn btn-default dropdown-toggle" type="button" id="btnToolMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Tool">
+                <span id="selectedTool"><span class="pan"></span> Pan</span>
+                <span class="caret"></span>
+              </button>
+              <ul id="selectMapTools" class="dropdown-menu" aria-labelledby="btnToolMenu">
+                <li class="dropdown-header">Map Tools</li>
+                <li id="optPan" runat="server" class="Button MapTool"><span class="pan"></span> Pan</li>
+                <li id="optIdentify" runat="server" class="Button MapTool"><span class="glyphicon glyphicon-info-sign"></span> Identify</li>
+                <li class="dropdown-header">Selection Tools</li>
+                <li id="optSelect" runat="server" class="Button MapTool"><span class="select"></span> Select Features</li>
+                <li class="dropdown-header">Markup Tools</li>
+                <li id="optDrawPoint" runat="server" class="Button MapTool MarkupTool"><span class="draw-point"></span> Draw Point</li>
+                <li id="optDrawLine" runat="server" class="Button MapTool MarkupTool"><span class="draw-line"></span> Draw Line</li>
+                <li id="optDrawPolygon" runat="server" class="Button MapTool MarkupTool"><span class="draw-polygon"></span> Draw Polygon</li>
+                <li id="optDrawCircle" runat="server" class="Button MapTool MarkupTool"><span class="draw-circle"></span> Draw Circle</li>
+                <li id="optDrawText" runat="server" class="Button MapTool MarkupTool"><span class="draw-text"></span> Draw Text</li>
+                <li id="optDrawCoordinates" runat="server" class="Button MapTool MarkupTool"><span class="draw-coordinates"></span> Draw Coordinates</li>
+                <li id="optDrawLength" runat="server" class="Button MapTool MarkupTool"><span class="draw-length"></span> Draw Measured Length</li>
+                <li id="optDrawArea" runat="server" class="Button MapTool MarkupTool"><span class="draw-area"></span> Draw Measured Area</li>
+                <li id="optDeleteMarkup" runat="server" class="Button MapTool MarkupTool"><span class="delete-markup"></span> Delete Markup</li>
+                <li id="optColorPicker" runat="server" class="Button MapTool MarkupTool"><span class="color-picker"></span> Pick Color</li>
+                <li id="optPaintBucket" runat="server" class="Button MapTool MarkupTool"><span class="paint-bucket"></span> Fill With Color</li>
+              </ul>
+            </div>
           </div>
 
           <div id="pnlOverview" class="overviewInitial">

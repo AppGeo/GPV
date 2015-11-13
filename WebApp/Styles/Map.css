@@ -107,17 +107,28 @@
   -moz-border-radius: 4px;
 }
 
-
 .MapMenu
 {
   position: relative;
-  z-index: 1000;
   width: auto;
   float: left;
 }
 
-#pnlMapThemes{
+#pnlMapMenus {
+  position: relative;
   margin-left: 46px;
+}
+
+#pnlMapThemes {
+  z-index: 1002;
+}
+
+#pnlMapLevels {
+  z-index: 1001;
+}
+
+#pnlMapTools {
+  z-index: 1000;
 }
 
 #btnToolMenu, #btnMapTheme, #btnMapLevel{

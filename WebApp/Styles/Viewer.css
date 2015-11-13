@@ -145,13 +145,11 @@ button {
 {
   left: 400px;
   right: 0;
-  min-width: 548px;
 }
 
 #pnlFunctionSidebar {
   left: 0;
   width: 400px;
-  min-width: 374px;
   z-index: 2;
 }
 
