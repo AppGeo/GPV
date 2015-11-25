@@ -17,6 +17,25 @@ var GPV = (function (gpv) {
 
   // =====  private functions  =====
 
+  function latLngsToSearchShape(map, latLngs) {
+    var p0 = map.options.crs.project(latLngs[0][0]);
+    var p1 = map.options.crs.project(latLngs[0][2]);
+    var dx = Math.abs(p0.x - p1.x);
+    var dy = Math.abs(p0.y - p1.y);
+        
+    var distance = map.getProjectedPixelSize() * searchDistance();
+    var geo;
+
+    if (dx <= distance && dy <= distance) {
+      geo = [ (p0.x + p1.x) * 0.5, (p0.y + p1.y) * 0.5, distance ];
+    }
+    else {
+      geo = [ Math.min(p0.x, p1.x), Math.min(p0.y, p1.y), Math.max(p0.x, p1.x), Math.max(p0.y, p1.y) ];
+    }
+
+    return geo;
+  }
+
   function loadComplete() {
     $.each(handlers, function (i, v) {
       gpv[v.target][v.event](v.handler);
@@ -95,6 +114,7 @@ var GPV = (function (gpv) {
 
   // =====  public interface  =====
 
+  gpv.latLngsToSearchShape = latLngsToSearchShape;
   gpv.loadComplete = loadComplete;
   gpv.loadOptions = loadOptions;
   gpv.on = on;

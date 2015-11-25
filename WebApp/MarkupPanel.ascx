@@ -38,8 +38,8 @@
 
 
   <label>Style</label>
-    <button id="btnMarkupColor" style="margin-left: 0"><span id="cmdMarkupColor" class="Button Disabled Color" title="Markup Color"></span> Color</button>
-    <button id="btnTextGlowColor" style="float: right; margin-right: 70px" ><span id="cmdTextGlowColor" class="Button Disabled Color" title="Text Glow Color"></span> Text Glow</button>
+    <button id="btnMarkupColor" style="margin-left: 0"><span id="cmdMarkupColor" class="Button Color" title="Markup Color"></span> Color</button>
+    <button id="btnTextGlowColor" style="float: right; margin-right: 70px" ><span id="cmdTextGlowColor" class="Button Color" title="Text Glow Color"></span> Text Glow</button>
     <input type="checkbox" id="chkTextGlow" style="float:right" />
 
   <div class="Panel" id="pnlMarkupGrid">

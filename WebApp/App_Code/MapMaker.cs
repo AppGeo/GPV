@@ -141,45 +141,6 @@ public class MapMaker
     }
   }
 
-  private void DrawCoordinates(Graphics graphics)
-  {
-    if (_appState.Coordinates.Count == 0)
-    {
-      return;
-    }
-
-    Pen pen = new Pen(Color.Black, Convert.ToSingle(_resolution * 2));
-    pen.EndCap = System.Drawing.Drawing2D.LineCap.Flat;
-
-    System.Drawing.Font font = AppSettings.CoordinatesFont;
-    font = new System.Drawing.Font(font.FontFamily, Convert.ToSingle(font.Size * _resolution), font.Style, font.Unit);
-    SolidBrush textBrush = new SolidBrush(Color.Black);
-    SolidBrush shadowBrush = new SolidBrush(Color.White);
-
-    Configuration config = AppContext.GetConfiguration();
-    Configuration.ApplicationRow application = config.Application.FindByApplicationID(_appState.Application);
-    
-    StringFormat format = new StringFormat();
-    format.LineAlignment = StringAlignment.Far;
-
-    string[] modes = application.IsCoordinateModesNull() ? new string[] { "ne" } : application.CoordinateModes.ToLower().Split(',');
-
-    for (int i = 0; i < _appState.Coordinates.Count; ++i)
-    {
-      IPoint p = new NetTopologySuite.Geometries.Point(_appState.Coordinates[i]);
-
-      if (_appState.CoordinateLabels[i] != "1")
-      {
-        DrawCross(graphics, p, pen, 10);
-        DrawText(graphics, p, _appState.CoordinateLabels[i], font, textBrush, shadowBrush, 2, -3, format);
-      }
-      else
-      {
-        DrawCoordinate(graphics, p, modes, pen, font, textBrush, shadowBrush, format);
-      }
-    }
-  }
-
   private void DrawCross(Graphics graphics, IPoint point, Pen pen, double size)
   {
     point = _transform.ReverseTransform(point);
@@ -330,9 +291,56 @@ public class MapMaker
 
   private void DrawMarkup(Graphics graphics)
   {
-    if (_appState.MarkupGroups.Count == 0)
+    if (_appState.Markup.Count == 0 && _appState.MarkupGroups.Count == 0)
     {
       return;
+    }
+
+    List<Markup> markupList = new List<Markup>();
+
+    if (_appState.MarkupGroups.Count > 0)
+    {
+      using (OleDbConnection connection = AppContext.GetDatabaseConnection())
+      {
+        foreach (string groupId in _appState.MarkupGroups)
+        {
+          string sql = String.Format("update {0}MarkupGroup set DateLastAccessed = ? where GroupID = {1}",
+              AppSettings.ConfigurationTablePrefix, groupId);
+
+          using (OleDbCommand command = new OleDbCommand(sql, connection))
+          {
+            command.Parameters.Add("@1", OleDbType.Date).Value = DateTime.Now;
+            command.ExecuteNonQuery();
+          }
+
+          sql = String.Format("select Shape, Color, Glow, Text, Measured from {0}Markup where GroupID = {1} and Deleted = 0",
+              AppSettings.ConfigurationTablePrefix, groupId);
+
+          using (OleDbCommand command = new OleDbCommand(sql, connection))
+          {
+            using (OleDbDataReader reader = command.ExecuteReader())
+            {
+              while (reader.Read())
+              {
+                Markup markup = new Markup();
+
+                markup.Shape = reader.GetString(0);
+                markup.Color = reader.GetString(1);
+                markup.Glow = !reader.IsDBNull(2) ? reader.GetString(2) : null;
+                markup.Text = !reader.IsDBNull(3) ? reader.GetString(3) : null;
+                markup.Measured = !reader.IsDBNull(4) ? (int?)reader.GetInt32(4) : null;
+
+                markupList.Add(markup);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    if (_appState.Markup.Count > 0)
+    {
+      markupList.AddRange(_appState.Markup);
     }
 
     SolidBrush pointBrush = new SolidBrush(Color.Red);
@@ -356,89 +364,72 @@ public class MapMaker
     Configuration config = AppContext.GetConfiguration();
     Configuration.ApplicationRow application = config.Application.FindByApplicationID(_appState.Application);
     string[] modes = application.IsCoordinateModesNull() ? new string[] { "ne" } : application.CoordinateModes.ToLower().Split(',');
+    
+    WKTReader wktReader = new WKTReader();
 
-    using (OleDbConnection connection = AppContext.GetDatabaseConnection())
+    foreach (Markup markup in markupList)
     {
-      foreach (string groupId in _appState.MarkupGroups)
+      IGeometry geometry = wktReader.Read(markup.Shape);
+      Color color = ColorTranslator.FromHtml(markup.Color);
+      bool isMeasured = markup.Measured.HasValue && markup.Measured == 1;
+      bool isGlow = !String.IsNullOrEmpty(markup.Glow);
+
+      if (isGlow)
       {
-        string sql = String.Format("update {0}MarkupGroup set DateLastAccessed = ? where GroupID = {1}",
-            AppSettings.ConfigurationTablePrefix, groupId);
+        glowBrush.Color = ColorTranslator.FromHtml(markup.Glow);
+      }
 
-        using (OleDbCommand command = new OleDbCommand(sql, connection))
-        {
-          command.Parameters.Add("@1", OleDbType.Date).Value = DateTime.Now;
-          command.ExecuteNonQuery();
-        }
+      switch (geometry.OgcGeometryType)
+      {
+        case OgcGeometryType.Point:
+          bool isText = !String.IsNullOrEmpty(markup.Text);
 
-        sql = String.Format("select Shape, Color, Glow, Text, Measured from {0}Markup where GroupID = {1} and Deleted = 0",
-            AppSettings.ConfigurationTablePrefix, groupId);
-
-        using (OleDbCommand command = new OleDbCommand(sql, connection))
-        {
-          using (OleDbDataReader reader = command.ExecuteReader())
+          if (isText)
           {
-            WKTReader wktReader = new WKTReader();
+            textBrush.Color = color;
+            DrawText(graphics, (IPoint)geometry, markup.Text, font, textBrush, isGlow ? glowBrush : null, 0, 0, format);
 
-            while (reader.Read())
+            if (isMeasured)
             {
-              IGeometry geometry = wktReader.Read(reader.GetString(0));
-              Color color = ColorTranslator.FromHtml(reader.GetString(1));
-              bool isMeasured = !reader.IsDBNull(4) && Convert.ToInt32(reader.GetValue(4)) == 1;
-              bool isGlow = !reader.IsDBNull(2);
-
-              if (isGlow)
-              {
-                glowBrush.Color = ColorTranslator.FromHtml(reader.GetString(2));
-              }
-
-              switch (geometry.OgcGeometryType)
-              {
-                case OgcGeometryType.Point:
-                  bool isText = !reader.IsDBNull(3);
-
-                  if (isText)
-                  {
-                    textBrush.Color = color;
-                    DrawText(graphics, (IPoint)geometry, reader.GetString(3), font, textBrush, isGlow ? glowBrush : null, 0, 0, format);
-                  }
-                  else
-                  {
-                    if (isMeasured)
-                    {
-                      pen.Color = color;
-                      pen.EndCap = System.Drawing.Drawing2D.LineCap.Flat;
-                      textBrush.Color = color;
-                      DrawCoordinate(graphics, (IPoint)geometry, modes, pen, coordinatesFont, textBrush, isGlow ? glowBrush : null, format);
-                    }
-                    else
-                    {
-                      pointBrush.Color = color;
-                      DrawPoint(graphics, (IPoint)geometry, pointBrush, dotSize);
-                    }
-                  }
-                  break;
-
-                case OgcGeometryType.LineString:
-                  pen.Color = color;
-                  pen.EndCap = System.Drawing.Drawing2D.LineCap.Square;
-                  DrawLineString(graphics, (ILineString)geometry, pen);
-                  break;
-
-                case OgcGeometryType.Polygon:
-                  pen.Color = color;
-                  pen.EndCap = System.Drawing.Drawing2D.LineCap.Square;
-                  polygonBrush.Color = Color.FromArgb(128, color);
-                  DrawPolygon(graphics, (IPolygon)geometry, polygonBrush, null, pen);
-                  break;
-              }
-
-              if (isMeasured && geometry.OgcGeometryType != OgcGeometryType.Point)
-              {
-                DrawMeasure(graphics, geometry);
-              }
+              pen.Color = color;
+              pen.EndCap = System.Drawing.Drawing2D.LineCap.Flat;
+              DrawCross(graphics, (IPoint)geometry, pen, 10);
             }
           }
-        }
+          else
+          {
+            if (isMeasured)
+            {
+              pen.Color = color;
+              pen.EndCap = System.Drawing.Drawing2D.LineCap.Flat;
+              textBrush.Color = color;
+              DrawCoordinate(graphics, (IPoint)geometry, modes, pen, coordinatesFont, textBrush, isGlow ? glowBrush : null, format);
+            }
+            else
+            {
+              pointBrush.Color = color;
+              DrawPoint(graphics, (IPoint)geometry, pointBrush, dotSize);
+            }
+          }
+          break;
+
+        case OgcGeometryType.LineString:
+          pen.Color = color;
+          pen.EndCap = System.Drawing.Drawing2D.LineCap.Square;
+          DrawLineString(graphics, (ILineString)geometry, pen);
+          break;
+
+        case OgcGeometryType.Polygon:
+          pen.Color = color;
+          pen.EndCap = System.Drawing.Drawing2D.LineCap.Square;
+          polygonBrush.Color = Color.FromArgb(128, color);
+          DrawPolygon(graphics, (IPolygon)geometry, polygonBrush, null, pen);
+          break;
+      }
+
+      if (isMeasured && geometry.OgcGeometryType != OgcGeometryType.Point)
+      {
+        DrawMeasure(graphics, geometry);
       }
     }
   }
@@ -817,7 +808,7 @@ public class MapMaker
 
     // draw the selected feature graphics and markup
 
-    if (_appState.TargetIds.Count > 0 || _appState.SelectionIds.Count > 0 || _appState.MarkupGroups.Count > 0 || _appState.Coordinates.Count > 0)
+    if (_appState.TargetIds.Count > 0 || _appState.SelectionIds.Count > 0 || _appState.MarkupGroups.Count > 0 || _appState.Markup.Count > 0)
     {
       Bitmap bitmap = new Bitmap(new MemoryStream(image));
       bitmap.SetResolution(dataFrame.Dpi, dataFrame.Dpi);
@@ -859,7 +850,6 @@ public class MapMaker
       graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
       DrawMarkup(graphics);
-      DrawCoordinates(graphics);
 
       MemoryStream memoryStream = new MemoryStream();
 

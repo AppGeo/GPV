@@ -1641,8 +1641,18 @@ public partial class Viewer : CustomStyledPage
 
     if (launchParams.ContainsKey("markcenter"))
     {
-      _appState.Coordinates.Add(new Coordinate(_appState.Extent.Centre));
-      _appState.CoordinateLabels.Add(launchParams["markcenter"]);
+      string label = launchParams["markcenter"];
+      
+      Coordinate center = _appState.Extent.Centre;
+      string point = String.Format("POINT({0} {1})", center.X, center.Y);
+      Markup markup = new Markup(point, "#000000", 1);
+
+      if (label != "1")
+      {
+        markup.Text = label;
+      }
+
+      _appState.Markup.Add(markup);
     }
 
     // === printtemplate and printtitle ===
