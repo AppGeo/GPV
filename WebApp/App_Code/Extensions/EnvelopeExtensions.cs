@@ -15,6 +15,7 @@
 using System;
 using System.Linq;
 using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 public static class EnvelopeExtensions
 {
@@ -62,6 +63,19 @@ public static class EnvelopeExtensions
   public static string ToDelimitedString(this Envelope envelope, char delimiter)
   {
     return EnvelopeToDelimitedString(envelope, delimiter);
+  }
+
+  public static IPolygon ToPolygon(this Envelope envelope)
+  {
+    ILinearRing ring = new LinearRing(new Coordinate[] {
+      new Coordinate(envelope.MinX, envelope.MinY),
+      new Coordinate(envelope.MinX, envelope.MaxY),
+      new Coordinate(envelope.MaxX, envelope.MaxY),
+      new Coordinate(envelope.MaxX, envelope.MinY),
+      new Coordinate(envelope.MinX, envelope.MinY)
+    });
+
+    return new Polygon(ring);
   }
 
   private static string EnvelopeToDelimitedString(Envelope envelope, char separator)

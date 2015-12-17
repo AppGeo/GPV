@@ -39,7 +39,7 @@
     <div id="pnlHeader" class="Panel">
       <span id="cmdMenu" class="CommandLink" title="Show/hide the menu"><span class="glyphicon glyphicon-menu-hamburger" style="font-size: 22px;"></span></span>
       <uc1:Header ID="Header1" runat="server" />
-      <span id="cmdShowDetails" class="glyphicon glyphicon-option-vertical" style="font-size: 22px;"></span>
+      <span id="cmdShowDetails" class="glyphicon glyphicon-option-vertical" title="Show/hide details panel" style="font-size: 22px;"></span>
       <a id="cmdHelp" runat="server" class="CommandLink" title="Show the help pages" href="Help.aspx" target="help"><span class="glyphicon glyphicon-question-sign" style="font-size: 22px;"></span></a>
     </div>
     <div id="pnlContent" runat="server" class="Panel">
@@ -134,7 +134,7 @@
 
           <div id="pnlOverview" class="overviewInitial">
             <div id="cmdOverview" class="iconWrapper">
-            <span id="iconOverview" class="glyphicon glyphicon-triangle-left"></span></div>
+            <span id="iconOverview" class="glyphicon glyphicon-triangle-left" title="Show/hide overview map"></span></div>
               <div id="mapOverview">
                 <div id="locatorBox" class="UI" style="width: 1px; height: 1px; left: -10px">
                   <div id="locatorBoxFill" class="UI">
@@ -157,11 +157,10 @@
           <div id="pnlData" class="Panel">
           <select id="ddlDataTheme" class="Input">
           </select><br>
-            <button id="cmdDataPrint" class="Disabled">Print</button>
-            <div id="pnlDataList" class="Panel"></div>
-          </div>
+          <button id="cmdDataPrint" class="Disabled">Print</button>
+          <div id="pnlDataList" class="Panel"></div>
+        </div>
       </div>
-
     </div>
     <div id="pnlFooter" class="Panel"><uc1:Footer ID="Footer1" runat="server" /></div>
     <form id="frmSaveMap" method="post" action="Services/MapImage.ashx">

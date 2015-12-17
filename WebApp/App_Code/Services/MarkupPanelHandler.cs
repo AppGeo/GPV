@@ -117,55 +117,92 @@ public class MarkupPanelHandler : WebServiceHandler
   [WebServiceMethod]
   private void DeleteMarkup()
   {
-    int groupId = Convert.ToInt32(Request.Form["id"]);
-    double x = Convert.ToDouble(Request.Form["x"]);
-    double y = Convert.ToDouble(Request.Form["y"]);
-    double distance = Convert.ToDouble(Request.Form["distance"]);
+    int groupId = Request.Form["id"] != null ? Convert.ToInt32(Request.Form["id"]) : -1;
+    AppState appState = AppState.FromJson(Request.Form["state"]);
+    double[] geo = Request.Form["geo"].Split(',').Select(o => Convert.ToDouble(o)).ToArray();
     double scale = Convert.ToDouble(Request.Form["scale"]);
 
-    IPoint p = new Point(x, y);
-    bool deleted = false;
+    IGeometry searchShape;
+    double distance = 0;
 
-    try
+    if (geo.Length == 4)
     {
-      using (OleDbConnection connection = AppContext.GetDatabaseConnection())
+      searchShape = EnvelopeExtensions.FromArray(geo).ToPolygon();
+    }
+    else
+    {
+      searchShape = new Point(geo[0], geo[1]);
+      distance = geo[2];
+    }
+
+    bool deleted = false;
+    List<int> markupIndexes = new List<int>();
+
+    for (int i = 0; i < appState.Markup.Count; ++i)
+    {
+      HitType hitType = MarkupHitTest(appState.Markup[i], searchShape, distance, scale);
+
+      if (hitType != HitType.None)
       {
-        string sql = String.Format("select MarkupID, Shape, Text, Measured from {0}Markup where GroupID = ?", AppSettings.ConfigurationTablePrefix);
+        markupIndexes.Add(i);
+        deleted = true;
+      }
+    }
 
-        using (OleDbCommand command = new OleDbCommand(sql, connection))
+    if (groupId > -1)
+    {
+      try
+      {
+        using (OleDbConnection connection = AppContext.GetDatabaseConnection())
         {
-          command.Parameters.Add("@1", OleDbType.Integer).Value = groupId;
-          DataTable table = new DataTable();
+          bool deletedInGroup = false;
+          string sql = String.Format("select MarkupID, Shape, Text, Measured from {0}Markup where GroupID = ?", AppSettings.ConfigurationTablePrefix);
 
-          using (OleDbDataAdapter adapter = new OleDbDataAdapter(command))
+          using (OleDbCommand command = new OleDbCommand(sql, connection))
           {
-            adapter.Fill(table);
+            command.Parameters.Add("@1", OleDbType.Integer).Value = groupId;
+            DataTable table = new DataTable();
+
+            using (OleDbDataAdapter adapter = new OleDbDataAdapter(command))
+            {
+              adapter.Fill(table);
+            }
+
+            command.Parameters.Clear();
+
+            for (int i = table.Rows.Count - 1; i >= 0; --i)
+            {
+              DataRow row = table.Rows[i];
+              HitType hitType = MarkupHitTest(row, searchShape, distance, scale);
+
+              if (hitType != HitType.None)
+              {
+                command.CommandText = String.Format("update {0}Markup set Deleted = 1 where MarkupID = {1}", AppSettings.ConfigurationTablePrefix, row["MarkupID"]);
+                command.ExecuteNonQuery();
+                deletedInGroup = true;
+              }
+            }
           }
 
-          command.Parameters.Clear();
-
-          for (int i = table.Rows.Count - 1; i >= 0; --i)
+          if (deletedInGroup)
           {
-            DataRow row = table.Rows[i];
-            HitType hitType = MarkupHitTest(row, p, distance, scale);
-
-            if (hitType != HitType.None)
-            {
-              command.CommandText = String.Format("update {0}Markup set Deleted = 1 where MarkupID = {1}", AppSettings.ConfigurationTablePrefix, row["MarkupID"]);
-              command.ExecuteNonQuery();
-
-              UpdateMarkupGroupLastAccessed(groupId, connection);
-
-              deleted = true;
-              break;
-            }
+            UpdateMarkupGroupLastAccessed(groupId, connection);
+            deleted = true;
           }
         }
       }
+      catch { }
     }
-    catch { }
 
-    ReturnJson(deleted);
+    Dictionary<string, object> result = new Dictionary<string, object>();
+    result["deleted"] = deleted;
+
+    if (markupIndexes.Count >= 0)
+    {
+      result["markup"] = markupIndexes;
+    }
+
+    ReturnJson(result);
   }
 
   [WebServiceMethod]
@@ -206,7 +243,8 @@ public class MarkupPanelHandler : WebServiceHandler
   [WebServiceMethod]
   private void FillWithColor()
   {
-    int groupId = Convert.ToInt32(Request.Form["id"]);
+    int groupId = Request.Form["id"] != null ? Convert.ToInt32(Request.Form["id"]) : -1;
+    AppState appState = AppState.FromJson(Request.Form["state"]);
     double x = Convert.ToDouble(Request.Form["x"]);
     double y = Convert.ToDouble(Request.Form["y"]);
     double distance = Convert.ToDouble(Request.Form["distance"]);
@@ -216,55 +254,82 @@ public class MarkupPanelHandler : WebServiceHandler
     string textGlowColor = Request.Form["glow"];
 
     Point p = new Point(x, y);
-    bool updated = false;
+    bool found = false;
+    List<int> markupIndexes = new List<int>();
 
-    try
+    for (int i = 0; i < appState.Markup.Count; ++i)
     {
-      using (OleDbConnection connection = AppContext.GetDatabaseConnection())
+      HitType hitType = MarkupHitTest(appState.Markup[i], p, distance, scale);
+
+      if (hitType != HitType.None)
       {
-        string sql = String.Format("select MarkupID, Shape, Text, Measured from {0}Markup where GroupID = ?", AppSettings.ConfigurationTablePrefix);
+        found = true;
+        markupIndexes.Add(i);
+      }
+    }
 
-        using (OleDbCommand command = new OleDbCommand(sql, connection))
+    if (groupId > -1)
+    {
+      try
+      {
+        using (OleDbConnection connection = AppContext.GetDatabaseConnection())
         {
-          command.Parameters.Add("@1", OleDbType.Integer).Value = groupId;
-          DataTable table = new DataTable();
+          bool foundInGroup = false;
+          string sql = String.Format("select MarkupID, Shape, Text, Measured from {0}Markup where GroupID = ?", AppSettings.ConfigurationTablePrefix);
 
-          using (OleDbDataAdapter adapter = new OleDbDataAdapter(command))
+          using (OleDbCommand command = new OleDbCommand(sql, connection))
           {
-            adapter.Fill(table);
+            command.Parameters.Add("@1", OleDbType.Integer).Value = groupId;
+            DataTable table = new DataTable();
+
+            using (OleDbDataAdapter adapter = new OleDbDataAdapter(command))
+            {
+              adapter.Fill(table);
+            }
+
+            command.Parameters.Clear();
+
+            for (int i = table.Rows.Count - 1; i >= 0; --i)
+            {
+              DataRow row = table.Rows[i];
+              HitType hitType = MarkupHitTest(row, p, distance, scale);
+
+              if (hitType != HitType.None)
+              {
+                command.CommandText = String.Format("update {0}Markup set Color = '{1}' where MarkupID = {2}", AppSettings.ConfigurationTablePrefix, markupColor, row["MarkupID"]);
+                command.ExecuteNonQuery();
+
+                if (hitType == HitType.Text || hitType == HitType.Coordinate)
+                {
+                  string glow = textGlowColor == null ? "null" : String.Format("'{0}'", textGlowColor);
+                  command.CommandText = String.Format("update {0}Markup set Glow = {1} where MarkupID = {2}", AppSettings.ConfigurationTablePrefix, glow, row["MarkupID"]);
+                  command.ExecuteNonQuery();
+                }
+
+                foundInGroup = true;
+              }
+            }
           }
 
-          command.Parameters.Clear();
-
-          for (int i = table.Rows.Count - 1; i >= 0; --i)
+          if (foundInGroup)
           {
-            DataRow row = table.Rows[i];
-            HitType hitType = MarkupHitTest(row, p, distance, scale);
-
-            if (hitType != HitType.None)
-            {
-              command.CommandText = String.Format("update {0}Markup set Color = '{1}' where MarkupID = {2}", AppSettings.ConfigurationTablePrefix, markupColor, row["MarkupID"]);
-              command.ExecuteNonQuery();
-
-              if (hitType == HitType.Text || hitType == HitType.Coordinate)
-              {
-                string glow = textGlowColor == null ? "null" : String.Format("'{0}'", textGlowColor);
-                command.CommandText = String.Format("update {0}Markup set Glow = {1} where MarkupID = {2}", AppSettings.ConfigurationTablePrefix, glow, row["MarkupID"]);
-                command.ExecuteNonQuery();
-              }
-
-              UpdateMarkupGroupLastAccessed(groupId, connection);
-
-              updated = true;
-              break;
-            }
+            UpdateMarkupGroupLastAccessed(groupId, connection);
+            found = true;
           }
         }
       }
+      catch { }
     }
-    catch { }
 
-    ReturnJson(updated);
+    Dictionary<string, object> result = new Dictionary<string, object>();
+    result["found"] = found;
+
+    if (markupIndexes.Count > 0)
+    {
+      result["markup"] = markupIndexes;
+    }
+
+    ReturnJson(result);
   }
 
   [WebServiceMethod]
@@ -356,18 +421,36 @@ public class MarkupPanelHandler : WebServiceHandler
     ReturnJson(result);
   }
 
-  private HitType MarkupHitTest(DataRow markupRow, IPoint p, double distance, double scale)
+  private HitType MarkupHitTest(DataRow markupRow, IGeometry g, double distance, double scale)
+  {
+    Markup markup = new Markup();
+    markup.Shape = markupRow["Shape"].ToString();
+    
+    if (!markupRow.IsNull("Text"))
+    {
+      markup.Text = markupRow["Text"].ToString();
+    }
+
+    if (!markupRow.IsNull("Measured"))
+    {
+      markup.Measured = (int?)markupRow["Measured"];
+    }
+
+    return MarkupHitTest(markup, g, distance, scale);
+  }
+
+  private HitType MarkupHitTest(Markup markup, IGeometry g, double distance, double scale)
   {
     WKTReader wktReader = new WKTReader();
-    IGeometry geometry = wktReader.Read(markupRow["Shape"].ToString());
+    IGeometry geometry = wktReader.Read(markup.Shape);
 
     HitType hitType = HitType.None;
 
-    if (geometry.OgcGeometryType != OgcGeometryType.Point || markupRow.IsNull("Text"))
+    if (geometry.OgcGeometryType != OgcGeometryType.Point || String.IsNullOrEmpty(markup.Text))
     {
-      if (geometry.Distance(p) <= distance * scale)
+      if ((g is IPoint && geometry.Distance(g) <= distance) || (!(g is IPoint) && geometry.Intersects(g)))
       {
-        hitType = geometry.OgcGeometryType == OgcGeometryType.Point && !markupRow.IsNull("Measured") ? HitType.Coordinate : HitType.Shape;
+        hitType = geometry.OgcGeometryType == OgcGeometryType.Point && markup.Measured.HasValue && markup.Measured == 1 ? HitType.Coordinate : HitType.Shape;
       }
     }
     else
@@ -375,11 +458,11 @@ public class MarkupPanelHandler : WebServiceHandler
       System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(new System.Drawing.Bitmap(10, 10));
 
       Coordinate origin = ((IPoint)geometry).Coordinate;
-      System.Drawing.SizeF textSize = graphics.MeasureString(markupRow["Text"].ToString(), AppSettings.MarkupFont);
+      System.Drawing.SizeF textSize = graphics.MeasureString(markup.Text, AppSettings.MarkupFont);
 
       Envelope box = new Envelope(new Coordinate(origin.X, origin.Y), new Coordinate(origin.X + textSize.Width * scale, origin.Y + textSize.Height * scale));
 
-      if (box.Contains(p.Coordinate))
+      if (box.ToPolygon().Intersects(g))
       {
         hitType = HitType.Text;
       }
@@ -419,7 +502,8 @@ public class MarkupPanelHandler : WebServiceHandler
   [WebServiceMethod]
   private void PickColors()
   {
-    int groupId = Convert.ToInt32(Request.Form["id"]);
+    int groupId = Request.Form["id"] != null ? Convert.ToInt32(Request.Form["id"]) : -1;
+    AppState appState = AppState.FromJson(Request.Form["state"]);
     double x = Convert.ToDouble(Request.Form["x"]);
     double y = Convert.ToDouble(Request.Form["y"]);
     double distance = Convert.ToDouble(Request.Form["distance"]);
@@ -428,45 +512,66 @@ public class MarkupPanelHandler : WebServiceHandler
     Point p = new Point(x, y);
     Dictionary<String, object> result = null;
 
-    try
+    for (int i = 0; i < appState.Markup.Count; ++i)
     {
-      using (OleDbConnection connection = AppContext.GetDatabaseConnection())
+      HitType hitType = MarkupHitTest(appState.Markup[i], p, distance, scale);
+
+      if (hitType != HitType.None)
       {
-        string sql = String.Format("select Shape, Color, Glow, Text, Measured from {0}Markup where GroupID = ?", AppSettings.ConfigurationTablePrefix);
-        DataTable table = new DataTable();
+        result = new Dictionary<String, object>();
+        result.Add("color", appState.Markup[i].Color);
 
-        using (OleDbCommand command = new OleDbCommand(sql, connection))
+        if (hitType == HitType.Text)
         {
-          command.Parameters.Add("@1", OleDbType.Integer).Value = groupId;
-
-          using (OleDbDataAdapter adapter = new OleDbDataAdapter(command))
-          {
-            adapter.Fill(table);
-          }
+          result.Add("glow", appState.Markup[i].Glow);
         }
 
-        for (int i = table.Rows.Count - 1; i >= 0; --i)
+        break;
+      }
+    }
+
+    if (result == null && groupId > -1)
+    {
+      try
+      {
+        using (OleDbConnection connection = AppContext.GetDatabaseConnection())
         {
-          DataRow row = table.Rows[i];
-          HitType hitType = MarkupHitTest(row, p, distance, scale);
+          string sql = String.Format("select Shape, Color, Glow, Text, Measured from {0}Markup where GroupID = ?", AppSettings.ConfigurationTablePrefix);
+          DataTable table = new DataTable();
 
-          if (hitType != HitType.None)
+          using (OleDbCommand command = new OleDbCommand(sql, connection))
           {
-            result = new Dictionary<String, object>();
-            result.Add("color", row["Color"]);
+            command.Parameters.Add("@1", OleDbType.Integer).Value = groupId;
 
-            if (hitType == HitType.Text)
+            using (OleDbDataAdapter adapter = new OleDbDataAdapter(command))
             {
-              result.Add("glow", row.IsNull("Glow") ? null : row["Glow"]);
+              adapter.Fill(table);
             }
+          }
 
-            UpdateMarkupGroupLastAccessed(groupId, connection);
-            break;
+          for (int i = table.Rows.Count - 1; i >= 0; --i)
+          {
+            DataRow row = table.Rows[i];
+            HitType hitType = MarkupHitTest(row, p, distance, scale);
+
+            if (hitType != HitType.None)
+            {
+              result = new Dictionary<String, object>();
+              result.Add("color", row["Color"]);
+
+              if (hitType == HitType.Text)
+              {
+                result.Add("glow", row.IsNull("Glow") ? null : row["Glow"]);
+              }
+
+              UpdateMarkupGroupLastAccessed(groupId, connection);
+              break;
+            }
           }
         }
       }
+      catch { }
     }
-    catch { }
 
     ReturnJson(result);
   }

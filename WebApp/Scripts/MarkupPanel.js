@@ -33,7 +33,6 @@ var GPV = (function (gpv) {
     $("#tboMarkupUser").attr("placeholder", "enter name");
     
     var $colorSelectors = $(".Color").colorSelector({
-      enabled: false,
       selectorClass: "ColorSelector",
       disabledClass: "Disabled",
       commandClass: "CommandLink"
@@ -114,8 +113,12 @@ var GPV = (function (gpv) {
 
     var $MapTool = $(".MapTool");
 
-    $("#optDeleteMarkup,#optColorPicker,#optPaintBucket").on("click", function () {
+    $("#optColorPicker,#optPaintBucket").on("click", function () {
       gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "point" } });
+    });
+
+    $("#optDeleteMarkup").on("click", function () {
+      gpv.selectTool($(this), map, { cursor: 'default', dragging: false, boxZoom: false, drawing: { mode: 'rectangle', style: { color: '#c0c0c0', fill: true, fillColor: '#e0e0e0' } } });
     });
 
     $("#optDrawArea").on("click", function () {
@@ -159,8 +162,6 @@ var GPV = (function (gpv) {
       currentShape = e.shape;
 
       var data = {
-        m: "AddMarkup",
-        id: appState.MarkupGroups[0],
         shape: toWkt(currentShape),
         color: getMarkupColor()
       };
@@ -177,14 +178,23 @@ var GPV = (function (gpv) {
         data.glow = $cmdTextGlowColor.colorSelector("color");
       }
 
-      post({
-        data: data,
-        success: function (result) {
-          if (result) {
-            gpv.viewer.refreshMap();
+      if (!appState.MarkupGroups.length) {
+        appState.Markup.push(data);
+        gpv.viewer.refreshMap();
+      }
+      else {
+        data.m = "AddMarkup";
+        data.id = appState.MarkupGroups[0];
+
+        post({
+          data: data,
+          success: function (result) {
+            if (result) {
+              gpv.viewer.refreshMap();
+            }
           }
-        }
-      });
+        });
+      }
     }
 
     function createMarkupGroup() {
@@ -208,19 +218,30 @@ var GPV = (function (gpv) {
     }
 
     function deleteMarkup(e) {
-      var p = map.options.crs.project(e.shape);
+      map.removeLayer(e.shape);
+      var geo = gpv.latLngsToSearchShape(map, e.shape.getLatLngs());
+
+      var data = {
+        m: "DeleteMarkup",
+        state: appState.toJson("Markup"),
+        geo: geo.join(","),
+        scale: map.getProjectedPixelSize()
+      };
+
+      if (appState.MarkupGroups.length) {
+        data.id = appState.MarkupGroups[0];
+      }
 
       post({
-        data: {
-          m: "DeleteMarkup",
-          id: appState.MarkupGroups[0],
-          x: p.x,
-          y: p.y,
-          distance: gpv.searchDistance(),
-          scale: map.getProjectedPixelSize()
-        },
+        data: data,
         success: function (result) {
-          if (result) {
+          if (result && result.deleted) {
+            if (result.markup) {
+              for (var i = result.markup.length - 1; i >= 0; --i) {
+                appState.Markup.splice(result.markup[i], 1);
+              }
+            }
+
             gpv.viewer.refreshMap();
           }
         }
@@ -267,19 +288,12 @@ var GPV = (function (gpv) {
       }
 
       function complete(canLock, isLocked) {
-        var $tools = $(".Button.MarkupTool");
-
-        if (!enable && $tools.filter(".Selected").length) {
-          $("#optPan").trigger("click");
-        }
-
         if (!isPublic) {
           $chkMarkupLock.prop("disabled", !canLock).prop("checked", isLocked);
         }
 
-        $container.find(".Toggleable").add($tools).toggleClass("Disabled", !enable);
+        $container.find(".Toggleable").toggleClass("Disabled", !enable);
         $tboMarkupTitle.add("#tboMarkupText").prop("disabled", !enable);
-        $colorSelectors.colorSelector("enabled", enable);
       }
     }
 
@@ -310,14 +324,15 @@ var GPV = (function (gpv) {
 
     function floodColors(e) {
       var p = map.options.crs.project(e.shape);
+      var scale = map.getProjectedPixelSize();
 
       var data = {
         m: "FillWithColor",
-        id: appState.MarkupGroups[0],
+        state: appState.toJson("Markup"),
         x: p.x,
         y: p.y,
-        distance: gpv.searchDistance(),
-        scale: map.getProjectedPixelSize(),
+        distance: gpv.searchDistance() * scale,
+        scale: scale,
         color: getMarkupColor()
       };
 
@@ -325,10 +340,21 @@ var GPV = (function (gpv) {
         data.glow = $cmdTextGlowColor.colorSelector("color");
       }
 
+      if (appState.MarkupGroups.length) {
+        data.id = appState.MarkupGroups[0];
+      }
+
       post({
         data: data,
         success: function (result) {
-          if (result) {
+          if (result && result.found) {
+            if (result.markup) {
+              result.markup.forEach(function (i) {
+                appState.Markup[i].Color = data.color;
+                appState.Markup[i].Glow = data.glow;
+              });
+            }
+
             gpv.viewer.refreshMap();
           }
         }
@@ -380,16 +406,23 @@ var GPV = (function (gpv) {
 
     function pickColors(e) {
       var p = map.options.crs.project(e.shape);
+      var scale = map.getProjectedPixelSize();
+
+      var data = {
+        m: "PickColors",
+        state: appState.toJson("Markup"),
+        x: p.x,
+        y: p.y,
+        distance: gpv.searchDistance() * scale,
+        scale: scale
+      };
+
+      if (appState.MarkupGroups.length) {
+        data.id = appState.MarkupGroups[0];
+      }
 
       post({
-        data: {
-          m: "PickColors",
-          id: appState.MarkupGroups[0],
-          x: p.x,
-          y: p.y,
-          distance: gpv.searchDistance(),
-          scale: map.getProjectedPixelSize()
-        },
+        data: data,
         success: function (result) {
           if (result && result.color) {
             $cmdMarkupColor.colorSelector("color", result.color);
