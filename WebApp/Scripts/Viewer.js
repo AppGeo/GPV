@@ -186,6 +186,8 @@ var GPV = (function (gpv) {
         $pnlDataDisplay.animate({ right: 0, opacity: "1.0" }, 600, function () {
           $(".DataExit").addClass("DataExitOpen");
         });
+        $("#pnlOverview").animate({ right: 295 }, 600);
+        $("div.leaflet-control-attribution.leaflet-control").animate({ right: 346 }, 600);
       }
       else {
         $(".DataHeader").trigger("click");
@@ -202,6 +204,8 @@ var GPV = (function (gpv) {
         $(".DataExit").removeClass("DataExitOpen");
         $pnlDataDisplay.hide();
       });
+      $("#pnlOverview").animate({ right: 5 }, 600);
+      $("div.leaflet-control-attribution.leaflet-control").animate({right: 35}, 600);
     });
 
     $(".FunctionHeader").on("click", function () {
@@ -214,8 +218,8 @@ var GPV = (function (gpv) {
         $("#iconOverview").addClass('iconOpen');
         overviewMapHeight = $("#pnlOverview").height();
         overviewMapWidth = $("#pnlOverview").width();
+        $("div.leaflet-control-attribution.leaflet-control").css({ right: overviewMapWidth + 10 });
         $mapOverview = $("#mapOverview");
-        moveAttribution(0.3, -(overviewMapWidth - 30));
         overviewExtent = fullExtent.fit($mapOverview.width(), $mapOverview.height());
         setOverviewMap();
         updateOverviewExtent();
@@ -225,14 +229,14 @@ var GPV = (function (gpv) {
           $("#pnlOverview").animate({ height: "26px", width: "26px" }, 600, function () {
             $("#iconOverview").removeClass('iconOpen');
           });
-          moveAttribution(1, 0);
+          $("div.leaflet-control-attribution.leaflet-control").animate({ right: 35 }, 600);
         }
         else {
           $("#pnlOverview").animate({ height: overviewMapHeight + "px", width: overviewMapWidth + "px" }, 600, function () {
             $("#iconOverview").addClass('iconOpen');
             updateOverviewExtent();
           });
-          moveAttribution(0.75, -(overviewMapWidth - 30));
+          $("div.leaflet-control-attribution.leaflet-control").animate({ right: overviewMapWidth + 10 }, 600);
         }
       }
     });
@@ -344,6 +348,7 @@ var GPV = (function (gpv) {
                 $pnlDataDisplay.animate({ right: 0, opacity: "1.0" }, 600, function () {
                   $(".DataExit").addClass("DataExitOpen");
                 });
+                $("#pnlOverview").animate({ right: 295 }, 600);
               }
             },
             error: function (xhr, status, message) {
@@ -352,21 +357,6 @@ var GPV = (function (gpv) {
           });
         }
       }
-    }
-
-    function moveAttribution(interval, xTranslation) {
-      interval += "s";
-      xTranslation = "translate(" + xTranslation + "px)";
-
-      $("div.leaflet-control-attribution.leaflet-control").css({
-        "transition": interval,
-        "-webkit-transition": interval,
-        "-moz-transition": interval, 
-        "transform": xTranslation,
-        "-webkit-transform": xTranslation,
-        "-moz-transform": xTranslation,
-        "-ms-transform": xTranslation
-      });
     }
 
     function refreshMap(size, bbox, callback) {

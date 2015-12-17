@@ -21,8 +21,8 @@
 <div id="pnlShareContent" class="Panel">
   <button id="cmdForPrint" class="share-type" title="Printable Map"><i class="fa fa-print"></i> Print</button>
   <button id="cmdForEmail" class="share-type" title="Email This Page"><i class="fa fa-envelope-o"></i> Email</button>
-  <button id="cmdForExport" class="share-type" title="Export Map Extent"><i class="fa fa-external-link"></i> Export</button>
-  <button id="cmdForDownload" class="share-type" title="Download Map"><i class="fa fa-download"></i> Download</button>
+  <button id="cmdForExport" class="share-type" title="Go To Map Extent"><i class="fa fa-external-link"></i> Go To</button>
+  <button id="cmdForDownload" class="share-type" title="Export Map"><i class="fa fa-share"></i> Export</button>
   <div id="pnlPrint" class="share">
     <div class="FunctionLabel">Create Printable PDF Map</div><br>
     <form id="frmPrint" method="post" action="PrintableMap.ashx" target="print">
@@ -47,6 +47,7 @@
   </div>
   <div id="pnlEmail" class="share">
     <div class="FunctionLabel">Email a Map</div><br>
+    <p>Note: You must have an email client configured on your machine or in your browser in order to use the email a map function. </p>
     <label for="tboEmail">Email Address</label>
     <input id="tboEmail" />
     <button id="cmdEmail">Send</button>

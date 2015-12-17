@@ -1751,7 +1751,7 @@ public partial class Viewer : CustomStyledPage
   {
     List<String> tabNames = new List<String>();
 
-    foreach (string tabName in new string[] { "selection", "legend", "location", "markup" })
+    foreach (string tabName in new string[] { "search", "selection", "legend", "location", "markup", "share" })
     {
       FunctionTab functionTab = (FunctionTab)Enum.Parse(typeof(FunctionTab), tabName, true);
 
@@ -1762,6 +1762,7 @@ public partial class Viewer : CustomStyledPage
     }
 
     cmdHelp.HRef = String.Format("Help.aspx?application={0}&functiontabs={1}", _appState.Application, String.Join(",", tabNames.ToArray()));
+
   }
 
   private void ShowError(string message)

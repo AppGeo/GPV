@@ -129,7 +129,8 @@ var GPV = (function (gpv) {
     });
 
     $("#optDrawPoint,#optDrawCoordinates").on("click", function () {
-      gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "point" } });
+      var c = getMarkupColor();
+      gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "point", style: { color: c, fill: true, fillColor: c } } });
     });
 
     $("#optDrawText").on("click", function () {
