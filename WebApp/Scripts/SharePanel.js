@@ -26,6 +26,7 @@ var GPV = (function (gpv) {
     });
 
     $("#cmdEmail").on("click", function () {
+      $("#pnlEmail").fadeIn(600);
       gpv.post({
         url: "Services/SaveAppState.ashx",
         data: {
@@ -35,13 +36,14 @@ var GPV = (function (gpv) {
           if (result && result.id) {
             var loc = document.location;
             var url = [loc.protocol, "//", loc.hostname, loc.port.length && loc.port != "80" ? ":" + loc.port : "", loc.pathname, "?state=", result.id];
-            window.open("mailto:" + $("#tboEmail").val() + "?subject=Map&body=" + encodeURIComponent(url.join("")), "_blank");
-            $("#tboEmail").val("");
-            $(".share").fadeOut(600);
+            $("#lnkEmail").html(url.join(""));
+            $("#pnlEmail").fadeIn(600);
           }
         }
       });
     });
+
+    $("#cmdCloseEmail").on("click", function () { $("#pnlEmail").fadeOut(600); });
 
     var $cmdExternalMap = $("#cmdExternalMap").on("click", function(e){
       e.preventDefault();
