@@ -27,6 +27,12 @@
 .fa-print:before {
   content: "\f02f";
 }
+.fa-map-marker:before{
+  content: "\f041";
+}
+.fa-share-alt:before{
+  content: "\f1e0";
+}
 .fa-external-link:before {
   content: "\f08e";
 }

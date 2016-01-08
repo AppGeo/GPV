@@ -1641,8 +1641,18 @@ public partial class Viewer : CustomStyledPage
 
     if (launchParams.ContainsKey("markcenter"))
     {
-      _appState.Coordinates.Add(new Coordinate(_appState.Extent.Centre));
-      _appState.CoordinateLabels.Add(launchParams["markcenter"]);
+      string label = launchParams["markcenter"];
+      
+      Coordinate center = _appState.Extent.Centre;
+      string point = String.Format("POINT({0} {1})", center.X, center.Y);
+      Markup markup = new Markup(point, "#000000", 1);
+
+      if (label != "1")
+      {
+        markup.Text = label;
+      }
+
+      _appState.Markup.Add(markup);
     }
 
     // === printtemplate and printtitle ===
@@ -1751,7 +1761,7 @@ public partial class Viewer : CustomStyledPage
   {
     List<String> tabNames = new List<String>();
 
-    foreach (string tabName in new string[] { "selection", "legend", "location", "markup" })
+    foreach (string tabName in new string[] { "search", "selection", "legend", "location", "markup", "share" })
     {
       FunctionTab functionTab = (FunctionTab)Enum.Parse(typeof(FunctionTab), tabName, true);
 
@@ -1762,6 +1772,7 @@ public partial class Viewer : CustomStyledPage
     }
 
     cmdHelp.HRef = String.Format("Help.aspx?application={0}&functiontabs={1}", _appState.Application, String.Join(",", tabNames.ToArray()));
+
   }
 
   private void ShowError(string message)

@@ -19,9 +19,9 @@
   border: none;
 }
 /*moved leaflet attribution for locus map*/
-.leaflet-container .leaflet-control-attribution
+div.leaflet-control-attribution.leaflet-control
 {
-  margin-right: 40px !important;
+  right: 35px;
 }
 
 #pnlOverview{

@@ -67,14 +67,13 @@ var GPV = (function (gpv) {
       }
     }
 
-    function selectByGeometry(geo, mode, distance) {
+    function selectByGeometry(geo, mode) {
       post({
         data: {
           m: "SelectFeatures",
           state: appState.toJson(),
           geo: geo.join(","),
-          mode: mode ? mode : "new",
-          distance: distance ? distance : 0
+          mode: mode ? mode : "new"
         },
         success: function (result) {
           if (result && result.state) {

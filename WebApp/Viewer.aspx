@@ -115,16 +115,17 @@
                 <li id="optIdentify" runat="server" class="Button MapTool"><span class="glyphicon glyphicon-info-sign"></span> Identify</li>
                 <li class="dropdown-header">Selection Tools</li>
                 <li id="optSelect" runat="server" class="Button MapTool"><span class="select"></span> Select Features</li>
+                <li class="dropdown-header">Measure Tools</li>
+                <li id="optDrawLength" runat="server" class="Button MapTool"><span class="draw-length"></span> Draw Measured Length</li>
+                <li id="optDrawArea" runat="server" class="Button MapTool"><span class="draw-area"></span> Draw Measured Area</li>
                 <li class="dropdown-header">Markup Tools</li>
-                <li id="optDrawPoint" runat="server" class="Button MapTool MarkupTool"><span class="draw-point"></span> Draw Point</li>
-                <li id="optDrawLine" runat="server" class="Button MapTool MarkupTool"><span class="draw-line"></span> Draw Line</li>
-                <li id="optDrawPolygon" runat="server" class="Button MapTool MarkupTool"><span class="draw-polygon"></span> Draw Polygon</li>
-                <li id="optDrawCircle" runat="server" class="Button MapTool MarkupTool"><span class="draw-circle"></span> Draw Circle</li>
-                <li id="optDrawText" runat="server" class="Button MapTool MarkupTool"><span class="draw-text"></span> Draw Text</li>
-                <li id="optDrawCoordinates" runat="server" class="Button MapTool MarkupTool"><span class="draw-coordinates"></span> Draw Coordinates</li>
-                <li id="optDrawLength" runat="server" class="Button MapTool MarkupTool"><span class="draw-length"></span> Draw Measured Length</li>
-                <li id="optDrawArea" runat="server" class="Button MapTool MarkupTool"><span class="draw-area"></span> Draw Measured Area</li>
-                <li id="optDeleteMarkup" runat="server" class="Button MapTool MarkupTool"><span class="delete-markup"></span> Delete Markup</li>
+                <li id="optDrawPoint" runat="server" class="Button MapTool"><span class="draw-point"></span> Draw Point</li>
+                <li id="optDrawLine" runat="server" class="Button MapTool"><span class="draw-line"></span> Draw Line</li>
+                <li id="optDrawPolygon" runat="server" class="Button MapTool"><span class="draw-polygon"></span> Draw Polygon</li>
+                <li id="optDrawCircle" runat="server" class="Button MapTool"><span class="draw-circle"></span> Draw Circle</li>
+                <li id="optDrawText" runat="server" class="Button MapTool"><span class="draw-text"></span> Draw Text</li>
+                <li id="optDrawCoordinates" runat="server" class="Button MapTool"><span class="draw-coordinates"></span> Draw Coordinates</li>
+                <li id="optDeleteMarkup" runat="server" class="Button MapTool"><span class="delete-markup"></span> Delete Markup</li>
                 <li id="optColorPicker" runat="server" class="Button MapTool MarkupTool"><span class="color-picker"></span> Pick Color</li>
                 <li id="optPaintBucket" runat="server" class="Button MapTool MarkupTool"><span class="paint-bucket"></span> Fill With Color</li>
               </ul>
@@ -153,8 +154,7 @@
 
       <div id="pnlDataDisplay" class="Panel">
         <div class="DataHeader">Details<span class="glyphicon glyphicon-menu-right DataExit" aria-hidden="true"></span></div>
-        <div id="pnlData" class="Panel">
-          <span id="spnDataTheme" class="DataLabel">Data Set</span>
+          <div id="pnlData" class="Panel">
           <select id="ddlDataTheme" class="Input">
           </select><br>
           <button id="cmdDataPrint" class="Disabled">Print</button>
@@ -162,9 +162,7 @@
         </div>
       </div>
     </div>
-
     <div id="pnlFooter" class="Panel"><uc1:Footer ID="Footer1" runat="server" /></div>
-
     <form id="frmSaveMap" method="post" action="Services/MapImage.ashx">
       <input type="hidden" name="m" />
       <input type="hidden" name="state" />
