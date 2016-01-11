@@ -328,7 +328,7 @@ public class MapMaker
                 markup.Color = reader.GetString(1);
                 markup.Glow = !reader.IsDBNull(2) ? reader.GetString(2) : null;
                 markup.Text = !reader.IsDBNull(3) ? reader.GetString(3) : null;
-                markup.Measured = !reader.IsDBNull(4) ? (int?)reader.GetInt32(4) : null;
+                markup.Measured = !reader.IsDBNull(4) ? (int?)reader.GetInt16(4) : null;
 
                 markupList.Add(markup);
               }
