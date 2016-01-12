@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -24,10 +24,11 @@ var GPV = (function (gpv) {
     var xhr = null;
 
     function mapMouseMove(e) {
-      
-      // TODO: update for new identify tool selected mode
+      if (L.Browser.mobile && L.Browser.touch) {
+        return;
+      }
 
-      if (!$optIdentify.hasClass("Selected")) {
+      if ($MapTool.filter(".Selected").attr("id") !== "optIdentify") {
         mapMouseOut();
         return;
       }
