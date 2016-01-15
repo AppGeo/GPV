@@ -23,7 +23,7 @@
     <gpv:Select ID="ddlSearches" runat="server" CssClass="Input" ToolTip="Choose a search to perform" />
     <gpv:Div id="pnlSearchScroll" runat="server" class="Panel" ></gpv:Div>
     <div class="searchCommand Panel">
-      <button id="cmdSearch" title="Seach">Search</button>
+      <button id="cmdSearch" title="Search">Search</button>
       <button id="cmdReset" title="Reset">Reset</button>
     </div>
   </div>

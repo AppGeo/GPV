@@ -19,12 +19,12 @@
 
 <div class="FunctionHeader"><span class="glyphicon glyphicon-menu-left FunctionExit" aria-hidden="true"></span>Share</div>
 <div id="pnlShareContent" class="Panel">
-  <button id="cmdForPrint" class="share-type" title="Printable Map"><i class="fa fa-print"></i> Print</button>
-  <button id="cmdEmail" title="Get Link"><i class="fa fa-share-alt"></i> Email Link</button>
-  <button id="cmdForExport" class="share-type" title="Go To Map Extent"><i class="fa fa-map-marker"></i> Go To</button>
-  <button id="cmdForDownload" class="share-type" title="Export Map"><i class="fa fa-external-link"></i> Export</button>
+  <button id="cmdForPrint" class="share-type" title="Create a printable map"><i class="fa fa-print"></i> Print</button>
+  <button id="cmdForEmail" title="Get a link to this map for emailing"><i class="fa fa-share-alt"></i> Email Link</button>
+  <button id="cmdForExport" class="share-type" title="See this area in other maps"><i class="fa fa-map-marker"></i> Go To</button>
+  <button id="cmdForDownload" class="share-type" title="Save this map as an image or KML"><i class="fa fa-external-link"></i> Export</button>
   <div id="pnlPrint" class="share">
-    <div class="FunctionLabel">Create Printable PDF Map</div><br>
+    <div class="FunctionLabel">Create a Printable PDF Map</div><br>
     <form id="frmPrint" method="post" action="PrintableMap.ashx" target="print">
       <label for="ddlPrintTemplate">Format</label>
       <gpv:Select id="ddlPrintTemplate" runat="server" name="template" CssClass="Input">
@@ -46,21 +46,21 @@
     </form>
   </div>
   <div id="pnlEmail" class="share">
-    <div class="FunctionLabel">Email a Map Link</div><br/>
+    <div class="FunctionLabel">Link for Emailing</div><br/>
     <span id="lnkEmail"></span><br/>
     <button id="cmdCloseEmail">Close</button>
   </div>
   <div id="pnlExport" class="share">
-    <div class="FunctionLabel">Export Map Extent</div><br>
-    <gpv:Select id="ddlExternalMap" runat="server" class="Input" style="width: 200px"></gpv:Select>
+    <div class="FunctionLabel">See Area in Another Map</div><br>
+    <gpv:Select id="ddlExternalMap" runat="server" CssClass="Input" style="width: 200px"></gpv:Select>
     <button id="cmdExternalMap">Go</button>
   </div>
   <div id="pnlDownload" class="share">
-    <div class="FunctionLabel">Download a Map</div><br>
+    <div class="FunctionLabel">Export the Map</div><br>
     <label for="ddlSaveMap">Save as</label>
     <select id="ddlSaveMap" class="Input" style="width: 90px">
-      <option value="image">as Image</option>
-      <option value="kml">as KML</option>
+      <option value="image">Image</option>
+      <option value="kml">KML</option>
     </select>
     <button id="cmdSaveMap">Save</button>
   </div>

@@ -19,14 +19,12 @@ var GPV = (function (gpv) {
     // =====  control events  =====
 
     $(".share-type").on("click", function (e) {
-      e.preventDefault();
       $(".share").hide();
       var panel = "#pnl" + e.target.id.replace("cmdFor", "");
       $(panel).fadeIn(600);
     });
 
-    $("#cmdEmail").on("click", function () {
-      $("#pnlEmail").fadeIn(600);
+    $("#cmdForEmail").on("click", function () {
       gpv.post({
         url: "Services/SaveAppState.ashx",
         data: {
@@ -37,6 +35,7 @@ var GPV = (function (gpv) {
             var loc = document.location;
             var url = [loc.protocol, "//", loc.hostname, loc.port.length && loc.port != "80" ? ":" + loc.port : "", loc.pathname, "?state=", result.id];
             $("#lnkEmail").html(url.join(""));
+            $(".share").hide();
             $("#pnlEmail").fadeIn(600);
           }
         }

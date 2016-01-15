@@ -28,7 +28,7 @@ var GPV = (function (gpv) {
         return;
       }
 
-      if ($optIdentify.hasClass("Selected")) {
+      if (!$optIdentify.hasClass("Selected")) {
         mapMouseOut();
         return;
       }

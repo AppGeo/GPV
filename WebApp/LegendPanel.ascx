@@ -20,6 +20,6 @@
 <div class="FunctionHeader"><span class="glyphicon glyphicon-menu-left FunctionExit" aria-hidden="true"></span>Legend</div>
 
 <div id="pnlLegendContent">
-  <button id="cmdRefreshMap"><i class="fa fa-refresh"></i> Refresh Map</button>
+  <button id="cmdRefreshMap" title="Refresh the map with the selected layers"><i class="fa fa-refresh"></i> Refresh Map</button>
   <gpv:Div id="pnlLegendScroll" runat="server" CssClass="Panel" />
 </div>

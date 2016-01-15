@@ -48,3 +48,6 @@
 .fa-crosshairs:before {
   content: "\f05b";
 }
+.fa-refresh:before {
+  content: "\f021";
+}
