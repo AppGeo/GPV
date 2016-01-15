@@ -496,7 +496,7 @@ var GPV = (function (gpv) {
         application: appState.Application,
         width: $mapOverview.width(),
         height: $mapOverview.height(),
-        bbox: overviewExtent.toArray()
+        bbox: overviewExtent.toArray().join()
       });
 
       $mapOverview.css("backgroundImage", "url(" + url + ")");

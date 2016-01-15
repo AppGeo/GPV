@@ -26,10 +26,10 @@
     var oldRatio = dx / dy;
 
     if (newRatio > oldRatio) {
-      dy = dx / newRatio;
+      dx = dy * newRatio;
     }
     else {
-      dx = dy * newRatio;
+      dy = dx / newRatio;
     }
 
     var cx = (this.min.x + this.max.x) * 0.5;

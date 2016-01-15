@@ -112,7 +112,7 @@ public class MapImageHandler : WebServiceHandler
 
     int width = Convert.ToInt32(Request.Params["width"]);
     int height = Convert.ToInt32(Request.Params["height"]);
-    string[] bbox = Request.Params["bbox[]"].Split(',');
+    string[] bbox = Request.Params["bbox"].Split(',');
     
     AppState appState = new AppState()
     {
