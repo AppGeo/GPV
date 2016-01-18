@@ -40,7 +40,7 @@ var GPV = (function (gpv) {
         zoomToZone(zone, level);
       }
       else {
-        appState.Level = level;
+        appState.update({ Level: level });
         gpv.viewer.refreshMap();
       }
     });
@@ -131,7 +131,7 @@ var GPV = (function (gpv) {
         success: function (result) {
           if (result) {
             if (level) {
-              appState.Level = level;
+              appState.update({ Level: level });
             }
 
             gpv.viewer.setExtent(result.extent);

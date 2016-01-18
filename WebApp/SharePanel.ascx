@@ -47,8 +47,7 @@
   </div>
   <div id="pnlEmail" class="share">
     <div class="FunctionLabel">Link for Emailing</div><br/>
-    <span id="lnkEmail"></span><br/>
-    <button id="cmdCloseEmail">Close</button>
+    <textarea id="lnkEmail" rows="3" readonly="readonly" style="overflow: hidden" ></textarea>
   </div>
   <div id="pnlExport" class="share">
     <div class="FunctionLabel">See Area in Another Map</div><br>

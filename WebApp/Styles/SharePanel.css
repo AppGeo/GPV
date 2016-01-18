@@ -50,3 +50,9 @@
 {
   margin-top: 6px;
 }
+
+#lnkEmail
+{
+  width: 100%;
+  resize: none;
+}

@@ -433,7 +433,7 @@ public class MarkupPanelHandler : WebServiceHandler
 
     if (!markupRow.IsNull("Measured"))
     {
-      markup.Measured = (int?)markupRow["Measured"];
+      markup.Measured = (short)markupRow["Measured"];
     }
 
     return MarkupHitTest(markup, g, distance, scale);

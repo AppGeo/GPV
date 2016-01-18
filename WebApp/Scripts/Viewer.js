@@ -254,14 +254,14 @@ var GPV = (function (gpv) {
     $("#selectMapTheme li").click(function () {
       $("#selectedTheme").html($(this).html());
       var mapTab = $(this).attr("data-maptab");
-      appState.MapTab = mapTab;
+      appState.update({ MapTab: mapTab });
       triggerMapTabChanged();
       shingleLayer.redraw();
     });
 
     $("#selectMapLevel li").click(function () {
       $("#selectedLevel").html($(this).html());
-      appState.Level = $(this).attr("data-level");
+      appState.update({ Level: $(this).attr("data-level") });
       shingleLayer.redraw();
     });
 
@@ -360,9 +360,17 @@ var GPV = (function (gpv) {
     }
 
     function refreshMap(size, bbox, callback) {
-      var same = sameBox(appState.Extent.bbox, bbox);
-      appState.Extent.bbox = bbox;
-      appState.VisibleLayers[appState.MapTab] = gpv.legendPanel.getVisibleLayers(appState.MapTab);
+      var extent = appState.Extent;
+      var same = sameBox(extent.bbox, bbox);
+      extent.bbox = bbox;
+
+      var layers = appState.VisibleLayers;
+      layers[appState.MapTab] = gpv.legendPanel.getVisibleLayers(appState.MapTab);
+
+      appState.update({
+        Extent: extent,
+        VisibleLayers: layers
+      });
 
       if (!same) {
         $.each(extentChangedHandlers, function () {
