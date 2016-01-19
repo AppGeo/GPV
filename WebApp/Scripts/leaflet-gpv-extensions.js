@@ -482,6 +482,7 @@
 
       img.onselectstart = img.onmousemove = L.Util.falseFn;
       img.onload = this._shingleOnLoad;
+      img.ondragstart = function () { return false; };
 
       return img;
     },
