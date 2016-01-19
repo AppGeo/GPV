@@ -267,7 +267,7 @@ var GPV = (function (gpv) {
 
     // =====  map tools  =====
 
-    $("#selectMapTools li").click(function () {
+    $("#selectMapTools li").not($(".dropdown-header")).click(function () {
       if (!$(this).hasClass('Disabled')) {
         $("#selectedTool").html($(this).html());
       }
@@ -326,17 +326,24 @@ var GPV = (function (gpv) {
             type: "POST",
             dataType: "html",
             success: function (html) {
-              $("#pnlDataList").empty().append(html);
-              $("#cmdDataPrint").removeClass("Disabled").data("printdata", [
-                "maptab=", encodeURIComponent(appState.MapTab), 
-                "&visiblelayers=", encodeURIComponent(visibleLayers.join("\x01")),
-                "&level=", appState.Level, 
-                "&x=", p.x, 
-                "&y=", p.y, 
-                "&distance=", gpv.searchDistance(),
-                "&scale=", map.getProjectedPixelSize(),
-                "&print=1"
-              ].join(""));
+              if (html.length > 28) {
+                $("#pnlDataList").empty().append(html);
+                $("#cmdDataPrint").removeClass("Disabled").data("printdata", [
+                  "maptab=", encodeURIComponent(appState.MapTab),
+                  "&visiblelayers=", encodeURIComponent(visibleLayers.join("\x01")),
+                  "&level=", appState.Level,
+                  "&x=", p.x,
+                  "&y=", p.y,
+                  "&distance=", gpv.searchDistance(),
+                  "&scale=", map.getProjectedPixelSize(),
+                  "&print=1"
+                ].join(""));
+              }
+              else {
+                $("#pnlDataList").empty().append('<div class="DataList">' +
+                '<p style="text-align: center; margin-top: 10px; color: #898989;">' +
+                'No Results</p></div>');
+              }
 
               var $pnlDataDisplay = $("#pnlDataDisplay");
 
