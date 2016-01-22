@@ -15,6 +15,7 @@
 var GPV = (function (gpv) {
   $(function () {
     var map;
+    var externalMapState;
 
     // =====  control events  =====
 
@@ -43,10 +44,15 @@ var GPV = (function (gpv) {
       });
     });
 
-    var $cmdExternalMap = $("#cmdExternalMap").on("click", function(e){
-      e.preventDefault();
-      var url = $(this).attr("href");
-      window.open(url, "_blank");
+    var $cmdExternalMap = $("#cmdExternalMap").on("click", function(e) {
+      if (externalMapState === 'posted') {
+        externalMapState = 'clicked';
+      }
+      else {
+        e.preventDefault();
+        var url = $(this).attr("href");
+        window.open(url, "_blank");
+      }
     })
 
     $("#cmdPrint").on("click", function () {
@@ -124,6 +130,8 @@ var GPV = (function (gpv) {
         return;
       }
 
+      externalMapState = 'posted';
+
       gpv.post({
         url: "Services/ExternalMap.ashx",
         data: {
@@ -137,6 +145,14 @@ var GPV = (function (gpv) {
         success: function (result) {
           if (result && result.url) {
             $cmdExternalMap.attr("href", result.url).removeClass("Disabled");
+          }
+        },
+        complete: function () {
+          var state = externalMapState;
+          externalMapState = undefined;
+
+          if (state === 'clicked' && !$cmdExternalMap.hasClass('Disabled')) {
+            $cmdExternalMap.trigger('click');
           }
         }
       });
