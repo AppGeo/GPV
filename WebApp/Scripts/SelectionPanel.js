@@ -97,11 +97,11 @@ var GPV = (function (gpv) {
 
     function actionChanged(e) {
       var previous = appState.Action;
-      appState.Action = parseInt($ddlAction.val(), 10);
+      appState.update({ Action: parseInt($ddlAction.val(), 10) });
 
       if (!e) {
         if (appState.Action == action.select) {
-          appState.SelectionIds = [];
+          appState.update({ SelectionIds: [] });
         }
       }
       else {
@@ -109,23 +109,27 @@ var GPV = (function (gpv) {
         var preserveSelection = gpv.settings.preserveOnActionChange == "selection";
 
         if (preserveSelection && previous > action.select && appState.Action == action.select && hasId(mapTab.target, appState.SelectionLayer)) {
-          appState.TargetLayer = appState.SelectionLayer;
-          appState.TargetIds = appState.SelectionIds;
-          appState.SelectionIds = [];
+          appState.update({
+            TargetLayer: appState.SelectionLayer,
+            TargetIds: appState.SelectionIds,
+            SelectionIds: []
+          });
           $ddlTargetLayer.val(appState.TargetLayer);
           fillSelectionLayer();
           fillQuery();
         }
         else if (preserveSelection && previous == action.select && appState.Action > action.select && hasId(mapTab.selection, appState.TargetLayer)) {
           fillSelectionLayer();
-          appState.SelectionLayer = appState.TargetLayer;
-          appState.SelectionIds = appState.TargetIds;
-          appState.TargetIds = [];
+          appState.update({
+            SelectionLayer: appState.TargetLayer,
+            SelectionIds: appState.TargetIds,
+            TargetIds: []
+          });
           $ddlSelectionLayer.val(appState.SelectionLayer);
         }
         else {
           if (appState.Action == action.select) {
-            appState.SelectionIds = [];
+            appState.update({ SelectionIds: [] });
           }
 
           fillSelectionLayer();
@@ -169,10 +173,12 @@ var GPV = (function (gpv) {
 
     function clearSelection() {
       if (appState.TargetIds.length > 0 || appState.TargetIds.length > 0) {
-        appState.TargetIds = [];
-        appState.SelectionIds = [];
-        appState.ActiveMapId = "";
-        appState.ActiveDataId = "";
+        appState.update({
+          TargetIds: [],
+          SelectionIds: [],
+          ActiveMapId: "",
+          ActiveDataId: ""
+        });
         selection.update();
       }
     }
@@ -397,7 +403,7 @@ var GPV = (function (gpv) {
     }
 
     function proximityChanged(e) {
-      appState.Proximity = emptyIfNull($ddlProximity.val());
+      appState.update({ Proximity: emptyIfNull($ddlProximity.val()) });
 
       if (e) {
         selection.update();
@@ -405,7 +411,7 @@ var GPV = (function (gpv) {
     }
 
     function queryChanged(e) {
-      appState.Query = emptyIfNull($ddlQuery.val());
+      appState.update({ Query: emptyIfNull($ddlQuery.val()) });
 
       if (e) {
         selection.update();
@@ -414,8 +420,10 @@ var GPV = (function (gpv) {
 
     function queryGridChanged(dblClick) {
       var sel = $grdQuery.dataGrid("getSelection");
-      appState.ActiveMapId = sel.length ? sel[0].m : "";
-      appState.ActiveDataId = sel.length ? sel[0].d : "";
+      appState.update({
+        ActiveMapId: sel.length ? sel[0].m : "",
+        ActiveDataId: sel.length ? sel[0].d : ""
+      });
       fillDataList();
 
       if (dblClick) {
@@ -453,9 +461,11 @@ var GPV = (function (gpv) {
 
       function complete(result) {
         if (result && result.ids) {
-          appState.TargetIds = result.ids;
-          appState.ActiveMapId = "";
-          appState.ActiveDataId = "";
+          appState.update({
+            TargetIds: result.ids,
+            ActiveMapId: "",
+            ActiveDataId: ""
+          });
         }
 
         initialize();
@@ -471,7 +481,7 @@ var GPV = (function (gpv) {
 
     function selectionChanged() {
       if (!appState.Query) {
-        appState.Query = $ddlQuery.val();
+        appState.update({ Query: $ddlQuery.val() });
       }
 
       if (appState.Query) {
@@ -494,8 +504,10 @@ var GPV = (function (gpv) {
               });
 
               if ($grdQuery.dataGrid("getSelection").length == 0) {
-                appState.ActiveMapId = "";
-                appState.ActiveDataId = "";
+                appState.update({
+                  ActiveMapId: "",
+                  ActiveDataId: ""
+                });
               }
               else {
                 fillDataList();
@@ -535,11 +547,13 @@ var GPV = (function (gpv) {
     }
 
     function selectionLayerChanged(e) {
-      appState.SelectionLayer = emptyIfNull($ddlSelectionLayer.val());
+      appState.update({ SelectionLayer: emptyIfNull($ddlSelectionLayer.val()) });
 
       if (e) {
-        appState.TargetIds = [];
-        appState.SelectionIds = [];
+        appState.update({ 
+          TargetIds: [],
+          SelectionIds: []
+        });
         selection.update();
       }
     }
@@ -552,12 +566,12 @@ var GPV = (function (gpv) {
         var hasDataTab = $.grep(layer.dataTab, function (t) { return t.id == appState.DataTab; }).length;
 
         if (!hasDataTab) {
-          appState.DataTab = "";
+          appState.update({ DataTab: "" });
         }
 
         $.each(layer.dataTab, function (i, v) {
           if (!hasDataTab && i == 0) {
-            appState.DataTab = v.id;
+            appState.update({ DataTab: v.id });
           }
 
           $("<option value='" + v.name + "' data-datatab='" + v.id + "'>" + v.name + "</option>").prop("selected", appState.DataTab === v.id).appendTo($ddlDataTheme);
@@ -585,10 +599,12 @@ var GPV = (function (gpv) {
     }
 
     function targetLayerChanged(e) {
-      appState.TargetLayer = emptyIfNull($ddlTargetLayer.val());
-      appState.TargetIds = [];
-      appState.ActiveMapId = "";
-      appState.ActiveDataId = "";
+      appState.update({
+        TargetLayer: emptyIfNull($ddlTargetLayer.val()),
+        TargetIds: [],
+        ActiveMapId: "",
+        ActiveDataId: ""
+      });
 
       if (e) {
         fillAction();

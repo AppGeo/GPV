@@ -410,34 +410,33 @@
       <h2 class="MenuItem share" id="share">Sharing Maps</h2>
 
       <p class="share">
-        <img src="Images/Help/PrintPanel.png" alt="print map" class="imgLeft" /><span class="component">Print Map:</span> Displays a utility for 
+        <img src="Images/Help/PrintPanel.png" alt="print map" class="imgLeft" /><span class="component">Print:</span> Displays a utility for 
         creating a PDF version of the current map suitable for printing or archiving. Options can be set to select page layout and 
-        preservation of either the scale or the width of the current map. Dependant on the configuration, options may be enabled to provide text, 
+        preservation of either the scale or the width of the current map. Depending on the configuration, options may be enabled to provide text, 
         such as a title and/or notes, which will appear in specific locations on the printable page.
       </p>
 
       <p class="share">
-        <span class="component">Email This Page:</span> Starts the local email client with a message containing a link to the current map page. 
-        All the information about the page - the current map tab, zoom level, selected object, and markup - are encrypted in this link. Text can 
-        be added to this message and it can be mailed to anyone that has access to this GPV. When the link is clicked, 
-        the GPV will appear in its current state.
+        <span class="component">Email Link:</span> Provides a link to the current map page.  You can copy this link and paste it into a messaging
+        application to share it with others.  All the information about the page - the current map tab, zoom level, selected object, and markup - 
+        are encrypted in this link.  When the link is clicked, the GPV will reappear in its current state.
       </p>
 
       <p class="share">
-        <span class="component">External Map Viewers:</span> The Export button presents a pull down list of other web-based 
-        map viewers. When one is selected, a new widow opens that map viewer and the map centered and zoomed to the same location.
+        <span class="component">Go To:</span> Presents a pull down list of other web-based map viewers.  Select one then click Go to see the
+        the current map area in that viewer.
       </p>
 
       <p class="share">
-        <span class="component">Save Map:</span> The Download button presents a pull down list with image format options 
-        that allow for saving of the current map view to a file. Select "as Image" to save the map as a PNG or JPEG image file. Select "as KML" to save 
-        the map in a format that can be viewed in Google Earth. Click Save Map to download and save the file.
+        <span class="component">Export:</span> Shows a pull down list with image format options that allow for saving of the current map view to a 
+        file. Select "as Image" to save the map as a PNG or JPEG image file. Select "as KML" to save the map in a format that can be viewed in 
+        Google Earth. Click Save Map to download and save the file.
       </p>
 
       <%--Other Capabilities--%>
       <h2 class="MenuItem" id="other">Other Capabilities</h2>
       <p>
-        <span class="component">Mobile</span> When the application is launched from a mobile phone, a responsive mobile version is presented. 
+        <span class="component">Mobile:</span> When the application is launched from a mobile phone, a responsive mobile version is presented. 
         This mobile version has a limited subset of features; users of the mobile version can only perform basic map navigation, identify key features, 
         change the map theme, and zoom to their current location.
       </p>

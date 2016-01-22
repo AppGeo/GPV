@@ -26,10 +26,10 @@
     var oldRatio = dx / dy;
 
     if (newRatio > oldRatio) {
-      dy = dx / newRatio;
+      dx = dy * newRatio;
     }
     else {
-      dx = dy * newRatio;
+      dy = dx / newRatio;
     }
 
     var cx = (this.min.x + this.max.x) * 0.5;
@@ -482,6 +482,7 @@
 
       img.onselectstart = img.onmousemove = L.Util.falseFn;
       img.onload = this._shingleOnLoad;
+      img.ondragstart = function () { return false; };
 
       return img;
     },

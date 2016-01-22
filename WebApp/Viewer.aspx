@@ -155,9 +155,9 @@
       <div id="pnlDataDisplay" class="Panel">
         <div class="DataHeader">Details<span class="glyphicon glyphicon-menu-right DataExit" aria-hidden="true"></span></div>
           <div id="pnlData" class="Panel">
-          <select id="ddlDataTheme" class="Input">
+          <select id="ddlDataTheme" class="Input" title="Data category">
           </select><br>
-          <button id="cmdDataPrint" class="Disabled">Print</button>
+          <button id="cmdDataPrint" class="Disabled" title="Send data to printer">Print</button>
           <div id="pnlDataList" class="Panel"></div>
         </div>
       </div>

@@ -78,14 +78,19 @@ var GPV = (function (gpv) {
 
     var $ddlMarkupCategory = $("#ddlMarkupCategory").change(function () {
       if (appState.MarkupGroups.length > 0) {
-        appState.MarkupGroups = [];
+        appState.update({
+          MarkupCategory: $ddlMarkupCategory.val(),
+          MarkupGroups: []
+        });
         $tboMarkupTitle.val("");
         $chkMarkupLock.prop("checked", false);
         enableControls();
         gpv.viewer.refreshMap();
       }
+      else {
+        appState.update({ MarkupCategory: $ddlMarkupCategory.val() });
+      }
 
-      appState.MarkupCategory = $ddlMarkupCategory.val();
       fillGrid(false);
     });
 
@@ -206,7 +211,7 @@ var GPV = (function (gpv) {
         },
         success: function (result) {
           if (result) {
-            appState.MarkupGroups = [result.id];
+            appState.update({ MarkupGroups: [result.id] });
             $tboMarkupTitle.val(result.title);
             $chkMarkupLock.prop("checked", result.locked);
             enableControls();
@@ -256,7 +261,7 @@ var GPV = (function (gpv) {
         },
         success: function (result) {
           if (result) {
-            appState.MarkupGroups = [];
+            appState.update({ MarkupGroups: [] });
             $tboMarkupTitle.val("");
             enableControls();
             $grdMarkup.dataGrid("deleteSelection");
@@ -349,10 +354,14 @@ var GPV = (function (gpv) {
         success: function (result) {
           if (result && result.found) {
             if (result.markup) {
+              var markup = appState.Markup;
+
               result.markup.forEach(function (i) {
-                appState.Markup[i].Color = data.color;
-                appState.Markup[i].Glow = data.glow;
+                markup[i].Color = data.color;
+                markup[i].Glow = data.glow;
               });
+
+              appState.update({ Markup: markup });
             }
 
             gpv.viewer.refreshMap();
@@ -451,7 +460,7 @@ var GPV = (function (gpv) {
     }
 
     function selectionChanged() {
-      appState.MarkupGroups = $grdMarkup.dataGrid("getSelection");
+      appState.update({ MarkupGroups: $grdMarkup.dataGrid("getSelection") });
       var numGroups = appState.MarkupGroups.length;
       var markupTitle = numGroups == 1 ? $grdMarkup.dataGrid("getData", appState.MarkupGroups[0])[2] : "";
 

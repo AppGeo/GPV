@@ -254,20 +254,20 @@ var GPV = (function (gpv) {
     $("#selectMapTheme li").click(function () {
       $("#selectedTheme").html($(this).html());
       var mapTab = $(this).attr("data-maptab");
-      appState.MapTab = mapTab;
+      appState.update({ MapTab: mapTab });
       triggerMapTabChanged();
       shingleLayer.redraw();
     });
 
     $("#selectMapLevel li").click(function () {
       $("#selectedLevel").html($(this).html());
-      appState.Level = $(this).attr("data-level");
+      appState.update({ Level: $(this).attr("data-level") });
       shingleLayer.redraw();
     });
 
     // =====  map tools  =====
 
-    $("#selectMapTools li").click(function () {
+    $("#selectMapTools li").not($(".dropdown-header")).click(function () {
       if (!$(this).hasClass('Disabled')) {
         $("#selectedTool").html($(this).html());
       }
@@ -326,17 +326,24 @@ var GPV = (function (gpv) {
             type: "POST",
             dataType: "html",
             success: function (html) {
-              $("#pnlDataList").empty().append(html);
-              $("#cmdDataPrint").removeClass("Disabled").data("printdata", [
-                "maptab=", encodeURIComponent(appState.MapTab), 
-                "&visiblelayers=", encodeURIComponent(visibleLayers.join("\x01")),
-                "&level=", appState.Level, 
-                "&x=", p.x, 
-                "&y=", p.y, 
-                "&distance=", gpv.searchDistance(),
-                "&scale=", map.getProjectedPixelSize(),
-                "&print=1"
-              ].join(""));
+              if (html.length > 28) {
+                $("#pnlDataList").empty().append(html);
+                $("#cmdDataPrint").removeClass("Disabled").data("printdata", [
+                  "maptab=", encodeURIComponent(appState.MapTab),
+                  "&visiblelayers=", encodeURIComponent(visibleLayers.join("\x01")),
+                  "&level=", appState.Level,
+                  "&x=", p.x,
+                  "&y=", p.y,
+                  "&distance=", gpv.searchDistance(),
+                  "&scale=", map.getProjectedPixelSize(),
+                  "&print=1"
+                ].join(""));
+              }
+              else {
+                $("#pnlDataList").empty().append('<div class="DataList">' +
+                '<p style="text-align: center; margin-top: 10px; color: #898989;">' +
+                'No Results</p></div>');
+              }
 
               var $pnlDataDisplay = $("#pnlDataDisplay");
 
@@ -360,9 +367,17 @@ var GPV = (function (gpv) {
     }
 
     function refreshMap(size, bbox, callback) {
-      var same = sameBox(appState.Extent.bbox, bbox);
-      appState.Extent.bbox = bbox;
-      appState.VisibleLayers[appState.MapTab] = gpv.legendPanel.getVisibleLayers(appState.MapTab);
+      var extent = appState.Extent;
+      var same = sameBox(extent.bbox, bbox);
+      extent.bbox = bbox;
+
+      var layers = appState.VisibleLayers;
+      layers[appState.MapTab] = gpv.legendPanel.getVisibleLayers(appState.MapTab);
+
+      appState.update({
+        Extent: extent,
+        VisibleLayers: layers
+      });
 
       if (!same) {
         $.each(extentChangedHandlers, function () {
@@ -496,7 +511,7 @@ var GPV = (function (gpv) {
         application: appState.Application,
         width: $mapOverview.width(),
         height: $mapOverview.height(),
-        bbox: overviewExtent.toArray()
+        bbox: overviewExtent.toArray().join()
       });
 
       $mapOverview.css("backgroundImage", "url(" + url + ")");
