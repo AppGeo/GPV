@@ -281,7 +281,7 @@ public class AppState
         {
           var text = (string)values.Dequeue();
 
-          if (text != "1")
+          if (!String.IsNullOrEmpty(text) && text != "1")
           {
             appState.Markup[0].Text = text;
           }
