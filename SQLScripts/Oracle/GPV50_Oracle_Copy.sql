@@ -15,14 +15,14 @@
 --
 --  GPV41_Oracle_Copy.sql
 --
---  Copies the GPV v4.1 configuration tables.  You can set the source and destination prefixes for 
+--  Copies the GPV v5.0 configuration tables.  You can set the source and destination prefixes for 
 --  the table names by changing the values in the "srcPrefix varchar2(10)" and "desPrefix varchar2(10)"
---  lines below.  Make sure to run GPV41_Oracle_AddConstraints.sql using the destination prefix to
+--  lines below.  Make sure to run GPV50_Oracle_AddConstraints.sql using the destination prefix to
 --  create the necessary constraints on the copied tables.
 --
 
 DECLARE 
-  srcPrefix varchar2(10):= 'GPV41';
+  srcPrefix varchar2(10):= 'GPV50';
   desPrefix varchar2(10):= 'GPVx';
 
 BEGIN 
@@ -40,6 +40,7 @@ BEGIN
   EXECUTE IMMEDIATE 'CREATE TABLE ' || desPrefix || 'MailingLabel AS SELECT * FROM ' || srcPrefix || 'MailingLabel';
   EXECUTE IMMEDIATE 'CREATE TABLE ' || desPrefix || 'MapTab AS SELECT * FROM ' || srcPrefix || 'MapTab';
   EXECUTE IMMEDIATE 'CREATE TABLE ' || desPrefix || 'MapTabLayer AS SELECT * FROM ' || srcPrefix || 'MapTabLayer';
+  EXECUTE IMMEDIATE 'CREATE TABLE ' || desPrefix || 'MapTabTileLayer AS SELECT * FROM ' || srcPrefix || 'MapTabTileLayer';
   EXECUTE IMMEDIATE 'CREATE TABLE ' || desPrefix || 'Markup AS SELECT * FROM ' || srcPrefix || 'Markup';
   EXECUTE IMMEDIATE 'CREATE TABLE ' || desPrefix || 'MarkupCategory AS SELECT * FROM ' || srcPrefix || 'MarkupCategory';
   EXECUTE IMMEDIATE 'CREATE TABLE ' || desPrefix || 'MarkupGroup AS SELECT * FROM ' || srcPrefix || 'MarkupGroup';
@@ -51,6 +52,7 @@ BEGIN
   EXECUTE IMMEDIATE 'CREATE TABLE ' || desPrefix || 'SavedState AS SELECT * FROM ' || srcPrefix || 'SavedState';
   EXECUTE IMMEDIATE 'CREATE TABLE ' || desPrefix || 'Search AS SELECT * FROM ' || srcPrefix || 'Search';
   EXECUTE IMMEDIATE 'CREATE TABLE ' || desPrefix || 'SearchInputField AS SELECT * FROM ' || srcPrefix || 'SearchInputField';
+  EXECUTE IMMEDIATE 'CREATE TABLE ' || desPrefix || 'TileLayer AS SELECT * FROM ' || srcPrefix || 'TileLayer';
   EXECUTE IMMEDIATE 'CREATE TABLE ' || desPrefix || 'UsageTracking AS SELECT * FROM ' || srcPrefix || 'UsageTracking';
   EXECUTE IMMEDIATE 'CREATE TABLE ' || desPrefix || 'User AS SELECT * FROM ' || srcPrefix || 'User';
   EXECUTE IMMEDIATE 'CREATE TABLE ' || desPrefix || 'Zone AS SELECT * FROM ' || srcPrefix || 'Zone';

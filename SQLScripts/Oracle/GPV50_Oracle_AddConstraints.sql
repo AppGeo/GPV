@@ -13,14 +13,14 @@
 --  See the License for the specific language governing permissions and
 --  limitations under the License.
 --
---  GPV41_Oracle_AddConstraints.sql
+--  GPV50_Oracle_AddConstraints.sql
 --
---  Adds primary key, foreign key and unique constraints to the GPV v4.1 configuration tables.  You can
+--  Adds primary key, foreign key and unique constraints to the GPV v5.0 configuration tables.  You can
 --  set the prefix for the table names by changing the value in the "prefix varchar2(10)" line below.
 --
 
 DECLARE 
-  prefix varchar2(10):= 'GPV41';
+  prefix varchar2(10):= 'GPV50';
 
 BEGIN
 
@@ -111,6 +111,13 @@ EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'MapTabLayer ADD ' ||
   '  LayerID' ||
   ')';
 
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'MapTabTileLayer ADD ' ||
+'CONSTRAINT ' || prefix || 'MapTabTileLayerUnique UNIQUE ' ||
+'(' ||
+'  MapTabID,' ||
+'  TileLayerID' ||
+')';
+
 EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'Markup ADD ' ||
   'CONSTRAINT PK_' || prefix || 'Markup PRIMARY KEY ' ||
   '(' ||
@@ -170,6 +177,12 @@ EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'SearchInputField ADD ' ||
   'CONSTRAINT PK_' || prefix || 'SearchInputField PRIMARY KEY ' ||
   '(' ||
   '  FieldID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'TileLayer ADD ' ||
+  'CONSTRAINT PK_' || prefix || 'TileLayer PRIMARY KEY ' ||
+  '(' ||
+  '  TileLayerID' ||
   ')';
 
 EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'Zone ADD ' ||
@@ -317,6 +330,22 @@ EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'MapTabLayer ADD ' ||
 
 EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'MapTabLayer ADD ' ||
   'CONSTRAINT FK_' || prefix || 'MapTabLayer_MapTab FOREIGN KEY ' ||
+  '(' ||
+  '  MapTabID' ||
+  ') REFERENCES ' || prefix || 'MapTab (' ||
+  '  MapTabID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'MapTabTileLayer ADD ' ||
+'CONSTRAINT FK_' || prefix || 'MapTabTileLayer_Layer FOREIGN KEY ' ||
+'(' ||
+'  TileLayerID' ||
+') REFERENCES ' || prefix || 'TileLayer (' ||
+'  TileLayerID' ||
+')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'MapTabTileLayer ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'MapTabTileLayer_MapTab FOREIGN KEY ' ||
   '(' ||
   '  MapTabID' ||
   ') REFERENCES ' || prefix || 'MapTab (' ||

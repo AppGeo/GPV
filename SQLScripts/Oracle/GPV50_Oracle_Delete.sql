@@ -13,14 +13,14 @@
 --  See the License for the specific language governing permissions and
 --  limitations under the License.
 --
---  GPV41_Oracle_Delete.sql
+--  GPV50_Oracle_Delete.sql
 --
---  Deletes all GPV v4.1 configuration tables.  You can set the prefix for the table names by 
+--  Deletes all GPV v5.0 configuration tables.  You can set the prefix for the table names by 
 --  changing the value in the "prefix varchar2(10)" line below.
 --
 
 DECLARE 
-  prefix varchar2(10):= 'GPV41';
+  prefix varchar2(10):= 'GPV50';
 
 BEGIN 
 
@@ -35,6 +35,7 @@ BEGIN
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'LayerProximity CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'MailingLabel CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'MapTabLayer CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'MapTabTileLayer CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Markup CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'MarkupGroup CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'MarkupSequence CASCADE CONSTRAINTS';
@@ -57,6 +58,7 @@ BEGIN
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'MapTab CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'MarkupCategory CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'PrintTemplate CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'TileLayer CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Zone CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'ZoneLevel CASCADE CONSTRAINTS';
 

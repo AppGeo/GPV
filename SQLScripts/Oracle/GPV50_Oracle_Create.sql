@@ -29,7 +29,7 @@
 SET define off
 
 DECLARE 
-  prefix varchar2(10):= 'GPV41';
+  prefix varchar2(10):= 'GPV50';
 
 BEGIN
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'Application (' ||
@@ -104,7 +104,6 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'Layer (' ||
   'MaxSelectionArea number(11,3), ' ||
   'MinNearestDistance number(11,3),' ||
   'MaxNearestDistance number(11,3),' ||
-  'BaseMapID varchar2(50),' ||
   'Active number(1) default 1' ||
 ')';
 
@@ -155,11 +154,10 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'MapTab (' ||
   'DisplayName varchar2(50) NOT NULL,' ||
   'MapHost varchar2(50) NOT NULL,' ||
   'MapService varchar2(50) NOT NULL,' ||
-  'UserName varchar2(50),' || 
+  'UserName varchar2(50),' ||
   'Password varchar2(50),' ||
   'DataFrame varchar2(50),' ||
   'InteractiveLegend number(1),' ||
-  'BaseMapID varchar2(50),' ||
   'ShowBaseMapInLegend number(1),' ||
   'Active number(1) default 1' ||
 ')';
@@ -173,6 +171,16 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'MapTabLayer (' ||
   'CheckInLegend number(1),' ||
   'IsExclusive number(1),' ||
   'ShowinPrintLegend number(1)' ||
+')';
+
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'MapTabTileLayer (' ||
+  'MapTabID varchar2(50) NOT NULL,' ||
+  'TileLayerID varchar2(50) NOT NULL,' ||
+  'Opacity number(1) default 1,' ||
+  'ShowInLegend number(1),' ||
+  'CheckInLegend number(1),' ||
+  'IsOverlay number(1) default 0,' ||
+  'SequenceNo number(1) NOT NULL' ||
 ')';
 
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'Markup (' ||
@@ -289,6 +297,17 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'SearchInputField (' ||
   'ConnectionID varchar2(50),' ||
   'StoredProc varchar2(100),' ||
   'SequenceNo number(2) NOT NULL,' ||
+  'Active number(1) default 1' ||
+')';
+
+EXECUTE IMMEDIATE  'CREATE TABLE ' || prefix || 'TileLayer (' ||
+  'TileLayerID varchar2(50) NOT NULL,' ||
+  'DisplayName varchar2(50) NOT NULL,' ||
+  'URL varchar2(400) NOT NULL,' ||
+  'Opacity number(1) default 1,' ||
+  'MetaDataURL varchar2(200),' ||
+  'Attribution varchar2(400),' ||
+  'ShowLegend number(1),' ||
   'Active number(1) default 1' ||
 ')';
 
