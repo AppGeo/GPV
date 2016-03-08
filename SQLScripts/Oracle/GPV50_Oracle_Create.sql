@@ -1,5 +1,5 @@
 --
---  Copyright 2014 Applied Geographics, Inc.
+--  Copyright 2016 Applied Geographics, Inc.
 --
 --  Licensed under the Apache License, Version 2.0 (the "License");
 --  you may not use this file except in compliance with the License.
@@ -13,16 +13,15 @@
 --  See the License for the specific language governing permissions and
 --  limitations under the License.
 --
---  GPV41_Oracle_Create.sql
+--  GPV50_Oracle_Create.sql
 --
---  Creates the GPV v4.1 configuration tables.  You can set the prefix for the table names by changing 
+--  Creates the GPV v5.0 configuration tables.  You can set the prefix for the table names by changing 
 --  the value in the "prefix varchar2(10)" line below.  Make sure to run the follow scripts after this
 --  one using the same prefix:
 --
---    GPV41_Oracle_AddConstraints.sql - to create the necessary constraints
---    GPV41_Oracle_LoadMailingLabels.sql - to load the mailing labels table
+--    GPV50_Oracle_AddConstraints.sql - to create the necessary constraints
+--    GPV50_Oracle_LoadMailingLabels.sql - to load the mailing labels table
 --
-
 
 -- make sure SQL Plus does not interpret the ampersand as a substitution character (needed for URLs)
 

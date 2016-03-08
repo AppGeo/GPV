@@ -1,5 +1,5 @@
 --
---  Copyright 2014 Applied Geographics, Inc.
+--  Copyright 2016 Applied Geographics, Inc.
 --
 --  Licensed under the Apache License, Version 2.0 (the "License");
 --  you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 --  See the License for the specific language governing permissions and
 --  limitations under the License.
 --
---  GPV41_Oracle_Copy.sql
+--  GPV50_Oracle_Copy.sql
 --
 --  Copies the GPV v5.0 configuration tables.  You can set the source and destination prefixes for 
 --  the table names by changing the values in the "srcPrefix varchar2(10)" and "desPrefix varchar2(10)"

@@ -1,5 +1,5 @@
 --
---  Copyright 2014 Applied Geographics, Inc.
+--  Copyright 2016 Applied Geographics, Inc.
 --
 --  Licensed under the Apache License, Version 2.0 (the "License");
 --  you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 --  See the License for the specific language governing permissions and
 --  limitations under the License.
 --
---  GPV41_Oracle_Upgrade.sql
+--  GPV50_Oracle_Upgrade.sql
 --
 --  Creates the GPV v5.0 configuration tables from an existing set of GPV v4.1 tables.
 --  Set the prefixes for both sets of table names by changing the values in the "prefix41 varchar2(10)" 
@@ -37,7 +37,7 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix50 || 'Connection AS SELECT * FROM ' 
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix50 || 'DataTab AS SELECT * FROM ' || prefix41 || 'DataTab';
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix50 || 'ExternalMap AS SELECT * FROM ' || prefix41 || 'ExternalMap';
 
---delete BaseMapID from Layer
+-- delete BaseMapID from Layer
 
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix50 || 'Layer (' ||
   'LayerID varchar2(50) NOT NULL,' ||
@@ -56,11 +56,11 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix50 || 'Layer (' ||
 
 EXECUTE IMMEDIATE 'INSERT INTO ' || prefix50 || 'Layer (LayerID, LayerName, DisplayName, MetaDataURL, KeyField, ZoneField, LevelField, MaxNumberSelected, MaxSelectionArea, MinNearestDistance, MaxNearestDistance, Active) ' ||
   'SELECT LayerID, LayerName, DisplayName, MetaDataURL, KeyField, ZoneField, LevelField, MaxNumberSelected, MaxSelectionArea, MinNearestDistance, MaxNearestDistance, Active ' ||
-  'FROM ' || prefix41 || 'MapTab';
+  'FROM ' || prefix41 || 'Layer';
 
 -- copy tables
 
-EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix50 || 'LayerFunciton AS SELECT * FROM ' || prefix41 || 'LayerFunction';
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix50 || 'LayerFunction AS SELECT * FROM ' || prefix41 || 'LayerFunction';
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix50 || 'LayerProximity AS SELECT * FROM ' || prefix41 || 'LayerProximity';
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix50 || 'Level AS SELECT * FROM ' || prefix41 || 'Level';
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix50 || 'MailingLabel AS SELECT * FROM ' || prefix41 || 'MailingLabel';
@@ -116,7 +116,7 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix50 || 'SearchInputField AS SELECT * F
 
 -- create TileLayer table
 
-EXECUTE IMMEDIATE  'CREATE TABLE' || prefix50 || 'TileLayer (' ||
+EXECUTE IMMEDIATE  'CREATE TABLE ' || prefix50 || 'TileLayer (' ||
   'TileLayerID varchar2(50) NOT NULL,' ||
   'DisplayName varchar2(50) NOT NULL,' ||
   'URL varchar2(400) NOT NULL,' ||
