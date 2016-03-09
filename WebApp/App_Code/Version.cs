@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -19,11 +19,11 @@ using System.Web;
 
 public static class Version
 {
-  public const int Major = 4;
-  public const int Minor = 2;
-  public const int BugFix = 2;
+  public const int Major = 5;
+  public const int Minor = 0;
+  public const int BugFix = 0;
 
-  public const string Release = "production";
+  public const string Release = "alpha";
   public const int Number = 1;
 
   public static new string ToString()

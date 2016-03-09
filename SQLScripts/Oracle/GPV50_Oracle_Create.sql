@@ -15,7 +15,7 @@
 --
 --  GPV50_Oracle_Create.sql
 --
---  Creates the GPV v5.0 configuration tables.  You can set the prefix for the table names by changing 
+--  Creates the GPV v5.0 configuration tables.  You can set the prefix for the table names by changing
 --  the value in the "prefix varchar2(10)" line below.  Make sure to run the follow scripts after this
 --  one using the same prefix:
 --
@@ -27,10 +27,11 @@
 
 SET define off
 
-DECLARE 
+DECLARE
   prefix varchar2(10):= 'GPV50';
 
 BEGIN
+
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'Application (' ||
   'ApplicationID varchar2(50) NOT NULL,' ||
   'DisplayName varchar2(50),' ||
@@ -157,7 +158,6 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'MapTab (' ||
   'Password varchar2(50),' ||
   'DataFrame varchar2(50),' ||
   'InteractiveLegend number(1),' ||
-  'ShowBaseMapInLegend number(1),' ||
   'Active number(1) default 1' ||
 ')';
 
@@ -172,13 +172,11 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'MapTabLayer (' ||
   'ShowinPrintLegend number(1)' ||
 ')';
 
-EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'MapTabTileLayer (' ||
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'MapTabTileGroup (' ||
   'MapTabID varchar2(50) NOT NULL,' ||
-  'TileLayerID varchar2(50) NOT NULL,' ||
-  'Opacity number(1) default 1,' ||
-  'ShowInLegend number(1),' ||
+  'TileGroupID varchar2(50) NOT NULL,' ||
   'CheckInLegend number(1),' ||
-  'IsOverlay number(1) default 0,' ||
+  'Opacity number(1) default 1,' ||
   'SequenceNo number(1) NOT NULL' ||
 ')';
 
@@ -299,14 +297,19 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'SearchInputField (' ||
   'Active number(1) default 1' ||
 ')';
 
+EXECUTE IMMEDIATE  'CREATE TABLE ' || prefix || 'TileGroup (' ||
+  'TileGroupID varchar2(50) NOT NULL,' ||
+  'DisplayName varchar2(50) NOT NULL,' ||
+  'Active number(1) default 1' ||
+')';
+
 EXECUTE IMMEDIATE  'CREATE TABLE ' || prefix || 'TileLayer (' ||
   'TileLayerID varchar2(50) NOT NULL,' ||
-  'DisplayName varchar2(50) NOT NULL,' ||
+  'TileGroupID varchar2(50) NOT NULL,' ||
   'URL varchar2(400) NOT NULL,' ||
-  'Opacity number(1) default 1,' ||
-  'MetaDataURL varchar2(200),' ||
   'Attribution varchar2(400),' ||
-  'ShowLegend number(1),' ||
+  'Overlay number(1) default 1,' ||
+  'SequenceNo number(2) NOT NULL,' ||
   'Active number(1) default 1' ||
 ')';
 
@@ -354,6 +357,7 @@ EXECUTE IMMEDIATE 'insert into ' || prefix || 'ExternalMap (DisplayName, URL, Se
 EXECUTE IMMEDIATE 'insert into ' || prefix || 'ExternalMap (DisplayName, URL, SequenceNo, Active) values (''Bing Maps'', ''http://www.bing.com/maps/?cp={lat}~{lon}&lvl={lev}'', 2, 1)';
 
 EXECUTE IMMEDIATE 'insert into ' || prefix || 'MarkupSequence (NextGroupID, NextMarkupID) values (1, 1)';
+
 END;
 /
 

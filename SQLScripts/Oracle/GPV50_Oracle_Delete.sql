@@ -15,52 +15,62 @@
 --
 --  GPV50_Oracle_Delete.sql
 --
---  Deletes all GPV v5.0 configuration tables.  You can set the prefix for the table names by 
+--  Deletes all GPV v5.0 configuration tables.  You can set the prefix for the table names by
 --  changing the value in the "prefix varchar2(10)" line below.
 --
 
-DECLARE 
+DECLARE
   prefix varchar2(10):= 'GPV50';
 
-BEGIN 
+BEGIN
 
--- tables not referenced by a foreign key
+-- drop independent tables
 
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'ApplicationMapTab CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'ApplicationMarkupCategory CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'ApplicationPrintTemplate CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'DataTab CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'ExternalMap CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'LayerFunction CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'LayerProximity CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'MailingLabel CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'MapTabLayer CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'MapTabTileLayer CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Markup CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'MarkupGroup CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'MarkupSequence CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'SavedState CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'UsageTracking CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'User CASCADE CONSTRAINTS';
+
+-- drop tables that are not referenced by foreign keys
+
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'DataTab CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'LayerFunction CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Markup CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'PrintTemplateContent CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Proximity CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Query CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'SavedState CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'SearchInputField CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Search CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'UsageTracking CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'User CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'TileLayer CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'ZoneLevelCombo CASCADE CONSTRAINTS';
 
--- tables referenced by a foreign key
+-- drop tables that are no longer referenced by foreign keys
 
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Application CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'ApplicationMarkupCategory CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'PrintTemplate CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'LayerProximity CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Level CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'MarkupGroup CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Search CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'TileGroup CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Zone CASCADE CONSTRAINTS';
+
+-- drop tables that are no longer referenced by foreign keys
+
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'ApplicationPrintTemplate CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Connection CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Layer CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Level CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'MapTab CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'MapTabTileGroup CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'MarkupCategory CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'PrintTemplate CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'TileLayer CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Zone CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'ZoneLevel CASCADE CONSTRAINTS';
+
+-- drop remaining tables in order of referencing by foreign keys
+
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'MapTabLayer CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'MapTab CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'ApplicationMapTab CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Application CASCADE CONSTRAINTS';
 
 END;
 /

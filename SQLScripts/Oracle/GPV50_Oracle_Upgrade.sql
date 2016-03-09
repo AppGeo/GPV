@@ -16,16 +16,16 @@
 --  GPV50_Oracle_Upgrade.sql
 --
 --  Creates the GPV v5.0 configuration tables from an existing set of GPV v4.1 tables.
---  Set the prefixes for both sets of table names by changing the values in the "prefix41 varchar2(10)" 
---  and "prefix50 varchar2(10)" lines below.  Make sure to run GPV50_Oracle_AddConstraints.sql 
+--  Set the prefixes for both sets of table names by changing the values in the "prefix41 varchar2(10)"
+--  and "prefix50 varchar2(10)" lines below.  Make sure to run GPV50_Oracle_AddConstraints.sql
 --  using the v5.0 prefix to create the necessary constraints on the v5.0 tables.
 --
 
-DECLARE 
+DECLARE
   prefix41 varchar2(10):= 'GPV41';
   prefix50 varchar2(10):= 'GPV50';
 
-BEGIN 
+BEGIN
 
 -- copy tables
 
@@ -65,7 +65,7 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix50 || 'LayerProximity AS SELECT * FRO
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix50 || 'Level AS SELECT * FROM ' || prefix41 || 'Level';
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix50 || 'MailingLabel AS SELECT * FROM ' || prefix41 || 'MailingLabel';
 
--- delete BaseMapID from MapTab
+-- delete BaseMapID and ShowBaseMapInLegend from MapTab
 
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix50 || 'MapTab (' ||
   'MapTabID varchar2(50) NOT NULL,' ||
@@ -76,27 +76,24 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix50 || 'MapTab (' ||
   'Password varchar2(50),' ||
   'DataFrame varchar2(50),' ||
   'InteractiveLegend number(1),' ||
-  'ShowBaseMapInLegend number(1),' ||
   'Active number(1) default 1' ||
 ')';
 
-EXECUTE IMMEDIATE 'INSERT INTO ' || prefix50 || 'MapTab (MapTabID, DisplayName, MapHost, MapService, UserName, Password, DataFrame, InteractiveLegend, ShowBaseMapInLegend, Active) ' ||
-  'SELECT MapTabID, DisplayName, MapHost, MapService, UserName, Password, DataFrame, InteractiveLegend, ShowBaseMapInLegend, Active ' ||
+EXECUTE IMMEDIATE 'INSERT INTO ' || prefix50 || 'MapTab (MapTabID, DisplayName, MapHost, MapService, UserName, Password, DataFrame, InteractiveLegend, Active) ' ||
+  'SELECT MapTabID, DisplayName, MapHost, MapService, UserName, Password, DataFrame, InteractiveLegend, Active ' ||
   'FROM ' || prefix41 || 'MapTab';
 
 -- copy tables
 
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix50 || 'MapTabLayer AS SELECT * FROM ' || prefix41 || 'MapTabLayer';
 
--- create MapTabTileLayer table
+-- create MapTabTileGroup table
 
-EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix50 || 'MapTabTileLayer (' ||
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix50 || 'MapTabTileGroup (' ||
   'MapTabID varchar2(50) NOT NULL,' ||
-  'TileLayerID varchar2(50) NOT NULL,' ||
-  'Opacity number(1) default 1,' ||
-  'ShowInLegend number(1),' ||
+  'TileGroupID varchar2(50) NOT NULL,' ||
   'CheckInLegend number(1),' ||
-  'IsOverlay number(1) default 0,' ||
+  'Opacity number(1) default 1,' ||
   'SequenceNo number(1) NOT NULL' ||
 ')';
 
@@ -114,18 +111,27 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix50 || 'SavedState AS SELECT * FROM ' 
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix50 || 'Search AS SELECT * FROM ' || prefix41 || 'Search';
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix50 || 'SearchInputField AS SELECT * FROM ' || prefix41 || 'SearchInputField';
 
+-- create TileGroup table
+
+EXECUTE IMMEDIATE  'CREATE TABLE ' || prefix50 || 'TileGroup (' ||
+  'TileGroupID varchar2(50) NOT NULL,' ||
+  'DisplayName varchar2(50) NOT NULL,' ||
+  'Active number(1) default 1' ||
+')';
+
 -- create TileLayer table
 
 EXECUTE IMMEDIATE  'CREATE TABLE ' || prefix50 || 'TileLayer (' ||
   'TileLayerID varchar2(50) NOT NULL,' ||
-  'DisplayName varchar2(50) NOT NULL,' ||
+  'TileGroupID varchar2(50) NOT NULL,' ||
   'URL varchar2(400) NOT NULL,' ||
-  'Opacity number(1) default 1,' ||
-  'MetaDataURL varchar2(200),' ||
   'Attribution varchar2(400),' ||
-  'ShowLegend number(1),' ||
+  'Overlay number(1) default 1,' ||
+  'SequenceNo number(2) NOT NULL,' ||
   'Active number(1) default 1' ||
 ')';
+
+-- copy tables
 
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix50 || 'UsageTracking AS SELECT * FROM ' || prefix41 || 'UsageTracking';
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix50 || 'User AS SELECT * FROM ' || prefix41 || 'User';
@@ -135,5 +141,3 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix50 || 'ZoneLevelCombo AS SELECT * FRO
 
 END;
 /
-
-
