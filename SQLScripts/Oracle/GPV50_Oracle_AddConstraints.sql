@@ -19,7 +19,7 @@
 --  set the prefix for the table names by changing the value in the "prefix varchar2(10)" line below.
 --
 
-DECLARE 
+DECLARE
   prefix varchar2(10):= 'GPV50';
 
 BEGIN
@@ -111,11 +111,11 @@ EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'MapTabLayer ADD ' ||
   '  LayerID' ||
   ')';
 
-EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'MapTabTileLayer ADD ' ||
-'CONSTRAINT ' || prefix || 'MapTabTileLayerUnique UNIQUE ' ||
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'MapTabTileGroup ADD ' ||
+'CONSTRAINT ' || prefix || 'MapTabTGroupUnique UNIQUE ' ||
 '(' ||
 '  MapTabID,' ||
-'  TileLayerID' ||
+'  TileGroupID' ||
 ')';
 
 EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'Markup ADD ' ||
@@ -177,6 +177,12 @@ EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'SearchInputField ADD ' ||
   'CONSTRAINT PK_' || prefix || 'SearchInputField PRIMARY KEY ' ||
   '(' ||
   '  FieldID' ||
+  ')';
+
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'TileGroup ADD ' ||
+  'CONSTRAINT PK_' || prefix || 'TileGroup PRIMARY KEY ' ||
+  '(' ||
+  '  TileGroupID' ||
   ')';
 
 EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'TileLayer ADD ' ||
@@ -336,16 +342,16 @@ EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'MapTabLayer ADD ' ||
   '  MapTabID' ||
   ')';
 
-EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'MapTabTileLayer ADD ' ||
-'CONSTRAINT FK_' || prefix || 'MapTabTileLayer_Layer FOREIGN KEY ' ||
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'MapTabTileGroup ADD ' ||
+'CONSTRAINT FK_' || prefix || 'MapTabTGroup_TGrp FOREIGN KEY ' ||
 '(' ||
-'  TileLayerID' ||
-') REFERENCES ' || prefix || 'TileLayer (' ||
-'  TileLayerID' ||
+'  TileGroupID' ||
+') REFERENCES ' || prefix || 'TileGroup (' ||
+'  TileGroupID' ||
 ')';
 
-EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'MapTabTileLayer ADD ' ||
-  'CONSTRAINT FK_' || prefix || 'MapTabTileLayer_MapTab FOREIGN KEY ' ||
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'MapTabTileGroup ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'MapTabTGroup_MTab FOREIGN KEY ' ||
   '(' ||
   '  MapTabID' ||
   ') REFERENCES ' || prefix || 'MapTab (' ||
@@ -424,6 +430,14 @@ EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'SearchInputField ADD ' ||
   '  ConnectionID' ||
   ')';
 
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'TileLayer ADD ' ||
+  'CONSTRAINT FK_' || prefix || 'TLayer_TGroup FOREIGN KEY ' ||
+  '(' ||
+  '  TileGroupID' ||
+  ') REFERENCES ' || prefix || 'TileGroup (' ||
+  '  TileGroupID' ||
+  ')';
+
 EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'Zone ADD ' ||
   'CONSTRAINT FK_' || prefix || 'Zone_ZoneLev FOREIGN KEY ' ||
   '(' ||
@@ -450,4 +464,3 @@ EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'ZoneLevelCombo ADD ' ||
 
 END;
 /
-
