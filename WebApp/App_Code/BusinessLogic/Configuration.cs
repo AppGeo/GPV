@@ -34,7 +34,7 @@ public partial class Configuration
     get
     {
       return new string[] {"ZoneLevel", "Application", "Connection", "MapTab", "Layer", "DataTab", "Query", "Search", "SearchInputField", "Proximity", 
-				"ApplicationMapTab", "MapTabLayer", "LayerFunction", "LayerProximity", "PrintTemplate", 
+				"ApplicationMapTab", "MapTabLayer", "LayerFunction", "LayerProximity", "TileGroup", "TileLayer", "MapTabTileGroup", "PrintTemplate", 
 				"PrintTemplateContent", "ApplicationPrintTemplate", "MarkupCategory", "ApplicationMarkupCategory", 
         "Zone", "Level", "ZoneLevelCombo", "MailingLabel", "ExternalMap"};
     }
@@ -200,6 +200,21 @@ public partial class Configuration
       proximity.Active = 0;
     }
 
+    foreach (Configuration.MapTabTileGroupRow mapTabTileGroup in MapTabTileGroup)
+    {
+      mapTabTileGroup.Active = 1;
+    }
+
+    foreach (Configuration.TileGroupRow tileGroup in TileGroup.Where(o => o.IsActiveNull() || o.Active != 1))
+    {
+      tileGroup.Active = 0;
+    }
+
+    foreach (Configuration.TileLayerRow tileLayer in TileLayer.Where(o => o.IsActiveNull() || o.Active != 1))
+    {
+      tileLayer.Active = 0;
+    }
+
     foreach (Configuration.ApplicationMarkupCategoryRow applicationMarkupCategory in ApplicationMarkupCategory)
     {
       applicationMarkupCategory.Active = 1;
@@ -326,6 +341,21 @@ public partial class Configuration
     foreach (Configuration.SearchInputFieldRow searchInputField in SearchInputField.Where(o => o.SearchRow.Active == 0 || (!o.IsConnectionIDNull() && o.ConnectionRow.Active == 0)))
     {
       searchInputField.Active = 0;
+    }
+
+    foreach (Configuration.MapTabTileGroupRow mapTabTileGroup in MapTabTileGroup.Where(o => o.MapTabRow.Active == 0 || o.TileGroupRow.Active == 0))
+    {
+      mapTabTileGroup.Active = 0;
+    }
+
+    foreach (Configuration.TileGroupRow tileGroup in TileGroup.Where(o => o.GetMapTabTileGroupRows().Length > 0 && o.GetMapTabTileGroupRows().All(o2 => o2.Active == 0)))
+    {
+      tileGroup.Active = 0;
+    }
+
+    foreach (Configuration.TileLayerRow tileLayer in TileLayer.Where(o => o.TileGroupRow.Active == 0))
+    {
+      tileLayer.Active = 0;
     }
 
     foreach (Configuration.ApplicationMarkupCategoryRow applicationMarkupCategory in ApplicationMarkupCategory.Where(o => o.ApplicationRow.Active == 0 || o.MarkupCategoryRow.Active == 0))
@@ -458,14 +488,14 @@ public partial class Configuration
       newErrorsFound = ValidateQueries() || newErrorsFound;
       newErrorsFound = ValidateSearches() || newErrorsFound;
       newErrorsFound = ValidateSearchInputField() || newErrorsFound;
+      newErrorsFound = ValidateMapTabTileGroups() || newErrorsFound;
+      newErrorsFound = ValidateTileGroups() || newErrorsFound;
+      newErrorsFound = ValidateTileLayers() || newErrorsFound;
 
       if (newErrorsFound)
       {
+        newErrorsFound = ValidateMapTabTileGroups() || newErrorsFound;
         newErrorsFound = ValidateSearches() || newErrorsFound;
-        newErrorsFound = ValidateQueries() || newErrorsFound;
-        newErrorsFound = ValidateDataTabs() || newErrorsFound;
-        newErrorsFound = ValidateLayerFunctions() || newErrorsFound;
-        newErrorsFound = ValidateProximities() || newErrorsFound;
         newErrorsFound = ValidateLayerProximities() || newErrorsFound;
         newErrorsFound = ValidateLayers() || newErrorsFound;
         newErrorsFound = ValidateMapTabLayers() || newErrorsFound;
@@ -1222,25 +1252,6 @@ public partial class Configuration
           }
         }
       }
-
-      // for each valid MapTab linked via BaseMapID a single layer with the specified name must be present in the MapTab dataframe
-
-      //if (!layer.IsBaseMapIDNull())
-      //{
-      //  foreach (Configuration.MapTabRow mapTab in MapTab.Where(o => o.IsValidationErrorNull() && !o.IsBaseMapIDNull() && o.BaseMapID == layer.BaseMapID))
-      //  {
-      //    int n = mapDataFrames[mapTab.GetDataFrameKey()].Layers.Count<CommonLayer>(o => String.Compare(o.Name, layer.LayerName, true) == 0);
-
-      //    if (n == 0)
-      //    {
-      //      layer.ValidationError = String.Format("'{0}' is not a layer in the service/dataframe for map tab '{1}'", layer.LayerName, mapTab.MapTabID);
-      //    }
-      //    else if (n > 1)
-      //    {
-      //      layer.ValidationError = String.Format("More than one layer named '{0}' in the service/dataframe for map tab '{1}'", layer.LayerName, mapTab.MapTabID);
-      //    }
-      //  }
-      //}
     }
   }
 
@@ -1252,13 +1263,11 @@ public partial class Configuration
 
     foreach (Configuration.MapTabRow mapTab in MapTab.Where(o => o.IsValidationErrorNull()))
     {
-      // must contain as least one valid layer
+      // must contain as least one valid layer or tile group
 
-      //if (!mapTab.GetMapTabLayerRows().Any(o => o.IsValidationErrorNull()) &&
-      //    (mapTab.IsBaseMapIDNull() || !Layer.Any(o => o.IsValidationErrorNull() && !o.IsBaseMapIDNull() && o.BaseMapID == mapTab.BaseMapID)))
-      if(!mapTab.GetMapTabLayerRows().Any(o => o.IsValidationErrorNull()))
+      if (!mapTab.GetMapTabLayerRows().Any(o => o.IsValidationErrorNull()) && !mapTab.GetMapTabTileGroupRows().Any(o => o.IsValidationErrorNull()))
       {
-        mapTab.ValidationError = "Does not contain any valid layers";
+        mapTab.ValidationError = "Does not contain any valid layers or tile groups";
       }
 
       // must be contained in a valid application
@@ -1325,6 +1334,32 @@ public partial class Configuration
       if (link.IsValidationErrorNull() && !link.IsAllowSelectionNull() && link.AllowSelection > 0 && link.LayerRow.IsKeyFieldNull())
       {
         link.ValidationError = "The layer must have a key field defined when it's allowed to be a selection layer";
+      }
+
+      newErrorsFound = newErrorsFound || !link.IsValidationErrorNull();
+    }
+
+    return newErrorsFound;
+  }
+
+  private bool ValidateMapTabTileGroups()
+  {
+    bool newErrorsFound = false;
+
+    // each MapTabTileGroup
+
+    foreach (Configuration.MapTabTileGroupRow link in MapTabTileGroup.Where(o => o.IsValidationErrorNull()))
+    {
+      // must point to a valid MapTab and TileGroup
+
+      if (!link.MapTabRow.IsValidationErrorNull())
+      {
+        link.ValidationError = "Does not link to a valid map tab";
+      }
+
+      else if (!link.TileGroupRow.IsValidationErrorNull())
+      {
+        link.ValidationError = "Does not link to a valid tile group";
       }
 
       newErrorsFound = newErrorsFound || !link.IsValidationErrorNull();
@@ -1575,6 +1610,55 @@ public partial class Configuration
       }
 
       newErrorsFound = newErrorsFound || !search.IsValidationErrorNull();
+    }
+
+    return newErrorsFound;
+  }
+
+  private bool ValidateTileGroups()
+  {
+    bool newErrorsFound = false;
+
+    // each tile group
+
+    foreach (Configuration.TileGroupRow tileGroup in TileGroup.Where(o => o.IsValidationErrorNull()))
+    {
+      // must be referenced by at least one valid map tab
+
+      if (!tileGroup.GetMapTabTileGroupRows().Any(o => o.IsValidationErrorNull()))
+      {
+        tileGroup.ValidationError = "Is not contained in a valid map tab";
+      }
+
+      // must contain at least one tile layer
+
+      if (tileGroup.GetTileLayerRows().Count() == 0)
+      {
+        tileGroup.ValidationError = "Does not contain any tile layers";
+      }
+
+      newErrorsFound = newErrorsFound || !tileGroup.IsValidationErrorNull();
+    }
+
+    return newErrorsFound;
+  }
+
+  private bool ValidateTileLayers()
+  {
+    bool newErrorsFound = false;
+
+    // each tile layer
+
+    foreach (Configuration.TileLayerRow tileLayer in TileLayer.Where(o => o.IsValidationErrorNull()))
+    {
+      // must be referenced by a valid tile group
+
+      if (!tileLayer.TileGroupRow.IsValidationErrorNull())
+      {
+        tileLayer.ValidationError = "Is not contained in a valid tile group";
+      }
+
+      newErrorsFound = newErrorsFound || !tileLayer.IsValidationErrorNull();
     }
 
     return newErrorsFound;
