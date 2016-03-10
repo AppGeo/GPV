@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -91,6 +91,7 @@ public partial class Configuration
       jsonData.Add("target", targetMapTabLayers.Select(o => o.LayerID).ToArray());
       jsonData.Add("selection", selectionMapTabLayers.Select(o => o.LayerID).ToArray());
       jsonData.Add("search", searches.Distinct().Select(o => o.SearchID).ToArray());
+      jsonData.Add("tileGroup", GetMapTabTileGroupRows().OrderBy(o => o.SequenceNo).Select(o => o.TileGroupID).ToArray());
       return jsonData;
     }
 

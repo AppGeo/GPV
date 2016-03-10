@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -62,6 +62,7 @@ public partial class Configuration
       Dictionary<String, Object> mapTabs = new Dictionary<String, Object>();
       List<String> layerIDs = new List<String>();
       List<String> searchIDs = new List<String>();
+      List<String> tileGroupIDs = new List<String>();
 
       foreach (MapTabRow mapTab in GetApplicationMapTabRows().Select(o => o.MapTabRow))
       {
@@ -69,6 +70,7 @@ public partial class Configuration
         layerIDs.AddRange((string[])mapTabData["target"]);
         layerIDs.AddRange((string[])mapTabData["selection"]);
         searchIDs.AddRange((string[])mapTabData["search"]);
+        tileGroupIDs.AddRange((string[])mapTabData["tileGroup"]);
 
         mapTabs.Add(mapTab.MapTabID, mapTabData);
       }
@@ -121,6 +123,26 @@ public partial class Configuration
         searches.Add(search.SearchID, search.ToJsonData());
       }
 
+      tileGroupIDs = tileGroupIDs.Distinct().ToList();
+      Dictionary<String, Object> tileGroups = new Dictionary<String, Object>();
+      List<String> tileLayerIDs = new List<String>();
+
+      foreach (TileGroupRow tileGroup in Configuration.TileGroup.Where(o => tileGroupIDs.Contains(o.TileGroupID)))
+      {
+        Dictionary<String, Object> tileGroupData = tileGroup.ToJsonData();
+        tileLayerIDs.AddRange((string[])tileGroupData["tileLayer"]);
+
+        tileGroups.Add(tileGroup.TileGroupID, tileGroupData);
+      }
+
+      tileLayerIDs = tileLayerIDs.Distinct().ToList();
+      Dictionary<String, Object> tileLayers = new Dictionary<String, Object>();
+
+      foreach (TileLayerRow tileLayer in Configuration.TileLayer.Where(o => tileLayerIDs.Contains(o.TileLayerID)))
+      {
+        tileLayers.Add(tileLayer.TileLayerID, tileLayer.ToJsonData());
+      }
+
       Dictionary<String, Object> printTemplates = new Dictionary<String, Object>();
 
       foreach (PrintTemplateRow template in GetPrintTemplates())
@@ -136,6 +158,8 @@ public partial class Configuration
       jsonData.Add("query", queries);
       jsonData.Add("dataTab", dataTabs);
       jsonData.Add("search", searches);
+      jsonData.Add("tileGroup", tileGroups);
+      jsonData.Add("tileLayer", tileLayers);
       jsonData.Add("printTemplate", printTemplates);
 
       JavaScriptSerializer serializer = new JavaScriptSerializer();
