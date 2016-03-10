@@ -13,12 +13,12 @@
 //  limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Drawing;
 using System.Reflection;
-using GeoAPI.Geometries;
-using System.Collections.Generic;
 using System.Web.Script.Serialization;
+using GeoAPI.Geometries;
 
 public static class AppSettings
 {
@@ -196,32 +196,16 @@ public static class AppSettings
 
       try
       {
-        string projectionName = GetConfigSetting("Projection");
-        string spheroidName = GetConfigSetting("Spheroid");
-        double centralMeridian = GetConfigDouble("CentralMeridian");
-        double originLatitude = GetConfigDouble("OriginLatitude");
+        string proj4String = GetConfigSetting("Projection");
 
-        Spheroid spheroid = (Spheroid)typeof(Spheroid).InvokeMember(spheroidName, BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Static | BindingFlags.GetProperty, null, null, null);
-        Projection projection = null;
-
-        switch (projectionName)
+        if (String.IsNullOrWhiteSpace(proj4String))
         {
-          case "LambertConformalConic":
-            double standardParallel1 = GetConfigDouble("StandardParallel1");
-            double standardParallel2 = GetConfigDouble("StandardParallel2");
-            projection = new LambertConformalConic(centralMeridian, originLatitude, standardParallel1, standardParallel2, spheroid);
-            break;
-
-          case "TransverseMercator":
-            double scaleFactor = GetConfigDouble("ScaleFactor");
-            projection = new TransverseMercator(centralMeridian, originLatitude, scaleFactor, spheroid);
-            break;
+          coordSys = new CoordinateSystem("+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs");
         }
-
-        double falseEasting = GetConfigDouble("FalseEasting");
-        double falseNorthing = GetConfigDouble("FalseNorthing");
-
-        coordSys = new CoordinateSystem(projection, falseEasting, falseNorthing);
+        else
+        {
+          coordSys = new CoordinateSystem(proj4String);
+        }
       }
       catch { }
 
@@ -330,14 +314,7 @@ public static class AppSettings
   {
     get
     {
-      string mapUnits = GetConfigSetting("MapUnits");
-
-      if (mapUnits != null)
-      {
-        mapUnits = mapUnits.ToLower();
-      }
-
-      return mapUnits;
+      return CoordinateSystem.MapUnits;
     }
   }
 
@@ -622,7 +599,7 @@ public static class AppSettings
     jsonData.Add("isPublic", String.IsNullOrEmpty(AppUser.Name));
     jsonData.Add("mapUnits", MapUnits);
     jsonData.Add("measureUnits", MeasureUnits);
-    jsonData.Add("coordinateSystem", CoordinateSystem.ToProj4String(MapUnits));
+    jsonData.Add("coordinateSystem", CoordinateSystem.ToProj4String());
     jsonData.Add("zoomLevels", ZoomLevels);
 
     JavaScriptSerializer serializer = new JavaScriptSerializer();

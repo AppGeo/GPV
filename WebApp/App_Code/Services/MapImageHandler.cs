@@ -164,32 +164,30 @@ public class MapImageHandler : WebServiceHandler
     string kmlName = String.Format("Map_{0}.kml", timeStamp);
     string imageName = String.Format("Map_{0}.", timeStamp) + (mapImageData.Type == CommonImageType.Png ? "png" : "jpg");
 
-    double f = AppSettings.MapUnits == "feet" ? Constants.MetersPerFoot : 1;
-
     CoordinateSystem coordSys = AppSettings.CoordinateSystem;
 
     double lat;
     double lon;
 
-    coordSys.ToGeodetic(appState.Extent.MinX * f, appState.Extent.MinY * f, out lon, out lat);
+    coordSys.ToGeodetic(appState.Extent.MinX, appState.Extent.MinY, out lon, out lat);
     double minLat = lat;
     double maxLat = lat;
     double minLon = lon;
     double maxLon = lon;
 
-    coordSys.ToGeodetic(appState.Extent.MinX  * f, appState.Extent.MaxY * f, out lon, out lat);
+    coordSys.ToGeodetic(appState.Extent.MinX, appState.Extent.MaxY, out lon, out lat);
     minLat = Math.Min(minLat, lat);
     maxLat = Math.Max(maxLat, lat);
     minLon = Math.Min(minLon, lon);
     maxLon = Math.Max(maxLon, lon);
 
-    coordSys.ToGeodetic(appState.Extent.MaxX * f, appState.Extent.MaxY * f, out lon, out lat);
+    coordSys.ToGeodetic(appState.Extent.MaxX, appState.Extent.MaxY, out lon, out lat);
     minLat = Math.Min(minLat, lat);
     maxLat = Math.Max(maxLat, lat);
     minLon = Math.Min(minLon, lon);
     maxLon = Math.Max(maxLon, lon);
 
-    coordSys.ToGeodetic(appState.Extent.MaxX * f, appState.Extent.MinY * f, out lon, out lat);
+    coordSys.ToGeodetic(appState.Extent.MaxX, appState.Extent.MinY, out lon, out lat);
     minLat = Math.Min(minLat, lat);
     maxLat = Math.Max(maxLat, lat);
     minLon = Math.Min(minLon, lon);
@@ -198,12 +196,12 @@ public class MapImageHandler : WebServiceHandler
     Coordinate p = appState.Extent.Centre;
     double cLat;
     double cLon;
-    coordSys.ToGeodetic(p.X * f, p.Y * f, out cLon, out cLat);
+    coordSys.ToGeodetic(p.X, p.Y, out cLon, out cLat);
 
     p.X = appState.Extent.MaxX;
     double eLat;
     double eLon;
-    coordSys.ToGeodetic(p.X * f, p.Y * f, out eLon, out eLat);
+    coordSys.ToGeodetic(p.X, p.Y, out eLon, out eLat);
 
     double rotation = Math.Atan2(eLat - cLat, eLon - cLon) * 180 / Math.PI;
 

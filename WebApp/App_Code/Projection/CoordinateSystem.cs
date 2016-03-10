@@ -13,48 +13,62 @@
 //  limitations under the License.
 
 using System;
+using DotSpatial.Projections;
 
 public class CoordinateSystem
 {
-	protected Projection Projection;
-	protected double FalseEasting;
-	protected double FalseNorthing;
+  private ProjectionInfo _geodetic = KnownCoordinateSystems.Geographic.World.WGS1984;
 
-	protected CoordinateSystem() { }
+  protected ProjectionInfo Projection;
 
-	public CoordinateSystem(Projection projection, double falseEasting, double falseNorthing)
+  protected CoordinateSystem() { }
+
+	public CoordinateSystem(string proj4String)
 	{
-		Projection = projection;
-		FalseEasting = falseEasting;
-		FalseNorthing = falseNorthing;
+    Projection = ProjectionInfo.FromProj4String(proj4String);
 	}
+
+  public string MapUnits
+  {
+    get
+    {
+      if (Projection.Unit.Name == "Meter")
+      {
+        return "meters";
+      }
+      else if (Projection.Unit.Name == "Foot_US" || Projection.Unit.Name == "Foot")
+      {
+        return "feet";
+      }
+
+      return "unknown";
+    }
+  }
 
 	public void ToGeodetic(double x, double y, out double lon, out double lat)
 	{
-		x -= FalseEasting;
-		y -= FalseNorthing;
+    double[] c = new double[] { x, y };
+    double[] z = new double[] { 0 };
 
-		Projection.ToGeodetic(x, y, out lon, out lat);
-	}
+    Reproject.ReprojectPoints(c, z, Projection, _geodetic, 0, 1);
+
+    lon = c[0];
+    lat = c[1];
+  }
 
 	public void ToProjected(double lon, double lat, out double x, out double y)
 	{
-		Projection.ToProjected(lon, lat, out x, out y);
+    double[] c = new double[] { lon, lat };
+    double[] z = new double[] { 0 };
 
-		x += FalseEasting;
-		y += FalseNorthing;
-	}
+    Reproject.ReprojectPoints(c, z, _geodetic, Projection, 0, 1);
+
+    x = c[0];
+    y = c[1];
+  }
 
   public string ToProj4String()
   {
-    return ToProj4String("meters");
-	}
-
-  public string ToProj4String(string units)
-  {
-    double toMeters = units == "meters" ? 1 : Constants.MetersPerFoot;
-
-    return String.Format("{0} +x_0={1} +y_0={2} +to_meter={3}", Projection.ToProj4String(), FalseEasting,
-      FalseNorthing, toMeters);
+    return Projection.ToProj4String().Trim();
   }
 }

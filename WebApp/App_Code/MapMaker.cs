@@ -91,12 +91,6 @@ public class MapMaker
     double x = p.Coordinate.X;
     double y = p.Coordinate.Y;
 
-    if (AppSettings.MapUnits == "feet")
-    {
-      x *= Constants.MetersPerFoot;
-      y *= Constants.MetersPerFoot;
-    }
-
     double lon;
     double lat;
     CoordinateSystem.ToGeodetic(x, y, out lon, out lat);

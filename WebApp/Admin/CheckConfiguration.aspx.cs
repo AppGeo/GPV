@@ -189,53 +189,13 @@ public partial class Admin_CheckConfiguration : CustomStyledPage
     name.Add("ZoomLevels");
     message.Add(CheckIsSet(AppSettings.ZoomLevels));
 
-    // check MapUnits and MeasureUnits
+    // check MeasureUnits
 
-    name.Add("MapUnits");
-    List<String> values = new List<String>(new string[] { "feet", "meters" });
-    message.Add(CheckInValues(AppSettings.MapUnits, values));
+    List<String> values = new List<String>(new string[] { "feet", "meters", "both" });
 
     name.Add("MeasureUnits");
     values.Add("both");
     message.Add(CheckInValues(AppSettings.MeasureUnits, values));
-
-    // check coordinate system
-
-    string projectionName = AppSettings.GetConfigSetting("Projection");
-    name.Add("Projection");
-    values = new List<String>(new string[] { "LambertConformalConic", "TransverseMercator" });
-    message.Add(CheckInValues(projectionName, values));
-
-    name.Add("Spheroid");
-    message.Add(typeof(Spheroid).GetProperty(AppSettings.GetConfigSetting("Spheroid")) == null ? "Not set or not a known spheroid identifier" : null);
-
-    name.Add("CentralMeridian");
-    message.Add(CheckInRange(AppSettings.GetConfigDouble("CentralMeridian"), -180, 180));
-
-    name.Add("OriginLatitude");
-    message.Add(CheckInRange(AppSettings.GetConfigDouble("OriginLatitude"), -90, 90));
-
-    switch (projectionName)
-    {
-      case "LambertConformalConic":
-        name.Add("StandardParallel1");
-        message.Add(CheckInRange(AppSettings.GetConfigDouble("StandardParallel1"), -90, 90));
-
-        name.Add("StandardParallel2");
-        message.Add(CheckInRange(AppSettings.GetConfigDouble("StandardParallel2"), -90, 90));
-        break;
-
-      case "TransverseMercator":
-        name.Add("ScaleFactor");
-        message.Add(CheckGreaterThanZero(AppSettings.GetConfigDouble("ScaleFactor")));
-        break;
-    }
-
-    name.Add("FalseEasting");
-    message.Add(CheckIsSet(AppSettings.GetConfigDouble("FalseEasting")));
-
-    name.Add("FalseNorthing");
-    message.Add(CheckIsSet(AppSettings.GetConfigDouble("FalseNorthing")));
 
     // check highlight colors, opacities and sizes
     

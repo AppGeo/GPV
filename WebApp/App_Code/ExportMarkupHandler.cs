@@ -138,8 +138,6 @@ public class ExportMarkupHandler : IHttpHandler
 
   private string GetCoordinates(IGeometry geometry)
   {
-    double f = AppSettings.MapUnits == "feet" ? Constants.MetersPerFoot : 1;
-
     List<Coordinate> points = new List<Coordinate>();
     List<String> coordinates = new List<String>();
 
@@ -153,7 +151,7 @@ public class ExportMarkupHandler : IHttpHandler
     for (int i = 0; i < points.Count; ++i)
     {
       double lat; double lon;
-      _coordSys.ToGeodetic(points[i].X * f, points[i].Y * f, out lon, out lat);
+      _coordSys.ToGeodetic(points[i].X, points[i].Y, out lon, out lat);
       coordinates.Add(String.Format("{0},{1},0", lon, lat));
     }
 

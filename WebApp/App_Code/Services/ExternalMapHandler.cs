@@ -68,19 +68,17 @@ public class ExternalMapHandler : WebServiceHandler
       pixelSize *= Constants.FeetPerMeter;
     }
 
-    double f = AppSettings.MapUnits == "feet" ? Constants.MetersPerFoot : 1;
-
     double lon;
     double lat;
-    AppSettings.CoordinateSystem.ToGeodetic(x * f, y * f, out lon, out lat);
+    AppSettings.CoordinateSystem.ToGeodetic(x, y, out lon, out lat);
 
     double minLon;
     double minLat;
-    AppSettings.CoordinateSystem.ToGeodetic(minx * f, miny * f, out minLon, out minLat);
+    AppSettings.CoordinateSystem.ToGeodetic(minx, miny, out minLon, out minLat);
 
     double maxLon;
     double maxLat;
-    AppSettings.CoordinateSystem.ToGeodetic(maxx * f, maxy * f, out maxLon, out maxLat);
+    AppSettings.CoordinateSystem.ToGeodetic(maxx, maxy, out maxLon, out maxLat);
 
     double zoomLevel = (Math.Log(190500 / pixelSize) / Math.Log(2)) + 1;
 
