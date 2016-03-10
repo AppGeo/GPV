@@ -536,37 +536,37 @@ public class PdfMap
       }
     }
 
-    if (!mapTab.IsBaseMapIDNull() && !mapTab.IsShowBaseMapInLegendNull() && mapTab.ShowBaseMapInLegend == 1)
-    {
-      foreach (Configuration.LayerRow layer in config.Layer.Where(o => !o.IsBaseMapIDNull() && o.BaseMapID == mapTab.BaseMapID))
-      {
-        if (!mapTabLayerIds.Contains(layer.LayerID))
-        {
-          CommonLayer commonLayer = dataFrame.Layers.FirstOrDefault(o => String.Compare(o.Name, layer.LayerName, true) == 0);
+    //if (!mapTab.IsBaseMapIDNull() && !mapTab.IsShowBaseMapInLegendNull() && mapTab.ShowBaseMapInLegend == 1)
+    //{
+    //  foreach (Configuration.LayerRow layer in config.Layer.Where(o => !o.IsBaseMapIDNull() && o.BaseMapID == mapTab.BaseMapID))
+    //  {
+    //    if (!mapTabLayerIds.Contains(layer.LayerID))
+    //    {
+    //      CommonLayer commonLayer = dataFrame.Layers.FirstOrDefault(o => String.Compare(o.Name, layer.LayerName, true) == 0);
 
-          if (commonLayer.Type == CommonLayerType.Feature && !layerList.Contains(commonLayer))
-          {
-            bool hasClasses = GetNumClasses(commonLayer) > 0;
-            bool visibleAtScale = _pixelSize <= 0 || commonLayer.IsWithinScaleThresholds(_pixelSize);
+    //      if (commonLayer.Type == CommonLayerType.Feature && !layerList.Contains(commonLayer))
+    //      {
+    //        bool hasClasses = GetNumClasses(commonLayer) > 0;
+    //        bool visibleAtScale = _pixelSize <= 0 || commonLayer.IsWithinScaleThresholds(_pixelSize);
 
-            if (hasClasses && visibleAtScale)
-            {
-              layerList.Add(commonLayer);
+    //        if (hasClasses && visibleAtScale)
+    //        {
+    //          layerList.Add(commonLayer);
 
-              while (commonLayer.Parent != null)
-              {
-                commonLayer = commonLayer.Parent;
+    //          while (commonLayer.Parent != null)
+    //          {
+    //            commonLayer = commonLayer.Parent;
 
-                if (!layerList.Contains(commonLayer))
-                {
-                  layerList.Add(commonLayer);
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+    //            if (!layerList.Contains(commonLayer))
+    //            {
+    //              layerList.Add(commonLayer);
+    //            }
+    //          }
+    //        }
+    //      }
+    //    }
+    //  }
+    //}
 
     return layerList;
   }

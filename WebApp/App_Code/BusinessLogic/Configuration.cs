@@ -936,8 +936,9 @@ public partial class Configuration
 
     foreach (Configuration.LayerRow layer in Layer.Where(o => o.IsValidationErrorNull()))
     {
-      if (!layer.GetMapTabLayerRows().Any(o => o.IsValidationErrorNull()) &&
-          (layer.IsBaseMapIDNull() || !MapTab.Any(o => o.IsValidationErrorNull() && !o.IsBaseMapIDNull() && o.BaseMapID == layer.BaseMapID)))
+      //if (!layer.GetMapTabLayerRows().Any(o => o.IsValidationErrorNull()) &&
+      //    (layer.IsBaseMapIDNull() || !MapTab.Any(o => o.IsValidationErrorNull() && !o.IsBaseMapIDNull() && o.BaseMapID == layer.BaseMapID)))
+      if(!layer.GetMapTabLayerRows().Any(o => o.IsValidationErrorNull()))
       {
         layer.ValidationError = "Is not contained in any valid map tab";
       }
@@ -1224,22 +1225,22 @@ public partial class Configuration
 
       // for each valid MapTab linked via BaseMapID a single layer with the specified name must be present in the MapTab dataframe
 
-      if (!layer.IsBaseMapIDNull())
-      {
-        foreach (Configuration.MapTabRow mapTab in MapTab.Where(o => o.IsValidationErrorNull() && !o.IsBaseMapIDNull() && o.BaseMapID == layer.BaseMapID))
-        {
-          int n = mapDataFrames[mapTab.GetDataFrameKey()].Layers.Count<CommonLayer>(o => String.Compare(o.Name, layer.LayerName, true) == 0);
+      //if (!layer.IsBaseMapIDNull())
+      //{
+      //  foreach (Configuration.MapTabRow mapTab in MapTab.Where(o => o.IsValidationErrorNull() && !o.IsBaseMapIDNull() && o.BaseMapID == layer.BaseMapID))
+      //  {
+      //    int n = mapDataFrames[mapTab.GetDataFrameKey()].Layers.Count<CommonLayer>(o => String.Compare(o.Name, layer.LayerName, true) == 0);
 
-          if (n == 0)
-          {
-            layer.ValidationError = String.Format("'{0}' is not a layer in the service/dataframe for map tab '{1}'", layer.LayerName, mapTab.MapTabID);
-          }
-          else if (n > 1)
-          {
-            layer.ValidationError = String.Format("More than one layer named '{0}' in the service/dataframe for map tab '{1}'", layer.LayerName, mapTab.MapTabID);
-          }
-        }
-      }
+      //    if (n == 0)
+      //    {
+      //      layer.ValidationError = String.Format("'{0}' is not a layer in the service/dataframe for map tab '{1}'", layer.LayerName, mapTab.MapTabID);
+      //    }
+      //    else if (n > 1)
+      //    {
+      //      layer.ValidationError = String.Format("More than one layer named '{0}' in the service/dataframe for map tab '{1}'", layer.LayerName, mapTab.MapTabID);
+      //    }
+      //  }
+      //}
     }
   }
 
@@ -1253,8 +1254,9 @@ public partial class Configuration
     {
       // must contain as least one valid layer
 
-      if (!mapTab.GetMapTabLayerRows().Any(o => o.IsValidationErrorNull()) &&
-          (mapTab.IsBaseMapIDNull() || !Layer.Any(o => o.IsValidationErrorNull() && !o.IsBaseMapIDNull() && o.BaseMapID == mapTab.BaseMapID)))
+      //if (!mapTab.GetMapTabLayerRows().Any(o => o.IsValidationErrorNull()) &&
+      //    (mapTab.IsBaseMapIDNull() || !Layer.Any(o => o.IsValidationErrorNull() && !o.IsBaseMapIDNull() && o.BaseMapID == mapTab.BaseMapID)))
+      if(!mapTab.GetMapTabLayerRows().Any(o => o.IsValidationErrorNull()))
       {
         mapTab.ValidationError = "Does not contain any valid layers";
       }

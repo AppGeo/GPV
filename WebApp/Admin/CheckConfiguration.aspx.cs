@@ -69,6 +69,7 @@ public partial class Admin_CheckConfiguration : CustomStyledPage
       errorCount += WriteReportBlock(config.Level, "LevelID", "ZoneLevelID");
       errorCount += WriteReportBlock(config.MapTab, "MapTabID", null);
       errorCount += WriteReportBlock(config.MapTabLayer, "MapTabID", "LayerID");
+      errorCount += WriteReportBlock(config.MapTabTileGroup, "MapTabID", "TileGroupID");
       errorCount += WriteReportBlock(config.MarkupCategory, "CategoryID", null);
       errorCount += WriteReportBlock(config.PrintTemplate, "TemplateID", null);
       errorCount += WriteReportBlock(config.PrintTemplateContent, "TemplateID", "SequenceNo");
@@ -76,6 +77,8 @@ public partial class Admin_CheckConfiguration : CustomStyledPage
       errorCount += WriteReportBlock(config.Query, "QueryID", "LayerID");
       errorCount += WriteReportBlock(config.Search, "SearchID", "LayerID");
       errorCount += WriteReportBlock(config.SearchInputField, "FieldID", "SearchID");
+      errorCount += WriteReportBlock(config.TileGroup, "TileGroupID", null);
+      errorCount += WriteReportBlock(config.TileLayer, "TileLayerID", null);
       errorCount += WriteReportBlock(config.Zone, "ZoneID", "ZoneLevelID");
       errorCount += WriteReportBlock(config.ZoneLevel, "ZoneLevelID", null);
       errorCount += WriteReportBlock(config.ZoneLevelCombo, "ZoneID,LevelID", "ZoneLevelID");

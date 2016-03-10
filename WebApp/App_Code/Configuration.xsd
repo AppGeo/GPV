@@ -91,26 +91,6 @@
               <xs:element name="MaxSelectionArea" msprop:Generator_ColumnVarNameInTable="columnMaxSelectionArea" msprop:Generator_ColumnPropNameInRow="MaxSelectionArea" msprop:Generator_ColumnPropNameInTable="MaxSelectionAreaColumn" msprop:Generator_UserColumnName="MaxSelectionArea" type="xs:double" minOccurs="0" />
               <xs:element name="MinNearestDistance" msprop:Generator_ColumnVarNameInTable="columnMinNearestDistance" msprop:Generator_ColumnPropNameInRow="MinNearestDistance" msprop:Generator_ColumnPropNameInTable="MinNearestDistanceColumn" msprop:Generator_UserColumnName="MinNearestDistance" type="xs:double" minOccurs="0" />
               <xs:element name="MaxNearestDistance" msprop:Generator_ColumnVarNameInTable="columnMaxNearestDistance" msprop:Generator_ColumnPropNameInRow="MaxNearestDistance" msprop:Generator_ColumnPropNameInTable="MaxNearestDistanceColumn" msprop:Generator_UserColumnName="MaxNearestDistance" type="xs:double" minOccurs="0" />
-              <xs:element name="BaseMapID" msprop:Generator_ColumnVarNameInTable="columnBaseMapID" msprop:Generator_ColumnPropNameInRow="BaseMapID" msprop:Generator_ColumnPropNameInTable="BaseMapIDColumn" msprop:Generator_UserColumnName="BaseMapID" type="xs:string" minOccurs="0" />
-              <xs:element name="Active" msprop:Generator_ColumnVarNameInTable="columnActive" msprop:Generator_ColumnPropNameInRow="Active" msprop:Generator_ColumnPropNameInTable="ActiveColumn" msprop:Generator_UserColumnName="Active" type="xs:short" minOccurs="0" />
-              <xs:element name="ValidationError" msprop:Generator_ColumnVarNameInTable="columnValidationError" msprop:Generator_ColumnPropNameInRow="ValidationError" msprop:Generator_ColumnPropNameInTable="ValidationErrorColumn" msprop:Generator_UserColumnName="ValidationError" type="xs:string" minOccurs="0" />
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="MapTab" msprop:Generator_UserTableName="MapTab" msprop:Generator_RowEvArgName="MapTabRowChangeEvent" msprop:Generator_TableVarName="tableMapTab" msprop:Generator_TablePropName="MapTab" msprop:Generator_RowDeletingName="MapTabRowDeleting" msprop:Generator_RowChangingName="MapTabRowChanging" msprop:Generator_RowDeletedName="MapTabRowDeleted" msprop:Generator_RowEvHandlerName="MapTabRowChangeEventHandler" msprop:Generator_TableClassName="MapTabDataTable" msprop:Generator_RowChangedName="MapTabRowChanged" msprop:Generator_RowClassName="MapTabRow">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="MapTabID" msprop:Generator_ColumnVarNameInTable="columnMapTabID" msprop:Generator_ColumnPropNameInRow="MapTabID" msprop:Generator_ColumnPropNameInTable="MapTabIDColumn" msprop:Generator_UserColumnName="MapTabID" type="xs:string" />
-              <xs:element name="DisplayName" msprop:Generator_ColumnVarNameInTable="columnDisplayName" msprop:Generator_ColumnPropNameInRow="DisplayName" msprop:Generator_ColumnPropNameInTable="DisplayNameColumn" msprop:Generator_UserColumnName="DisplayName" type="xs:string" />
-              <xs:element name="MapHost" msprop:Generator_ColumnVarNameInTable="columnMapHost" msprop:Generator_ColumnPropNameInRow="MapHost" msprop:Generator_ColumnPropNameInTable="MapHostColumn" msprop:Generator_UserColumnName="MapHost" type="xs:string" />
-              <xs:element name="MapPort" msprop:Generator_ColumnVarNameInTable="columnMapPort" msprop:Generator_ColumnPropNameInRow="MapPort" msprop:Generator_ColumnPropNameInTable="MapPortColumn" msprop:Generator_UserColumnName="MapPort" type="xs:short" minOccurs="0" />
-              <xs:element name="MapService" msprop:Generator_ColumnVarNameInTable="columnMapService" msprop:Generator_ColumnPropNameInRow="MapService" msprop:Generator_ColumnPropNameInTable="MapServiceColumn" msprop:Generator_UserColumnName="MapService" type="xs:string" />
-              <xs:element name="DataFrame" msprop:Generator_ColumnVarNameInTable="columnDataFrame" msprop:Generator_ColumnPropNameInRow="DataFrame" msprop:Generator_ColumnPropNameInTable="DataFrameColumn" msprop:Generator_UserColumnName="DataFrame" type="xs:string" minOccurs="0" />
-              <xs:element name="UserName" msprop:Generator_ColumnVarNameInTable="columnUserName" msprop:Generator_ColumnPropNameInRow="UserName" msprop:Generator_ColumnPropNameInTable="UserNameColumn" msprop:Generator_UserColumnName="UserName" type="xs:string" minOccurs="0" />
-              <xs:element name="Password" msprop:Generator_ColumnVarNameInTable="columnPassword" msprop:Generator_ColumnPropNameInRow="Password" msprop:Generator_ColumnPropNameInTable="PasswordColumn" msprop:Generator_UserColumnName="Password" type="xs:string" minOccurs="0" />
-              <xs:element name="InteractiveLegend" msprop:Generator_ColumnVarNameInTable="columnInteractiveLegend" msprop:Generator_ColumnPropNameInRow="InteractiveLegend" msprop:Generator_ColumnPropNameInTable="InteractiveLegendColumn" msprop:Generator_UserColumnName="InteractiveLegend" type="xs:short" minOccurs="0" />
-              <xs:element name="BaseMapID" msprop:Generator_ColumnVarNameInTable="columnBaseMapID" msprop:Generator_ColumnPropNameInRow="BaseMapID" msprop:Generator_ColumnPropNameInTable="BaseMapIDColumn" msprop:Generator_UserColumnName="BaseMapID" type="xs:string" minOccurs="0" />
-              <xs:element name="ShowBaseMapInLegend" msprop:Generator_ColumnVarNameInTable="columnShowBaseMapInLegend" msprop:Generator_ColumnPropNameInRow="ShowBaseMapInLegend" msprop:Generator_ColumnPropNameInTable="ShowBaseMapInLegendColumn" msprop:Generator_UserColumnName="ShowBaseMapInLegend" type="xs:short" minOccurs="0" />
               <xs:element name="Active" msprop:Generator_ColumnVarNameInTable="columnActive" msprop:Generator_ColumnPropNameInRow="Active" msprop:Generator_ColumnPropNameInTable="ActiveColumn" msprop:Generator_UserColumnName="Active" type="xs:short" minOccurs="0" />
               <xs:element name="ValidationError" msprop:Generator_ColumnVarNameInTable="columnValidationError" msprop:Generator_ColumnPropNameInRow="ValidationError" msprop:Generator_ColumnPropNameInTable="ValidationErrorColumn" msprop:Generator_UserColumnName="ValidationError" type="xs:string" minOccurs="0" />
             </xs:sequence>
@@ -364,6 +344,59 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
+        <xs:element name="MapTabTileGroup" msprop:Generator_TableClassName="MapTabTileGroupDataTable" msprop:Generator_TableVarName="tableMapTabTileGroup" msprop:Generator_TablePropName="MapTabTileGroup" msprop:Generator_RowDeletingName="MapTabTileGroupRowDeleting" msprop:Generator_RowChangingName="MapTabTileGroupRowChanging" msprop:Generator_RowEvHandlerName="MapTabTileGroupRowChangeEventHandler" msprop:Generator_RowDeletedName="MapTabTileGroupRowDeleted" msprop:Generator_UserTableName="MapTabTileGroup" msprop:Generator_RowChangedName="MapTabTileGroupRowChanged" msprop:Generator_RowEvArgName="MapTabTileGroupRowChangeEvent" msprop:Generator_RowClassName="MapTabTileGroupRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="MapTabID" msprop:Generator_ColumnVarNameInTable="columnMapTabID" msprop:Generator_ColumnPropNameInRow="MapTabID" msprop:Generator_ColumnPropNameInTable="MapTabIDColumn" msprop:Generator_UserColumnName="MapTabID" type="xs:string" />
+              <xs:element name="TileGroupID" msprop:Generator_ColumnVarNameInTable="columnTileGroupID" msprop:Generator_ColumnPropNameInRow="TileGroupID" msprop:Generator_ColumnPropNameInTable="TileGroupIDColumn" msprop:Generator_UserColumnName="TileGroupID" type="xs:string" />
+              <xs:element name="CheckInLegend" msprop:Generator_ColumnVarNameInTable="columnCheckInLegend" msprop:Generator_ColumnPropNameInRow="CheckInLegend" msprop:Generator_ColumnPropNameInTable="CheckInLegendColumn" msprop:Generator_UserColumnName="CheckInLegend" type="xs:short" minOccurs="0" />
+              <xs:element name="Opacity" msprop:Generator_ColumnVarNameInTable="columnOpacity" msprop:Generator_ColumnPropNameInRow="Opacity" msprop:Generator_ColumnPropNameInTable="OpacityColumn" msprop:Generator_UserColumnName="Opacity" type="xs:short" minOccurs="0" />
+              <xs:element name="SequenceNo" msprop:Generator_ColumnVarNameInTable="columnSequenceNo" msprop:Generator_ColumnPropNameInRow="SequenceNo" msprop:Generator_ColumnPropNameInTable="SequenceNoColumn" msprop:Generator_UserColumnName="SequenceNo" type="xs:short" minOccurs="0" />
+              <xs:element name="ValidationError" msprop:Generator_ColumnVarNameInTable="columnValidationError" msprop:Generator_ColumnPropNameInRow="ValidationError" msprop:Generator_ColumnPropNameInTable="ValidationErrorColumn" msprop:Generator_UserColumnName="ValidationError" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="TileGroup" msprop:Generator_TableClassName="TileGroupDataTable" msprop:Generator_TableVarName="tableTileGroup" msprop:Generator_TablePropName="TileGroup" msprop:Generator_RowDeletingName="TileGroupRowDeleting" msprop:Generator_RowChangingName="TileGroupRowChanging" msprop:Generator_RowEvHandlerName="TileGroupRowChangeEventHandler" msprop:Generator_RowDeletedName="TileGroupRowDeleted" msprop:Generator_UserTableName="TileGroup" msprop:Generator_RowChangedName="TileGroupRowChanged" msprop:Generator_RowEvArgName="TileGroupRowChangeEvent" msprop:Generator_RowClassName="TileGroupRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TileGroupID" msprop:Generator_ColumnVarNameInTable="columnTileGroupID" msprop:Generator_ColumnPropNameInRow="TileGroupID" msprop:Generator_ColumnPropNameInTable="TileGroupIDColumn" msprop:Generator_UserColumnName="TileGroupID" type="xs:string" />
+              <xs:element name="DisplayName" msprop:Generator_ColumnVarNameInTable="columnDisplayName" msprop:Generator_ColumnPropNameInRow="DisplayName" msprop:Generator_ColumnPropNameInTable="DisplayNameColumn" msprop:Generator_UserColumnName="DisplayName" type="xs:string" />
+              <xs:element name="Active" msprop:Generator_ColumnVarNameInTable="columnActive" msprop:Generator_ColumnPropNameInRow="Active" msprop:Generator_ColumnPropNameInTable="ActiveColumn" msprop:Generator_UserColumnName="Active" type="xs:int" minOccurs="0" />
+              <xs:element name="ValidationError" msprop:Generator_ColumnVarNameInTable="columnValidationError" msprop:Generator_ColumnPropNameInRow="ValidationError" msprop:Generator_ColumnPropNameInTable="ValidationErrorColumn" msprop:Generator_UserColumnName="ValidationError" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="TileLayer" msprop:Generator_TableClassName="TileLayerDataTable" msprop:Generator_TableVarName="tableTileLayer" msprop:Generator_TablePropName="TileLayer" msprop:Generator_RowDeletingName="TileLayerRowDeleting" msprop:Generator_RowChangingName="TileLayerRowChanging" msprop:Generator_RowEvHandlerName="TileLayerRowChangeEventHandler" msprop:Generator_RowDeletedName="TileLayerRowDeleted" msprop:Generator_UserTableName="TileLayer" msprop:Generator_RowChangedName="TileLayerRowChanged" msprop:Generator_RowEvArgName="TileLayerRowChangeEvent" msprop:Generator_RowClassName="TileLayerRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TileLayerID" msprop:Generator_ColumnVarNameInTable="columnTileLayerID" msprop:Generator_ColumnPropNameInRow="TileLayerID" msprop:Generator_ColumnPropNameInTable="TileLayerIDColumn" msprop:Generator_UserColumnName="TileLayerID" type="xs:string" />
+              <xs:element name="TileGroupID" msprop:Generator_ColumnVarNameInTable="columnTileGroupID" msprop:Generator_ColumnPropNameInRow="TileGroupID" msprop:Generator_ColumnPropNameInTable="TileGroupIDColumn" msprop:Generator_UserColumnName="TileGroupID" type="xs:string" />
+              <xs:element name="URL" msprop:Generator_ColumnVarNameInTable="columnURL" msprop:Generator_ColumnPropNameInRow="URL" msprop:Generator_ColumnPropNameInTable="URLColumn" msprop:Generator_UserColumnName="URL" type="xs:string" />
+              <xs:element name="Attribution" msprop:Generator_ColumnVarNameInTable="columnAttribution" msprop:Generator_ColumnPropNameInRow="Attribution" msprop:Generator_ColumnPropNameInTable="AttributionColumn" msprop:Generator_UserColumnName="Attribution" type="xs:string" minOccurs="0" />
+              <xs:element name="Overlay" msprop:Generator_ColumnVarNameInTable="columnOverlay" msprop:Generator_ColumnPropNameInRow="Overlay" msprop:Generator_ColumnPropNameInTable="OverlayColumn" msprop:Generator_UserColumnName="Overlay" type="xs:short" minOccurs="0" />
+              <xs:element name="SequenceNo" msprop:Generator_ColumnVarNameInTable="columnSequenceNo" msprop:Generator_ColumnPropNameInRow="SequenceNo" msprop:Generator_ColumnPropNameInTable="SequenceNoColumn" msprop:Generator_UserColumnName="SequenceNo" type="xs:short" />
+              <xs:element name="Active" msprop:Generator_ColumnVarNameInTable="columnActive" msprop:Generator_ColumnPropNameInRow="Active" msprop:Generator_ColumnPropNameInTable="ActiveColumn" msprop:Generator_UserColumnName="Active" type="xs:short" minOccurs="0" />
+              <xs:element name="ValidationError" msprop:Generator_ColumnVarNameInTable="columnValidationError" msprop:Generator_ColumnPropNameInRow="ValidationError" msprop:Generator_ColumnPropNameInTable="ValidationErrorColumn" msprop:Generator_UserColumnName="ValidationError" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="MapTab" msprop:Generator_UserTableName="MapTab" msprop:Generator_RowEvArgName="MapTabRowChangeEvent" msprop:Generator_TableVarName="tableMapTab" msprop:Generator_TablePropName="MapTab" msprop:Generator_RowDeletingName="MapTabRowDeleting" msprop:Generator_RowChangingName="MapTabRowChanging" msprop:Generator_RowDeletedName="MapTabRowDeleted" msprop:Generator_RowEvHandlerName="MapTabRowChangeEventHandler" msprop:Generator_TableClassName="MapTabDataTable" msprop:Generator_RowChangedName="MapTabRowChanged" msprop:Generator_RowClassName="MapTabRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="MapTabID" msprop:Generator_ColumnVarNameInTable="columnMapTabID" msprop:Generator_ColumnPropNameInRow="MapTabID" msprop:Generator_ColumnPropNameInTable="MapTabIDColumn" msprop:Generator_UserColumnName="MapTabID" type="xs:string" />
+              <xs:element name="DisplayName" msprop:Generator_ColumnVarNameInTable="columnDisplayName" msprop:Generator_ColumnPropNameInRow="DisplayName" msprop:Generator_ColumnPropNameInTable="DisplayNameColumn" msprop:Generator_UserColumnName="DisplayName" type="xs:string" />
+              <xs:element name="MapHost" msprop:Generator_ColumnVarNameInTable="columnMapHost" msprop:Generator_ColumnPropNameInRow="MapHost" msprop:Generator_ColumnPropNameInTable="MapHostColumn" msprop:Generator_UserColumnName="MapHost" type="xs:string" />
+              <xs:element name="MapPort" msprop:Generator_ColumnVarNameInTable="columnMapPort" msprop:Generator_ColumnPropNameInRow="MapPort" msprop:Generator_ColumnPropNameInTable="MapPortColumn" msprop:Generator_UserColumnName="MapPort" type="xs:short" minOccurs="0" />
+              <xs:element name="MapService" msprop:Generator_ColumnVarNameInTable="columnMapService" msprop:Generator_ColumnPropNameInRow="MapService" msprop:Generator_ColumnPropNameInTable="MapServiceColumn" msprop:Generator_UserColumnName="MapService" type="xs:string" />
+              <xs:element name="DataFrame" msprop:Generator_ColumnVarNameInTable="columnDataFrame" msprop:Generator_ColumnPropNameInRow="DataFrame" msprop:Generator_ColumnPropNameInTable="DataFrameColumn" msprop:Generator_UserColumnName="DataFrame" type="xs:string" minOccurs="0" />
+              <xs:element name="UserName" msprop:Generator_ColumnVarNameInTable="columnUserName" msprop:Generator_ColumnPropNameInRow="UserName" msprop:Generator_ColumnPropNameInTable="UserNameColumn" msprop:Generator_UserColumnName="UserName" type="xs:string" minOccurs="0" />
+              <xs:element name="Password" msprop:Generator_ColumnVarNameInTable="columnPassword" msprop:Generator_ColumnPropNameInRow="Password" msprop:Generator_ColumnPropNameInTable="PasswordColumn" msprop:Generator_UserColumnName="Password" type="xs:string" minOccurs="0" />
+              <xs:element name="InteractiveLegend" msprop:Generator_ColumnVarNameInTable="columnInteractiveLegend" msprop:Generator_ColumnPropNameInRow="InteractiveLegend" msprop:Generator_ColumnPropNameInTable="InteractiveLegendColumn" msprop:Generator_UserColumnName="InteractiveLegend" type="xs:short" minOccurs="0" />
+              <xs:element name="Active" msprop:Generator_ColumnVarNameInTable="columnActive" msprop:Generator_ColumnPropNameInRow="Active" msprop:Generator_ColumnPropNameInTable="ActiveColumn" msprop:Generator_UserColumnName="Active" type="xs:short" minOccurs="0" />
+              <xs:element name="ValidationError" msprop:Generator_ColumnVarNameInTable="columnValidationError" msprop:Generator_ColumnPropNameInRow="ValidationError" msprop:Generator_ColumnPropNameInTable="ValidationErrorColumn" msprop:Generator_UserColumnName="ValidationError" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
       </xs:choice>
     </xs:complexType>
     <xs:unique name="ApplicationKey" msdata:PrimaryKey="true">
@@ -381,10 +414,6 @@
     <xs:unique name="LayerKey" msdata:PrimaryKey="true">
       <xs:selector xpath=".//mstns:Layer" />
       <xs:field xpath="mstns:LayerID" />
-    </xs:unique>
-    <xs:unique name="MapTabKey" msdata:PrimaryKey="true">
-      <xs:selector xpath=".//mstns:MapTab" />
-      <xs:field xpath="mstns:MapTabID" />
     </xs:unique>
     <xs:unique name="PrintTemplateKey" msdata:PrimaryKey="true">
       <xs:selector xpath=".//mstns:PrintTemplate" />
@@ -424,6 +453,30 @@
       <xs:selector xpath=".//mstns:SearchInputField" />
       <xs:field xpath="mstns:FieldID" />
     </xs:unique>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:TileGroup" />
+      <xs:field xpath="mstns:TileGroupID" />
+    </xs:unique>
+    <xs:unique name="TileLayer_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:TileLayer" />
+      <xs:field xpath="mstns:TileLayerID" />
+    </xs:unique>
+    <xs:unique name="MapTabKey" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:MapTab" />
+      <xs:field xpath="mstns:MapTabID" />
+    </xs:unique>
+    <xs:keyref name="TileGroupToTileLayer" refer="Constraint1" msprop:rel_Generator_UserChildTable="TileLayer" msprop:rel_Generator_ChildPropName="GetTileLayerRows" msprop:rel_Generator_UserRelationName="TileGroupToTileLayer" msprop:rel_Generator_ParentPropName="TileGroupRow" msprop:rel_Generator_RelationVarName="relationTileGroupToTileLayer" msprop:rel_Generator_UserParentTable="TileGroup">
+      <xs:selector xpath=".//mstns:TileLayer" />
+      <xs:field xpath="mstns:TileGroupID" />
+    </xs:keyref>
+    <xs:keyref name="MapTabToTileGroup" refer="MapTabKey" msprop:rel_Generator_UserChildTable="MapTabTileGroup" msprop:rel_Generator_ChildPropName="GetMapTabTileGroupRows" msprop:rel_Generator_UserRelationName="MapTabToTileGroup" msprop:rel_Generator_ParentPropName="MapTabRow" msprop:rel_Generator_RelationVarName="relationMapTabToTileGroup" msprop:rel_Generator_UserParentTable="MapTab">
+      <xs:selector xpath=".//mstns:MapTabTileGroup" />
+      <xs:field xpath="mstns:MapTabID" />
+    </xs:keyref>
+    <xs:keyref name="TileGroupToMapTab" refer="Constraint1" msprop:rel_Generator_UserChildTable="MapTabTileGroup" msprop:rel_Generator_ChildPropName="GetMapTabTileGroupRows" msprop:rel_Generator_UserRelationName="TileGroupToMapTab" msprop:rel_Generator_RelationVarName="relationTileGroupToMapTab" msprop:rel_Generator_UserParentTable="TileGroup" msprop:rel_Generator_ParentPropName="TileGroupRow">
+      <xs:selector xpath=".//mstns:MapTabTileGroup" />
+      <xs:field xpath="mstns:TileGroupID" />
+    </xs:keyref>
     <xs:keyref name="SearchToSearchInputField" refer="SearchKey" msprop:rel_Generator_UserChildTable="SearchInputField" msprop:rel_Generator_ChildPropName="GetSearchInputFieldRows" msprop:rel_Generator_UserRelationName="SearchToSearchInputField" msprop:rel_Generator_RelationVarName="relationSearchToSearchInputField" msprop:rel_Generator_UserParentTable="Search" msprop:rel_Generator_ParentPropName="SearchRow">
       <xs:selector xpath=".//mstns:SearchInputField" />
       <xs:field xpath="mstns:SearchID" />
@@ -510,13 +563,13 @@
       <xs:selector xpath=".//mstns:DataTab" />
       <xs:field xpath="mstns:ConnectionID" />
     </xs:keyref>
-    <xs:keyref name="ApplicationToMapTab" refer="ApplicationKey" msprop:rel_Generator_UserChildTable="ApplicationMapTab" msprop:rel_Generator_ChildPropName="GetApplicationMapTabRows" msprop:rel_Generator_UserRelationName="ApplicationToMapTab" msprop:rel_Generator_ParentPropName="ApplicationRow" msprop:rel_Generator_RelationVarName="relationApplicationToMapTab" msprop:rel_Generator_UserParentTable="Application">
-      <xs:selector xpath=".//mstns:ApplicationMapTab" />
-      <xs:field xpath="mstns:ApplicationID" />
-    </xs:keyref>
     <xs:keyref name="MapTabToApplication" refer="MapTabKey" msprop:rel_Generator_UserChildTable="ApplicationMapTab" msprop:rel_Generator_ChildPropName="GetApplicationMapTabRows" msprop:rel_Generator_UserRelationName="MapTabToApplication" msprop:rel_Generator_ParentPropName="MapTabRow" msprop:rel_Generator_RelationVarName="relationMapTabToApplication" msprop:rel_Generator_UserParentTable="MapTab">
       <xs:selector xpath=".//mstns:ApplicationMapTab" />
       <xs:field xpath="mstns:MapTabID" />
+    </xs:keyref>
+    <xs:keyref name="ApplicationToMapTab" refer="ApplicationKey" msprop:rel_Generator_UserChildTable="ApplicationMapTab" msprop:rel_Generator_ChildPropName="GetApplicationMapTabRows" msprop:rel_Generator_UserRelationName="ApplicationToMapTab" msprop:rel_Generator_ParentPropName="ApplicationRow" msprop:rel_Generator_RelationVarName="relationApplicationToMapTab" msprop:rel_Generator_UserParentTable="Application">
+      <xs:selector xpath=".//mstns:ApplicationMapTab" />
+      <xs:field xpath="mstns:ApplicationID" />
     </xs:keyref>
     <xs:keyref name="LayerToQuery" refer="LayerKey" msprop:rel_Generator_UserChildTable="Query" msprop:rel_Generator_ChildPropName="GetQueryRows" msprop:rel_Generator_UserRelationName="LayerToQuery" msprop:rel_Generator_ParentPropName="LayerRow" msprop:rel_Generator_RelationVarName="relationLayerToQuery" msprop:rel_Generator_UserParentTable="Layer">
       <xs:selector xpath=".//mstns:Query" />

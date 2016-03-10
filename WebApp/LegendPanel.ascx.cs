@@ -235,27 +235,27 @@ public partial class LegendPanel : System.Web.UI.UserControl
 
       // find layers attached via BaseMapID
 
-      if (!mapTabRow.IsBaseMapIDNull() && !mapTabRow.IsShowBaseMapInLegendNull() && mapTabRow.ShowBaseMapInLegend == 1)
-      {
-        if (checkMode != CheckMode.None)
-        {
-          checkMode = CheckMode.Empty;
-        }
+      //if (!mapTabRow.IsBaseMapIDNull() && !mapTabRow.IsShowBaseMapInLegendNull() && mapTabRow.ShowBaseMapInLegend == 1)
+      //{
+      //  if (checkMode != CheckMode.None)
+      //  {
+      //    checkMode = CheckMode.Empty;
+      //  }
 
-        foreach (DataRow row in config.Layer.Select("BaseMapID = '" + mapTabRow.BaseMapID + "'"))
-        {
-          Configuration.LayerRow layerRow = (Configuration.LayerRow)row;
+      //  foreach (DataRow row in config.Layer.Select("BaseMapID = '" + mapTabRow.BaseMapID + "'"))
+      //  {
+      //    Configuration.LayerRow layerRow = (Configuration.LayerRow)row;
 
-          if (!mapTabLayerIds.Contains(layerRow.LayerID))
-          {
-            CommonLayer layer = dataFrame.Layers.FirstOrDefault(lyr => String.Compare(lyr.Name, layerRow.LayerName, true) == 0);
-            metaDataUrl = layerRow.IsMetaDataURLNull() ? null : layerRow.MetaDataURL;
+      //    if (!mapTabLayerIds.Contains(layerRow.LayerID))
+      //    {
+      //      CommonLayer layer = dataFrame.Layers.FirstOrDefault(lyr => String.Compare(lyr.Name, layerRow.LayerName, true) == 0);
+      //      metaDataUrl = layerRow.IsMetaDataURLNull() ? null : layerRow.MetaDataURL;
 
-            configuredLayers.Add(layer);
-            layerProperties.Add(new LayerProperties(layerRow.Name, null, checkMode, false, metaDataUrl));
-          }
-        }
-      }
+      //      configuredLayers.Add(layer);
+      //      layerProperties.Add(new LayerProperties(layerRow.Name, null, checkMode, false, metaDataUrl));
+      //    }
+      //  }
+      //}
 
       // add group layers as necessary
 
