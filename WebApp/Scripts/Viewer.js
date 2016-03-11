@@ -17,6 +17,7 @@ var GPV = (function (gpv) {
     var appState = gpv.appState;
 
     var fullExtent = L.Bounds.fromArray(gpv.configuration.fullExtent);
+    var tileLayers = [];
     var resizeHandle;
     var redrawPost;
 
@@ -77,7 +78,12 @@ var GPV = (function (gpv) {
 
     map.on("click", identify);
 
-    var shingleLayer = L.shingleLayer({ urlBuilder: refreshMap }).on("shingleload", function () {
+    var shingleLayer = L.shingleLayer({ 
+      urlBuilder: refreshMap, 
+      zIndex: 100, 
+      opacity: 0.4,                 // REMOVE once the test map service has a transparent background
+      preserveOnPan: false          // TO DO: reset based on presence of underlay tiles
+    }).on("shingleload", function () {
       gpv.progress.clear();
       updateOverviewExtent();
 
@@ -253,6 +259,7 @@ var GPV = (function (gpv) {
       appState.update({ MapTab: mapTab });
       triggerMapTabChanged();
       shingleLayer.redraw();
+      loadTileLayers(mapTab);
     });
 
     $("#selectMapLevel li").click(function () {
@@ -360,6 +367,26 @@ var GPV = (function (gpv) {
           });
         }
       }
+    }
+
+    function loadTileLayers(mapTab) {
+      tileLayers.forEach(function (tileLayer) {
+        map.removeLayer(tileLayer);
+      });
+
+      var z = 0;
+
+      gpv.configuration.mapTab[mapTab].tileGroup.forEach(function (tg) {
+        tg.tileLayer.forEach(function (tl) {
+          var tileLayer = L.tileLayer(tl.url, { 
+            zIndex: tl.overlay ? 200 + z : z, 
+            attribution: tl.attribution,
+            opacity: tl.opacity
+          }).addTo(map);
+          tileLayers.push(tileLayer);
+          z += 1;
+        });
+      });
     }
 
     function refreshMap(size, bbox, callback) {
@@ -576,6 +603,7 @@ var GPV = (function (gpv) {
     $("#cmdLocation").attr("title", "Current Location");
 
     gpv.loadComplete();
+    loadTileLayers(gpv.appState.MapTab);
     $MapTool.filter(".Selected").trigger("click");
     triggerMapTabChanged();
   });

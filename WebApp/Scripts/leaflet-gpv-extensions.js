@@ -410,7 +410,8 @@
   L.ShingleLayer = L.Layer.extend({
     options: {
       pane: 'tilePane',
-      boundsFormat: 'bbox'  // 'latlng' or 'bbox'
+      boundsFormat: 'bbox',  // 'latlng' or 'bbox'
+      preserveOnPan: true
     },
 
     getEvents: function () {
@@ -435,8 +436,11 @@
 
     onAdd: function (map) {
       if (!this._container) {
-        this._container = L.DomUtil.create('div', 'leaflet-layer');
-        this.getPane().appendChild(this._container);
+        this._container = L.DomUtil.create('div', 'leaflet-layer', this.getPane());
+
+        if (this.options.hasOwnProperty('zIndex')) {
+          this._container.style.zIndex = this.options.zIndex;
+        }
       }
 
       this._update(true);
@@ -480,6 +484,10 @@
       img.galleryimg = 'no';
       img.data = {};
 
+      if (this.options.hasOwnProperty('opacity')) {
+        img.style.opacity = this.options.opacity;
+      }
+
       img.onselectstart = img.onmousemove = L.Util.falseFn;
       img.onload = this._shingleOnLoad;
       img.ondragstart = function () { return false; };
@@ -521,7 +529,7 @@
         for (var i = layer._shingles.length - 1; i >= 0; --i) {
           var img = layer._shingles[i];
 
-          if (img.data.level !== zoom || this.data.reset) {
+          if (img.data.level !== zoom || this.data.reset || !layer.options.preserveOnPan) {
             layer._container.removeChild(img);
             layer._shingles.splice(i, 1);
           }
