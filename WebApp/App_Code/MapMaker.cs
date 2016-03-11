@@ -36,7 +36,8 @@ public class MapMaker
 
   private Envelope _extent;
   private AffineTransformation _transform;
-  private CoordinateSystem _coordinateSystem = null;
+  private CoordinateSystem _mapCoordinateSystem = null;
+  private CoordinateSystem _measureCoordinateSystem = null;
 
   public MapMaker(AppState appState, int width, int height)
   {
@@ -48,16 +49,29 @@ public class MapMaker
     Initialize(appState, width, height, resolution);
   }
 
-  private CoordinateSystem CoordinateSystem
+  private CoordinateSystem MapCoordinateSystem
   {
     get
     {
-      if (_coordinateSystem == null)
+      if (_mapCoordinateSystem == null)
       {
-        _coordinateSystem = AppSettings.CoordinateSystem;
+        _mapCoordinateSystem = AppSettings.MapCoordinateSystem;
       }
 
-      return _coordinateSystem;
+      return _mapCoordinateSystem;
+    }
+  }
+
+  private CoordinateSystem MeasureCoordinateSystem
+  {
+    get
+    {
+      if (_measureCoordinateSystem == null)
+      {
+        _measureCoordinateSystem = AppSettings.MeasureCoordinateSystem;
+      }
+
+      return _measureCoordinateSystem;
     }
   }
 
@@ -93,7 +107,7 @@ public class MapMaker
 
     double lon;
     double lat;
-    CoordinateSystem.ToGeodetic(x, y, out lon, out lat);
+    MapCoordinateSystem.ToGeodetic(x, y, out lon, out lat);
 
     double xOffset = 2;
 
@@ -121,9 +135,14 @@ public class MapMaker
           break;
 
         default:
-          string unit = AppSettings.MapUnits == "feet" ? " ft" : " m";
-          yText = "N " + p.Coordinate.Y.ToString("#,##0") + unit;
-          xText = "E " + p.Coordinate.X.ToString("#,##0") + unit;
+          if (!MapCoordinateSystem.Equals(MeasureCoordinateSystem))
+          {
+            MeasureCoordinateSystem.ToProjected(lon, lat, out x, out y);
+          }
+
+          string unit = AppSettings.MeasureCoordinateSystem.MapUnits == "feet" ? " ft" : " m";
+          yText = "N " + x.ToString("#,##0") + unit;
+          xText = "E " + y.ToString("#,##0") + unit;
           break;
       }
 
@@ -450,8 +469,19 @@ public class MapMaker
     {
       case OgcGeometryType.LineString:
         ILineString lineString = (ILineString)geometry;
+        double d;
 
-        double d = lineString.Length * convert;
+        if (MapCoordinateSystem.Equals(MeasureCoordinateSystem))
+        {
+          d = lineString.Length * convert;
+        }
+        else
+        {
+          ILineString measureLineString = MapCoordinateSystem.ToGeodetic(lineString);
+          measureLineString = MeasureCoordinateSystem.ToProjected(measureLineString);
+          convert = 1 / (MeasureCoordinateSystem.MapUnits == "feet" ? 1 : Constants.MetersPerFoot);
+          d = measureLineString.Length * convert;
+        }
 
         if (inFeet)
         {
@@ -501,7 +531,20 @@ public class MapMaker
 
         if (c != null)
         {
-          double a = polygon.Area * convert * convert;
+          double a;
+
+          if (MapCoordinateSystem.Equals(MeasureCoordinateSystem))
+          {
+            a = polygon.Area * convert * convert;
+          }
+          else
+          {
+            IPolygon measurePolygon = MapCoordinateSystem.ToGeodetic(polygon);
+            measurePolygon = MeasureCoordinateSystem.ToProjected(measurePolygon);
+            convert = 1 / (MeasureCoordinateSystem.MapUnits == "feet" ? 1 : Constants.MetersPerFoot);
+            a = measurePolygon.Area * convert * convert;
+          }
+
           double acres = a / Constants.SquareFeetPerAcre;
 
           if (inFeet)

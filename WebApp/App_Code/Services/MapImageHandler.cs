@@ -164,7 +164,7 @@ public class MapImageHandler : WebServiceHandler
     string kmlName = String.Format("Map_{0}.kml", timeStamp);
     string imageName = String.Format("Map_{0}.", timeStamp) + (mapImageData.Type == CommonImageType.Png ? "png" : "jpg");
 
-    CoordinateSystem coordSys = AppSettings.CoordinateSystem;
+    CoordinateSystem coordSys = AppSettings.MapCoordinateSystem;
 
     double lat;
     double lon;

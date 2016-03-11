@@ -22,11 +22,22 @@ var GPV = (function (gpv) {
     var isPublic = gpv.settings.isPublic;
     var service = "Services/MarkupPanel.ashx";
 
-    var metersPerFoot = 0.3048;
+    var metersPerFoot = 0.3048333333333333;
     var feetPerMile = 5280;
     var squareFeetPerAcre = 43560;
 
     var measureText;
+    var measureCrs = proj4(gpv.settings.measureCrs);
+
+    measureCrs.project = function (latlng) {
+      var c = this.forward([ latlng.lng, latlng.lat ]);
+      return { x: c[0], y: c[1] };
+    };
+
+    measureCrs.unproject = function (p) {
+      var c = this.inverse([ p.x, p.y ]);
+      return L.latLng(c[1], c[0]);
+    };
 
     // =====  controls  =====
 
@@ -505,13 +516,13 @@ var GPV = (function (gpv) {
         var units = gpv.settings.measureUnits;
         var inFeet = units == "feet" || units == "both";
         var inMeters = units == "meters" || units == "both";
-        var convert = 1 / (gpv.settings.mapUnits == "feet" ? 1 : metersPerFoot);
+        var convert = 1 / (gpv.settings.measureCrsUnits == "feet" ? 1 : metersPerFoot);
 
         var latlngs = currentTool === 'optDrawLength' ? e.shape.getLatLngs() : e.shape.getLatLngs()[0];
         var lastLatLng = latlngs[latlngs.length - 1];
 
         var c = $.map(latlngs, function (latlng) {
-          return map.options.crs.project(latlng);
+          return measureCrs.project(latlng);
         });
 
         if (measureText) {
@@ -591,7 +602,7 @@ var GPV = (function (gpv) {
               }
 
               measureText = L.text({ 
-                latlng: map.options.crs.unproject(L.point(x, y)),
+                latlng: measureCrs.unproject(L.point(x, y)),
                 className: "MeasureText " + (inFeet ? "Area3" : "Area2"),
                 value: value.join("\n"), 
                 pointerEvents: 'none' 

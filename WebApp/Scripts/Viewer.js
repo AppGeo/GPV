@@ -41,23 +41,19 @@ var GPV = (function (gpv) {
     // =====  map control  =====
 
     var maxZoom = gpv.settings.zoomLevels - 1;
-    var resolutions = [ 0.25 * Math.pow(2, maxZoom) ];
+    var crs = L.CRS.EPSG3857;
 
-    for (var i = 0; i < maxZoom; ++i) {
-      resolutions.push(resolutions[i] * 0.5);
+    if (gpv.settings.mapCrs) {
+      var resolutions = [ 0.25 * Math.pow(2, maxZoom) ];
+
+      for (var i = 0; i < maxZoom; ++i) {
+        resolutions.push(resolutions[i] * 0.5);
+      }
+
+      crs = new L.Proj.CRS("GPV:1", gpv.settings.mapCrs, {
+        resolutions: resolutions
+      });
     }
-
-    var crs = new L.Proj.CRS("GPV:1", gpv.settings.coordinateSystem, {
-      resolutions: resolutions
-    });
-
-    crs.distance = function (a, b) {
-      a = crs.project(a);
-      b = crs.project(b);
-      var dx = a.x - b.x;
-      var dy = a.y - b.y;
-      return Math.sqrt(dx * dx + dy * dy) * (gpv.settings.mapUnits === "feet" ? 0.3048 : 1);
-    };
 
     var map = L.map("mapMain", {
       crs: crs,

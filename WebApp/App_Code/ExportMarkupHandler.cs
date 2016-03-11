@@ -24,7 +24,7 @@ using NetTopologySuite.IO;
 
 public class ExportMarkupHandler : IHttpHandler
 {
-  private CoordinateSystem _coordSys = AppSettings.CoordinateSystem;
+  private CoordinateSystem _coordSys = AppSettings.MapCoordinateSystem;
   private HttpResponse Response = null;
 
   public void ProcessRequest(HttpContext context)

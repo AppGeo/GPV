@@ -40,13 +40,7 @@ public partial class Identify : System.Web.UI.Page
 
     if (!Double.IsNaN(lat) && !Double.IsNaN(lon))
     {
-      AppSettings.CoordinateSystem.ToProjected(lon, lat, out x, out y);
-
-      if (AppSettings.MapUnits == "feet")
-      {
-        x *= Constants.FeetPerMeter;
-        y *= Constants.FeetPerMeter;
-      }
+      AppSettings.MapCoordinateSystem.ToProjected(lon, lat, out x, out y);
     }
 
     string dataTabID = Request.QueryString["datatab"];

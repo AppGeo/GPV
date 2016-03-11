@@ -296,7 +296,7 @@ public partial class Viewer : CustomStyledPage
       }
     }
 
-    if (AppSettings.CoordinateSystem == null)
+    if (AppSettings.MapCoordinateSystem == null)
     {
       ShowError("Projection parameters have not been provided or are invalid in Web.config");
     }
@@ -1593,13 +1593,7 @@ public partial class Viewer : CustomStyledPage
       double x;
       double y;
 
-      AppSettings.CoordinateSystem.ToProjected(lon, lat, out x, out y);
-
-      if (AppSettings.MapUnits == "feet")
-      {
-        x *= Constants.FeetPerMeter;
-        y *= Constants.FeetPerMeter;
-      }
+      AppSettings.MapCoordinateSystem.ToProjected(lon, lat, out x, out y);
 
       double dx = _appState.Extent.Width / 2;
       double dy = _appState.Extent.Height / 2;

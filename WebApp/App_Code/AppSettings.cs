@@ -188,31 +188,6 @@ public static class AppSettings
     }
   }
 
-  public static CoordinateSystem CoordinateSystem
-  {
-    get
-    {
-      CoordinateSystem coordSys = null;
-
-      try
-      {
-        string proj4String = GetConfigSetting("Projection");
-
-        if (String.IsNullOrWhiteSpace(proj4String))
-        {
-          coordSys = new CoordinateSystem("+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs");
-        }
-        else
-        {
-          coordSys = new CoordinateSystem(proj4String);
-        }
-      }
-      catch { }
-
-      return coordSys;
-    }
-  }
-
   public static string CustomStyleSheet
   {
     get
@@ -310,11 +285,36 @@ public static class AppSettings
     }
   }
 
+  public static CoordinateSystem MapCoordinateSystem
+  {
+    get
+    {
+      CoordinateSystem coordSys = null;
+
+      try
+      {
+        string proj4String = GetConfigSetting("MapProjection");
+
+        if (String.IsNullOrWhiteSpace(proj4String))
+        {
+          coordSys = new CoordinateSystem("+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs");
+        }
+        else
+        {
+          coordSys = new CoordinateSystem(proj4String);
+        }
+      }
+      catch { }
+
+      return coordSys;
+    }
+  }
+
   public static string MapUnits
   {
     get
     {
-      return CoordinateSystem.MapUnits;
+      return MapCoordinateSystem.MapUnits;
     }
   }
 
@@ -331,6 +331,31 @@ public static class AppSettings
     get
     {
       return GetConfigInteger("MarkupTimeout");
+    }
+  }
+
+  public static CoordinateSystem MeasureCoordinateSystem
+  {
+    get
+    {
+      CoordinateSystem coordSys = null;
+
+      try
+      {
+        string proj4String = GetConfigSetting("MeasureProjection");
+
+        if (String.IsNullOrWhiteSpace(proj4String))
+        {
+          coordSys = MapCoordinateSystem;
+        }
+        else
+        {
+          coordSys = new CoordinateSystem(proj4String);
+        }
+      }
+      catch { }
+
+      return coordSys;
     }
   }
 
@@ -597,9 +622,11 @@ public static class AppSettings
     jsonData.Add("showScaleBar", ShowScaleBar);
     jsonData.Add("preserveOnActionChange", PreserveOnActionChange);
     jsonData.Add("isPublic", String.IsNullOrEmpty(AppUser.Name));
+    jsonData.Add("mapCrs", !MapCoordinateSystem.IsWebMercator ? MapCoordinateSystem.ToProj4String() : "");
     jsonData.Add("mapUnits", MapUnits);
+    jsonData.Add("measureCrs", MeasureCoordinateSystem.ToProj4String());
+    jsonData.Add("measureCrsUnits", MeasureCoordinateSystem.MapUnits);
     jsonData.Add("measureUnits", MeasureUnits);
-    jsonData.Add("coordinateSystem", CoordinateSystem.ToProj4String());
     jsonData.Add("zoomLevels", ZoomLevels);
 
     JavaScriptSerializer serializer = new JavaScriptSerializer();

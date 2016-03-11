@@ -14,6 +14,9 @@
 
 using System;
 using DotSpatial.Projections;
+using DotSpatial.Projections.Transforms;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 public class CoordinateSystem
 {
@@ -27,6 +30,17 @@ public class CoordinateSystem
 	{
     Projection = ProjectionInfo.FromProj4String(proj4String);
 	}
+
+  public bool IsWebMercator
+  {
+    get
+    {
+      Spheroid spheroid = Projection.GeographicInfo.Datum.Spheroid;
+
+      return Projection.Transform.Proj4Name == "merc" && Projection.Unit.Name == "Meter" &&
+        spheroid.EquatorialRadius == 6378137 && spheroid.PolarRadius == 6378137;
+    }
+  }
 
   public string MapUnits
   {
@@ -45,6 +59,23 @@ public class CoordinateSystem
     }
   }
 
+  public override bool Equals(object obj)
+  {
+    CoordinateSystem other = obj as CoordinateSystem;
+
+    if (other == null)
+    {
+      return false;
+    }
+
+    return Projection.Equals(other.Projection);
+  }
+
+  public override int GetHashCode()
+  {
+    return base.GetHashCode();
+  }
+
 	public void ToGeodetic(double x, double y, out double lon, out double lat)
 	{
     double[] c = new double[] { x, y };
@@ -56,7 +87,39 @@ public class CoordinateSystem
     lat = c[1];
   }
 
-	public void ToProjected(double lon, double lat, out double x, out double y)
+  public ILineString ToGeodetic(ILineString lineString)
+  {
+    Coordinate[] points = new Coordinate[lineString.Coordinates.Length];
+
+    for (int i = 0; i < lineString.Coordinates.Length; ++i)
+    {
+      double lon;
+      double lat;
+      ToGeodetic(lineString.Coordinates[i].X, lineString.Coordinates[i].Y, out lon, out lat);
+
+      points[i] = new Coordinate(lon, lat);
+    }
+
+    return new LineString(points);
+  }
+
+  public IPolygon ToGeodetic(IPolygon polygon)
+  {
+    Coordinate[] points = new Coordinate[polygon.ExteriorRing.Coordinates.Length];
+
+    for (int i = 0; i < polygon.ExteriorRing.Coordinates.Length; ++i)
+    {
+      double lon;
+      double lat;
+      ToGeodetic(polygon.ExteriorRing.Coordinates[i].X, polygon.ExteriorRing.Coordinates[i].Y, out lon, out lat);
+
+      points[i] = new Coordinate(lon, lat);
+    }
+
+    return new Polygon(new LinearRing(points));
+  }
+
+  public void ToProjected(double lon, double lat, out double x, out double y)
 	{
     double[] c = new double[] { lon, lat };
     double[] z = new double[] { 0 };
@@ -65,6 +128,38 @@ public class CoordinateSystem
 
     x = c[0];
     y = c[1];
+  }
+
+  public ILineString ToProjected(ILineString lineString)
+  {
+    Coordinate[] points = new Coordinate[lineString.Coordinates.Length];
+
+    for (int i = 0; i < lineString.Coordinates.Length; ++i)
+    {
+      double x;
+      double y;
+      ToProjected(lineString.Coordinates[i].X, lineString.Coordinates[i].Y, out x, out y);
+
+      points[i] = new Coordinate(x, y);
+    }
+
+    return new LineString(points);
+  }
+
+  public IPolygon ToProjected(IPolygon polygon)
+  {
+    Coordinate[] points = new Coordinate[polygon.ExteriorRing.Coordinates.Length];
+
+    for (int i = 0; i < polygon.ExteriorRing.Coordinates.Length; ++i)
+    {
+      double x;
+      double y;
+      ToProjected(polygon.ExteriorRing.Coordinates[i].X, polygon.ExteriorRing.Coordinates[i].Y, out x, out y);
+
+      points[i] = new Coordinate(x, y);
+    }
+
+    return new Polygon(new LinearRing(points));
   }
 
   public string ToProj4String()

@@ -32,6 +32,28 @@ public class ExternalMapHandler : WebServiceHandler
     double x = (minx + maxx) / 2;
     double y = (miny + maxy) / 2;
 
+    double lon;
+    double lat;
+    AppSettings.MapCoordinateSystem.ToGeodetic(x, y, out lon, out lat);
+
+    double minLon;
+    double minLat;
+    AppSettings.MapCoordinateSystem.ToGeodetic(minx, miny, out minLon, out minLat);
+
+    double maxLon;
+    double maxLat;
+    AppSettings.MapCoordinateSystem.ToGeodetic(maxx, maxy, out maxLon, out maxLat);
+
+    string units = AppSettings.MapCoordinateSystem.MapUnits;
+
+    if (!AppSettings.MapCoordinateSystem.Equals(AppSettings.MeasureCoordinateSystem))
+    {
+      AppSettings.MeasureCoordinateSystem.ToProjected(lon, lat, out x, out y);
+      AppSettings.MeasureCoordinateSystem.ToProjected(minLon, minLat, out minx, out miny);
+      AppSettings.MeasureCoordinateSystem.ToProjected(maxLon, maxLat, out maxx, out maxy);
+      units = AppSettings.MeasureCoordinateSystem.MapUnits;
+    }
+
     double xm = x;
     double ym = y;
     double minxm = minx;
@@ -39,7 +61,7 @@ public class ExternalMapHandler : WebServiceHandler
     double maxxm = maxx;
     double maxym = maxy;
 
-    if (AppSettings.MapUnits == "feet")
+    if (units == "feet")
     {
       xm *= Constants.MetersPerFoot;
       ym *= Constants.MetersPerFoot;
@@ -56,7 +78,7 @@ public class ExternalMapHandler : WebServiceHandler
     double maxxft = maxx;
     double maxyft = maxy;
 
-    if (AppSettings.MapUnits == "meters")
+    if (units == "meters")
     {
       xft *= Constants.FeetPerMeter;
       yft *= Constants.FeetPerMeter;
@@ -64,23 +86,14 @@ public class ExternalMapHandler : WebServiceHandler
       minyft *= Constants.FeetPerMeter;
       maxxft *= Constants.FeetPerMeter;
       maxyft *= Constants.FeetPerMeter;
-
-      pixelSize *= Constants.FeetPerMeter;
     }
 
-    double lon;
-    double lat;
-    AppSettings.CoordinateSystem.ToGeodetic(x, y, out lon, out lat);
+    if (AppSettings.MapCoordinateSystem.MapUnits == "feet")
+    {
+      pixelSize *= Constants.MetersPerFoot;
+    }
 
-    double minLon;
-    double minLat;
-    AppSettings.CoordinateSystem.ToGeodetic(minx, miny, out minLon, out minLat);
-
-    double maxLon;
-    double maxLat;
-    AppSettings.CoordinateSystem.ToGeodetic(maxx, maxy, out maxLon, out maxLat);
-
-    double zoomLevel = (Math.Log(190500 / pixelSize) / Math.Log(2)) + 1;
+    double zoomLevel = (Math.Log(156543.0339280234 / pixelSize) / Math.Log(2));
 
     Configuration.ExternalMapRow externalMap = Configuration.ExternalMap.First(o => o.DisplayName == name);
     string url = externalMap.URL;
