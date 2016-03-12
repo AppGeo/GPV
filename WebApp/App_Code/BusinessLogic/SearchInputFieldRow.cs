@@ -40,7 +40,7 @@ public partial class Configuration
 
         if (IsParameterCountNull())
         {
-          ParameterCount = Configuration.GetParameterCount(command, false);
+          ParameterCount = Configuration.GetParameterCount(command);
         }
 
         if (ParameterCount >= 0)

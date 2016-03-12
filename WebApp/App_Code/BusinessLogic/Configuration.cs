@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -28,6 +29,7 @@ using System.Web.Script.Serialization;
 public partial class Configuration
 {
   private static Regex _searchSubstitutionRegex = new Regex(@"\s+\{0\}(\s+|$)");
+  private static BooleanSwitch _debugSwitch = new BooleanSwitch("ConfigDebug", "Shows configuration validation performance in the debug window");
 
   private static string[] TableNames
   {
@@ -96,39 +98,21 @@ public partial class Configuration
     return config;
   }
 
-  public static int GetParameterCount(OleDbCommand command, bool isSearch)
+  public static int GetParameterCount(OleDbCommand command)
   {
-    int c = -1;
+    // get the procedure owner and name from the command text
 
-    for (int i = 0; i <= 5; ++i)
-    {
-      try
-      {
-        using (OleDbCommand testCommand = new OleDbCommand(command.CommandText, command.Connection))
-        {
-          testCommand.CommandType = CommandType.StoredProcedure;
+    string[] nameParts = command.CommandText.Split('.');
+    string owner = nameParts.Length > 1 ? nameParts[nameParts.Length - 2] : null;
+    string name = nameParts[nameParts.Length - 1];
 
-          for (int n = 1; n <= i; ++n)
-          {
-            string testValue = isSearch && i == 1 ? "1 = 0" : "0";
-            testCommand.Parameters.AddWithValue(n.ToString(), testValue);
-          }
+    // get the parameters schema for that procedure
 
-          using (OleDbDataReader reader = testCommand.ExecuteReader())
-          {
-            c = i;
-          }
-        }
-      }
-      catch { }
+    DataTable procSchema = command.Connection.GetSchema("ProcedureParameters", new string[] { null, owner, name });
 
-      if (c > -1)
-      {
-        break;
-      }
-    }
+    // return the number of rows (parameters) that are not procedure return values
 
-    return c;
+    return procSchema.Select("PARAMETER_TYPE <> 4").Count();
   }
 
   public void CascadeDeactivated()
@@ -411,6 +395,15 @@ public partial class Configuration
     }
   }
 
+  public static void Log(string message)
+  {
+    if (_debugSwitch.Enabled)
+    {
+      message = String.Format("{0:yyyy-MM-dd hh:mm:ss.fff}  Configuration: {1}\n", DateTime.Now, message);
+      Debugger.Log(0, "GPV", message);
+    }
+  }
+
   public void RemoveDeactivated()
   {
     EnforceConstraints = false;
@@ -512,6 +505,8 @@ public partial class Configuration
 
   private bool ValidateApplications()
   {
+    Log("ValidateApplications");
+
     bool newErrorsFound = false;
 
     // each application
@@ -720,6 +715,8 @@ public partial class Configuration
 
   private bool ValidateApplicationMapTabs()
   {
+    Log("ValidateApplicationMapTabs");
+
     bool newErrorsFound = false;
 
     // each ApplicationMapTab must link to a valid application and valid map tab
@@ -744,7 +741,11 @@ public partial class Configuration
 
   private void ValidateDataSources()
   {
+    Log("ValidateDataSources");
+
     // check connections
+
+    Log("ValidateDataSources: Connections");
 
     foreach (Configuration.ConnectionRow connectionRow in Connection.Where(o => o.IsValidationErrorNull()))
     {
@@ -763,6 +764,8 @@ public partial class Configuration
     // check stored procedures
 
     // === LayerFunction ===
+
+    Log("ValidateDataSources: LayerFunction");
 
     foreach (Configuration.LayerFunctionRow layerFunction in LayerFunction.Where(o => o.IsValidationErrorNull()))
     {
@@ -788,6 +791,8 @@ public partial class Configuration
 
     // === DataTab ===
 
+    Log("ValidateDataSources: DataTab");
+
     foreach (Configuration.DataTabRow dataTab in DataTab.Where(o => o.IsValidationErrorNull()))
     {
       if (!dataTab.IsConnectionIDNull() && !dataTab.ConnectionRow.IsValidationErrorNull())
@@ -811,6 +816,8 @@ public partial class Configuration
     }
 
     // === Query ===
+
+    Log("ValidateDataSources: Query");
 
     foreach (Configuration.QueryRow query in Query.Where(o => o.IsValidationErrorNull()))
     {
@@ -852,6 +859,8 @@ public partial class Configuration
     }
 
     // === Search ===
+
+    Log("ValidateDataSources: Search");
 
     foreach (Configuration.SearchRow search in Search.Where(o => o.IsValidationErrorNull()))
     {
@@ -907,6 +916,8 @@ public partial class Configuration
 
     // === SearchInputField ===
 
+    Log("ValidateDataSources: SearchInputField");
+
     foreach (Configuration.SearchInputFieldRow searchInputField in SearchInputField.Where(o => !o.IsStoredProcNull() && o.IsValidationErrorNull()))
     {
       if (!searchInputField.IsConnectionIDNull() && !searchInputField.ConnectionRow.IsValidationErrorNull())
@@ -932,6 +943,8 @@ public partial class Configuration
 
   private bool ValidateDataTabs()
   {
+    Log("ValidateDataTabs");
+
     bool newErrorsFound = false;
 
     // each data tab
@@ -960,6 +973,8 @@ public partial class Configuration
 
   private bool ValidateLayers()
   {
+    Log("ValidateLayers");
+
     bool newErrorsFound = false;
 
     // each layer must be contained in at least one valid map tab
@@ -981,6 +996,8 @@ public partial class Configuration
 
   private bool ValidateLayerFunctions()
   {
+    Log("ValidateLayerFunctions");
+
     string[] validLayerFunctions = new string[] { "maptip", "identify", "mailinglabel", "export", "targetparams" };
     bool newErrorsFound = false;
 
@@ -1019,6 +1036,8 @@ public partial class Configuration
 
   private bool ValidateLayerProximities()
   {
+    Log("ValidateLayerProximities");
+
     bool newErrorsFound = false;
 
     // each LayerProximity must point to a valid layer and a valid proximity
@@ -1043,6 +1062,8 @@ public partial class Configuration
 
   private void ValidateMapServices()
   {
+    Log("ValidateMapServices");
+
     Dictionary<String, CommonHost> mapHosts = new Dictionary<String, CommonHost>();
     Dictionary<String, CommonMapService> mapServices = new Dictionary<String, CommonMapService>();
     Dictionary<String, CommonDataFrame> mapDataFrames = new Dictionary<String, CommonDataFrame>();
@@ -1257,6 +1278,8 @@ public partial class Configuration
 
   private bool ValidateMapTabs()
   {
+    Log("ValidateMapTabs");
+
     bool newErrorsFound = false;
 
     // each map tab
@@ -1285,6 +1308,8 @@ public partial class Configuration
 
   private bool ValidateMapTabLayers()
   {
+    Log("ValidateMapTabLayers");
+
     bool newErrorsFound = false;
 
     // each MapTabLayer
@@ -1344,6 +1369,8 @@ public partial class Configuration
 
   private bool ValidateMapTabTileGroups()
   {
+    Log("ValidateMapTabTileGroups");
+
     bool newErrorsFound = false;
 
     // each MapTabTileGroup
@@ -1370,6 +1397,8 @@ public partial class Configuration
 
   private void ValidateMarkupCategories()
   {
+    Log("ValidateMarkupCategories");
+
     // each ApplicationMarkupCategory must point to a valid application
 
     foreach (Configuration.ApplicationMarkupCategoryRow link in ApplicationMarkupCategory.Where(o => !o.ApplicationRow.IsValidationErrorNull()))
@@ -1387,7 +1416,8 @@ public partial class Configuration
 
   private void ValidatePrintTemplates()
   {
-    //string[] validContentTypes = new string[] { "box", "date", "image", "input", "legend", "map", "overviewmap", "scale", "scalefeet", "tabdata", "text" };
+    Log("ValidatePrintTemplates");
+
     string[] validContentTypes = new string[] { "box", "date", "image", "input", "legend", "map", "overviewmap", "scale", "scalefeet", "text" };
 
     // each PrintTemplateContent 
@@ -1488,6 +1518,8 @@ public partial class Configuration
 
   private bool ValidateProximities()
   {
+    Log("ValidateProximities");
+
     bool newErrorsFound = false;
 
     // each proximity
@@ -1516,6 +1548,8 @@ public partial class Configuration
 
   private bool ValidateQueries()
   {
+    Log("ValidateQueries");
+
     bool newErrorsFound = false;
 
     // each query
@@ -1551,6 +1585,8 @@ public partial class Configuration
 
   private bool ValidateSearchInputField()
   {
+    Log("ValidateSearchInputField");
+
     string[] validTypes = new string[] { "autocomplete", "date", "daterange", "list", "number", "numberrange", "text", "textcontains", "textstarts" };
     string[] procedureTypes = new string[] { "autocomplete", "list" };
 
@@ -1582,6 +1618,8 @@ public partial class Configuration
 
   private bool ValidateSearches()
   {
+    Log("ValidateSearches");
+
     bool newErrorsFound = false;
 
     // each search
@@ -1617,6 +1655,8 @@ public partial class Configuration
 
   private bool ValidateTileGroups()
   {
+    Log("ValidateTileGroups");
+
     bool newErrorsFound = false;
 
     // each tile group
@@ -1645,6 +1685,8 @@ public partial class Configuration
 
   private bool ValidateTileLayers()
   {
+    Log("ValidateTileLayers");
+
     bool newErrorsFound = false;
 
     // each tile layer
@@ -1666,6 +1708,8 @@ public partial class Configuration
 
   private void ValidateZoneLevels()
   {
+    Log("ValidateZoneLevels");
+
     // each zone/level spec
 
     foreach (Configuration.ZoneLevelRow zoneLevel in ZoneLevel.Where(o => o.IsValidationErrorNull()))
