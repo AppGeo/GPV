@@ -1,4 +1,4 @@
-//  Copyright 2012 Applied Geographics, Inc.
+//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -101,7 +101,7 @@ public partial class Admin_DownloadMarkup : CustomStyledPage
     // polygons
 
     string where = String.Format(" where {0} and a.Shape like 'POLYGON%'", query.Join(" and "));
-    string sql = String.Format(baseSql, AppSettings.ConfigurationTablePrefix, where);
+    string sql = String.Format(baseSql, WebConfigSettings.ConfigurationTablePrefix, where);
     DataTable table = GetShapeTable(sql, OgcGeometryType.Polygon);
 
     if (table.Rows.Count > 0)
@@ -114,7 +114,7 @@ public partial class Admin_DownloadMarkup : CustomStyledPage
     // lines
 
     where = String.Format(" where {0} and a.Shape like 'LINESTRING%'", query.Join(" and "));
-    sql = String.Format(baseSql, AppSettings.ConfigurationTablePrefix, where);
+    sql = String.Format(baseSql, WebConfigSettings.ConfigurationTablePrefix, where);
     table = GetShapeTable(sql, OgcGeometryType.LineString);
 
     if (table.Rows.Count > 0)
@@ -127,7 +127,7 @@ public partial class Admin_DownloadMarkup : CustomStyledPage
     // points
 
     where = String.Format(" where {0} and a.Shape like 'POINT%' and a.Text is null", query.Join(" and "));
-    sql = String.Format(baseSql, AppSettings.ConfigurationTablePrefix, where);
+    sql = String.Format(baseSql, WebConfigSettings.ConfigurationTablePrefix, where);
     table = GetShapeTable(sql, OgcGeometryType.Point);
 
     if (table.Rows.Count > 0)
@@ -140,7 +140,7 @@ public partial class Admin_DownloadMarkup : CustomStyledPage
     // text
 
     where = String.Format(" where {0} and a.Shape like 'POINT%' and a.Text is not null", query.Join(" and "));
-    sql = String.Format(baseSql, AppSettings.ConfigurationTablePrefix, where);
+    sql = String.Format(baseSql, WebConfigSettings.ConfigurationTablePrefix, where);
     table = GetShapeTable(sql, OgcGeometryType.Point);
 
     if (table.Rows.Count > 0)
@@ -171,7 +171,7 @@ public partial class Admin_DownloadMarkup : CustomStyledPage
 
   protected void Page_PreRender(object sender, EventArgs e)
   {
-    string prefix = AppSettings.ConfigurationTablePrefix;
+    string prefix = WebConfigSettings.ConfigurationTablePrefix;
 
     using (OleDbConnection connection = AppContext.GetDatabaseConnection())
     {

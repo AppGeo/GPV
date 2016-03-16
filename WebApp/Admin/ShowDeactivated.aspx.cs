@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -109,7 +109,7 @@ public partial class Admin_ShowDeactivated : CustomStyledPage
     HtmlTableCell td = new HtmlTableCell();
     tr.Cells.Add(td);
     td.ColSpan = 3;
-    td.InnerText = AppSettings.ConfigurationTablePrefix + table.TableName;
+    td.InnerText = WebConfigSettings.ConfigurationTablePrefix + table.TableName;
     
     td = new HtmlTableCell();
     tr.Cells.Add(td);

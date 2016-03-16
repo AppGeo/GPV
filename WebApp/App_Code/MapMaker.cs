@@ -1,4 +1,4 @@
-//  Copyright 2012 Applied Geographics, Inc.
+//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -36,8 +36,8 @@ public class MapMaker
 
   private Envelope _extent;
   private AffineTransformation _transform;
-  private CoordinateSystem _mapCoordinateSystem = null;
-  private CoordinateSystem _measureCoordinateSystem = null;
+
+  private AppSettings _appSettings = AppContext.AppSettings;
 
   public MapMaker(AppState appState, int width, int height)
   {
@@ -47,32 +47,6 @@ public class MapMaker
   public MapMaker(AppState appState, int width, int height, double resolution)
   {
     Initialize(appState, width, height, resolution);
-  }
-
-  private CoordinateSystem MapCoordinateSystem
-  {
-    get
-    {
-      if (_mapCoordinateSystem == null)
-      {
-        _mapCoordinateSystem = AppSettings.MapCoordinateSystem;
-      }
-
-      return _mapCoordinateSystem;
-    }
-  }
-
-  private CoordinateSystem MeasureCoordinateSystem
-  {
-    get
-    {
-      if (_measureCoordinateSystem == null)
-      {
-        _measureCoordinateSystem = AppSettings.MeasureCoordinateSystem;
-      }
-
-      return _measureCoordinateSystem;
-    }
   }
 
   private void Initialize(AppState appState, int width, int height, double resolution)
@@ -107,7 +81,7 @@ public class MapMaker
 
     double lon;
     double lat;
-    MapCoordinateSystem.ToGeodetic(x, y, out lon, out lat);
+    _appSettings.MapCoordinateSystem.ToGeodetic(x, y, out lon, out lat);
 
     double xOffset = 2;
 
@@ -135,12 +109,12 @@ public class MapMaker
           break;
 
         default:
-          if (!MapCoordinateSystem.Equals(MeasureCoordinateSystem))
+          if (!_appSettings.MapCoordinateSystem.Equals(_appSettings.MeasureCoordinateSystem))
           {
-            MeasureCoordinateSystem.ToProjected(lon, lat, out x, out y);
+            _appSettings.MeasureCoordinateSystem.ToProjected(lon, lat, out x, out y);
           }
 
-          string unit = AppSettings.MeasureCoordinateSystem.MapUnits == "feet" ? " ft" : " m";
+          string unit = _appSettings.MeasureCoordinateSystem.MapUnits == "feet" ? " ft" : " m";
           yText = "N " + x.ToString("#,##0") + unit;
           xText = "E " + y.ToString("#,##0") + unit;
           break;
@@ -318,7 +292,7 @@ public class MapMaker
         foreach (string groupId in _appState.MarkupGroups)
         {
           string sql = String.Format("update {0}MarkupGroup set DateLastAccessed = ? where GroupID = {1}",
-              AppSettings.ConfigurationTablePrefix, groupId);
+              WebConfigSettings.ConfigurationTablePrefix, groupId);
 
           using (OleDbCommand command = new OleDbCommand(sql, connection))
           {
@@ -327,7 +301,7 @@ public class MapMaker
           }
 
           sql = String.Format("select Shape, Color, Glow, Text, Measured from {0}Markup where GroupID = {1} and Deleted = 0",
-              AppSettings.ConfigurationTablePrefix, groupId);
+              WebConfigSettings.ConfigurationTablePrefix, groupId);
 
           using (OleDbCommand command = new OleDbCommand(sql, connection))
           {
@@ -364,9 +338,9 @@ public class MapMaker
 
     float dotSize = Convert.ToSingle(10 * _resolution);
 
-    System.Drawing.Font font = AppSettings.MarkupFont;
+    System.Drawing.Font font = _appSettings.MarkupFont;
     font = new System.Drawing.Font(font.FontFamily, Convert.ToSingle(font.Size * _resolution), font.Style, font.Unit);
-    System.Drawing.Font coordinatesFont = AppSettings.CoordinatesFont;
+    System.Drawing.Font coordinatesFont = _appSettings.CoordinatesFont;
     coordinatesFont = new System.Drawing.Font(coordinatesFont.FontFamily, Convert.ToSingle(coordinatesFont.Size * _resolution), coordinatesFont.Style, coordinatesFont.Unit);
     SolidBrush textBrush = new SolidBrush(Color.FromArgb(192, 0, 0));
     SolidBrush glowBrush = new SolidBrush(Color.Black);
@@ -449,11 +423,11 @@ public class MapMaker
 
   private void DrawMeasure(Graphics graphics, IGeometry geometry)
   {
-    string measureUnits = AppSettings.MeasureUnits;
+    string measureUnits = _appSettings.MeasureUnits;
     bool inFeet = measureUnits == "feet" || measureUnits == "both";
     bool inMeters = measureUnits == "meters" || measureUnits == "both";
 
-    System.Drawing.Font font = AppSettings.MeasureFont;
+    System.Drawing.Font font = _appSettings.MeasureFont;
     font = new System.Drawing.Font(font.FontFamily, Convert.ToSingle(font.Size * _resolution), font.Style, font.Unit);
     SolidBrush brush = new SolidBrush(Color.FromArgb(64, 64, 64));
     SolidBrush glowBrush = new SolidBrush(Color.White);
@@ -462,7 +436,7 @@ public class MapMaker
     format.Alignment = StringAlignment.Center;
     format.LineAlignment = StringAlignment.Center;
 
-    double convert = 1 / (AppSettings.MapUnits == "feet" ? 1 : Constants.MetersPerFoot);
+    double convert = 1 / (_appSettings.MapUnits == "feet" ? 1 : Constants.MetersPerFoot);
     StringCollection text = new StringCollection();
 
     switch (geometry.OgcGeometryType)
@@ -471,15 +445,15 @@ public class MapMaker
         ILineString lineString = (ILineString)geometry;
         double d;
 
-        if (MapCoordinateSystem.Equals(MeasureCoordinateSystem))
+        if (_appSettings.MapCoordinateSystem.Equals(_appSettings.MeasureCoordinateSystem))
         {
           d = lineString.Length * convert;
         }
         else
         {
-          ILineString measureLineString = MapCoordinateSystem.ToGeodetic(lineString);
-          measureLineString = MeasureCoordinateSystem.ToProjected(measureLineString);
-          convert = 1 / (MeasureCoordinateSystem.MapUnits == "feet" ? 1 : Constants.MetersPerFoot);
+          ILineString measureLineString = _appSettings.MapCoordinateSystem.ToGeodetic(lineString);
+          measureLineString = _appSettings.MeasureCoordinateSystem.ToProjected(measureLineString);
+          convert = 1 / (_appSettings.MeasureCoordinateSystem.MapUnits == "feet" ? 1 : Constants.MetersPerFoot);
           d = measureLineString.Length * convert;
         }
 
@@ -533,15 +507,15 @@ public class MapMaker
         {
           double a;
 
-          if (MapCoordinateSystem.Equals(MeasureCoordinateSystem))
+          if (_appSettings.MapCoordinateSystem.Equals(_appSettings.MeasureCoordinateSystem))
           {
             a = polygon.Area * convert * convert;
           }
           else
           {
-            IPolygon measurePolygon = MapCoordinateSystem.ToGeodetic(polygon);
-            measurePolygon = MeasureCoordinateSystem.ToProjected(measurePolygon);
-            convert = 1 / (MeasureCoordinateSystem.MapUnits == "feet" ? 1 : Constants.MetersPerFoot);
+            IPolygon measurePolygon = _appSettings.MapCoordinateSystem.ToGeodetic(polygon);
+            measurePolygon = _appSettings.MeasureCoordinateSystem.ToProjected(measurePolygon);
+            convert = 1 / (_appSettings.MeasureCoordinateSystem.MapUnits == "feet" ? 1 : Constants.MetersPerFoot);
             a = measurePolygon.Area * convert * convert;
           }
 
@@ -859,17 +833,17 @@ public class MapMaker
 
         PrepareIds(out targetIds, out filteredIds, out selectionIds);
 
-        DrawFeatures(graphics, _appState.TargetLayer, filteredIds, AppSettings.FilteredColor, AppSettings.FilteredOpacity, AppSettings.FilteredPolygonMode, AppSettings.FilteredPenWidth, AppSettings.FilteredDotSize);
-        DrawFeatures(graphics, _appState.SelectionLayer, selectionIds, AppSettings.SelectionColor, AppSettings.SelectionOpacity, AppSettings.SelectionPolygonMode, AppSettings.SelectionPenWidth, AppSettings.SelectionDotSize);
-        DrawFeatures(graphics, _appState.TargetLayer, targetIds, AppSettings.TargetColor, AppSettings.TargetOpacity, AppSettings.TargetPolygonMode, AppSettings.TargetPenWidth, AppSettings.TargetDotSize);
-        DrawFeatures(graphics, _appState.TargetLayer, _appState.ActiveMapId, AppSettings.ActiveColor, AppSettings.ActiveOpacity, AppSettings.ActivePolygonMode, AppSettings.ActivePenWidth, AppSettings.ActiveDotSize);
+        DrawFeatures(graphics, _appState.TargetLayer, filteredIds, _appSettings.FilteredColor, _appSettings.FilteredOpacity, _appSettings.FilteredPolygonMode, _appSettings.FilteredPenWidth, _appSettings.FilteredDotSize);
+        DrawFeatures(graphics, _appState.SelectionLayer, selectionIds, _appSettings.SelectionColor, _appSettings.SelectionOpacity, _appSettings.SelectionPolygonMode, _appSettings.SelectionPenWidth, _appSettings.SelectionDotSize);
+        DrawFeatures(graphics, _appState.TargetLayer, targetIds, _appSettings.TargetColor, _appSettings.TargetOpacity, _appSettings.TargetPolygonMode, _appSettings.TargetPenWidth, _appSettings.TargetDotSize);
+        DrawFeatures(graphics, _appState.TargetLayer, _appState.ActiveMapId, _appSettings.ActiveColor, _appSettings.ActiveOpacity, _appSettings.ActivePolygonMode, _appSettings.ActivePenWidth, _appSettings.ActiveDotSize);
 
         IGeometry selectionBuffer = _appState.SelectionManager.GetSelectionBuffer();
 
         if (selectionBuffer != null)
         {
-          Brush bufferBrush = new SolidBrush(Color.FromArgb(Convert.ToInt32(255 * AppSettings.BufferOpacity), AppSettings.BufferColor));
-          Pen bufferPen = AppSettings.BufferOutlineOpacity > 0 ? new Pen(new SolidBrush(Color.FromArgb(Convert.ToInt32(255 * AppSettings.BufferOutlineOpacity), AppSettings.BufferOutlineColor)), AppSettings.BufferOutlinePenWidth) : null;
+          Brush bufferBrush = new SolidBrush(Color.FromArgb(Convert.ToInt32(255 * _appSettings.BufferOpacity), _appSettings.BufferColor));
+          Pen bufferPen = _appSettings.BufferOutlineOpacity > 0 ? new Pen(new SolidBrush(Color.FromArgb(Convert.ToInt32(255 * _appSettings.BufferOutlineOpacity), _appSettings.BufferOutlineColor)), _appSettings.BufferOutlinePenWidth) : null;
           
           switch (selectionBuffer.OgcGeometryType)
           {

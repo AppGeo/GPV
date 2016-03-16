@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ public partial class Identify : System.Web.UI.Page
 
     if (!Double.IsNaN(lat) && !Double.IsNaN(lon))
     {
-      AppSettings.MapCoordinateSystem.ToProjected(lon, lat, out x, out y);
+      AppContext.AppSettings.MapCoordinateSystem.ToProjected(lon, lat, out x, out y);
     }
 
     string dataTabID = Request.QueryString["datatab"];

@@ -1,4 +1,4 @@
-//  Copyright 2012 Applied Geographics, Inc.
+//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -655,7 +655,7 @@ public class PdfMap
         _appState.Extent = new Envelope(new Coordinate(c.Coordinate.X - dx, c.Coordinate.Y - dy), new Coordinate(c.Coordinate.X + dx, c.Coordinate.Y + dy));
 			}
 
-      double conversion = AppSettings.MapUnits == "feet" ? 1 : Constants.FeetPerMeter;
+      double conversion = AppContext.AppSettings.MapUnits == "feet" ? 1 : Constants.FeetPerMeter;
       mapScale = _appState.Extent.Width * conversion / mapElement.Width;
 
       _pixelSize = _appState.Extent.Width / (mapElement.Width * PixelsPerInch);

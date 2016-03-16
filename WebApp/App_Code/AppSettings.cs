@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -16,21 +16,97 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Drawing;
-using System.Reflection;
+using System.Linq;
 using System.Web.Script.Serialization;
 using GeoAPI.Geometries;
 
-public static class AppSettings
+public class AppSettings
 {
-  public static Color ActiveColor
+  private Dictionary<string, string> _configSetting;
+  private CoordinateSystem _mapCoordinateSystem = null;
+  private CoordinateSystem _measureCoordinateSystem = null;
+  private Envelope _fullExtent = null;
+
+  public AppSettings(Configuration.SettingDataTable settingTable)
   {
-    get
+    // load settings from table into a dictionary for quick access
+
+    _configSetting = new Dictionary<string, string>();
+
+    foreach (Configuration.SettingRow settingRow in settingTable)
     {
-      return GetConfigColor("ActiveColor");
+      _configSetting.Add(settingRow.Setting, !settingRow.IsValueNull() ? settingRow.Value : null);
+    }
+
+    // load projections
+
+    try
+    {
+      string proj4String = GetConfigSetting("MapProjection");
+
+      if (String.IsNullOrWhiteSpace(proj4String))
+      {
+        _mapCoordinateSystem = new CoordinateSystem("+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs");
+      }
+      else
+      {
+        _mapCoordinateSystem = new CoordinateSystem(proj4String);
+      }
+
+      proj4String = GetConfigSetting("MeasureProjection");
+
+      if (String.IsNullOrWhiteSpace(proj4String))
+      {
+        _measureCoordinateSystem = MapCoordinateSystem;
+      }
+      else
+      {
+        _measureCoordinateSystem = new CoordinateSystem(proj4String);
+      }
+    }
+    catch { }
+
+    // extract full extent from source setting and project if necessary
+
+    if (_configSetting["FullExtent"] != null)
+    {
+      try
+      {
+        string[] ext = _configSetting["FullExtent"].Split(',').Select(o => o.Trim()).ToArray();
+
+        double minx = Convert.ToDouble(ext[0]);
+        double miny = Convert.ToDouble(ext[1]);
+        double maxx = Convert.ToDouble(ext[2]);
+        double maxy = Convert.ToDouble(ext[3]);
+
+        if (_mapCoordinateSystem != null && _measureCoordinateSystem != null && !_mapCoordinateSystem.Equals(_measureCoordinateSystem))
+        {
+          double minLon;
+          double minLat;
+          _measureCoordinateSystem.ToGeodetic(minx, miny, out minLon, out minLat);
+          _mapCoordinateSystem.ToProjected(minLon, minLat, out minx, out miny);
+
+          double maxLon;
+          double maxLat;
+          _measureCoordinateSystem.ToGeodetic(maxx, maxy, out maxLon, out maxLat);
+          _mapCoordinateSystem.ToProjected(maxLon, maxLat, out maxx, out maxy);
+        }
+
+        _fullExtent = new Envelope(new Coordinate(minx, miny), new Coordinate(maxx, maxy));
+      }
+      catch { }
     }
   }
 
-  public static Color ActiveColorUI
+  public Color ActiveColor
+  {
+    get
+    {
+      return GetConfigColor("ActiveColor", Color.Yellow);
+    }
+  }
+
+  public Color ActiveColorUI
   {
     get
     {
@@ -38,46 +114,46 @@ public static class AppSettings
     }
   }
 
-  public static double ActiveOpacity
+  public double ActiveOpacity
   {
     get
     {
-      return GetConfigDouble("ActiveOpacity");
+      return GetConfigDouble("ActiveOpacity", 0.5);
     }
   }
 
-  public static int ActiveDotSize
+  public int ActiveDotSize
   {
     get
     {
-      return GetConfigInteger("ActiveDotSize");
+      return GetConfigInteger("ActiveDotSize", 13);
     }
   }
 
-  public static int ActivePenWidth
+  public int ActivePenWidth
   {
     get
     {
-      return GetConfigInteger("ActivePenWidth");
+      return GetConfigInteger("ActivePenWidth", 9);
     }
   }
 
-  public static string ActivePolygonMode
+  public string ActivePolygonMode
   {
     get
     {
-      string activePolygonMode = GetConfigSetting("ActivePolygonMode");
+      string mode = GetConfigSetting("ActivePolygonMode", "fill").ToLower();
 
-      if (activePolygonMode != null)
+      if (mode != "fill" && mode != "outline")
       {
-        activePolygonMode = activePolygonMode.ToLower();
+        mode = "fill";
       }
 
-      return activePolygonMode;
+      return mode;
     }
   }
 
-  public static string AdminEmail
+  public string AdminEmail
   {
     get
     {
@@ -85,102 +161,63 @@ public static class AppSettings
     }
   }
 
-  public static bool AllowDevScriptCaching
+  public bool AllowShowApps
   {
     get
     {
-      return GetConfigBoolean("AllowDevScriptCaching");
+      return GetConfigBoolean("AllowShowApps", false);
     }
   }
 
-  public static bool AllowShowApps
+  public int BrowserImageCacheTimeout
   {
     get
     {
-      return GetConfigBoolean("AllowShowApps");
-    }
-  }
-
-  public static bool AppIsAvailable
-  {
-    get
-    {
-      return GetConfigBoolean("AppIsAvailable");
-    }
-  }
-
-  public static String AppStatusMessage
-  {
-    get
-    {
-      return GetConfigSetting("AppStatusMessage");
-    }
-  }
-
-  public static int BrowserImageCacheTimeout
-  {
-    get
-    {
-      return GetConfigInteger("BrowserImageCacheTimeout");
+      return GetConfigInteger("BrowserImageCacheTimeout", 60);
     }
   }
   
-  public static Color BufferColor
+  public Color BufferColor
   {
     get
     {
-      return GetConfigColor("BufferColor");
+      return GetConfigColor("BufferColor", ColorTranslator.FromHtml("#A0A0FF"));
     }
   }
 
-  public static double BufferOpacity
+  public double BufferOpacity
   {
     get
     {
-      return GetConfigDouble("BufferOpacity");
+      return GetConfigDouble("BufferOpacity", 0.2);
     }
   }
 
-  public static Color BufferOutlineColor
+  public Color BufferOutlineColor
   {
     get
     {
-      return GetConfigColor("BufferOutlineColor");
+      return GetConfigColor("BufferOutlineColor", ColorTranslator.FromHtml("#8080DD"));
     }
   }
 
-  public static double BufferOutlineOpacity
+  public double BufferOutlineOpacity
   {
     get
     {
-      return GetConfigDouble("BufferOutlineOpacity");
+      return GetConfigDouble("BufferOutlineOpacity", 0);
     }
   }
 
-  public static int BufferOutlinePenWidth
+  public int BufferOutlinePenWidth
   {
     get
     {
-      return GetConfigInteger("BufferOutlinePenWidth");
+      return GetConfigInteger("BufferOutlinePenWidth", 0);
     }
   }
 
-  public static string ConfigurationTablePrefix
-  {
-    get
-    {
-      string prefix = GetConfigSetting("ConfigTablePrefix");
-
-      if (prefix == null)
-      {
-        prefix = "GPV";
-      }
-
-      return prefix;
-    }
-  }
-
-  public static System.Drawing.Font CoordinatesFont
+  public System.Drawing.Font CoordinatesFont
   {
     get
     {
@@ -188,7 +225,7 @@ public static class AppSettings
     }
   }
 
-  public static string CustomStyleSheet
+  public string CustomStyleSheet
   {
     get
     {
@@ -196,7 +233,7 @@ public static class AppSettings
     }
   }
 
-  public static string DefaultApplication
+  public string DefaultApplication
   {
     get
     {
@@ -204,113 +241,93 @@ public static class AppSettings
     }
   }
 
-  public static Envelope DefaultFullExtent
+  public Envelope DefaultFullExtent
   {
     get
     {
-      if (GetConfigSetting("FullExtent") != null)
+      return _fullExtent;
+    }
+  }
+
+  public string ExportFormat
+  {
+    get
+    {
+      string mode = GetConfigSetting("ExportFormat", "xls").ToLower();
+
+      if (mode != "xls" && mode != "csv")
       {
-        try
-        {
-          string[] ext = GetConfigSetting("FullExtent").Split(',');
-          return new Envelope(new Coordinate(Convert.ToDouble(ext[0]), Convert.ToDouble(ext[1])), new Coordinate(Convert.ToDouble(ext[2]), Convert.ToDouble(ext[3])));
-        }
-        catch { }
+        mode = "xls";
       }
 
-      return null;
+      return mode;
     }
   }
 
-  public static string ExportFormat
+  public Color FilteredColor
   {
     get
     {
-      return GetConfigSetting("ExportFormat");
+      return GetConfigColor("FilteredColor", ColorTranslator.FromHtml("#A0A0A0"));
     }
   }
 
-  public static Color FilteredColor
+  public double FilteredOpacity
   {
     get
     {
-      return GetConfigColor("FilteredColor");
+      return GetConfigDouble("FilteredOpacity", 0.5);
     }
   }
 
-  public static double FilteredOpacity
+  public int FilteredDotSize
   {
     get
     {
-      return GetConfigDouble("FilteredOpacity");
+      return GetConfigInteger("FilteredDotSize", 13);
     }
   }
 
-  public static int FilteredDotSize
+  public int FilteredPenWidth
   {
     get
     {
-      return GetConfigInteger("FilteredDotSize");
+      return GetConfigInteger("FilteredPenWidth", 9);
     }
   }
 
-  public static int FilteredPenWidth
+  public string FilteredPolygonMode
   {
     get
     {
-      return GetConfigInteger("FilteredPenWidth");
-    }
-  }
+      string mode = GetConfigSetting("FilteredPolygonMode", "fill").ToLower();
 
-  public static string FilteredPolygonMode
-  {
-    get
-    {
-      string polygonMode = GetConfigSetting("FilteredPolygonMode");
-
-      if (polygonMode != null)
+      if (mode != "fill" && mode != "outline")
       {
-        polygonMode = polygonMode.ToLower();
+        mode = "fill";
       }
 
-      return polygonMode;
+      return mode;
     }
   }
 
-  public static bool LegendExpanded
+  public bool LegendExpanded
   {
     get
     {
-      return GetConfigBoolean("LegendExpanded");
+      return GetConfigBoolean("LegendExpanded", true);
     }
   }
 
-  public static CoordinateSystem MapCoordinateSystem
+  public CoordinateSystem MapCoordinateSystem
   {
     get
     {
-      CoordinateSystem coordSys = null;
-
-      try
-      {
-        string proj4String = GetConfigSetting("MapProjection");
-
-        if (String.IsNullOrWhiteSpace(proj4String))
-        {
-          coordSys = new CoordinateSystem("+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs");
-        }
-        else
-        {
-          coordSys = new CoordinateSystem(proj4String);
-        }
-      }
-      catch { }
-
-      return coordSys;
+      return _mapCoordinateSystem;
     }
   }
 
-  public static string MapUnits
+  public string MapUnits
   {
     get
     {
@@ -318,7 +335,7 @@ public static class AppSettings
     }
   }
 
-  public static System.Drawing.Font MarkupFont
+  public System.Drawing.Font MarkupFont
   {
     get
     {
@@ -326,40 +343,23 @@ public static class AppSettings
     }
   }
 
-  public static int MarkupTimeout
+  public int MarkupTimeout
   {
     get
     {
-      return GetConfigInteger("MarkupTimeout");
+      return GetConfigInteger("MarkupTimeout", 14);
     }
   }
 
-  public static CoordinateSystem MeasureCoordinateSystem
+  public CoordinateSystem MeasureCoordinateSystem
   {
     get
     {
-      CoordinateSystem coordSys = null;
-
-      try
-      {
-        string proj4String = GetConfigSetting("MeasureProjection");
-
-        if (String.IsNullOrWhiteSpace(proj4String))
-        {
-          coordSys = MapCoordinateSystem;
-        }
-        else
-        {
-          coordSys = new CoordinateSystem(proj4String);
-        }
-      }
-      catch { }
-
-      return coordSys;
+      return _measureCoordinateSystem;
     }
   }
 
-  public static System.Drawing.Font MeasureFont
+  public System.Drawing.Font MeasureFont
   {
     get
     {
@@ -367,47 +367,45 @@ public static class AppSettings
     }
   }
 
-  public static string MeasureUnits
+  public string MeasureUnits
   {
     get
     {
-      string measureUnits = GetConfigSetting("MeasureUnits");
+      string measureUnits = GetConfigSetting("MeasureUnits", "feet").ToLower();
 
-      if (measureUnits != null)
+      if (measureUnits != "feet" && measureUnits != "meters" && measureUnits != "both")
       {
-        measureUnits = measureUnits.ToLower();
+        measureUnits = "feet";
       }
 
       return measureUnits;
     }
   }
 
-  public static string PreserveOnActionChange
+  public string PreserveOnActionChange
   {
     get
     {
-      string preserveOnActionChange = GetConfigSetting("PreserveOnActionChange");
+      string mode = GetConfigSetting("PreserveOnActionChange", "selection").ToLower();
 
-      if (String.IsNullOrEmpty(preserveOnActionChange))
+      if (mode != "selection" && mode != "target")
       {
-        preserveOnActionChange = "selection";
+        mode = "selection";
       }
 
-      preserveOnActionChange = preserveOnActionChange.ToLower();
-
-      return preserveOnActionChange;
+      return mode;
     }
   }
 
-  public static Color SelectionColor
+  public Color SelectionColor
   {
     get
     {
-      return GetConfigColor("SelectionColor");
+      return GetConfigColor("SelectionColor", Color.Blue);
     }
   }
 
-  public static Color SelectionColorUI
+  public Color SelectionColorUI
   {
     get
     {
@@ -415,86 +413,86 @@ public static class AppSettings
     }
   }
 
-  public static double SelectionOpacity
+  public double SelectionOpacity
   {
     get
     {
-      return GetConfigDouble("SelectionOpacity");
+      return GetConfigDouble("SelectionOpacity", 0.5);
     }
   }
 
-  public static int SelectionDotSize
+  public int SelectionDotSize
   {
     get
     {
-      return GetConfigInteger("SelectionDotSize");
+      return GetConfigInteger("SelectionDotSize", 13);
     }
   }
 
-  public static int SelectionPenWidth
+  public int SelectionPenWidth
   {
     get
     {
-      return GetConfigInteger("SelectionPenWidth");
+      return GetConfigInteger("SelectionPenWidth", 9);
     }
   }
 
-  public static string SelectionPolygonMode
+  public string SelectionPolygonMode
   {
     get
     {
-      string polygonMode = GetConfigSetting("SelectionPolygonMode");
+      string mode = GetConfigSetting("SelectionPolygonMode", "fill").ToLower();
 
-      if (polygonMode != null)
+      if (mode != "fill" && mode != "outline")
       {
-        polygonMode = polygonMode.ToLower();
+        mode = "fill";
       }
 
-      return polygonMode;
+      return mode;
     }
   }
 
-  public static int ServerImageCacheTimeout
+  public int ServerImageCacheTimeout
   {
     get
     {
-      return GetConfigInteger("ServerImageCacheTimeout");
+      return GetConfigInteger("ServerImageCacheTimeout", 60);
     }
   }
 
-  public static bool ShowScaleBar
+  public bool ShowScaleBar
   {
     get
     {
-      return GetConfigBoolean("ShowScaleBar");
+      return GetConfigBoolean("ShowScaleBar", false);
     }
   }
 
-  public static int SwatchTileHeight
+  public int SwatchTileHeight
   {
     get
     {
-      return GetConfigInteger("SwatchTileHeight");
+      return GetConfigInteger("SwatchTileHeight", 20);
     }
   }
 
-  public static int SwatchTileWidth
+  public int SwatchTileWidth
   {
     get
     {
-      return GetConfigInteger("SwatchTileWidth");
+      return GetConfigInteger("SwatchTileWidth", 20);
     }
   }
 
-  public static Color TargetColor
+  public Color TargetColor
   {
     get
     {
-      return GetConfigColor("TargetColor");
+      return GetConfigColor("TargetColor", Color.Orange);
     }
   }
 
-  public static Color TargetColorUI
+  public Color TargetColorUI
   {
     get
     {
@@ -502,54 +500,54 @@ public static class AppSettings
     }
   }
 
-  public static double TargetOpacity
+  public double TargetOpacity
   {
     get
     {
-      return GetConfigDouble("TargetOpacity");
+      return GetConfigDouble("TargetOpacity", 0.5);
     }
   }
 
-  public static int TargetDotSize
+  public int TargetDotSize
   {
     get
     {
-      return GetConfigInteger("TargetDotSize");
+      return GetConfigInteger("TargetDotSize", 13);
     }
   }
 
-  public static int TargetPenWidth
+  public int TargetPenWidth
   {
     get
     {
-      return GetConfigInteger("TargetPenWidth");
+      return GetConfigInteger("TargetPenWidth", 9);
     }
   }
 
-  public static string TargetPolygonMode
+  public string TargetPolygonMode
   {
     get
     {
-      string polygonMode = GetConfigSetting("TargetPolygonMode");
+      string mode = GetConfigSetting("TargetPolygonMode", "fill").ToLower();
 
-      if (polygonMode != null)
+      if (mode != "fill" && mode != "outline")
       {
-        polygonMode = polygonMode.ToLower();
+        mode = "fill";
       }
 
-      return polygonMode;
+      return mode;
     }
   }
 
-  public static int ZoomLevels
+  public int ZoomLevels
   {
     get
     {
-      return GetConfigInteger("ZoomLevels");
+      return GetConfigInteger("ZoomLevels", 19);
     }
   }
 
-  private static Color BlendColors(Color backColor, Color foreColor, double foreOpacity)
+  private Color BlendColors(Color backColor, Color foreColor, double foreOpacity)
   {
     int r = Convert.ToInt32(backColor.R * (1 - foreOpacity) + foreColor.R * foreOpacity);
     int g = Convert.ToInt32(backColor.G * (1 - foreOpacity) + foreColor.G * foreOpacity);
@@ -557,13 +555,18 @@ public static class AppSettings
     return Color.FromArgb(r, g, b);
   }
 
-  public static bool GetConfigBoolean(string name)
+  private bool GetConfigBoolean(string name, bool defaultValue)
   {
     string value = GetConfigSetting(name);
-    return value != null && (String.Compare(value, "true", false) == 0 || String.Compare(value, "yes", false) == 0);
+    return value != null ? (String.Compare(value, "true", false) == 0 || String.Compare(value, "yes", false) == 0) : defaultValue;
   }
 
-  public static Color GetConfigColor(string name)
+  private bool GetConfigBoolean(string name)
+  {
+    return GetConfigBoolean(name, false);
+  }
+
+  private Color GetConfigColor(string name)
   {
     Color color = Color.Empty;
 
@@ -579,7 +582,13 @@ public static class AppSettings
     return color;
   }
 
-  public static double GetConfigDouble(string name)
+  private Color GetConfigColor(string name, Color defaultColor)
+  {
+    Color color = GetConfigColor(name);
+    return !color.IsEmpty ? color : defaultColor;
+  }
+
+  private double GetConfigDouble(string name)
   {
     double value = Double.NaN;
 
@@ -595,7 +604,13 @@ public static class AppSettings
     return value;
   }
 
-  public static int GetConfigInteger(string name)
+  private double GetConfigDouble(string name, double defaultValue)
+  {
+    double value = GetConfigDouble(name);
+    return !Double.IsNaN(value) ? value : defaultValue;
+  }
+
+  private int GetConfigInteger(string name)
   {
     int value = Int32.MinValue;
 
@@ -611,12 +626,35 @@ public static class AppSettings
     return value;
   }
 
-  public static string GetConfigSetting(string name)
+  private int GetConfigInteger(string name, int defaultValue)
+  {
+    int value = GetConfigInteger(name);
+    return value > Int32.MinValue ? value : defaultValue;
+  }
+
+  private string GetConfigSetting(string name)
+  {
+    return _configSetting[name];
+  }
+
+  private string GetConfigSetting(string name, string defaultValue)
+  {
+    string value = GetConfigSetting(name);
+    return !String.IsNullOrEmpty(value) ? value : defaultValue;
+  }
+
+  private bool GetWebConfigBoolean(string name)
+  {
+    string value = GetWebConfigSetting(name);
+    return value != null && (String.Compare(value, "true", false) == 0 || String.Compare(value, "yes", false) == 0);
+  }
+
+  private string GetWebConfigSetting(string name)
   {
     return ConfigurationManager.AppSettings[name];
   }
 
-  public static string ToJson()
+  public string ToJson()
   {
     Dictionary<String, Object> jsonData = new Dictionary<String, Object>();
     jsonData.Add("showScaleBar", ShowScaleBar);

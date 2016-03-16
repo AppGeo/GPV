@@ -32,7 +32,7 @@ public partial class Configuration
 
     public Envelope GetFullExtentEnvelope()
     {
-      return IsFullExtentNull() ? AppSettings.DefaultFullExtent : EnvelopeExtensions.FromDelimitedString(FullExtent);
+      return IsFullExtentNull() ? AppContext.AppSettings.DefaultFullExtent : EnvelopeExtensions.FromDelimitedString(FullExtent);
     }
 
     public PrintTemplateRow[] GetPrintTemplates()

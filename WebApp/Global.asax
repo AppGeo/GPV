@@ -1,5 +1,5 @@
 ﻿<%-- 
-  Copyright 2012 Applied Geographics, Inc.
+  Copyright 2016 Applied Geographics, Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@
 
   protected void Application_PostMapRequestHandler(Object sender, EventArgs e)
   {
-    if (!AppSettings.AppIsAvailable && HttpContext.Current.CurrentHandler is Page && Request.Path.IndexOf("AppStatus.aspx") == -1)
+    if (!WebConfigSettings.AppIsAvailable && HttpContext.Current.CurrentHandler is Page && Request.Path.IndexOf("Status.aspx") == -1)
     {
       Server.Transfer("Status.aspx");
     }

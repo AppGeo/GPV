@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -35,9 +35,9 @@ public partial class LegendPanel : System.Web.UI.UserControl
       return;
     }
 
-    int tileWidth = AppSettings.SwatchTileWidth;
-    int tileHeight = AppSettings.SwatchTileHeight;
-    bool expanded = AppSettings.LegendExpanded;
+    int tileWidth = AppContext.AppSettings.SwatchTileWidth;
+    int tileHeight = AppContext.AppSettings.SwatchTileHeight;
+    bool expanded = AppContext.AppSettings.LegendExpanded;
 
     HtmlGenericControl legendEntry = new HtmlGenericControl("div");
     container.Controls.Add(legendEntry);

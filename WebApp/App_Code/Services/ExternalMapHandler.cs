@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -21,6 +21,8 @@ public class ExternalMapHandler : WebServiceHandler
   [WebServiceMethod]
   private void DefaultMethod()
   {
+    AppSettings appSettings = AppContext.AppSettings;
+
     string name = Request.Form["name"];
 
     double minx = Convert.ToDouble(Request.Form["minx"]);
@@ -34,24 +36,24 @@ public class ExternalMapHandler : WebServiceHandler
 
     double lon;
     double lat;
-    AppSettings.MapCoordinateSystem.ToGeodetic(x, y, out lon, out lat);
+    appSettings.MapCoordinateSystem.ToGeodetic(x, y, out lon, out lat);
 
     double minLon;
     double minLat;
-    AppSettings.MapCoordinateSystem.ToGeodetic(minx, miny, out minLon, out minLat);
+    appSettings.MapCoordinateSystem.ToGeodetic(minx, miny, out minLon, out minLat);
 
     double maxLon;
     double maxLat;
-    AppSettings.MapCoordinateSystem.ToGeodetic(maxx, maxy, out maxLon, out maxLat);
+    appSettings.MapCoordinateSystem.ToGeodetic(maxx, maxy, out maxLon, out maxLat);
 
-    string units = AppSettings.MapCoordinateSystem.MapUnits;
+    string units = appSettings.MapCoordinateSystem.MapUnits;
 
-    if (!AppSettings.MapCoordinateSystem.Equals(AppSettings.MeasureCoordinateSystem))
+    if (!appSettings.MapCoordinateSystem.Equals(appSettings.MeasureCoordinateSystem))
     {
-      AppSettings.MeasureCoordinateSystem.ToProjected(lon, lat, out x, out y);
-      AppSettings.MeasureCoordinateSystem.ToProjected(minLon, minLat, out minx, out miny);
-      AppSettings.MeasureCoordinateSystem.ToProjected(maxLon, maxLat, out maxx, out maxy);
-      units = AppSettings.MeasureCoordinateSystem.MapUnits;
+      appSettings.MeasureCoordinateSystem.ToProjected(lon, lat, out x, out y);
+      appSettings.MeasureCoordinateSystem.ToProjected(minLon, minLat, out minx, out miny);
+      appSettings.MeasureCoordinateSystem.ToProjected(maxLon, maxLat, out maxx, out maxy);
+      units = appSettings.MeasureCoordinateSystem.MapUnits;
     }
 
     double xm = x;
@@ -88,7 +90,7 @@ public class ExternalMapHandler : WebServiceHandler
       maxyft *= Constants.FeetPerMeter;
     }
 
-    if (AppSettings.MapCoordinateSystem.MapUnits == "feet")
+    if (appSettings.MapCoordinateSystem.MapUnits == "feet")
     {
       pixelSize *= Constants.MetersPerFoot;
     }

@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -164,7 +164,7 @@ public class MapImageHandler : WebServiceHandler
     string kmlName = String.Format("Map_{0}.kml", timeStamp);
     string imageName = String.Format("Map_{0}.", timeStamp) + (mapImageData.Type == CommonImageType.Png ? "png" : "jpg");
 
-    CoordinateSystem coordSys = AppSettings.MapCoordinateSystem;
+    CoordinateSystem coordSys = AppContext.AppSettings.MapCoordinateSystem;
 
     double lat;
     double lon;
