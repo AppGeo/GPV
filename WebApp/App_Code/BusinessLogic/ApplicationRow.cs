@@ -70,7 +70,7 @@ public partial class Configuration
         layerIDs.AddRange((string[])mapTabData["target"]);
         layerIDs.AddRange((string[])mapTabData["selection"]);
         searchIDs.AddRange((string[])mapTabData["search"]);
-        tileGroupIDs.AddRange((string[])mapTabData["tileGroup"]);
+        tileGroupIDs.AddRange(((Dictionary<string, object>[])mapTabData["tileGroup"]).Select(o => (string)o["group"]).ToArray());
 
         mapTabs.Add(mapTab.MapTabID, mapTabData);
       }

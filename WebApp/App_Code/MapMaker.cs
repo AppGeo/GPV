@@ -742,6 +742,7 @@ public class MapMaker
 
       map.Resolution = _resolution;
       map.ImageType = CommonImageType.Png;
+      map.TransparentBackground = true;
 
       double pixelSize = map.Extent.Width / _width;
 

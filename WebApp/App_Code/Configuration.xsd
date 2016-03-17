@@ -311,7 +311,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="Search" msprop:Generator_TableClassName="SearchDataTable" msprop:Generator_TableVarName="tableSearch" msprop:Generator_RowChangedName="SearchRowChanged" msprop:Generator_TablePropName="Search" msprop:Generator_RowDeletingName="SearchRowDeleting" msprop:Generator_RowChangingName="SearchRowChanging" msprop:Generator_RowEvHandlerName="SearchRowChangeEventHandler" msprop:Generator_RowDeletedName="SearchRowDeleted" msprop:Generator_RowClassName="SearchRow" msprop:Generator_UserTableName="Search" msprop:Generator_RowEvArgName="SearchRowChangeEvent">
+        <xs:element name="Search" msprop:Generator_TableClassName="SearchDataTable" msprop:Generator_TableVarName="tableSearch" msprop:Generator_TablePropName="Search" msprop:Generator_RowDeletingName="SearchRowDeleting" msprop:Generator_RowChangingName="SearchRowChanging" msprop:Generator_RowEvHandlerName="SearchRowChangeEventHandler" msprop:Generator_RowDeletedName="SearchRowDeleted" msprop:Generator_UserTableName="Search" msprop:Generator_RowChangedName="SearchRowChanged" msprop:Generator_RowEvArgName="SearchRowChangeEvent" msprop:Generator_RowClassName="SearchRow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="SearchID" msprop:Generator_ColumnVarNameInTable="columnSearchID" msprop:Generator_ColumnPropNameInRow="SearchID" msprop:Generator_ColumnPropNameInTable="SearchIDColumn" msprop:Generator_UserColumnName="SearchID" type="xs:string" />
@@ -327,7 +327,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="SearchInputField" msprop:Generator_TableClassName="SearchInputFieldDataTable" msprop:Generator_TableVarName="tableSearchInputField" msprop:Generator_RowChangedName="SearchInputFieldRowChanged" msprop:Generator_TablePropName="SearchInputField" msprop:Generator_RowDeletingName="SearchInputFieldRowDeleting" msprop:Generator_RowChangingName="SearchInputFieldRowChanging" msprop:Generator_RowEvHandlerName="SearchInputFieldRowChangeEventHandler" msprop:Generator_RowDeletedName="SearchInputFieldRowDeleted" msprop:Generator_RowClassName="SearchInputFieldRow" msprop:Generator_UserTableName="SearchInputField" msprop:Generator_RowEvArgName="SearchInputFieldRowChangeEvent">
+        <xs:element name="SearchInputField" msprop:Generator_TableClassName="SearchInputFieldDataTable" msprop:Generator_TableVarName="tableSearchInputField" msprop:Generator_TablePropName="SearchInputField" msprop:Generator_RowDeletingName="SearchInputFieldRowDeleting" msprop:Generator_RowChangingName="SearchInputFieldRowChanging" msprop:Generator_RowEvHandlerName="SearchInputFieldRowChangeEventHandler" msprop:Generator_RowDeletedName="SearchInputFieldRowDeleted" msprop:Generator_UserTableName="SearchInputField" msprop:Generator_RowChangedName="SearchInputFieldRowChanged" msprop:Generator_RowEvArgName="SearchInputFieldRowChangeEvent" msprop:Generator_RowClassName="SearchInputFieldRow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="FieldID" msprop:Generator_ColumnVarNameInTable="columnFieldID" msprop:Generator_ColumnPropNameInRow="FieldID" msprop:Generator_ColumnPropNameInTable="FieldIDColumn" msprop:Generator_UserColumnName="FieldID" type="xs:string" />
@@ -344,20 +344,20 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="MapTabTileGroup" msprop:Generator_TableClassName="MapTabTileGroupDataTable" msprop:Generator_TableVarName="tableMapTabTileGroup" msprop:Generator_TablePropName="MapTabTileGroup" msprop:Generator_RowDeletingName="MapTabTileGroupRowDeleting" msprop:Generator_RowChangingName="MapTabTileGroupRowChanging" msprop:Generator_RowEvHandlerName="MapTabTileGroupRowChangeEventHandler" msprop:Generator_RowDeletedName="MapTabTileGroupRowDeleted" msprop:Generator_UserTableName="MapTabTileGroup" msprop:Generator_RowChangedName="MapTabTileGroupRowChanged" msprop:Generator_RowEvArgName="MapTabTileGroupRowChangeEvent" msprop:Generator_RowClassName="MapTabTileGroupRow">
+        <xs:element name="MapTabTileGroup" msprop:Generator_TableClassName="MapTabTileGroupDataTable" msprop:Generator_TableVarName="tableMapTabTileGroup" msprop:Generator_RowChangedName="MapTabTileGroupRowChanged" msprop:Generator_TablePropName="MapTabTileGroup" msprop:Generator_RowDeletingName="MapTabTileGroupRowDeleting" msprop:Generator_RowChangingName="MapTabTileGroupRowChanging" msprop:Generator_RowEvHandlerName="MapTabTileGroupRowChangeEventHandler" msprop:Generator_RowDeletedName="MapTabTileGroupRowDeleted" msprop:Generator_RowClassName="MapTabTileGroupRow" msprop:Generator_UserTableName="MapTabTileGroup" msprop:Generator_RowEvArgName="MapTabTileGroupRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="MapTabID" msprop:Generator_ColumnVarNameInTable="columnMapTabID" msprop:Generator_ColumnPropNameInRow="MapTabID" msprop:Generator_ColumnPropNameInTable="MapTabIDColumn" msprop:Generator_UserColumnName="MapTabID" type="xs:string" />
               <xs:element name="TileGroupID" msprop:Generator_ColumnVarNameInTable="columnTileGroupID" msprop:Generator_ColumnPropNameInRow="TileGroupID" msprop:Generator_ColumnPropNameInTable="TileGroupIDColumn" msprop:Generator_UserColumnName="TileGroupID" type="xs:string" />
               <xs:element name="CheckInLegend" msprop:Generator_ColumnVarNameInTable="columnCheckInLegend" msprop:Generator_ColumnPropNameInRow="CheckInLegend" msprop:Generator_ColumnPropNameInTable="CheckInLegendColumn" msprop:Generator_UserColumnName="CheckInLegend" type="xs:short" minOccurs="0" />
-              <xs:element name="Opacity" msprop:Generator_ColumnVarNameInTable="columnOpacity" msprop:Generator_ColumnPropNameInRow="Opacity" msprop:Generator_ColumnPropNameInTable="OpacityColumn" msprop:Generator_UserColumnName="Opacity" type="xs:short" minOccurs="0" />
+              <xs:element name="Opacity" msprop:Generator_ColumnVarNameInTable="columnOpacity" msprop:Generator_ColumnPropNameInRow="Opacity" msprop:Generator_ColumnPropNameInTable="OpacityColumn" msprop:Generator_UserColumnName="Opacity" type="xs:double" minOccurs="0" />
               <xs:element name="SequenceNo" msprop:Generator_ColumnVarNameInTable="columnSequenceNo" msprop:Generator_ColumnPropNameInRow="SequenceNo" msprop:Generator_ColumnPropNameInTable="SequenceNoColumn" msprop:Generator_UserColumnName="SequenceNo" type="xs:short" minOccurs="0" />
               <xs:element name="Active" msprop:Generator_ColumnVarNameInTable="columnActive" msprop:Generator_ColumnPropNameInRow="Active" msprop:Generator_ColumnPropNameInTable="ActiveColumn" msprop:Generator_UserColumnName="Active" type="xs:short" minOccurs="0" />
               <xs:element name="ValidationError" msprop:Generator_ColumnVarNameInTable="columnValidationError" msprop:Generator_ColumnPropNameInRow="ValidationError" msprop:Generator_ColumnPropNameInTable="ValidationErrorColumn" msprop:Generator_UserColumnName="ValidationError" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="TileGroup" msprop:Generator_TableClassName="TileGroupDataTable" msprop:Generator_TableVarName="tableTileGroup" msprop:Generator_TablePropName="TileGroup" msprop:Generator_RowDeletingName="TileGroupRowDeleting" msprop:Generator_RowChangingName="TileGroupRowChanging" msprop:Generator_RowEvHandlerName="TileGroupRowChangeEventHandler" msprop:Generator_RowDeletedName="TileGroupRowDeleted" msprop:Generator_UserTableName="TileGroup" msprop:Generator_RowChangedName="TileGroupRowChanged" msprop:Generator_RowEvArgName="TileGroupRowChangeEvent" msprop:Generator_RowClassName="TileGroupRow">
+        <xs:element name="TileGroup" msprop:Generator_TableClassName="TileGroupDataTable" msprop:Generator_TableVarName="tableTileGroup" msprop:Generator_RowChangedName="TileGroupRowChanged" msprop:Generator_TablePropName="TileGroup" msprop:Generator_RowDeletingName="TileGroupRowDeleting" msprop:Generator_RowChangingName="TileGroupRowChanging" msprop:Generator_RowEvHandlerName="TileGroupRowChangeEventHandler" msprop:Generator_RowDeletedName="TileGroupRowDeleted" msprop:Generator_RowClassName="TileGroupRow" msprop:Generator_UserTableName="TileGroup" msprop:Generator_RowEvArgName="TileGroupRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="TileGroupID" msprop:Generator_ColumnVarNameInTable="columnTileGroupID" msprop:Generator_ColumnPropNameInRow="TileGroupID" msprop:Generator_ColumnPropNameInTable="TileGroupIDColumn" msprop:Generator_UserColumnName="TileGroupID" type="xs:string" />
@@ -367,7 +367,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="TileLayer" msprop:Generator_TableClassName="TileLayerDataTable" msprop:Generator_TableVarName="tableTileLayer" msprop:Generator_TablePropName="TileLayer" msprop:Generator_RowDeletingName="TileLayerRowDeleting" msprop:Generator_RowChangingName="TileLayerRowChanging" msprop:Generator_RowEvHandlerName="TileLayerRowChangeEventHandler" msprop:Generator_RowDeletedName="TileLayerRowDeleted" msprop:Generator_UserTableName="TileLayer" msprop:Generator_RowChangedName="TileLayerRowChanged" msprop:Generator_RowEvArgName="TileLayerRowChangeEvent" msprop:Generator_RowClassName="TileLayerRow">
+        <xs:element name="TileLayer" msprop:Generator_TableClassName="TileLayerDataTable" msprop:Generator_TableVarName="tableTileLayer" msprop:Generator_RowChangedName="TileLayerRowChanged" msprop:Generator_TablePropName="TileLayer" msprop:Generator_RowDeletingName="TileLayerRowDeleting" msprop:Generator_RowChangingName="TileLayerRowChanging" msprop:Generator_RowEvHandlerName="TileLayerRowChangeEventHandler" msprop:Generator_RowDeletedName="TileLayerRowDeleted" msprop:Generator_RowClassName="TileLayerRow" msprop:Generator_UserTableName="TileLayer" msprop:Generator_RowEvArgName="TileLayerRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="TileLayerID" msprop:Generator_ColumnVarNameInTable="columnTileLayerID" msprop:Generator_ColumnPropNameInRow="TileLayerID" msprop:Generator_ColumnPropNameInTable="TileLayerIDColumn" msprop:Generator_UserColumnName="TileLayerID" type="xs:string" />
@@ -398,7 +398,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="Setting" msprop:Generator_TableClassName="SettingDataTable" msprop:Generator_TableVarName="tableSetting" msprop:Generator_TablePropName="Setting" msprop:Generator_RowDeletingName="SettingRowDeleting" msprop:Generator_RowChangingName="SettingRowChanging" msprop:Generator_RowEvHandlerName="SettingRowChangeEventHandler" msprop:Generator_RowDeletedName="SettingRowDeleted" msprop:Generator_UserTableName="Setting" msprop:Generator_RowChangedName="SettingRowChanged" msprop:Generator_RowEvArgName="SettingRowChangeEvent" msprop:Generator_RowClassName="SettingRow">
+        <xs:element name="Setting" msprop:Generator_TableClassName="SettingDataTable" msprop:Generator_TableVarName="tableSetting" msprop:Generator_RowChangedName="SettingRowChanged" msprop:Generator_TablePropName="Setting" msprop:Generator_RowDeletingName="SettingRowDeleting" msprop:Generator_RowChangingName="SettingRowChanging" msprop:Generator_RowEvHandlerName="SettingRowChangeEventHandler" msprop:Generator_RowDeletedName="SettingRowDeleted" msprop:Generator_RowClassName="SettingRow" msprop:Generator_UserTableName="Setting" msprop:Generator_RowEvArgName="SettingRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="Setting" msprop:Generator_ColumnVarNameInTable="columnSetting" msprop:Generator_ColumnPropNameInRow="Setting" msprop:Generator_ColumnPropNameInTable="SettingColumn" msprop:Generator_UserColumnName="Setting" type="xs:string" />
@@ -478,121 +478,121 @@
       <xs:selector xpath=".//mstns:Setting" />
       <xs:field xpath="mstns:Setting" />
     </xs:unique>
-    <xs:keyref name="TileGroupToTileLayer" refer="Constraint1" msprop:rel_Generator_UserChildTable="TileLayer" msprop:rel_Generator_ChildPropName="GetTileLayerRows" msprop:rel_Generator_UserRelationName="TileGroupToTileLayer" msprop:rel_Generator_ParentPropName="TileGroupRow" msprop:rel_Generator_RelationVarName="relationTileGroupToTileLayer" msprop:rel_Generator_UserParentTable="TileGroup">
+    <xs:keyref name="TileGroupToTileLayer" refer="Constraint1" msprop:rel_Generator_UserChildTable="TileLayer" msprop:rel_Generator_ChildPropName="GetTileLayerRows" msprop:rel_Generator_UserRelationName="TileGroupToTileLayer" msprop:rel_Generator_RelationVarName="relationTileGroupToTileLayer" msprop:rel_Generator_UserParentTable="TileGroup" msprop:rel_Generator_ParentPropName="TileGroupRow">
       <xs:selector xpath=".//mstns:TileLayer" />
       <xs:field xpath="mstns:TileGroupID" />
     </xs:keyref>
-    <xs:keyref name="MapTabToTileGroup" refer="MapTabKey" msprop:rel_Generator_UserChildTable="MapTabTileGroup" msprop:rel_Generator_ChildPropName="GetMapTabTileGroupRows" msprop:rel_Generator_UserRelationName="MapTabToTileGroup" msprop:rel_Generator_ParentPropName="MapTabRow" msprop:rel_Generator_RelationVarName="relationMapTabToTileGroup" msprop:rel_Generator_UserParentTable="MapTab">
-      <xs:selector xpath=".//mstns:MapTabTileGroup" />
-      <xs:field xpath="mstns:MapTabID" />
-    </xs:keyref>
-    <xs:keyref name="TileGroupToMapTab" refer="Constraint1" msprop:rel_Generator_UserChildTable="MapTabTileGroup" msprop:rel_Generator_ChildPropName="GetMapTabTileGroupRows" msprop:rel_Generator_UserRelationName="TileGroupToMapTab" msprop:rel_Generator_RelationVarName="relationTileGroupToMapTab" msprop:rel_Generator_UserParentTable="TileGroup" msprop:rel_Generator_ParentPropName="TileGroupRow">
+    <xs:keyref name="TileGroupToMapTab" refer="Constraint1" msprop:rel_Generator_UserChildTable="MapTabTileGroup" msprop:rel_Generator_ChildPropName="GetMapTabTileGroupRows" msprop:rel_Generator_UserRelationName="TileGroupToMapTab" msprop:rel_Generator_ParentPropName="TileGroupRow" msprop:rel_Generator_RelationVarName="relationTileGroupToMapTab" msprop:rel_Generator_UserParentTable="TileGroup">
       <xs:selector xpath=".//mstns:MapTabTileGroup" />
       <xs:field xpath="mstns:TileGroupID" />
     </xs:keyref>
-    <xs:keyref name="SearchToSearchInputField" refer="SearchKey" msprop:rel_Generator_UserChildTable="SearchInputField" msprop:rel_Generator_ChildPropName="GetSearchInputFieldRows" msprop:rel_Generator_UserRelationName="SearchToSearchInputField" msprop:rel_Generator_RelationVarName="relationSearchToSearchInputField" msprop:rel_Generator_UserParentTable="Search" msprop:rel_Generator_ParentPropName="SearchRow">
+    <xs:keyref name="MapTabToTileGroup" refer="MapTabKey" msprop:rel_Generator_UserChildTable="MapTabTileGroup" msprop:rel_Generator_ChildPropName="GetMapTabTileGroupRows" msprop:rel_Generator_UserRelationName="MapTabToTileGroup" msprop:rel_Generator_RelationVarName="relationMapTabToTileGroup" msprop:rel_Generator_UserParentTable="MapTab" msprop:rel_Generator_ParentPropName="MapTabRow">
+      <xs:selector xpath=".//mstns:MapTabTileGroup" />
+      <xs:field xpath="mstns:MapTabID" />
+    </xs:keyref>
+    <xs:keyref name="ConnectionToSearchInputField" refer="ConnectionKey" msprop:rel_Generator_UserChildTable="SearchInputField" msprop:rel_Generator_ChildPropName="GetSearchInputFieldRows" msprop:rel_Generator_UserRelationName="ConnectionToSearchInputField" msprop:rel_Generator_ParentPropName="ConnectionRow" msprop:rel_Generator_RelationVarName="relationConnectionToSearchInputField" msprop:rel_Generator_UserParentTable="Connection">
+      <xs:selector xpath=".//mstns:SearchInputField" />
+      <xs:field xpath="mstns:ConnectionID" />
+    </xs:keyref>
+    <xs:keyref name="SearchToSearchInputField" refer="SearchKey" msprop:rel_Generator_UserChildTable="SearchInputField" msprop:rel_Generator_ChildPropName="GetSearchInputFieldRows" msprop:rel_Generator_UserRelationName="SearchToSearchInputField" msprop:rel_Generator_ParentPropName="SearchRow" msprop:rel_Generator_RelationVarName="relationSearchToSearchInputField" msprop:rel_Generator_UserParentTable="Search">
       <xs:selector xpath=".//mstns:SearchInputField" />
       <xs:field xpath="mstns:SearchID" />
     </xs:keyref>
-    <xs:keyref name="ConnectionToSearchInputField" refer="ConnectionKey" msprop:rel_Generator_UserChildTable="SearchInputField" msprop:rel_Generator_ChildPropName="GetSearchInputFieldRows" msprop:rel_Generator_UserRelationName="ConnectionToSearchInputField" msprop:rel_Generator_RelationVarName="relationConnectionToSearchInputField" msprop:rel_Generator_UserParentTable="Connection" msprop:rel_Generator_ParentPropName="ConnectionRow">
-      <xs:selector xpath=".//mstns:SearchInputField" />
+    <xs:keyref name="ConnectionToSearchFunction" refer="ConnectionKey" msprop:rel_Generator_UserChildTable="Search" msprop:rel_Generator_ChildPropName="GetSearchRows" msprop:rel_Generator_UserRelationName="ConnectionToSearchFunction" msprop:rel_Generator_ParentPropName="ConnectionRow" msprop:rel_Generator_RelationVarName="relationConnectionToSearchFunction" msprop:rel_Generator_UserParentTable="Connection">
+      <xs:selector xpath=".//mstns:Search" />
       <xs:field xpath="mstns:ConnectionID" />
     </xs:keyref>
-    <xs:keyref name="LayerToSearchFunction" refer="LayerKey" msprop:rel_Generator_UserChildTable="Search" msprop:rel_Generator_ChildPropName="GetSearchRows" msprop:rel_Generator_UserRelationName="LayerToSearchFunction" msprop:rel_Generator_RelationVarName="relationLayerToSearchFunction" msprop:rel_Generator_UserParentTable="Layer" msprop:rel_Generator_ParentPropName="LayerRow">
+    <xs:keyref name="LayerToSearchFunction" refer="LayerKey" msprop:rel_Generator_UserChildTable="Search" msprop:rel_Generator_ChildPropName="GetSearchRows" msprop:rel_Generator_UserRelationName="LayerToSearchFunction" msprop:rel_Generator_ParentPropName="LayerRow" msprop:rel_Generator_RelationVarName="relationLayerToSearchFunction" msprop:rel_Generator_UserParentTable="Layer">
       <xs:selector xpath=".//mstns:Search" />
       <xs:field xpath="mstns:LayerID" />
     </xs:keyref>
-    <xs:keyref name="ConnectionToSearchFunction" refer="ConnectionKey" msprop:rel_Generator_UserChildTable="Search" msprop:rel_Generator_ChildPropName="GetSearchRows" msprop:rel_Generator_UserRelationName="ConnectionToSearchFunction" msprop:rel_Generator_RelationVarName="relationConnectionToSearchFunction" msprop:rel_Generator_UserParentTable="Connection" msprop:rel_Generator_ParentPropName="ConnectionRow">
-      <xs:selector xpath=".//mstns:Search" />
-      <xs:field xpath="mstns:ConnectionID" />
-    </xs:keyref>
-    <xs:keyref name="ZoneLevelComboToZone" refer="ZoneKey" msprop:rel_Generator_UserChildTable="ZoneLevelCombo" msprop:rel_Generator_ChildPropName="GetZoneLevelComboRows" msprop:rel_Generator_UserRelationName="ZoneLevelComboToZone" msprop:rel_Generator_ParentPropName="ZoneRowParent" msprop:rel_Generator_RelationVarName="relationZoneLevelComboToZone" msprop:rel_Generator_UserParentTable="Zone">
-      <xs:selector xpath=".//mstns:ZoneLevelCombo" />
-      <xs:field xpath="mstns:ZoneLevelID" />
-      <xs:field xpath="mstns:ZoneID" />
-    </xs:keyref>
-    <xs:keyref name="ZoneLevelComboToLevel" refer="LevelKey" msprop:rel_Generator_UserChildTable="ZoneLevelCombo" msprop:rel_Generator_ChildPropName="GetZoneLevelComboRows" msprop:rel_Generator_UserRelationName="ZoneLevelComboToLevel" msprop:rel_Generator_ParentPropName="LevelRowParent" msprop:rel_Generator_RelationVarName="relationZoneLevelComboToLevel" msprop:rel_Generator_UserParentTable="Level">
+    <xs:keyref name="ZoneLevelComboToLevel" refer="LevelKey" msprop:rel_Generator_UserChildTable="ZoneLevelCombo" msprop:rel_Generator_ChildPropName="GetZoneLevelComboRows" msprop:rel_Generator_UserRelationName="ZoneLevelComboToLevel" msprop:rel_Generator_RelationVarName="relationZoneLevelComboToLevel" msprop:rel_Generator_UserParentTable="Level" msprop:rel_Generator_ParentPropName="LevelRowParent">
       <xs:selector xpath=".//mstns:ZoneLevelCombo" />
       <xs:field xpath="mstns:ZoneLevelID" />
       <xs:field xpath="mstns:LevelID" />
     </xs:keyref>
-    <xs:keyref name="LevelToZoneLevel" refer="ZoneLevelKey" msprop:rel_Generator_UserChildTable="Level" msprop:rel_Generator_ChildPropName="GetLevelRows" msprop:rel_Generator_UserRelationName="LevelToZoneLevel" msprop:rel_Generator_ParentPropName="ZoneLevelRow" msprop:rel_Generator_RelationVarName="relationLevelToZoneLevel" msprop:rel_Generator_UserParentTable="ZoneLevel">
+    <xs:keyref name="ZoneLevelComboToZone" refer="ZoneKey" msprop:rel_Generator_UserChildTable="ZoneLevelCombo" msprop:rel_Generator_ChildPropName="GetZoneLevelComboRows" msprop:rel_Generator_UserRelationName="ZoneLevelComboToZone" msprop:rel_Generator_RelationVarName="relationZoneLevelComboToZone" msprop:rel_Generator_UserParentTable="Zone" msprop:rel_Generator_ParentPropName="ZoneRowParent">
+      <xs:selector xpath=".//mstns:ZoneLevelCombo" />
+      <xs:field xpath="mstns:ZoneLevelID" />
+      <xs:field xpath="mstns:ZoneID" />
+    </xs:keyref>
+    <xs:keyref name="LevelToZoneLevel" refer="ZoneLevelKey" msprop:rel_Generator_UserChildTable="Level" msprop:rel_Generator_ChildPropName="GetLevelRows" msprop:rel_Generator_UserRelationName="LevelToZoneLevel" msprop:rel_Generator_RelationVarName="relationLevelToZoneLevel" msprop:rel_Generator_UserParentTable="ZoneLevel" msprop:rel_Generator_ParentPropName="ZoneLevelRow">
       <xs:selector xpath=".//mstns:Level" />
       <xs:field xpath="mstns:ZoneLevelID" />
     </xs:keyref>
-    <xs:keyref name="ZoneToZoneLevel" refer="ZoneLevelKey" msprop:rel_Generator_UserChildTable="Zone" msprop:rel_Generator_ChildPropName="GetZoneRows" msprop:rel_Generator_UserRelationName="ZoneToZoneLevel" msprop:rel_Generator_ParentPropName="ZoneLevelRow" msprop:rel_Generator_RelationVarName="relationZoneToZoneLevel" msprop:rel_Generator_UserParentTable="ZoneLevel">
+    <xs:keyref name="ZoneToZoneLevel" refer="ZoneLevelKey" msprop:rel_Generator_UserChildTable="Zone" msprop:rel_Generator_ChildPropName="GetZoneRows" msprop:rel_Generator_UserRelationName="ZoneToZoneLevel" msprop:rel_Generator_RelationVarName="relationZoneToZoneLevel" msprop:rel_Generator_UserParentTable="ZoneLevel" msprop:rel_Generator_ParentPropName="ZoneLevelRow">
       <xs:selector xpath=".//mstns:Zone" />
       <xs:field xpath="mstns:ZoneLevelID" />
     </xs:keyref>
-    <xs:keyref name="LayerToLayerFunction" refer="LayerKey" msprop:rel_Generator_UserChildTable="LayerFunction" msprop:rel_Generator_ChildPropName="GetLayerFunctionRows" msprop:rel_Generator_UserRelationName="LayerToLayerFunction" msprop:rel_Generator_ParentPropName="LayerRow" msprop:rel_Generator_RelationVarName="relationLayerToLayerFunction" msprop:rel_Generator_UserParentTable="Layer">
-      <xs:selector xpath=".//mstns:LayerFunction" />
-      <xs:field xpath="mstns:LayerID" />
-    </xs:keyref>
-    <xs:keyref name="ConnectionToLayerFunction" refer="ConnectionKey" msprop:rel_Generator_UserChildTable="LayerFunction" msprop:rel_Generator_ChildPropName="GetLayerFunctionRows" msprop:rel_Generator_UserRelationName="ConnectionToLayerFunction" msprop:rel_Generator_ParentPropName="ConnectionRow" msprop:rel_Generator_RelationVarName="relationConnectionToLayerFunction" msprop:rel_Generator_UserParentTable="Connection">
+    <xs:keyref name="ConnectionToLayerFunction" refer="ConnectionKey" msprop:rel_Generator_UserChildTable="LayerFunction" msprop:rel_Generator_ChildPropName="GetLayerFunctionRows" msprop:rel_Generator_UserRelationName="ConnectionToLayerFunction" msprop:rel_Generator_RelationVarName="relationConnectionToLayerFunction" msprop:rel_Generator_UserParentTable="Connection" msprop:rel_Generator_ParentPropName="ConnectionRow">
       <xs:selector xpath=".//mstns:LayerFunction" />
       <xs:field xpath="mstns:ConnectionID" />
     </xs:keyref>
-    <xs:keyref name="LayerToProximity" refer="LayerKey" msprop:rel_Generator_UserChildTable="LayerProximity" msprop:rel_Generator_ChildPropName="GetLayerProximityRows" msprop:rel_Generator_UserRelationName="LayerToProximity" msprop:rel_Generator_ParentPropName="LayerRow" msprop:rel_Generator_RelationVarName="relationLayerToProximity" msprop:rel_Generator_UserParentTable="Layer">
-      <xs:selector xpath=".//mstns:LayerProximity" />
+    <xs:keyref name="LayerToLayerFunction" refer="LayerKey" msprop:rel_Generator_UserChildTable="LayerFunction" msprop:rel_Generator_ChildPropName="GetLayerFunctionRows" msprop:rel_Generator_UserRelationName="LayerToLayerFunction" msprop:rel_Generator_RelationVarName="relationLayerToLayerFunction" msprop:rel_Generator_UserParentTable="Layer" msprop:rel_Generator_ParentPropName="LayerRow">
+      <xs:selector xpath=".//mstns:LayerFunction" />
       <xs:field xpath="mstns:LayerID" />
     </xs:keyref>
-    <xs:keyref name="ProximityToLayer" refer="ProximityKey" msprop:rel_Generator_UserChildTable="LayerProximity" msprop:rel_Generator_ChildPropName="GetLayerProximityRows" msprop:rel_Generator_UserRelationName="ProximityToLayer" msprop:rel_Generator_ParentPropName="ProximityRow" msprop:rel_Generator_RelationVarName="relationProximityToLayer" msprop:rel_Generator_UserParentTable="Proximity">
+    <xs:keyref name="ProximityToLayer" refer="ProximityKey" msprop:rel_Generator_UserChildTable="LayerProximity" msprop:rel_Generator_ChildPropName="GetLayerProximityRows" msprop:rel_Generator_UserRelationName="ProximityToLayer" msprop:rel_Generator_RelationVarName="relationProximityToLayer" msprop:rel_Generator_UserParentTable="Proximity" msprop:rel_Generator_ParentPropName="ProximityRow">
       <xs:selector xpath=".//mstns:LayerProximity" />
       <xs:field xpath="mstns:ProximityID" />
     </xs:keyref>
-    <xs:keyref name="ApplicationToPrintTemplate" refer="ApplicationKey" msprop:rel_Generator_UserChildTable="ApplicationPrintTemplate" msprop:rel_Generator_ChildPropName="GetApplicationPrintTemplateRows" msprop:rel_Generator_UserRelationName="ApplicationToPrintTemplate" msprop:rel_Generator_ParentPropName="ApplicationRow" msprop:rel_Generator_RelationVarName="relationApplicationToPrintTemplate" msprop:rel_Generator_UserParentTable="Application">
-      <xs:selector xpath=".//mstns:ApplicationPrintTemplate" />
-      <xs:field xpath="mstns:ApplicationID" />
+    <xs:keyref name="LayerToProximity" refer="LayerKey" msprop:rel_Generator_UserChildTable="LayerProximity" msprop:rel_Generator_ChildPropName="GetLayerProximityRows" msprop:rel_Generator_UserRelationName="LayerToProximity" msprop:rel_Generator_RelationVarName="relationLayerToProximity" msprop:rel_Generator_UserParentTable="Layer" msprop:rel_Generator_ParentPropName="LayerRow">
+      <xs:selector xpath=".//mstns:LayerProximity" />
+      <xs:field xpath="mstns:LayerID" />
     </xs:keyref>
-    <xs:keyref name="PrintTemplateToApplication" refer="PrintTemplateKey" msprop:rel_Generator_UserChildTable="ApplicationPrintTemplate" msprop:rel_Generator_ChildPropName="GetApplicationPrintTemplateRows" msprop:rel_Generator_UserRelationName="PrintTemplateToApplication" msprop:rel_Generator_ParentPropName="PrintTemplateRow" msprop:rel_Generator_RelationVarName="relationPrintTemplateToApplication" msprop:rel_Generator_UserParentTable="PrintTemplate">
+    <xs:keyref name="PrintTemplateToApplication" refer="PrintTemplateKey" msprop:rel_Generator_UserChildTable="ApplicationPrintTemplate" msprop:rel_Generator_ChildPropName="GetApplicationPrintTemplateRows" msprop:rel_Generator_UserRelationName="PrintTemplateToApplication" msprop:rel_Generator_RelationVarName="relationPrintTemplateToApplication" msprop:rel_Generator_UserParentTable="PrintTemplate" msprop:rel_Generator_ParentPropName="PrintTemplateRow">
       <xs:selector xpath=".//mstns:ApplicationPrintTemplate" />
       <xs:field xpath="mstns:TemplateID" />
     </xs:keyref>
-    <xs:keyref name="ApplicationToMarkupCategory" refer="ApplicationKey" msprop:rel_Generator_UserChildTable="ApplicationMarkupCategory" msprop:rel_Generator_ChildPropName="GetApplicationMarkupCategoryRows" msprop:rel_Generator_UserRelationName="ApplicationToMarkupCategory" msprop:rel_Generator_ParentPropName="ApplicationRow" msprop:rel_Generator_RelationVarName="relationApplicationToMarkupCategory" msprop:rel_Generator_UserParentTable="Application">
-      <xs:selector xpath=".//mstns:ApplicationMarkupCategory" />
+    <xs:keyref name="ApplicationToPrintTemplate" refer="ApplicationKey" msprop:rel_Generator_UserChildTable="ApplicationPrintTemplate" msprop:rel_Generator_ChildPropName="GetApplicationPrintTemplateRows" msprop:rel_Generator_UserRelationName="ApplicationToPrintTemplate" msprop:rel_Generator_RelationVarName="relationApplicationToPrintTemplate" msprop:rel_Generator_UserParentTable="Application" msprop:rel_Generator_ParentPropName="ApplicationRow">
+      <xs:selector xpath=".//mstns:ApplicationPrintTemplate" />
       <xs:field xpath="mstns:ApplicationID" />
     </xs:keyref>
-    <xs:keyref name="MarkupCategoryToApplication" refer="MarkupCategoryKey" msprop:rel_Generator_UserChildTable="ApplicationMarkupCategory" msprop:rel_Generator_ChildPropName="GetApplicationMarkupCategoryRows" msprop:rel_Generator_UserRelationName="MarkupCategoryToApplication" msprop:rel_Generator_ParentPropName="MarkupCategoryRow" msprop:rel_Generator_RelationVarName="relationMarkupCategoryToApplication" msprop:rel_Generator_UserParentTable="MarkupCategory">
+    <xs:keyref name="MarkupCategoryToApplication" refer="MarkupCategoryKey" msprop:rel_Generator_UserChildTable="ApplicationMarkupCategory" msprop:rel_Generator_ChildPropName="GetApplicationMarkupCategoryRows" msprop:rel_Generator_UserRelationName="MarkupCategoryToApplication" msprop:rel_Generator_RelationVarName="relationMarkupCategoryToApplication" msprop:rel_Generator_UserParentTable="MarkupCategory" msprop:rel_Generator_ParentPropName="MarkupCategoryRow">
       <xs:selector xpath=".//mstns:ApplicationMarkupCategory" />
       <xs:field xpath="mstns:CategoryID" />
     </xs:keyref>
-    <xs:keyref name="PrintTemplateToPrintTemplateContent" refer="PrintTemplateKey" msprop:rel_Generator_UserChildTable="PrintTemplateContent" msprop:rel_Generator_ChildPropName="GetPrintTemplateContentRows" msprop:rel_Generator_UserRelationName="PrintTemplateToPrintTemplateContent" msprop:rel_Generator_ParentPropName="PrintTemplateRow" msprop:rel_Generator_RelationVarName="relationPrintTemplateToPrintTemplateContent" msprop:rel_Generator_UserParentTable="PrintTemplate">
+    <xs:keyref name="ApplicationToMarkupCategory" refer="ApplicationKey" msprop:rel_Generator_UserChildTable="ApplicationMarkupCategory" msprop:rel_Generator_ChildPropName="GetApplicationMarkupCategoryRows" msprop:rel_Generator_UserRelationName="ApplicationToMarkupCategory" msprop:rel_Generator_RelationVarName="relationApplicationToMarkupCategory" msprop:rel_Generator_UserParentTable="Application" msprop:rel_Generator_ParentPropName="ApplicationRow">
+      <xs:selector xpath=".//mstns:ApplicationMarkupCategory" />
+      <xs:field xpath="mstns:ApplicationID" />
+    </xs:keyref>
+    <xs:keyref name="PrintTemplateToPrintTemplateContent" refer="PrintTemplateKey" msprop:rel_Generator_UserChildTable="PrintTemplateContent" msprop:rel_Generator_ChildPropName="GetPrintTemplateContentRows" msprop:rel_Generator_UserRelationName="PrintTemplateToPrintTemplateContent" msprop:rel_Generator_RelationVarName="relationPrintTemplateToPrintTemplateContent" msprop:rel_Generator_UserParentTable="PrintTemplate" msprop:rel_Generator_ParentPropName="PrintTemplateRow">
       <xs:selector xpath=".//mstns:PrintTemplateContent" />
       <xs:field xpath="mstns:TemplateID" />
     </xs:keyref>
-    <xs:keyref name="MapTabToLayer" refer="MapTabKey" msprop:rel_Generator_UserChildTable="MapTabLayer" msprop:rel_Generator_ChildPropName="GetMapTabLayerRows" msprop:rel_Generator_UserRelationName="MapTabToLayer" msprop:rel_Generator_ParentPropName="MapTabRow" msprop:rel_Generator_RelationVarName="relationMapTabToLayer" msprop:rel_Generator_UserParentTable="MapTab">
+    <xs:keyref name="LayerToMapTab" refer="LayerKey" msprop:rel_Generator_UserChildTable="MapTabLayer" msprop:rel_Generator_ChildPropName="GetMapTabLayerRows" msprop:rel_Generator_UserRelationName="LayerToMapTab" msprop:rel_Generator_RelationVarName="relationLayerToMapTab" msprop:rel_Generator_UserParentTable="Layer" msprop:rel_Generator_ParentPropName="LayerRow">
+      <xs:selector xpath=".//mstns:MapTabLayer" />
+      <xs:field xpath="mstns:LayerID" />
+    </xs:keyref>
+    <xs:keyref name="MapTabToLayer" refer="MapTabKey" msprop:rel_Generator_UserChildTable="MapTabLayer" msprop:rel_Generator_ChildPropName="GetMapTabLayerRows" msprop:rel_Generator_UserRelationName="MapTabToLayer" msprop:rel_Generator_RelationVarName="relationMapTabToLayer" msprop:rel_Generator_UserParentTable="MapTab" msprop:rel_Generator_ParentPropName="MapTabRow">
       <xs:selector xpath=".//mstns:MapTabLayer" />
       <xs:field xpath="mstns:MapTabID" />
     </xs:keyref>
-    <xs:keyref name="LayerToMapTab" refer="LayerKey" msprop:rel_Generator_UserChildTable="MapTabLayer" msprop:rel_Generator_ChildPropName="GetMapTabLayerRows" msprop:rel_Generator_UserRelationName="LayerToMapTab" msprop:rel_Generator_ParentPropName="LayerRow" msprop:rel_Generator_RelationVarName="relationLayerToMapTab" msprop:rel_Generator_UserParentTable="Layer">
-      <xs:selector xpath=".//mstns:MapTabLayer" />
-      <xs:field xpath="mstns:LayerID" />
-    </xs:keyref>
-    <xs:keyref name="LayerToDataTab" refer="LayerKey" msprop:rel_Generator_UserChildTable="DataTab" msprop:rel_Generator_ChildPropName="GetDataTabRows" msprop:rel_Generator_UserRelationName="LayerToDataTab" msprop:rel_Generator_ParentPropName="LayerRow" msprop:rel_Generator_RelationVarName="relationLayerToDataTab" msprop:rel_Generator_UserParentTable="Layer">
-      <xs:selector xpath=".//mstns:DataTab" />
-      <xs:field xpath="mstns:LayerID" />
-    </xs:keyref>
-    <xs:keyref name="ConnectionToDataTab" refer="ConnectionKey" msprop:rel_Generator_UserChildTable="DataTab" msprop:rel_Generator_ChildPropName="GetDataTabRows" msprop:rel_Generator_UserRelationName="ConnectionToDataTab" msprop:rel_Generator_ParentPropName="ConnectionRow" msprop:rel_Generator_RelationVarName="relationConnectionToDataTab" msprop:rel_Generator_UserParentTable="Connection">
+    <xs:keyref name="ConnectionToDataTab" refer="ConnectionKey" msprop:rel_Generator_UserChildTable="DataTab" msprop:rel_Generator_ChildPropName="GetDataTabRows" msprop:rel_Generator_UserRelationName="ConnectionToDataTab" msprop:rel_Generator_RelationVarName="relationConnectionToDataTab" msprop:rel_Generator_UserParentTable="Connection" msprop:rel_Generator_ParentPropName="ConnectionRow">
       <xs:selector xpath=".//mstns:DataTab" />
       <xs:field xpath="mstns:ConnectionID" />
     </xs:keyref>
-    <xs:keyref name="MapTabToApplication" refer="MapTabKey" msprop:rel_Generator_UserChildTable="ApplicationMapTab" msprop:rel_Generator_ChildPropName="GetApplicationMapTabRows" msprop:rel_Generator_UserRelationName="MapTabToApplication" msprop:rel_Generator_ParentPropName="MapTabRow" msprop:rel_Generator_RelationVarName="relationMapTabToApplication" msprop:rel_Generator_UserParentTable="MapTab">
-      <xs:selector xpath=".//mstns:ApplicationMapTab" />
-      <xs:field xpath="mstns:MapTabID" />
+    <xs:keyref name="LayerToDataTab" refer="LayerKey" msprop:rel_Generator_UserChildTable="DataTab" msprop:rel_Generator_ChildPropName="GetDataTabRows" msprop:rel_Generator_UserRelationName="LayerToDataTab" msprop:rel_Generator_RelationVarName="relationLayerToDataTab" msprop:rel_Generator_UserParentTable="Layer" msprop:rel_Generator_ParentPropName="LayerRow">
+      <xs:selector xpath=".//mstns:DataTab" />
+      <xs:field xpath="mstns:LayerID" />
     </xs:keyref>
-    <xs:keyref name="ApplicationToMapTab" refer="ApplicationKey" msprop:rel_Generator_UserChildTable="ApplicationMapTab" msprop:rel_Generator_ChildPropName="GetApplicationMapTabRows" msprop:rel_Generator_UserRelationName="ApplicationToMapTab" msprop:rel_Generator_ParentPropName="ApplicationRow" msprop:rel_Generator_RelationVarName="relationApplicationToMapTab" msprop:rel_Generator_UserParentTable="Application">
+    <xs:keyref name="ApplicationToMapTab" refer="ApplicationKey" msprop:rel_Generator_UserChildTable="ApplicationMapTab" msprop:rel_Generator_ChildPropName="GetApplicationMapTabRows" msprop:rel_Generator_UserRelationName="ApplicationToMapTab" msprop:rel_Generator_RelationVarName="relationApplicationToMapTab" msprop:rel_Generator_UserParentTable="Application" msprop:rel_Generator_ParentPropName="ApplicationRow">
       <xs:selector xpath=".//mstns:ApplicationMapTab" />
       <xs:field xpath="mstns:ApplicationID" />
     </xs:keyref>
-    <xs:keyref name="LayerToQuery" refer="LayerKey" msprop:rel_Generator_UserChildTable="Query" msprop:rel_Generator_ChildPropName="GetQueryRows" msprop:rel_Generator_UserRelationName="LayerToQuery" msprop:rel_Generator_ParentPropName="LayerRow" msprop:rel_Generator_RelationVarName="relationLayerToQuery" msprop:rel_Generator_UserParentTable="Layer">
-      <xs:selector xpath=".//mstns:Query" />
-      <xs:field xpath="mstns:LayerID" />
+    <xs:keyref name="MapTabToApplication" refer="MapTabKey" msprop:rel_Generator_UserChildTable="ApplicationMapTab" msprop:rel_Generator_ChildPropName="GetApplicationMapTabRows" msprop:rel_Generator_UserRelationName="MapTabToApplication" msprop:rel_Generator_RelationVarName="relationMapTabToApplication" msprop:rel_Generator_UserParentTable="MapTab" msprop:rel_Generator_ParentPropName="MapTabRow">
+      <xs:selector xpath=".//mstns:ApplicationMapTab" />
+      <xs:field xpath="mstns:MapTabID" />
     </xs:keyref>
-    <xs:keyref name="ConnectionToQuery" refer="ConnectionKey" msprop:rel_Generator_UserChildTable="Query" msprop:rel_Generator_ChildPropName="GetQueryRows" msprop:rel_Generator_UserRelationName="ConnectionToQuery" msprop:rel_Generator_ParentPropName="ConnectionRow" msprop:rel_Generator_RelationVarName="relationConnectionToQuery" msprop:rel_Generator_UserParentTable="Connection">
+    <xs:keyref name="ConnectionToQuery" refer="ConnectionKey" msprop:rel_Generator_UserChildTable="Query" msprop:rel_Generator_ChildPropName="GetQueryRows" msprop:rel_Generator_UserRelationName="ConnectionToQuery" msprop:rel_Generator_RelationVarName="relationConnectionToQuery" msprop:rel_Generator_UserParentTable="Connection" msprop:rel_Generator_ParentPropName="ConnectionRow">
       <xs:selector xpath=".//mstns:Query" />
       <xs:field xpath="mstns:ConnectionID" />
     </xs:keyref>
-    <xs:keyref name="ApplicationToZoneLevel" refer="ZoneLevelKey" msprop:rel_Generator_UserChildTable="Application" msprop:rel_Generator_ChildPropName="GetApplicationRows" msprop:rel_Generator_UserRelationName="ApplicationToZoneLevel" msprop:rel_Generator_ParentPropName="ZoneLevelRow" msprop:rel_Generator_RelationVarName="relationApplicationToZoneLevel" msprop:rel_Generator_UserParentTable="ZoneLevel">
+    <xs:keyref name="LayerToQuery" refer="LayerKey" msprop:rel_Generator_UserChildTable="Query" msprop:rel_Generator_ChildPropName="GetQueryRows" msprop:rel_Generator_UserRelationName="LayerToQuery" msprop:rel_Generator_RelationVarName="relationLayerToQuery" msprop:rel_Generator_UserParentTable="Layer" msprop:rel_Generator_ParentPropName="LayerRow">
+      <xs:selector xpath=".//mstns:Query" />
+      <xs:field xpath="mstns:LayerID" />
+    </xs:keyref>
+    <xs:keyref name="ApplicationToZoneLevel" refer="ZoneLevelKey" msprop:rel_Generator_UserChildTable="Application" msprop:rel_Generator_ChildPropName="GetApplicationRows" msprop:rel_Generator_UserRelationName="ApplicationToZoneLevel" msprop:rel_Generator_RelationVarName="relationApplicationToZoneLevel" msprop:rel_Generator_UserParentTable="ZoneLevel" msprop:rel_Generator_ParentPropName="ZoneLevelRow">
       <xs:selector xpath=".//mstns:Application" />
       <xs:field xpath="mstns:ZoneLevelID" />
     </xs:keyref>

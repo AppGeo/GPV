@@ -176,7 +176,7 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'MapTabTileGroup (' ||
   'MapTabID varchar2(50) NOT NULL,' ||
   'TileGroupID varchar2(50) NOT NULL,' ||
   'CheckInLegend number(1),' ||
-  'Opacity number(1) default 1,' ||
+  'Opacity number(11,3) default 1,' ||
   'SequenceNo number(1) NOT NULL' ||
 ')';
 
@@ -297,6 +297,13 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'SearchInputField (' ||
   'Active number(1) default 1' ||
 ')';
 
+EXECUTE IMMEDIATE  'CREATE TABLE ' || prefix || 'Setting (' ||
+  'Setting varchar2(50) NOT NULL,' ||
+  'Value varchar2(400),' ||
+  'Required varchar2(5) DEFAULT ''no'',' ||
+  'Note varchar2(100)' ||
+')';
+
 EXECUTE IMMEDIATE  'CREATE TABLE ' || prefix || 'TileGroup (' ||
   'TileGroupID varchar2(50) NOT NULL,' ||
   'DisplayName varchar2(50) NOT NULL,' ||
@@ -352,11 +359,70 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'ZoneLevelCombo (' ||
   'Active number(1) default 1' ||
 ')';
 
+-- GPVExternalMap content
 
 EXECUTE IMMEDIATE 'insert into ' || prefix || 'ExternalMap (DisplayName, URL, SequenceNo, Active) values (''Google Maps'', ''http://maps.google.com/?ll={lat},{lon}&z={lev}'', 1, 1)';
 EXECUTE IMMEDIATE 'insert into ' || prefix || 'ExternalMap (DisplayName, URL, SequenceNo, Active) values (''Bing Maps'', ''http://www.bing.com/maps/?cp={lat}~{lon}&lvl={lev}'', 2, 1)';
 
+
+-- GPVMarkupSequence content
+
 EXECUTE IMMEDIATE 'insert into ' || prefix || 'MarkupSequence (NextGroupID, NextMarkupID) values (1, 1)';
+
+
+-- GPVSetting content
+
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Required, Note) values (''AdminEmail'', null, ''YES'', ''email address'')';
+
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''DefaultApplication'', null, ''ApplicationID'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Required, Note) values (''FullExtent'', null, ''YES'', ''min X, minY, max X, max Y in MeasureProjection coordinates'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''ZoomLevels'', ''19'', ''number > 0'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''ShowScaleBar'', ''no'', ''yes or no'')';
+
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''MapProjection'', null, ''Proj4 string, defaults to Web Mercator'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''MeasureProjection'', null, ''Proj4 string, defaults to MapProjection'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''MeasureUnits'', ''both'', ''feet, meters or both'')';
+
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''ActiveColor'', ''Yellow'', ''HTML color spec'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''ActiveOpacity'', ''0.5'', ''0.0 = transparent -> 1.0 = opaque'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''ActivePolygonMode'', ''fill'', ''fill or outline'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''ActivePenWidth'', ''9'', ''pixels'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''ActiveDotSize'', ''13'', ''pixels'')';
+
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''TargetColor'', ''Orange'', ''HTML color spec'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''TargetOpacity'', ''0.5'', ''0.0 = transparent -> 1.0 = opaque'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''TargetPolygonMode'', ''fill'', ''fill or outline'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''TargetPenWidth'', ''9'', ''pixels'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''TargetDotSize'', ''13'', ''pixels'')';
+
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''SelectionColor'', ''Blue'', ''HTML color spec'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''SelectionOpacity'', ''0.5'', ''0.0 = transparent -> 1.0 = opaque'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''SelectionPolygonMode'', ''fill'', ''fill or outline'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''SelectionPenWidth'', ''9'', ''pixels'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''SelectionDotSize'', ''13'', ''pixels'')';
+
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''FilteredColor'', ''#A0A0A0'', ''HTML color spec'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''FilteredOpacity'', ''0.5'', ''0.0 = transparent -> 1.0 = opaque'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''FilteredPolygonMode'', ''fill'', ''fill or outline'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''FilteredPenWidth'', ''9'', ''pixels'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''FilteredDotSize'', ''13'', ''pixels'')';
+
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''BufferColor'', ''#A0A0FF'', ''HTML color spec'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''BufferOpacity'', ''0.2'', ''0.0 = transparent -> 1.0 = opaque'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''BufferOutlineColor'', ''#8080DD'', ''HTML color spec'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''BufferOutlineOpacity'', ''0'', ''0.0 = transparent -> 1.0 = opaque'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''BufferOutlinePenWidth'', ''0'', ''pixels'')';
+
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''SwatchTileWidth'', ''20'', ''pixels'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''SwatchTileHeight'', ''20'', ''pixels'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''LegendExpanded'', ''yes'', ''yes or no'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''PreserveOnActionChange'', ''selection'', ''target or selection'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''CustomStyleSheet'', null, ''URL'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''ExportFormat'', ''xls'', ''csv (comma-separated value) or xls (Excel)'')';
+
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''MarkupTimeout'', ''14'', ''days'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''ServerImageCacheTimeout'', ''60'', ''seconds'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''BrowserImageCacheTimeout'', ''60'', ''seconds'')';
 
 END;
 /

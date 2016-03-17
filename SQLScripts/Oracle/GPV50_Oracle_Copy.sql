@@ -52,6 +52,7 @@ BEGIN
   EXECUTE IMMEDIATE 'CREATE TABLE ' || desPrefix || 'SavedState AS SELECT * FROM ' || srcPrefix || 'SavedState';
   EXECUTE IMMEDIATE 'CREATE TABLE ' || desPrefix || 'Search AS SELECT * FROM ' || srcPrefix || 'Search';
   EXECUTE IMMEDIATE 'CREATE TABLE ' || desPrefix || 'SearchInputField AS SELECT * FROM ' || srcPrefix || 'SearchInputField';
+  EXECUTE IMMEDIATE 'CREATE TABLE ' || desPrefix || 'Setting AS SELECT * FROM ' || srcPrefix || 'Setting';
   EXECUTE IMMEDIATE 'CREATE TABLE ' || desPrefix || 'TileGroup AS SELECT * FROM ' || srcPrefix || 'TileGroup';
   EXECUTE IMMEDIATE 'CREATE TABLE ' || desPrefix || 'TileLayer AS SELECT * FROM ' || srcPrefix || 'TileLayer';
   EXECUTE IMMEDIATE 'CREATE TABLE ' || desPrefix || 'UsageTracking AS SELECT * FROM ' || srcPrefix || 'UsageTracking';

@@ -62,8 +62,8 @@ var GPV = (function (gpv) {
       });
       sortByProperty(mapTab.search, "sequenceNo");
 
-      mapTab.tileGroup = $.map(mapTab.tileGroup, function (tileGroupID) {
-        return config.tileGroup[tileGroupID];
+      mapTab.tileGroup = $.each(mapTab.tileGroup, function (i, tileGroup) {
+        tileGroup.group = config.tileGroup[tileGroup.group];
       });
     });
 

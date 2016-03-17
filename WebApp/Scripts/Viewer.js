@@ -81,7 +81,6 @@ var GPV = (function (gpv) {
     var shingleLayer = L.shingleLayer({ 
       urlBuilder: refreshMap, 
       zIndex: 100, 
-      opacity: 0.4,                 // REMOVE once the test map service has a transparent background
       preserveOnPan: false          // TO DO: reset based on presence of underlay tiles
     }).on("shingleload", function () {
       gpv.progress.clear();
@@ -377,11 +376,11 @@ var GPV = (function (gpv) {
       var z = 0;
 
       gpv.configuration.mapTab[mapTab].tileGroup.forEach(function (tg) {
-        tg.tileLayer.forEach(function (tl) {
+        tg.group.tileLayer.forEach(function (tl) {
           var tileLayer = L.tileLayer(tl.url, { 
             zIndex: tl.overlay ? 200 + z : z, 
             attribution: tl.attribution,
-            opacity: tl.opacity
+            opacity: tg.opacity
           }).addTo(map);
           tileLayers.push(tileLayer);
           z += 1;
