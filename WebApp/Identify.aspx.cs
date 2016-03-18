@@ -40,7 +40,9 @@ public partial class Identify : System.Web.UI.Page
 
     if (!Double.IsNaN(lat) && !Double.IsNaN(lon))
     {
-      AppContext.AppSettings.MapCoordinateSystem.ToProjected(lon, lat, out x, out y);
+      Coordinate p = AppContext.AppSettings.MapCoordinateSystem.ToProjected(new Coordinate(lon, lat));
+      x = p.X;
+      y = p.Y;
     }
 
     string dataTabID = Request.QueryString["datatab"];

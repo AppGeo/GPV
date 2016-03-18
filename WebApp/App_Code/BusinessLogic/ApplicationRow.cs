@@ -32,7 +32,24 @@ public partial class Configuration
 
     public Envelope GetFullExtentEnvelope()
     {
-      return IsFullExtentNull() ? AppContext.AppSettings.DefaultFullExtent : EnvelopeExtensions.FromDelimitedString(FullExtent);
+      Envelope fullExtent;
+
+      if (IsFullExtentNull())
+      {
+        fullExtent = Configuration.AppSettings.DefaultFullExtent;
+      }
+      else
+      {
+        fullExtent = EnvelopeExtensions.FromDelimitedString(FullExtent);
+        AppSettings appSettings = Configuration.AppSettings;
+
+        if (!appSettings.MapCoordinateSystem.Equals(appSettings.MeasureCoordinateSystem))
+        {
+          fullExtent = appSettings.MapCoordinateSystem.ToProjected(appSettings.MeasureCoordinateSystem.ToGeodetic(fullExtent));
+        }
+      }
+
+      return fullExtent;
     }
 
     public PrintTemplateRow[] GetPrintTemplates()

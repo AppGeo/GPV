@@ -13,10 +13,11 @@
 //  limitations under the License.
 
 using System;
+using GeoAPI.Geometries;
 
 public abstract class GridSystem
 {
-	public abstract void ToGeodetic(string gridValue, out double lon, out double lat);
+	public abstract Coordinate ToGeodetic(string gridValue);
 
-	public abstract void ToGrid(double lon, double lat, out string gridValue);
+  public abstract string ToGrid(Coordinate g);
 }

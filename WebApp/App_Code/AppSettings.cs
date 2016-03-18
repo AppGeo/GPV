@@ -72,27 +72,12 @@ public class AppSettings
     {
       try
       {
-        string[] ext = _configSetting["FullExtent"].Split(',').Select(o => o.Trim()).ToArray();
-
-        double minx = Convert.ToDouble(ext[0]);
-        double miny = Convert.ToDouble(ext[1]);
-        double maxx = Convert.ToDouble(ext[2]);
-        double maxy = Convert.ToDouble(ext[3]);
+        _fullExtent = EnvelopeExtensions.FromDelimitedString(_configSetting["FullExtent"]);
 
         if (_mapCoordinateSystem != null && _measureCoordinateSystem != null && !_mapCoordinateSystem.Equals(_measureCoordinateSystem))
         {
-          double minLon;
-          double minLat;
-          _measureCoordinateSystem.ToGeodetic(minx, miny, out minLon, out minLat);
-          _mapCoordinateSystem.ToProjected(minLon, minLat, out minx, out miny);
-
-          double maxLon;
-          double maxLat;
-          _measureCoordinateSystem.ToGeodetic(maxx, maxy, out maxLon, out maxLat);
-          _mapCoordinateSystem.ToProjected(maxLon, maxLat, out maxx, out maxy);
+          _fullExtent = _mapCoordinateSystem.ToProjected(_measureCoordinateSystem.ToGeodetic(_fullExtent));
         }
-
-        _fullExtent = new Envelope(new Coordinate(minx, miny), new Coordinate(maxx, maxy));
       }
       catch { }
     }

@@ -1309,15 +1309,12 @@ public partial class Viewer : CustomStyledPage
         ShowError("Invalid center longitude specified");
       }
 
-      double x;
-      double y;
-
-      AppContext.AppSettings.MapCoordinateSystem.ToProjected(lon, lat, out x, out y);
+      Coordinate p = AppContext.AppSettings.MapCoordinateSystem.ToProjected(new Coordinate(lon, lat));
 
       double dx = _appState.Extent.Width / 2;
       double dy = _appState.Extent.Height / 2;
 
-      _appState.Extent = new Envelope( new Coordinate(x - dx, y - dy),  new Coordinate(x + dx, y + dy));
+      _appState.Extent = new Envelope(new Coordinate(p.X - dx, p.Y - dy), new Coordinate(p.X + dx, p.Y + dy));
     }
 
     // === scaleby ===

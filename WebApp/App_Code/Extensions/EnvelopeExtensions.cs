@@ -35,7 +35,7 @@ public static class EnvelopeExtensions
     {
       try
       {
-        return FromArray(env.Split(separator).Select(o => Convert.ToDouble(o)).ToArray());
+        return FromArray(env.Split(separator).Select(o => Convert.ToDouble(o.Trim())).ToArray());
       }
       catch { }
     }

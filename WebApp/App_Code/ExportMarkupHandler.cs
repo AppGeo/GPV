@@ -150,9 +150,8 @@ public class ExportMarkupHandler : IHttpHandler
 
     for (int i = 0; i < points.Count; ++i)
     {
-      double lat; double lon;
-      _coordSys.ToGeodetic(points[i].X, points[i].Y, out lon, out lat);
-      coordinates.Add(String.Format("{0},{1},0", lon, lat));
+      Coordinate g = _coordSys.ToGeodetic(points[i]);
+      coordinates.Add(String.Format("{0},{1},0", g.X, g.Y));
     }
 
     return String.Format("<coordinates>{0}</coordinates>", String.Join(" ", coordinates.ToArray()));

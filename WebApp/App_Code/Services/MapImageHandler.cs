@@ -166,44 +166,36 @@ public class MapImageHandler : WebServiceHandler
 
     CoordinateSystem coordSys = AppContext.AppSettings.MapCoordinateSystem;
 
-    double lat;
-    double lon;
+    Coordinate g = coordSys.ToGeodetic(new Coordinate(appState.Extent.MinX, appState.Extent.MinY));
+    double minLat = g.Y;
+    double maxLat = g.Y;
+    double minLon = g.X;
+    double maxLon = g.X;
 
-    coordSys.ToGeodetic(appState.Extent.MinX, appState.Extent.MinY, out lon, out lat);
-    double minLat = lat;
-    double maxLat = lat;
-    double minLon = lon;
-    double maxLon = lon;
+    g = coordSys.ToGeodetic(new Coordinate(appState.Extent.MinX, appState.Extent.MaxY));
+    minLat = Math.Min(minLat, g.Y);
+    maxLat = Math.Max(maxLat, g.Y);
+    minLon = Math.Min(minLon, g.X);
+    maxLon = Math.Max(maxLon, g.X);
 
-    coordSys.ToGeodetic(appState.Extent.MinX, appState.Extent.MaxY, out lon, out lat);
-    minLat = Math.Min(minLat, lat);
-    maxLat = Math.Max(maxLat, lat);
-    minLon = Math.Min(minLon, lon);
-    maxLon = Math.Max(maxLon, lon);
+    g = coordSys.ToGeodetic(new Coordinate(appState.Extent.MaxX, appState.Extent.MaxY));
+    minLat = Math.Min(minLat, g.Y);
+    maxLat = Math.Max(maxLat, g.Y);
+    minLon = Math.Min(minLon, g.X);
+    maxLon = Math.Max(maxLon, g.X);
 
-    coordSys.ToGeodetic(appState.Extent.MaxX, appState.Extent.MaxY, out lon, out lat);
-    minLat = Math.Min(minLat, lat);
-    maxLat = Math.Max(maxLat, lat);
-    minLon = Math.Min(minLon, lon);
-    maxLon = Math.Max(maxLon, lon);
-
-    coordSys.ToGeodetic(appState.Extent.MaxX, appState.Extent.MinY, out lon, out lat);
-    minLat = Math.Min(minLat, lat);
-    maxLat = Math.Max(maxLat, lat);
-    minLon = Math.Min(minLon, lon);
-    maxLon = Math.Max(maxLon, lon);
+    g = coordSys.ToGeodetic(new Coordinate(appState.Extent.MaxX, appState.Extent.MinY));
+    minLat = Math.Min(minLat, g.Y);
+    maxLat = Math.Max(maxLat, g.Y);
+    minLon = Math.Min(minLon, g.X);
+    maxLon = Math.Max(maxLon, g.X);
 
     Coordinate p = appState.Extent.Centre;
-    double cLat;
-    double cLon;
-    coordSys.ToGeodetic(p.X, p.Y, out cLon, out cLat);
-
+    Coordinate c = coordSys.ToGeodetic(p);
     p.X = appState.Extent.MaxX;
-    double eLat;
-    double eLon;
-    coordSys.ToGeodetic(p.X, p.Y, out eLon, out eLat);
+    Coordinate e = coordSys.ToGeodetic(p);
 
-    double rotation = Math.Atan2(eLat - cLat, eLon - cLon) * 180 / Math.PI;
+    double rotation = Math.Atan2(e.Y - c.Y, e.X - c.X) * 180 / Math.PI;
 
     string kml = @"<?xml version=""1.0"" encoding=""UTF-8""?>
         <kml xmlns=""http://earth.google.com/kml/2.2"">

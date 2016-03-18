@@ -76,13 +76,7 @@ public class MapMaker
   {
     DrawCross(graphics, p, pen, 10);
 
-    double x = p.Coordinate.X;
-    double y = p.Coordinate.Y;
-
-    double lon;
-    double lat;
-    _appSettings.MapCoordinateSystem.ToGeodetic(x, y, out lon, out lat);
-
+    Coordinate g = _appSettings.MapCoordinateSystem.ToGeodetic(p.Coordinate);
     double xOffset = 2;
 
     foreach (string mode in coordinateModes)
@@ -93,33 +87,34 @@ public class MapMaker
       switch (mode)
       {
         case "dms":
-          yText = (lat < 0 ? "S " : "N ") + ToDms(lat);
-          xText = (lon < 0 ? "W " : "E ") + ToDms(lon);
+          yText = (g.Y < 0 ? "S " : "N ") + ToDms(g.Y);
+          xText = (g.X < 0 ? "W " : "E ") + ToDms(g.X);
           break;
 
         case "dd":
-          yText = (lat < 0 ? "S " : "N ") + Math.Abs(lat).ToString("0.000000") + "°";
-          xText = (lon < 0 ? "W " : "E ") + Math.Abs(lon).ToString("0.000000") + "°";
+          yText = (g.Y < 0 ? "S " : "N ") + Math.Abs(g.Y).ToString("0.000000") + "°";
+          xText = (g.X < 0 ? "W " : "E ") + Math.Abs(g.X).ToString("0.000000") + "°";
           break;
 
         case "usng":
           yText = "";
           MGRS mgrs = new MGRS();
-          mgrs.ToGrid(lon, lat, out xText);
+          xText = mgrs.ToGrid(g);
           break;
 
         default:
+          Coordinate c = p.Coordinate;
+
           if (!_appSettings.MapCoordinateSystem.Equals(_appSettings.MeasureCoordinateSystem))
           {
-            _appSettings.MeasureCoordinateSystem.ToProjected(lon, lat, out x, out y);
+            c = _appSettings.MeasureCoordinateSystem.ToProjected(g);
           }
 
           string unit = _appSettings.MeasureCoordinateSystem.MapUnits == "feet" ? " ft" : " m";
-          yText = "N " + x.ToString("#,##0") + unit;
-          xText = "E " + y.ToString("#,##0") + unit;
+          yText = "N " + c.X.ToString("#,##0") + unit;
+          xText = "E " + c.Y.ToString("#,##0") + unit;
           break;
       }
-
 
       DrawText(graphics, p, String.Format("{0}\n{1}", yText, xText), font, textBrush, shadowBrush, xOffset, -3, format);
 
