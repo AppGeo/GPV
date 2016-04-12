@@ -17,7 +17,7 @@ var GPV = (function (gpv) {
     var appState = gpv.appState;
 
     var fullExtent = L.Bounds.fromArray(gpv.configuration.fullExtent);
-    var tileLayers = [];
+    var tileLayers = {};
     var resizeHandle;
     var redrawPost;
 
@@ -258,7 +258,7 @@ var GPV = (function (gpv) {
       appState.update({ MapTab: mapTab });
       triggerMapTabChanged();
       shingleLayer.redraw();
-      loadTileLayers(mapTab);
+      drawTileLayers();
     });
 
     $("#selectMapLevel li").click(function () {
@@ -298,6 +298,45 @@ var GPV = (function (gpv) {
     });
 
     // =====  private functions  =====
+
+    function createTileLayers() {
+      Object.keys(gpv.configuration.mapTab).forEach(function (m) {
+        tileLayers[m] = {};
+
+        gpv.configuration.mapTab[m].tileGroup.forEach(function (tg) {
+          var z = -1;
+
+          tileLayers[m][tg.group.id] = tg.group.tileLayer.map(function (tl) {
+            z += 1;
+
+            return L.tileLayer(tl.url, { 
+              zIndex: tl.overlay ? 200 + z : z, 
+              attribution: tl.attribution,
+              opacity: tg.opacity
+            });
+          });
+        });
+      });
+    }
+
+    function drawTileLayers() {
+      map.eachLayer(function (layer) {
+        if (layer.constructor === L.TileLayer) {
+          map.removeLayer(layer);
+        }
+      });
+
+      var mapTab = appState.MapTab;
+      var visible = gpv.legendPanel.getVisibleTiles(mapTab);
+
+      Object.keys(tileLayers[mapTab]).forEach(function (tg) {
+        if (visible.indexOf(tg) >= 0) {
+          tileLayers[mapTab][tg].forEach(function (tl) {
+            tl.addTo(map);
+          });
+        }
+      });
+    }
 
     function hideFunctionMenu(callback) {
       $("#pnlFunctionTabs").animate({ left: "-400px", opacity: "0" }, panelAnimationTime, callback);
@@ -366,26 +405,6 @@ var GPV = (function (gpv) {
           });
         }
       }
-    }
-
-    function loadTileLayers(mapTab) {
-      tileLayers.forEach(function (tileLayer) {
-        map.removeLayer(tileLayer);
-      });
-
-      var z = 0;
-
-      gpv.configuration.mapTab[mapTab].tileGroup.forEach(function (tg) {
-        tg.group.tileLayer.forEach(function (tl) {
-          var tileLayer = L.tileLayer(tl.url, { 
-            zIndex: tl.overlay ? 200 + z : z, 
-            attribution: tl.attribution,
-            opacity: tg.opacity
-          }).addTo(map);
-          tileLayers.push(tileLayer);
-          z += 1;
-        });
-      });
     }
 
     function refreshMap(size, bbox, callback) {
@@ -463,6 +482,17 @@ var GPV = (function (gpv) {
       else {
         hideFunctionPanel(function () { showFunctionPanel(name); });
       }
+    }
+
+    function toggleTileGroup(groupId, visible) {
+      tileLayers[appState.MapTab][groupId].forEach(function (tl) {
+        if (visible) {
+          tl.addTo(map);
+        }
+        else {
+          map.removeLayer(tl);
+        }
+      });
     }
 
     function triggerMapTabChanged() {
@@ -591,18 +621,20 @@ var GPV = (function (gpv) {
       refreshMap: function () { showLevel(); shingleLayer.redraw(); },
       setExtent: setExtent,
       switchToPanel: switchToPanel,
+      toggleTileGroup: toggleTileGroup,
       zoomToActive: zoomToActive
     };
 
     // =====  finish initialization  =====
 
-    map.fitProjectedBounds(L.Bounds.fromArray(gpv.appState.Extent.bbox));
+    map.fitProjectedBounds(L.Bounds.fromArray(appState.Extent.bbox));
 
     //need to add title attribute due to bootstrap overwriting title with popover
     $("#cmdLocation").attr("title", "Current Location");
 
     gpv.loadComplete();
-    loadTileLayers(gpv.appState.MapTab);
+    createTileLayers();
+    drawTileLayers();
     $MapTool.filter(".Selected").trigger("click");
     triggerMapTabChanged();
   });

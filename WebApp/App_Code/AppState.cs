@@ -33,7 +33,7 @@ public class AppState
   private const string Key = "AppState";
 
   private const char VersionMarker = '\u0003';
-  private const string CurrentVersion = "4.2";
+  private const string CurrentVersion = "5.0";
 
   public static AppState FromJson(string json)
   {
@@ -310,6 +310,30 @@ public class AppState
         appState.VisibleLayers = LayersFromString((string)values.Dequeue());
         appState.Level = (string)values.Dequeue();
         break;
+
+      case "5.0":
+        appState.Application = (string)values.Dequeue();
+        appState.MapTab = (string)values.Dequeue();
+        appState.Action = (Action)(Convert.ToInt32((string)values.Dequeue()));
+        appState.TargetLayer = (string)values.Dequeue();
+        appState.TargetIds = StringCollection.FromString((string)values.Dequeue());
+        appState.ActiveMapId = (string)values.Dequeue();
+        appState.ActiveDataId = (string)values.Dequeue();
+        appState.Proximity = (string)values.Dequeue();
+        appState.SelectionLayer = (string)values.Dequeue();
+        appState.SelectionIds = StringCollection.FromString((string)values.Dequeue());
+        appState.Query = (string)values.Dequeue();
+        appState.DataTab = (string)values.Dequeue();
+        appState.MarkupCategory = (string)values.Dequeue();
+        appState.MarkupGroups = StringCollection.FromString((string)values.Dequeue());
+        appState.Markup = MarkupFromJson((string)values.Dequeue());
+        appState.FunctionTabs = (FunctionTab)(Convert.ToInt32((string)values.Dequeue()));
+        appState.ActiveFunctionTab = (FunctionTab)(Convert.ToInt32((string)values.Dequeue()));
+        appState.Extent = EnvelopeExtensions.FromDelimitedString((string)values.Dequeue(), Separator2);
+        appState.VisibleLayers = LayersFromString((string)values.Dequeue());
+        appState.VisibleTiles = LayersFromString((string)values.Dequeue());
+        appState.Level = (string)values.Dequeue();
+        break;
     }
 
     return appState;
@@ -401,6 +425,7 @@ public class AppState
   public Envelope Extent = null;
 
   public Dictionary<String, StringCollection> VisibleLayers = new Dictionary<String, StringCollection>();
+  public Dictionary<String, StringCollection> VisibleTiles = new Dictionary<String, StringCollection>();
 
   public AppState()
   {
@@ -499,6 +524,7 @@ public class AppState
     builder.Append(ActiveFunctionTab.ToString("d") + Separator);
     builder.Append(Extent.ToDelimitedString(Separator2) + Separator);
     builder.Append(LayersToString(VisibleLayers) + Separator);
+    builder.Append(LayersToString(VisibleTiles) + Separator);
     builder.Append(Level + Separator);
 
     return builder.ToString();

@@ -317,11 +317,12 @@ public partial class Viewer : CustomStyledPage
     foreach (Configuration.ApplicationMapTabRow applicationMapTab in application.GetApplicationMapTabRows())
     {
       mapTab = applicationMapTab.MapTabRow;
+      string key = mapTab.MapTabID;
+      StringCollection values;
 
       if (!mapTab.IsInteractiveLegendNull() && mapTab.InteractiveLegend == 1)
       {
-        string key = mapTab.MapTabID;
-        StringCollection values = new StringCollection();
+        values = new StringCollection();
 
         foreach (Configuration.MapTabLayerRow mapTabLayer in mapTab.GetMapTabLayerRows())
         {
@@ -334,6 +335,18 @@ public partial class Viewer : CustomStyledPage
 
         _appState.VisibleLayers.Add(key, values);
       }
+
+      values = new StringCollection();
+
+      foreach (Configuration.MapTabTileGroupRow mapTabTileGroup in mapTab.GetMapTabTileGroupRows())
+      {
+        if (!mapTabTileGroup.IsCheckInLegendNull() && mapTabTileGroup.CheckInLegend == 1)
+        {
+          values.Add(mapTabTileGroup.TileGroupID);
+        }
+      }
+
+      _appState.VisibleTiles.Add(key, values);
     }
 
     // === maptab ===
@@ -424,6 +437,50 @@ public partial class Viewer : CustomStyledPage
             visibleLayers.Contains(layerId))
         {
           visibleLayers.Remove(layerId);
+        }
+      }
+    }
+
+    // === tiles on ===
+
+    if (launchParams.ContainsKey("tileson"))
+    {
+      StringCollection tilesOn = StringCollection.FromString(launchParams["tileson"], ',');
+      StringCollection visibleTiles = _appState.VisibleTiles[mapTab.MapTabID];
+
+      foreach (string groupId in tilesOn)
+      {
+        Configuration.MapTabTileGroupRow mapTabTileGroup = mapTab.GetMapTabTileGroupRows().FirstOrDefault(o => o.TileGroupID == groupId);
+
+        if (mapTabTileGroup == null)
+        {
+          ShowError(String.Format("Tile group \"{0}\" does not exist in map tab \"{1}\"", groupId, mapTab.MapTabID));
+        }
+        else if (!visibleTiles.Contains(groupId))
+        {
+          visibleTiles.Add(groupId);
+        }
+      }
+    }
+
+    // === tiles off ===
+
+    if (launchParams.ContainsKey("tilesoff"))
+    {
+      StringCollection tilesOff = StringCollection.FromString(launchParams["tilesoff"], ',');
+      StringCollection visibleTiles = _appState.VisibleTiles[mapTab.MapTabID];
+
+      foreach (string groupId in tilesOff)
+      {
+        Configuration.MapTabTileGroupRow mapTabTileGroup = mapTab.GetMapTabTileGroupRows().FirstOrDefault(o => o.TileGroupID == groupId);
+
+        if (mapTabTileGroup == null)
+        {
+          ShowError(String.Format("Tile group \"{0}\" does not exist in map tab \"{1}\"", groupId, mapTab.MapTabID));
+        }
+        else if (visibleTiles.Contains(groupId))
+        {
+          visibleTiles.Remove(groupId);
         }
       }
     }

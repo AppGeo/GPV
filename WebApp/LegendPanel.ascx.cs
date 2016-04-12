@@ -187,118 +187,141 @@ public partial class LegendPanel : System.Web.UI.UserControl
     }
   }
 
+  private void AddLayers(Configuration.MapTabRow mapTabRow, AppState appState)
+  {
+    CommonDataFrame dataFrame = AppContext.GetDataFrame(mapTabRow);
+
+    bool isInteractive = !mapTabRow.IsInteractiveLegendNull() && mapTabRow.InteractiveLegend == 1;
+    CheckMode checkMode = CheckMode.None;
+
+    List<CommonLayer> configuredLayers = new List<CommonLayer>();
+    List<LayerProperties> layerProperties = new List<LayerProperties>();
+    List<String> mapTabLayerIds = new List<String>();
+
+    string name = null;
+    string metaDataUrl = null;
+
+    StringCollection visibleLayers = isInteractive ? appState.VisibleLayers[mapTabRow.MapTabID] : null;
+
+    // find layers attached via MapTabLayer
+
+    foreach (Configuration.MapTabLayerRow mapTabLayerRow in mapTabRow.GetMapTabLayerRows())
+    {
+      if (!mapTabLayerRow.IsShowInLegendNull() && mapTabLayerRow.ShowInLegend == 1)
+      {
+        CommonLayer layer = dataFrame.Layers.FirstOrDefault(lyr => String.Compare(lyr.Name, mapTabLayerRow.LayerRow.LayerName, true) == 0);
+
+        name = mapTabLayerRow.LayerRow.IsDisplayNameNull() ? mapTabLayerRow.LayerRow.LayerName : mapTabLayerRow.LayerRow.DisplayName;
+        metaDataUrl = mapTabLayerRow.LayerRow.IsMetaDataURLNull() ? null : mapTabLayerRow.LayerRow.MetaDataURL;
+        bool isExclusive = mapTabLayerRow.IsIsExclusiveNull() ? false : mapTabLayerRow.IsExclusive == 1;
+
+        string tag = mapTabLayerRow.LayerID;
+        mapTabLayerIds.Add(tag);
+
+        if (isInteractive)
+        {
+          bool layerVisible = visibleLayers != null && visibleLayers.Contains(mapTabLayerRow.LayerID);
+          checkMode = mapTabLayerRow.IsCheckInLegendNull() || mapTabLayerRow.CheckInLegend < 0 ? CheckMode.Empty :
+              layerVisible ? CheckMode.Checked : CheckMode.Unchecked;
+        }
+
+        configuredLayers.Add(layer);
+        layerProperties.Add(new LayerProperties(name, tag, checkMode, isExclusive, metaDataUrl));
+      }
+    }
+
+    // add group layers as necessary
+
+    for (int i = 0; i < configuredLayers.Count; ++i)
+    {
+      checkMode = !isInteractive ? CheckMode.None : layerProperties[i].CheckMode == CheckMode.Checked ? CheckMode.Checked : CheckMode.Unchecked;
+      CommonLayer parent = configuredLayers[i].Parent;
+
+      while (parent != null)
+      {
+        int index = configuredLayers.IndexOf(parent);
+
+        if (index < 0)
+        {
+          configuredLayers.Add(parent);
+          layerProperties.Add(new LayerProperties(parent.Name, null, checkMode, false, null));
+        }
+        else
+        {
+          if (checkMode == CheckMode.Checked && layerProperties[index].CheckMode == CheckMode.Unchecked)
+          {
+            layerProperties[index].CheckMode = CheckMode.Checked;
+          }
+        }
+
+        parent = parent.Parent;
+      }
+    }
+
+    // create the top level legend control for this map tab
+
+    HtmlGenericControl parentLegend = new HtmlGenericControl("div");
+    pnlLayerScroll.Controls.Add(parentLegend);
+    parentLegend.Attributes["data-maptab"] = mapTabRow.MapTabID;
+    parentLegend.Attributes["class"] = "LegendTop";
+    parentLegend.Style["display"] = mapTabRow.MapTabID == appState.MapTab ? "block" : "none";
+
+    // add the Legend controls for the configured layers
+
+    foreach (CommonLayer layer in dataFrame.TopLevelLayers)
+    {
+      AddLayerToLegend(mapTabRow.MapTabID, configuredLayers, layerProperties, parentLegend, layer);
+    }
+  }
+
+  private void AddTiles(Configuration.MapTabRow mapTabRow, AppState appState)
+  {
+    StringCollection visibleTiles = appState.VisibleTiles[mapTabRow.MapTabID];
+
+    // create the top level legend control for this map tab
+
+    HtmlGenericControl parentLegend = new HtmlGenericControl("div");
+    pnlTileScroll.Controls.Add(parentLegend);
+    parentLegend.Attributes["data-maptab"] = mapTabRow.MapTabID;
+    parentLegend.Attributes["class"] = "LegendTop";
+    parentLegend.Style["display"] = mapTabRow.MapTabID == appState.MapTab ? "block" : "none";
+
+    foreach (Configuration.MapTabTileGroupRow mapTabTileGroupRow in mapTabRow.GetMapTabTileGroupRows())
+    {
+      Configuration.TileGroupRow tileGroupRow = mapTabTileGroupRow.TileGroupRow;
+
+      HtmlGenericControl legendEntry = new HtmlGenericControl("div");
+      parentLegend.Controls.Add(legendEntry);
+      legendEntry.Attributes["class"] = "LegendEntry";
+
+      HtmlGenericControl legendHeader = new HtmlGenericControl("div");
+      legendEntry.Controls.Add(legendHeader);
+      legendHeader.Attributes["class"] = "LegendHeader";
+
+      HtmlGenericControl visibility = new HtmlGenericControl("span");
+      legendHeader.Controls.Add(visibility);
+      visibility.Attributes["class"] = "LegendVisibility";
+      
+      HtmlInputCheckBox checkBox = new HtmlInputCheckBox();
+      visibility.Controls.Add(checkBox);
+      checkBox.Checked = visibleTiles.Contains(tileGroupRow.TileGroupID);
+      checkBox.Attributes["class"] = "LegendCheck";
+      checkBox.Attributes["data-tilegroup"] = tileGroupRow.TileGroupID;
+
+      HtmlGenericControl name = new HtmlGenericControl("span");
+      legendHeader.Controls.Add(name);
+      name.Attributes["class"] = "LegendName";
+      name.InnerText = tileGroupRow.DisplayName;
+    }
+  }
+
   public void Initialize(Configuration config, AppState appState, Configuration.ApplicationRow application)
   {
     foreach (Configuration.ApplicationMapTabRow appMapTabRow in application.GetApplicationMapTabRows())
     {
       Configuration.MapTabRow mapTabRow = appMapTabRow.MapTabRow;
-      CommonDataFrame dataFrame = AppContext.GetDataFrame(mapTabRow);
-
-      bool isInteractive = !mapTabRow.IsInteractiveLegendNull() && mapTabRow.InteractiveLegend == 1;
-      CheckMode checkMode = CheckMode.None;
-
-      List<CommonLayer> configuredLayers = new List<CommonLayer>();
-      List<LayerProperties> layerProperties = new List<LayerProperties>();
-      List<String> mapTabLayerIds = new List<String>();
-
-      string name = null;
-      string metaDataUrl = null;
-
-      StringCollection visibleLayers = isInteractive ? appState.VisibleLayers[mapTabRow.MapTabID] : null;
-
-      // find layers attached via MapTabLayer
-
-      foreach (Configuration.MapTabLayerRow mapTabLayerRow in mapTabRow.GetMapTabLayerRows())
-      {
-        if (!mapTabLayerRow.IsShowInLegendNull() && mapTabLayerRow.ShowInLegend == 1)
-        {
-          CommonLayer layer = dataFrame.Layers.FirstOrDefault(lyr => String.Compare(lyr.Name, mapTabLayerRow.LayerRow.LayerName, true) == 0);
-
-          name = mapTabLayerRow.LayerRow.IsDisplayNameNull() ? mapTabLayerRow.LayerRow.LayerName : mapTabLayerRow.LayerRow.DisplayName;
-          metaDataUrl = mapTabLayerRow.LayerRow.IsMetaDataURLNull() ? null : mapTabLayerRow.LayerRow.MetaDataURL;
-          bool isExclusive = mapTabLayerRow.IsIsExclusiveNull() ? false : mapTabLayerRow.IsExclusive == 1;
-
-          string tag = mapTabLayerRow.LayerID;
-          mapTabLayerIds.Add(tag);
-
-          if (isInteractive)
-          {
-            bool layerVisible = visibleLayers != null && visibleLayers.Contains(mapTabLayerRow.LayerID);
-            checkMode = mapTabLayerRow.IsCheckInLegendNull() || mapTabLayerRow.CheckInLegend < 0 ? CheckMode.Empty :
-                layerVisible ? CheckMode.Checked : CheckMode.Unchecked;
-          }
-
-          configuredLayers.Add(layer);
-          layerProperties.Add(new LayerProperties(name, tag, checkMode, isExclusive, metaDataUrl));
-        }
-      }
-
-      // find layers attached via BaseMapID
-
-      //if (!mapTabRow.IsBaseMapIDNull() && !mapTabRow.IsShowBaseMapInLegendNull() && mapTabRow.ShowBaseMapInLegend == 1)
-      //{
-      //  if (checkMode != CheckMode.None)
-      //  {
-      //    checkMode = CheckMode.Empty;
-      //  }
-
-      //  foreach (DataRow row in config.Layer.Select("BaseMapID = '" + mapTabRow.BaseMapID + "'"))
-      //  {
-      //    Configuration.LayerRow layerRow = (Configuration.LayerRow)row;
-
-      //    if (!mapTabLayerIds.Contains(layerRow.LayerID))
-      //    {
-      //      CommonLayer layer = dataFrame.Layers.FirstOrDefault(lyr => String.Compare(lyr.Name, layerRow.LayerName, true) == 0);
-      //      metaDataUrl = layerRow.IsMetaDataURLNull() ? null : layerRow.MetaDataURL;
-
-      //      configuredLayers.Add(layer);
-      //      layerProperties.Add(new LayerProperties(layerRow.Name, null, checkMode, false, metaDataUrl));
-      //    }
-      //  }
-      //}
-
-      // add group layers as necessary
-
-      for (int i = 0; i < configuredLayers.Count; ++i)
-      {
-        checkMode = !isInteractive ? CheckMode.None : layerProperties[i].CheckMode == CheckMode.Checked ? CheckMode.Checked : CheckMode.Unchecked;
-        CommonLayer parent = configuredLayers[i].Parent;
-
-        while (parent != null)
-        {
-          int index = configuredLayers.IndexOf(parent);
-
-          if (index < 0)
-          {
-            configuredLayers.Add(parent);
-            layerProperties.Add(new LayerProperties(parent.Name, null, checkMode, false, null));
-          }
-          else
-          {
-            if (checkMode == CheckMode.Checked && layerProperties[index].CheckMode == CheckMode.Unchecked)
-            {
-              layerProperties[index].CheckMode = CheckMode.Checked;
-            }
-          }
-
-          parent = parent.Parent;
-        }
-      }
-
-      // create the top level legend control for this map tab
-
-      HtmlGenericControl parentLegend = new HtmlGenericControl("div");
-      pnlLegendScroll.Controls.Add(parentLegend);
-      parentLegend.Attributes["data-maptab"] = appMapTabRow.MapTabID;
-      parentLegend.Attributes["class"] = "LegendTop";
-      parentLegend.Style["display"] = appMapTabRow.MapTabID == appState.MapTab ? "block" : "none";
-
-      // add the Legend controls for the configured layers
-
-      foreach (CommonLayer layer in dataFrame.TopLevelLayers)
-      {
-        AddLayerToLegend(mapTabRow.MapTabID, configuredLayers, layerProperties, parentLegend, layer);
-      }
+      AddLayers(mapTabRow, appState);
+      AddTiles(mapTabRow, appState);
     }
   }
 

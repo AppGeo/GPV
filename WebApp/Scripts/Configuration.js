@@ -19,7 +19,7 @@ var GPV = (function (gpv) {
 
     var config = gpv.configuration;
 
-    // add IDs to proximities, queries and data tabs from keys
+    // add IDs from keys
 
     $.each([config.proximity, config.query, config.dataTab, config.search], function () {
       $.each(this, function (k, v) {
@@ -63,7 +63,9 @@ var GPV = (function (gpv) {
       sortByProperty(mapTab.search, "sequenceNo");
 
       mapTab.tileGroup = $.each(mapTab.tileGroup, function (i, tileGroup) {
-        tileGroup.group = config.tileGroup[tileGroup.group];
+        var id = tileGroup.group;
+        tileGroup.group = config.tileGroup[id];
+        tileGroup.group.id = id;
       });
     });
 
