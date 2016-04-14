@@ -771,31 +771,6 @@ public class MapMaker
         }
       }
 
-      //if (!mapTab.IsBaseMapIDNull())
-      //{
-      //  foreach (Configuration.LayerRow layer in config.Layer.Where(o => !o.IsBaseMapIDNull() && o.BaseMapID == mapTab.BaseMapID))
-      //  {
-      //    if (!mapTabLayerIds.Contains(layer.LayerID))
-      //    {
-      //      CommonLayer commonLayer = dataFrame.Layers.FirstOrDefault(o => String.Compare(o.Name, layer.LayerName, true) == 0);
-      //      int index = dataFrame.Layers.IndexOf(commonLayer);
-
-      //      bool visibleAtScale = commonLayer.IsWithinScaleThresholds(pixelSize);
-
-      //      if (!layerList.ContainsKey(index) && visibleAtScale)
-      //      {
-      //        if (commonLayer.Type == CommonLayerType.Image)
-      //        {
-      //          map.ImageType = CommonImageType.Jpg;
-      //        }
-
-      //        layerList.Add(index, commonLayer);
-      //        definitionList.Add(index, layer.GetLevelQuery(commonLayer, _appState.Level));
-      //      }
-      //    }
-      //  }
-      //}
-
       int[] indexes = new int[layerList.Keys.Count];
       layerList.Keys.CopyTo(indexes, 0);
       List<int> indexList = new List<int>(indexes);

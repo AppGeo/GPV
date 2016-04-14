@@ -85,7 +85,7 @@ public class ExternalMapHandler : WebServiceHandler
       pixelSize *= Constants.MetersPerFoot;
     }
 
-    double zoomLevel = (Math.Log(156543.0339280234 / pixelSize) / Math.Log(2));
+    double zoomLevel = (Math.Log(Constants.BasePixelSize / pixelSize) / Math.Log(2));
 
     Configuration.ExternalMapRow externalMap = Configuration.ExternalMap.First(o => o.DisplayName == name);
     string url = externalMap.URL;

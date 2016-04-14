@@ -278,7 +278,9 @@ public class PdfMap
 		image.SetAbsolutePosition(originX, originY);
 		image.ScaleAbsolute(width, height);
 
+    CreatePdfTiles(content, row, false);
 		content.AddImage(image);
+    CreatePdfTiles(content, row, true);
 
 		CreatePdfBox(content, row, false);
 	}
@@ -456,6 +458,46 @@ public class PdfMap
 		}
 	}
 
+  private void CreatePdfTiles(PdfContentByte content, Configuration.PrintTemplateContentRow row, bool overlay)
+  {
+    int pixelWidth = Convert.ToInt32(row.Width * PixelsPerInch);
+    int pixelHeight = Convert.ToInt32(row.Height * PixelsPerInch);
+
+    float originX = Convert.ToSingle(row.OriginX) * PointsPerInch;
+    float originY = Convert.ToSingle(row.OriginY) * PointsPerInch;
+    float width = Convert.ToSingle(row.Width) * PointsPerInch;
+    float height = Convert.ToSingle(row.Height) * PointsPerInch;
+
+    StringCollection visibleTiles = _appState.VisibleTiles[_appState.MapTab];
+    int level = Convert.ToInt32(Math.Log(Constants.BasePixelSize / _pixelSize, 2));
+
+    if (visibleTiles.Count > 0)
+    {
+      Configuration.MapTabRow mapTab = AppContext.GetConfiguration().MapTab.FindByMapTabID(_appState.MapTab);
+
+      foreach (Configuration.MapTabTileGroupRow mapTabTileGroup in mapTab.GetMapTabTileGroupRows().Where(o => visibleTiles.Contains(o.TileGroupID)))
+      {
+        double opacity = mapTabTileGroup.IsOpacityNull() ? 1 : mapTabTileGroup.Opacity;
+
+        foreach (Configuration.TileLayerRow tileLayer in mapTabTileGroup.TileGroupRow.GetTileLayerRows())
+        {
+          bool isOverlay = !tileLayer.IsOverlayNull() && tileLayer.Overlay == 1;
+
+          if (isOverlay == overlay)
+          {
+            byte[] tileImage = TileAggregator.GetImage(tileLayer.URL, _appState.Extent, level, opacity);
+
+            iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance(tileImage);
+            image.SetAbsolutePosition(originX, originY);
+            image.ScaleAbsolute(width, height);
+
+            content.AddImage(image);
+          }
+        }
+      }
+    }
+  }
+
   private float GetLayerHeightInLegend(List<CommonLayer> layerList, LegendProperties properties, CommonLayer layer)
   {
     float height = 0;
@@ -535,38 +577,6 @@ public class PdfMap
         }
       }
     }
-
-    //if (!mapTab.IsBaseMapIDNull() && !mapTab.IsShowBaseMapInLegendNull() && mapTab.ShowBaseMapInLegend == 1)
-    //{
-    //  foreach (Configuration.LayerRow layer in config.Layer.Where(o => !o.IsBaseMapIDNull() && o.BaseMapID == mapTab.BaseMapID))
-    //  {
-    //    if (!mapTabLayerIds.Contains(layer.LayerID))
-    //    {
-    //      CommonLayer commonLayer = dataFrame.Layers.FirstOrDefault(o => String.Compare(o.Name, layer.LayerName, true) == 0);
-
-    //      if (commonLayer.Type == CommonLayerType.Feature && !layerList.Contains(commonLayer))
-    //      {
-    //        bool hasClasses = GetNumClasses(commonLayer) > 0;
-    //        bool visibleAtScale = _pixelSize <= 0 || commonLayer.IsWithinScaleThresholds(_pixelSize);
-
-    //        if (hasClasses && visibleAtScale)
-    //        {
-    //          layerList.Add(commonLayer);
-
-    //          while (commonLayer.Parent != null)
-    //          {
-    //            commonLayer = commonLayer.Parent;
-
-    //            if (!layerList.Contains(commonLayer))
-    //            {
-    //              layerList.Add(commonLayer);
-    //            }
-    //          }
-    //        }
-    //      }
-    //    }
-    //  }
-    //}
 
     return layerList;
   }
