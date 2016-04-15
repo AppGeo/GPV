@@ -13,6 +13,9 @@
 //  limitations under the License.
 
 using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.IO;
 using System.Text;
@@ -46,11 +49,91 @@ public class MapImageHandler : WebServiceHandler
     Response.BinaryWrite(mapImageData.Image);
   }
 
+  private MapImageData CompositeMapImage(AppState appState, int width, int height)
+  {
+    MapMaker mapMaker = new MapMaker(appState, width, height);
+    MapImageData mapImageData = mapMaker.GetImage();
+
+    List<Bitmap> baseTiles = GetTileImages(appState, width, height, false);
+    List<Bitmap> overlayTiles = GetTileImages(appState, width, height, true);
+
+    if (baseTiles.Count == 0 && overlayTiles.Count == 0)
+    {
+      return mapImageData;
+    }
+
+    using (Bitmap composite = new Bitmap(width, height))
+    {
+      using (Graphics graphics = Graphics.FromImage(composite))
+      {
+
+        foreach (Bitmap tileImage in baseTiles)
+        {
+          graphics.DrawImage(tileImage, 0, 0);
+        }
+
+        using (MemoryStream imageStream = new MemoryStream(mapImageData.Image))
+        {
+          using (Bitmap mapImage = new Bitmap(imageStream))
+          {
+            graphics.DrawImage(mapImage, 0, 0);
+          }
+        }
+
+        foreach (Bitmap tileImage in overlayTiles)
+        {
+          graphics.DrawImage(tileImage, 0, 0);
+        }
+      }
+
+      using (MemoryStream imageStream = new MemoryStream())
+      {
+        composite.Save(imageStream, ImageFormat.Png);
+        mapImageData.Image = imageStream.ToArray();
+        mapImageData.Type = CommonImageType.Png;
+      }
+    }
+
+    return mapImageData;
+  }
+
   private string GetImageUrl(AppState appState, int width, int height)
   {
     MapMaker mapMaker = new MapMaker(appState, width, height);
     string key = AppContext.BrowserImageCache.Store(mapMaker.GetImage());
     return "Services/MapImage.ashx?key=" + key;
+  }
+
+  private List<Bitmap> GetTileImages(AppState appState, int width, int height, bool overlay)
+  {
+    List<Bitmap> tileImages = new List<Bitmap>();
+
+    StringCollection visibleTiles = appState.VisibleTiles[appState.MapTab];
+    double pixelSize = appState.Extent.Width / width;
+    int level = Convert.ToInt32(Math.Log(Constants.BasePixelSize / pixelSize, 2));
+
+    if (visibleTiles.Count > 0)
+    {
+      Configuration.MapTabRow mapTab = AppContext.GetConfiguration().MapTab.FindByMapTabID(appState.MapTab);
+
+      foreach (Configuration.MapTabTileGroupRow mapTabTileGroup in mapTab.GetMapTabTileGroupRows().Where(o => visibleTiles.Contains(o.TileGroupID)))
+      {
+        double opacity = mapTabTileGroup.IsOpacityNull() ? 1 : mapTabTileGroup.Opacity;
+
+        foreach (Configuration.TileLayerRow tileLayer in mapTabTileGroup.TileGroupRow.GetTileLayerRows())
+        {
+          bool isOverlay = !tileLayer.IsOverlayNull() && tileLayer.Overlay == 1;
+
+          if (isOverlay == overlay)
+          {
+            Bitmap tileImage = TileAggregator.GetImage(tileLayer.URL, appState.Extent, level, opacity);
+            tileImages.Add(tileImage);
+          }
+        }
+      }
+    }
+
+    return tileImages;
   }
 
   [WebServiceMethod]
@@ -135,8 +218,7 @@ public class MapImageHandler : WebServiceHandler
     int width = Convert.ToInt32(Math.Round(Convert.ToDouble(Request.Form["width"])));
     int height = Convert.ToInt32(Math.Round(Convert.ToDouble(Request.Form["height"])));
 
-    MapMaker mapMaker = new MapMaker(appState, width, height);
-    MapImageData mapImageData = mapMaker.GetImage();
+    MapImageData mapImageData = CompositeMapImage(appState, width, height);
 
     Response.ContentType = mapImageData.Type == CommonImageType.Png ? "image/png" : "image/jpeg";
     Response.AddHeader("Content-Disposition", "attachment; filename=Map." + (mapImageData.Type == CommonImageType.Png ? "png" : "jpg"));
@@ -150,8 +232,7 @@ public class MapImageHandler : WebServiceHandler
     int width = Convert.ToInt32(Math.Round(Convert.ToDouble(Request.Form["width"])));
     int height = Convert.ToInt32(Math.Round(Convert.ToDouble(Request.Form["height"])));
 
-    MapMaker mapMaker = new MapMaker(appState, width, height);
-    MapImageData mapImageData = mapMaker.GetImage();
+    MapImageData mapImageData = CompositeMapImage(appState, width, height);
 
     Configuration.ApplicationRow application = Configuration.Application.Select(String.Format("ApplicationID = '{0}'", appState.Application))[0] as Configuration.ApplicationRow;
     string appName = application.DisplayName;

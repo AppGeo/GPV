@@ -485,7 +485,7 @@ public class PdfMap
 
           if (isOverlay == overlay)
           {
-            byte[] tileImage = TileAggregator.GetImage(tileLayer.URL, _appState.Extent, level, opacity);
+            byte[] tileImage = TileAggregator.GetImageBytes(tileLayer.URL, _appState.Extent, level, opacity);
 
             iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance(tileImage);
             image.SetAbsolutePosition(originX, originY);
