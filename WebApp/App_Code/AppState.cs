@@ -177,7 +177,7 @@ public class AppState
 
         appState.FunctionTabs = functionTabs;
         appState.ActiveFunctionTab = functionTabs == FunctionTab.All ? FunctionTab.Selection : functionTabs;
-        appState.Extent = EnvelopeExtensions.FromDelimitedString((string)values.Dequeue(), Separator2);
+        appState.Extent = ProjectExtent(EnvelopeExtensions.FromDelimitedString((string)values.Dequeue(), Separator2));
         break;
 
       case "2.1":
@@ -208,7 +208,7 @@ public class AppState
 
         appState.FunctionTabs = functionTabs;
         appState.ActiveFunctionTab = functionTabs == FunctionTab.All ? FunctionTab.Selection : functionTabs;
-        appState.Extent = EnvelopeExtensions.FromDelimitedString((string)values.Dequeue(), Separator2);
+        appState.Extent = ProjectExtent(EnvelopeExtensions.FromDelimitedString((string)values.Dequeue(), Separator2));
         appState.Markup = CoordinateMarkupFromString((string)values.Dequeue());
         break;
 
@@ -229,7 +229,7 @@ public class AppState
         appState.MarkupGroups = StringCollection.FromString((string)values.Dequeue());
         appState.FunctionTabs = (FunctionTab)(Convert.ToInt32((string)values.Dequeue()));
         appState.ActiveFunctionTab = (FunctionTab)(Convert.ToInt32((string)values.Dequeue()));
-        appState.Extent = EnvelopeExtensions.FromDelimitedString((string)values.Dequeue(), Separator2);
+        appState.Extent = ProjectExtent(EnvelopeExtensions.FromDelimitedString((string)values.Dequeue(), Separator2));
         appState.Markup = CoordinateMarkupFromString((string)values.Dequeue());
         break;
 
@@ -250,7 +250,7 @@ public class AppState
         appState.MarkupGroups = StringCollection.FromString((string)values.Dequeue());
         appState.FunctionTabs = (FunctionTab)(Convert.ToInt32((string)values.Dequeue()));
         appState.ActiveFunctionTab = (FunctionTab)(Convert.ToInt32((string)values.Dequeue()));
-        appState.Extent = EnvelopeExtensions.FromDelimitedString((string)values.Dequeue(), Separator2);
+        appState.Extent = ProjectExtent(EnvelopeExtensions.FromDelimitedString((string)values.Dequeue(), Separator2));
         appState.Markup = CoordinateMarkupFromString((string)values.Dequeue());
         appState.VisibleLayers = LayersFromString((string)values.Dequeue());
         break;
@@ -272,7 +272,7 @@ public class AppState
         appState.MarkupGroups = StringCollection.FromString((string)values.Dequeue());
         appState.FunctionTabs = (FunctionTab)(Convert.ToInt32((string)values.Dequeue()));
         appState.ActiveFunctionTab = (FunctionTab)(Convert.ToInt32((string)values.Dequeue()));
-        appState.Extent = EnvelopeExtensions.FromDelimitedString((string)values.Dequeue(), Separator2);
+        appState.Extent = ProjectExtent(EnvelopeExtensions.FromDelimitedString((string)values.Dequeue(), Separator2));
         appState.Markup = CoordinateMarkupFromString((string)values.Dequeue());
         appState.VisibleLayers = LayersFromString((string)values.Dequeue());
         appState.Level = (string)values.Dequeue();
@@ -306,7 +306,7 @@ public class AppState
         appState.Markup = MarkupFromJson((string)values.Dequeue());
         appState.FunctionTabs = (FunctionTab)(Convert.ToInt32((string)values.Dequeue()));
         appState.ActiveFunctionTab = (FunctionTab)(Convert.ToInt32((string)values.Dequeue()));
-        appState.Extent = EnvelopeExtensions.FromDelimitedString((string)values.Dequeue(), Separator2);
+        appState.Extent = ProjectExtent(EnvelopeExtensions.FromDelimitedString((string)values.Dequeue(), Separator2));
         appState.VisibleLayers = LayersFromString((string)values.Dequeue());
         appState.Level = (string)values.Dequeue();
         break;
@@ -393,6 +393,19 @@ public class AppState
     }
 
     return dict;
+  }
+
+  private static Envelope ProjectExtent(Envelope originalExtent)
+  {
+    AppSettings appSettings = AppContext.AppSettings;
+    Envelope projectedExtent = originalExtent;
+
+    if (appSettings.MapCoordinateSystem != null && appSettings.MeasureCoordinateSystem != null && !appSettings.MapCoordinateSystem.Equals(appSettings.MeasureCoordinateSystem))
+    {
+      projectedExtent = appSettings.MapCoordinateSystem.ToProjected(appSettings.MeasureCoordinateSystem.ToGeodetic(originalExtent));
+    }
+
+    return projectedExtent;
   }
 
   private SelectionManager _selectionManager = null;
