@@ -42,9 +42,38 @@ DECLARE
 
 BEGIN
 
+-- add DefaultFunctionTab, DefaultTool, MetaDescription and MetaKeywords to GPVConfiguration
+
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix50 || 'Application (' ||
+  'ApplicationID varchar2(50) NOT NULL,' ||
+  'DisplayName varchar2(50),' ||
+  'AuthorizedRoles varchar2(200),' ||
+  'FunctionTabs varchar2(50),' ||
+  'DefaultFunctionTab varchar2(50),' ||
+  'DefaultMapTab varchar2(50),' ||
+  'DefaultAction varchar2(50),' ||
+  'DefaultTargetLayer varchar2(50),' ||
+  'DefaultProximity varchar2(50),' ||
+  'DefaultSelectionLayer varchar2(50),' ||
+  'DefaultLevel varchar2(50),' ||
+  'DefaultTool varchar2(50),' ||
+  'FullExtent varchar2(50),' ||
+  'OverviewMapID varchar2(50), ' ||
+  'CoordinateModes varchar2(50),' ||
+  'ZoneLevelID varchar2(50),' ||
+  'TrackUse number(1),' ||
+  'MetaDescription varchar2(200),' ||
+  'MetaKeywords varchar2(200),' ||
+  'About varchar2(1000),' ||
+  'Active number(1) default 1' ||
+')';
+
+EXECUTE IMMEDIATE 'INSERT INTO ' || prefix50 || 'Application (ApplicationID, DisplayName, AuthorizedRoles, FunctionTabs, DefaultMapTab, DefaultAction, DefaultTargetLayer, DefaultProximity, DefaultSelectionLayer, DefaultLevel, FullExtent, OverviewMapID, CoordinateModes, ZoneLevelID, TrackUse, MetaDescription, MetaKeywords, About, Active) ' ||
+  'SELECT ApplicationID, DisplayName, AuthorizedRoles, FunctionTabs, DefaultMapTab, DefaultAction, DefaultTargetLayer, DefaultProximity, DefaultSelectionLayer, DefaultLevel, FullExtent, OverviewMapID, CoordinateModes, ZoneLevelID, TrackUse, MetaDescription, MetaKeywords, About, Active ' ||
+  'FROM ' || prefix41 || 'Application';
+
 -- copy tables
 
-EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix50 || 'Application AS SELECT * FROM ' || prefix41 || 'Application';
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix50 || 'ApplicationMapTab AS SELECT * FROM ' || prefix41 || 'ApplicationMapTab';
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix50 || 'ApplicationMarkupCategory AS SELECT * FROM ' || prefix41 || 'ApplicationMarkupCategory';
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix50 || 'ApplicationPrintTemplate AS SELECT * FROM ' || prefix41 || 'ApplicationPrintTemplate';

@@ -651,10 +651,12 @@ public partial class Configuration
         }
       }
 
+      string[] validFunctionTabs = EnumHelper.ToChoiceArray(typeof(FunctionTab));
+      string[] tabs = validFunctionTabs;
+
       if (application.IsValidationErrorNull() && !application.IsFunctionTabsNull())
       {
-        string[] tabs = application.FunctionTabs.ToLower().Split(',');
-        string[] validFunctionTabs = EnumHelper.ToChoiceArray(typeof(FunctionTab));
+        tabs = application.FunctionTabs.ToLower().Split(',');
 
         foreach (string tab in tabs)
         {
@@ -668,6 +670,24 @@ public partial class Configuration
         if (application.IsValidationErrorNull() && tabs.Contains("location") && application.IsOverviewMapIDNull())
         {
           application.ValidationError = "An overview map ID must be provided when function tabs are 'all' or 'location'";
+        }
+      }
+
+      if (application.IsValidationErrorNull() && !application.IsDefaultFunctionTabNull())
+      {
+        if (tabs.Contains(application.DefaultFunctionTab))
+        {
+          application.ValidationError = "The default function tab must be one of " + String.Join(", ", tabs.Select(o => String.Format("'{0}'", o)).ToArray());
+        }
+      }
+
+      if (application.IsValidationErrorNull() && !application.IsDefaultToolNull())
+      {
+        string[] tools = new string[] { "pan", "identify", "select", "drawlength", "drawarea", "drawpoint", "drawline", "drawpolygon", "drawcircle", "drawtext", "drawcoordinates", "deletemarkup", "colorpicker", "paintbucket" };
+
+        if (!tools.Contains(application.DefaultTool.ToLower()))
+        {
+          application.ValidationError = "The default tool must be one of " + String.Join(", ", tools.Select(o => String.Format("'{0}'", o)).ToArray());
         }
       }
 

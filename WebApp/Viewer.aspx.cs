@@ -63,7 +63,7 @@ public partial class Viewer : CustomStyledPage
     }
 
     _config = AppContext.GetConfiguration();
-	}
+  }
 
   protected void Page_Load(object sender, EventArgs e)
   {
@@ -91,6 +91,17 @@ public partial class Viewer : CustomStyledPage
     LoadStateFromLaunchParams(launchParams);
 
     Configuration.ApplicationRow application = _config.Application.FindByApplicationID(_appState.Application);
+
+    if (!application.IsMetaDescriptionNull())
+    {
+      AddMetaTag("description", application.MetaDescription);
+    }
+
+    if (!application.IsMetaKeywordsNull())
+    {
+      AddMetaTag("keywords", application.MetaKeywords);
+    }
+
     Title = application.DisplayName;
 
     SetHelpLink();
@@ -176,12 +187,12 @@ public partial class Viewer : CustomStyledPage
 
     // set the default tool
 
-    HtmlControl defaultTool = null;
-
-    if (launchParams.ContainsKey("tool"))
+    string tool = launchParams.ContainsKey("tool") ? launchParams["tool"] : (!application.IsDefaultToolNull() ? application.DefaultTool : null);
+    
+    if (!String.IsNullOrEmpty(tool))
     {
-      defaultTool = Page.FindControl("opt" + launchParams["tool"], false) as HtmlControl;
-      
+      HtmlControl defaultTool = Page.FindControl("opt" + tool, false) as HtmlControl;
+
       if (defaultTool != null)
       {
         defaultTool.Attributes["class"] += " Selected";
@@ -194,6 +205,14 @@ public partial class Viewer : CustomStyledPage
     spnVersion.InnerText = Version.ToString();
 
     TrackingManager.TrackUse(launchParams);
+  }
+
+  private void AddMetaTag(string name, string content)
+  {
+    HtmlMeta meta = new HtmlMeta();
+    meta.Name = name;
+    meta.Content = content;
+    head.Controls.AddAt(0, meta);
   }
 
   private void CreateActiveSelectionStyle()
@@ -996,23 +1015,29 @@ public partial class Viewer : CustomStyledPage
 
     // === active function tab ===
 
+    string activeTab = !application.IsDefaultFunctionTabNull() ? application.DefaultFunctionTab : null;
+
     if (launchParams.ContainsKey("activefunctiontab"))
     {
-      string tab = launchParams["activefunctiontab"];
+      activeTab = launchParams["activefunctiontab"];
+    }
+
+    if (!String.IsNullOrEmpty(activeTab))
+    {
       FunctionTab functionTab = FunctionTab.None;
 
       try
       {
-        functionTab = (FunctionTab)Enum.Parse(typeof(FunctionTab), tab, true);
+        functionTab = (FunctionTab)Enum.Parse(typeof(FunctionTab), activeTab, true);
       }
       catch
       {
-        ShowError("Invalid active function tab '" + tab + "', must be either " + EnumHelper.ToChoiceString(typeof(FunctionTab)));
+        ShowError("Invalid active function tab '" + activeTab + "', must be either " + EnumHelper.ToChoiceString(typeof(FunctionTab)));
       }
 
       if (functionTab != FunctionTab.None && (functionTab & _appState.FunctionTabs) == FunctionTab.None)
       {
-        ShowError("Function tab '" + tab + "' cannot be activated because is not present in this application");
+        ShowError("Function tab '" + activeTab + "' cannot be activated because is not present in this application");
       }
 
       _appState.ActiveFunctionTab = functionTab;
@@ -1522,6 +1547,19 @@ public partial class Viewer : CustomStyledPage
     }
 
     _appState = AppState.FromCompressedString(state);
+  }
+
+  private bool SetDefaultTool(string name)
+  {
+    HtmlControl defaultTool = Page.FindControl("opt" + name, false) as HtmlControl;
+    bool found = defaultTool != null;
+
+    if (found)
+    {
+      defaultTool.Attributes["class"] += " Selected";
+    }
+
+    return found;
   }
 
   private void SetHelpLink()

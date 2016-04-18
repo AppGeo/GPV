@@ -66,6 +66,7 @@ public class MapImageHandler : WebServiceHandler
     {
       using (Graphics graphics = Graphics.FromImage(composite))
       {
+        graphics.Clear(Color.Transparent);
 
         foreach (Bitmap tileImage in baseTiles)
         {

@@ -14,12 +14,10 @@ public class TileAggregator
     byte[] imageBytes;
 
     using (Bitmap bitmap = GetImage(tileCacheUrl, extent, level, opacity))
+    using (MemoryStream imageStream = new MemoryStream())
     {
-      using (MemoryStream imageStream = new MemoryStream())
-      {
-        bitmap.Save(imageStream, ImageFormat.Png);
-        imageBytes = imageStream.ToArray();
-      }
+      bitmap.Save(imageStream, ImageFormat.Png);
+      imageBytes = imageStream.ToArray();
     }
 
     return imageBytes;
@@ -96,22 +94,20 @@ public class TileAggregator
 
           if (tileBytes != null)
           {
-            MemoryStream tileStream = new MemoryStream(tileBytes);
-            Bitmap tileBitmap = new Bitmap(tileStream);
-            tileStream.Dispose();
+            using (MemoryStream tileStream = new MemoryStream(tileBytes))
+            using (Bitmap tileBitmap = new Bitmap(tileStream))
+            {
+              int x = c * 256 - imageOriginX;
+              int y = r * 256 - imageOriginY;
 
-            int x = c * 256 - imageOriginX;
-            int y = r * 256 - imageOriginY;
+              ColorMatrix matrix = new ColorMatrix();
+              matrix.Matrix33 = Convert.ToSingle(opacity);
 
-            ColorMatrix matrix = new ColorMatrix();
-            matrix.Matrix33 = Convert.ToSingle(opacity);
+              ImageAttributes attributes = new ImageAttributes();
+              attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
 
-            ImageAttributes attributes = new ImageAttributes();
-            attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
-
-            graphics.DrawImage(tileBitmap, new Rectangle(x, y, 256, 256), 0, 0, 256, 256, GraphicsUnit.Pixel, attributes);
-
-            tileBitmap.Dispose();
+              graphics.DrawImage(tileBitmap, new Rectangle(x, y, 256, 256), 0, 0, 256, 256, GraphicsUnit.Pixel, attributes);
+            }
           }
         }
       }
