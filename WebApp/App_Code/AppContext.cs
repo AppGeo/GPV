@@ -1,4 +1,4 @@
-//  Copyright 2012 Applied Geographics, Inc.
+//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -32,6 +32,15 @@ public static class AppContext
 	public const string BrowserImageCacheKey = "BrowserImageCache";
 
   public static string ConfigurationKey = DateTime.Now.ToString("yyyyMMddhhmmss");
+  private static object ConfigurationLock = new object();
+
+  public static AppSettings AppSettings
+  {
+    get
+    {
+      return GetConfiguration().AppSettings;
+    }
+  }
 
   public static TimedCache<MapImageData> BrowserImageCache
   {
@@ -146,19 +155,22 @@ public static class AppContext
 
 		Configuration config;
 
-    if (!forceReload && cache[key] != null)
+    lock (ConfigurationLock)
     {
-      config = (Configuration)cache[key];
-    }
-    else
-    {
-      config = Configuration.GetCurrent();
-      config.CascadeDeactivated();
-      config.RemoveDeactivated();
-      config.ValidateConfiguration();
-      config.RemoveValidationErrors();
+      if (!forceReload && cache[key] != null)
+      {
+        config = (Configuration)cache[key];
+      }
+      else
+      {
+        config = Configuration.GetCurrent();
+        config.CascadeDeactivated();
+        config.RemoveDeactivated();
+        config.ValidateConfiguration();
+        config.RemoveValidationErrors();
 
-      CacheConfiguration(config);
+        CacheConfiguration(config);
+      }
     }
 
 		return config;

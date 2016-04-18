@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -24,6 +24,6 @@ public partial class Error : CustomStyledPage
   protected void Page_Load(object sender, EventArgs e)
   {
     string subject = "General Purpose Viewer Error - " + Context.Timestamp.ToString("yyyy-MM-dd hh:mm:ss");
-    lnkEmail.Attributes["href"] = "mailto:" + AppSettings.AdminEmail + "?subject=" + subject;
+    lnkEmail.Attributes["href"] = "mailto:" + AppContext.AppSettings.AdminEmail + "?subject=" + subject;
   }
 }

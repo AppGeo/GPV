@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ using NetTopologySuite.IO;
 
 public class ExportMarkupHandler : IHttpHandler
 {
-  private CoordinateSystem _coordSys = AppSettings.MapCoordinateSystem;
+  private CoordinateSystem _coordSys = AppContext.AppSettings.MapCoordinateSystem;
   private HttpResponse Response = null;
 
   public void ProcessRequest(HttpContext context)
@@ -45,7 +45,7 @@ public class ExportMarkupHandler : IHttpHandler
 
       using (OleDbConnection connection = AppContext.GetDatabaseConnection())
       {
-        string sql = String.Format("update {0}MarkupGroup set DateLastAccessed = ? where GroupID = ?", AppSettings.ConfigurationTablePrefix);
+        string sql = String.Format("update {0}MarkupGroup set DateLastAccessed = ? where GroupID = ?", WebConfigSettings.ConfigurationTablePrefix);
 
         using (OleDbCommand command = new OleDbCommand(sql, connection))
         {
@@ -53,7 +53,7 @@ public class ExportMarkupHandler : IHttpHandler
           command.Parameters.Add("@2", OleDbType.Integer).Value = groupId;
           command.ExecuteNonQuery();
 
-          command.CommandText = String.Format("select Shape, Color, Text from {0}Markup where GroupID = ? and Deleted = 0", AppSettings.ConfigurationTablePrefix);
+          command.CommandText = String.Format("select Shape, Color, Text from {0}Markup where GroupID = ? and Deleted = 0", WebConfigSettings.ConfigurationTablePrefix);
           command.Parameters.Clear();
           command.Parameters.Add("@1", OleDbType.Integer).Value = groupId;
 
@@ -92,7 +92,7 @@ public class ExportMarkupHandler : IHttpHandler
           Configuration.ApplicationRow application = config.Application.Select(String.Format("ApplicationID = '{0}'", appId))[0] as Configuration.ApplicationRow;
           appName = application.DisplayName;
 
-          command.CommandText = String.Format("select DisplayName from {0}MarkupGroup where GroupID = ?", AppSettings.ConfigurationTablePrefix);
+          command.CommandText = String.Format("select DisplayName from {0}MarkupGroup where GroupID = ?", WebConfigSettings.ConfigurationTablePrefix);
           groupName = command.ExecuteScalar() as string;
         }
       }
@@ -150,9 +150,8 @@ public class ExportMarkupHandler : IHttpHandler
 
     for (int i = 0; i < points.Count; ++i)
     {
-      double lat; double lon;
-      _coordSys.ToGeodetic(points[i].X, points[i].Y, out lon, out lat);
-      coordinates.Add(String.Format("{0},{1},0", lon, lat));
+      Coordinate g = _coordSys.ToGeodetic(points[i]);
+      coordinates.Add(String.Format("{0},{1},0", g.X, g.Y));
     }
 
     return String.Format("<coordinates>{0}</coordinates>", String.Join(" ", coordinates.ToArray()));

@@ -350,7 +350,7 @@
               <xs:element name="MapTabID" msprop:Generator_ColumnVarNameInTable="columnMapTabID" msprop:Generator_ColumnPropNameInRow="MapTabID" msprop:Generator_ColumnPropNameInTable="MapTabIDColumn" msprop:Generator_UserColumnName="MapTabID" type="xs:string" />
               <xs:element name="TileGroupID" msprop:Generator_ColumnVarNameInTable="columnTileGroupID" msprop:Generator_ColumnPropNameInRow="TileGroupID" msprop:Generator_ColumnPropNameInTable="TileGroupIDColumn" msprop:Generator_UserColumnName="TileGroupID" type="xs:string" />
               <xs:element name="CheckInLegend" msprop:Generator_ColumnVarNameInTable="columnCheckInLegend" msprop:Generator_ColumnPropNameInRow="CheckInLegend" msprop:Generator_ColumnPropNameInTable="CheckInLegendColumn" msprop:Generator_UserColumnName="CheckInLegend" type="xs:short" minOccurs="0" />
-              <xs:element name="Opacity" msprop:Generator_ColumnVarNameInTable="columnOpacity" msprop:Generator_ColumnPropNameInRow="Opacity" msprop:Generator_ColumnPropNameInTable="OpacityColumn" msprop:Generator_UserColumnName="Opacity" type="xs:short" minOccurs="0" />
+              <xs:element name="Opacity" msprop:Generator_ColumnVarNameInTable="columnOpacity" msprop:Generator_ColumnPropNameInRow="Opacity" msprop:Generator_ColumnPropNameInTable="OpacityColumn" msprop:Generator_UserColumnName="Opacity" type="xs:double" minOccurs="0" />
               <xs:element name="SequenceNo" msprop:Generator_ColumnVarNameInTable="columnSequenceNo" msprop:Generator_ColumnPropNameInRow="SequenceNo" msprop:Generator_ColumnPropNameInTable="SequenceNoColumn" msprop:Generator_UserColumnName="SequenceNo" type="xs:short" minOccurs="0" />
               <xs:element name="Active" msprop:Generator_ColumnVarNameInTable="columnActive" msprop:Generator_ColumnPropNameInRow="Active" msprop:Generator_ColumnPropNameInTable="ActiveColumn" msprop:Generator_UserColumnName="Active" type="xs:short" minOccurs="0" />
               <xs:element name="ValidationError" msprop:Generator_ColumnVarNameInTable="columnValidationError" msprop:Generator_ColumnPropNameInRow="ValidationError" msprop:Generator_ColumnPropNameInTable="ValidationErrorColumn" msprop:Generator_UserColumnName="ValidationError" type="xs:string" minOccurs="0" />
@@ -395,6 +395,14 @@
               <xs:element name="InteractiveLegend" msprop:Generator_ColumnVarNameInTable="columnInteractiveLegend" msprop:Generator_ColumnPropNameInRow="InteractiveLegend" msprop:Generator_ColumnPropNameInTable="InteractiveLegendColumn" msprop:Generator_UserColumnName="InteractiveLegend" type="xs:short" minOccurs="0" />
               <xs:element name="Active" msprop:Generator_ColumnVarNameInTable="columnActive" msprop:Generator_ColumnPropNameInRow="Active" msprop:Generator_ColumnPropNameInTable="ActiveColumn" msprop:Generator_UserColumnName="Active" type="xs:short" minOccurs="0" />
               <xs:element name="ValidationError" msprop:Generator_ColumnVarNameInTable="columnValidationError" msprop:Generator_ColumnPropNameInRow="ValidationError" msprop:Generator_ColumnPropNameInTable="ValidationErrorColumn" msprop:Generator_UserColumnName="ValidationError" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Setting" msprop:Generator_TableClassName="SettingDataTable" msprop:Generator_TableVarName="tableSetting" msprop:Generator_RowChangedName="SettingRowChanged" msprop:Generator_TablePropName="Setting" msprop:Generator_RowDeletingName="SettingRowDeleting" msprop:Generator_RowChangingName="SettingRowChanging" msprop:Generator_RowEvHandlerName="SettingRowChangeEventHandler" msprop:Generator_RowDeletedName="SettingRowDeleted" msprop:Generator_RowClassName="SettingRow" msprop:Generator_UserTableName="Setting" msprop:Generator_RowEvArgName="SettingRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Setting" msprop:Generator_ColumnVarNameInTable="columnSetting" msprop:Generator_ColumnPropNameInRow="Setting" msprop:Generator_ColumnPropNameInTable="SettingColumn" msprop:Generator_UserColumnName="Setting" type="xs:string" />
+              <xs:element name="Value" msprop:Generator_ColumnVarNameInTable="columnValue" msprop:Generator_ColumnPropNameInRow="Value" msprop:Generator_ColumnPropNameInTable="ValueColumn" msprop:Generator_UserColumnName="Value" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
@@ -465,6 +473,10 @@
     <xs:unique name="MapTabKey" msdata:PrimaryKey="true">
       <xs:selector xpath=".//mstns:MapTab" />
       <xs:field xpath="mstns:MapTabID" />
+    </xs:unique>
+    <xs:unique name="Setting_Constraint1" msdata:ConstraintName="Constraint1">
+      <xs:selector xpath=".//mstns:Setting" />
+      <xs:field xpath="mstns:Setting" />
     </xs:unique>
     <xs:keyref name="TileGroupToTileLayer" refer="Constraint1" msprop:rel_Generator_UserChildTable="TileLayer" msprop:rel_Generator_ChildPropName="GetTileLayerRows" msprop:rel_Generator_UserRelationName="TileGroupToTileLayer" msprop:rel_Generator_RelationVarName="relationTileGroupToTileLayer" msprop:rel_Generator_UserParentTable="TileGroup" msprop:rel_Generator_ParentPropName="TileGroupRow">
       <xs:selector xpath=".//mstns:TileLayer" />

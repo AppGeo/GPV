@@ -32,7 +32,24 @@ public partial class Configuration
 
     public Envelope GetFullExtentEnvelope()
     {
-      return IsFullExtentNull() ? AppSettings.DefaultFullExtent : EnvelopeExtensions.FromDelimitedString(FullExtent);
+      Envelope fullExtent;
+
+      if (IsFullExtentNull())
+      {
+        fullExtent = Configuration.AppSettings.DefaultFullExtent;
+      }
+      else
+      {
+        fullExtent = EnvelopeExtensions.FromDelimitedString(FullExtent);
+        AppSettings appSettings = Configuration.AppSettings;
+
+        if (!appSettings.MapCoordinateSystem.Equals(appSettings.MeasureCoordinateSystem))
+        {
+          fullExtent = appSettings.MapCoordinateSystem.ToProjected(appSettings.MeasureCoordinateSystem.ToGeodetic(fullExtent));
+        }
+      }
+
+      return fullExtent;
     }
 
     public PrintTemplateRow[] GetPrintTemplates()
@@ -70,7 +87,7 @@ public partial class Configuration
         layerIDs.AddRange((string[])mapTabData["target"]);
         layerIDs.AddRange((string[])mapTabData["selection"]);
         searchIDs.AddRange((string[])mapTabData["search"]);
-        tileGroupIDs.AddRange((string[])mapTabData["tileGroup"]);
+        tileGroupIDs.AddRange(((Dictionary<string, object>[])mapTabData["tileGroup"]).Select(o => (string)o["group"]).ToArray());
 
         mapTabs.Add(mapTab.MapTabID, mapTabData);
       }

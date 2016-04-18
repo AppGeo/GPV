@@ -1,4 +1,4 @@
-//  Copyright 2012 Applied Geographics, Inc.
+//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -55,7 +55,7 @@ public partial class Admin_CheckConfiguration : CustomStyledPage
       config.RemoveDeactivated();
       config.ValidateConfiguration();
 
-      int errorCount = WriteWebConfigBlock(config);
+      int errorCount = WriteSettingsBlock(config);
 
       errorCount += WriteReportBlock(config.Application, "ApplicationID", null);
       errorCount += WriteReportBlock(config.ApplicationMapTab, "ApplicationID", "MapTabID");
@@ -173,86 +173,36 @@ public partial class Admin_CheckConfiguration : CustomStyledPage
     td.Height = "0px";
   }
 
-  private int WriteWebConfigBlock(Configuration config)
+  private int WriteSettingsBlock(Configuration config)
   {
+    AppSettings appSettings = config.AppSettings;
+
     List<String> name = new List<String>();
     List<String> message = new List<String>();
+
+    // check AdminEmail
+
+    name.Add("AdminEmail");
+    message.Add(appSettings.AdminEmail == null ? "Not set" : null);
 
     // check DefaultApplication
 
     name.Add("DefaultApplication");
-    bool hasApplication = !String.IsNullOrEmpty(AppSettings.DefaultApplication) && config.Application.Any(o => String.Compare(o.ApplicationID, AppSettings.DefaultApplication, true) == 0);
+    bool hasApplication = !String.IsNullOrEmpty(appSettings.DefaultApplication) && config.Application.Any(o => String.Compare(o.ApplicationID, appSettings.DefaultApplication, true) == 0);
     message.Add(!hasApplication ? "Not set to a valid application ID" : null);
 
-    // check FullExtent and ZoomLevel
+    // check FullExtent
 
     name.Add("FullExtent");
-    message.Add(AppSettings.DefaultFullExtent == null ? "Not set or incorrectly specified, must be four comma-separated numbers" : null);
+    message.Add(appSettings.DefaultFullExtent == null ? "Not set or incorrectly specified, must be four comma-separated numbers" : null);
 
-    name.Add("ZoomLevels");
-    message.Add(CheckIsSet(AppSettings.ZoomLevels));
+    // check projections
 
-    // check MeasureUnits
+    name.Add("MapProjection");
+    message.Add(appSettings.MapCoordinateSystem == null ? "Not set or incorrectly specified, must be a Proj4 string" : null);
 
-    List<String> values = new List<String>(new string[] { "feet", "meters", "both" });
-
-    name.Add("MeasureUnits");
-    values.Add("both");
-    message.Add(CheckInValues(AppSettings.MeasureUnits, values));
-
-    // check highlight colors, opacities and sizes
-    
-    values = new List<String>(new string[] { "fill", "outline" });
-
-    foreach (string highlightType in new string[] { "Active", "Target", "Selection", "Filtered" })
-    {
-      name.Add(highlightType + "Color");
-      message.Add(CheckColor(AppSettings.GetConfigColor(highlightType + "Color")));
-
-      name.Add(highlightType + "Opacity");
-      message.Add(CheckInRange(AppSettings.GetConfigDouble(highlightType + "Opacity"), 0, 1));
-
-      name.Add(highlightType + "PolygonMode");
-      message.Add(CheckInValues(AppSettings.GetConfigSetting(highlightType + "PolygonMode"), values));
-
-      name.Add(highlightType + "PenWidth");
-      message.Add(CheckGreaterThanZero(AppSettings.GetConfigInteger(highlightType + "PenWidth")));
-
-      name.Add(highlightType + "DotSize");
-      message.Add(CheckGreaterThanZero(AppSettings.GetConfigInteger(highlightType + "DotSize")));
-    }
-
-    name.Add("BufferColor");
-    message.Add(CheckColor(AppSettings.BufferColor));
-
-    name.Add("BufferOpacity");
-    message.Add(CheckInRange(AppSettings.BufferOpacity, 0, 1));
-
-    name.Add("BufferOutlineColor");
-    message.Add(CheckColor(AppSettings.BufferOutlineColor));
-
-    name.Add("BufferOutlineOpacity");
-    message.Add(CheckInRange(AppSettings.BufferOutlineOpacity, 0, 1));
-
-    name.Add("BufferOutlinePenWidth");
-    message.Add(CheckIsSet(AppSettings.BufferOutlinePenWidth));
-
-    name.Add("SwatchTileWidth");
-    message.Add(CheckGreaterThanZero(AppSettings.SwatchTileWidth));
-
-    name.Add("SwatchTileHeight");
-    message.Add(CheckGreaterThanZero(AppSettings.SwatchTileHeight));
-
-    name.Add("PreserveOnActionChange");
-    values = new List<String>(new string[] { "target", "selection" });
-    message.Add(CheckInValues(AppSettings.PreserveOnActionChange, values));
-
-    name.Add("ExportFormat");
-    values = new List<String>(new string[] { "csv", "xls" });
-    message.Add(CheckInValues(AppSettings.ExportFormat, values));
-
-    name.Add("MarkupTimeout");
-    message.Add(CheckGreaterThanZero(AppSettings.MarkupTimeout));
+    name.Add("MeasureProjection");
+    message.Add(appSettings.MeasureCoordinateSystem == null ? "Not set or incorrectly specified, must be a Proj4 string" : null);
 
     int errorCount = message.Where(o => o != null).Count();
     
@@ -266,7 +216,7 @@ public partial class Admin_CheckConfiguration : CustomStyledPage
     tr.Cells.Add(td);
     td.ColSpan = 3;
     td.Attributes["unselectable"] = "on";
-    td.InnerText = "Web.config";
+    td.InnerText = WebConfigSettings.ConfigurationTablePrefix + "Setting";
 
     td = new HtmlTableCell();
     tr.Cells.Add(td);
@@ -347,7 +297,7 @@ public partial class Admin_CheckConfiguration : CustomStyledPage
     HtmlTableCell td = new HtmlTableCell();
     tr.Cells.Add(td);
     td.ColSpan = 3;
-    td.InnerText = AppSettings.ConfigurationTablePrefix + table.TableName;
+    td.InnerText = WebConfigSettings.ConfigurationTablePrefix + table.TableName;
     
     td = new HtmlTableCell();
     tr.Cells.Add(td);

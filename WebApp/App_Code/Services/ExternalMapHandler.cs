@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -15,51 +15,43 @@
 using System;
 using System.Linq;
 using System.Web;
+using GeoAPI.Geometries;
 
 public class ExternalMapHandler : WebServiceHandler 
 {
   [WebServiceMethod]
   private void DefaultMethod()
   {
+    AppSettings appSettings = AppContext.AppSettings;
+
     string name = Request.Form["name"];
 
-    double minx = Convert.ToDouble(Request.Form["minx"]);
-    double miny = Convert.ToDouble(Request.Form["miny"]);
-    double maxx = Convert.ToDouble(Request.Form["maxx"]);
-    double maxy = Convert.ToDouble(Request.Form["maxy"]);
+    Coordinate min = new Coordinate(Convert.ToDouble(Request.Form["minx"]), Convert.ToDouble(Request.Form["miny"]));
+    Coordinate max = new Coordinate(Convert.ToDouble(Request.Form["maxx"]), Convert.ToDouble(Request.Form["maxy"]));
+    
+    Envelope extent = new Envelope(min, max);
+    Coordinate center = extent.Centre;
+
     double pixelSize = Convert.ToDouble(Request.Form["pixelsize"]);
 
-    double x = (minx + maxx) / 2;
-    double y = (miny + maxy) / 2;
+    Envelope gExtent = appSettings.MapCoordinateSystem.ToGeodetic(extent);
+    Coordinate gCenter = appSettings.MapCoordinateSystem.ToGeodetic(center);
 
-    double lon;
-    double lat;
-    AppSettings.MapCoordinateSystem.ToGeodetic(x, y, out lon, out lat);
+    string units = appSettings.MapCoordinateSystem.MapUnits;
 
-    double minLon;
-    double minLat;
-    AppSettings.MapCoordinateSystem.ToGeodetic(minx, miny, out minLon, out minLat);
-
-    double maxLon;
-    double maxLat;
-    AppSettings.MapCoordinateSystem.ToGeodetic(maxx, maxy, out maxLon, out maxLat);
-
-    string units = AppSettings.MapCoordinateSystem.MapUnits;
-
-    if (!AppSettings.MapCoordinateSystem.Equals(AppSettings.MeasureCoordinateSystem))
+    if (!appSettings.MapCoordinateSystem.Equals(appSettings.MeasureCoordinateSystem))
     {
-      AppSettings.MeasureCoordinateSystem.ToProjected(lon, lat, out x, out y);
-      AppSettings.MeasureCoordinateSystem.ToProjected(minLon, minLat, out minx, out miny);
-      AppSettings.MeasureCoordinateSystem.ToProjected(maxLon, maxLat, out maxx, out maxy);
-      units = AppSettings.MeasureCoordinateSystem.MapUnits;
+      extent = appSettings.MeasureCoordinateSystem.ToProjected(gExtent);
+      center = appSettings.MeasureCoordinateSystem.ToProjected(gCenter);
+      units = appSettings.MeasureCoordinateSystem.MapUnits;
     }
 
-    double xm = x;
-    double ym = y;
-    double minxm = minx;
-    double minym = miny;
-    double maxxm = maxx;
-    double maxym = maxy;
+    double xm = center.X;
+    double ym = center.Y;
+    double minxm = extent.MinX;
+    double minym = extent.MinY;
+    double maxxm = extent.MaxX;
+    double maxym = extent.MaxY;
 
     if (units == "feet")
     {
@@ -71,12 +63,12 @@ public class ExternalMapHandler : WebServiceHandler
       maxym *= Constants.MetersPerFoot;
     }
 
-    double xft = x;
-    double yft = y;
-    double minxft = minx;
-    double minyft = miny;
-    double maxxft = maxx;
-    double maxyft = maxy;
+    double xft = center.X;
+    double yft = center.Y;
+    double minxft = extent.MinX;
+    double minyft = extent.MinY;
+    double maxxft = extent.MaxX;
+    double maxyft = extent.MaxY;
 
     if (units == "meters")
     {
@@ -88,30 +80,30 @@ public class ExternalMapHandler : WebServiceHandler
       maxyft *= Constants.FeetPerMeter;
     }
 
-    if (AppSettings.MapCoordinateSystem.MapUnits == "feet")
+    if (appSettings.MapCoordinateSystem.MapUnits == "feet")
     {
       pixelSize *= Constants.MetersPerFoot;
     }
 
-    double zoomLevel = (Math.Log(156543.0339280234 / pixelSize) / Math.Log(2));
+    double zoomLevel = (Math.Log(Constants.BasePixelSize / pixelSize) / Math.Log(2));
 
     Configuration.ExternalMapRow externalMap = Configuration.ExternalMap.First(o => o.DisplayName == name);
     string url = externalMap.URL;
 
-    url = url.Replace("{lat}", lat.ToString("0.0000000"));
-    url = url.Replace("{lon}", lon.ToString("0.0000000"));
-    url = url.Replace("{minlat}", minLat.ToString("0.0000000"));
-    url = url.Replace("{minlon}", minLon.ToString("0.0000000"));
-    url = url.Replace("{maxlat}", maxLat.ToString("0.0000000"));
-    url = url.Replace("{maxlon}", maxLon.ToString("0.0000000"));
+    url = url.Replace("{lat}", gCenter.Y.ToString("0.0000000"));
+    url = url.Replace("{lon}", gCenter.X.ToString("0.0000000"));
+    url = url.Replace("{minlat}", gExtent.MinY.ToString("0.0000000"));
+    url = url.Replace("{minlon}", gExtent.MinX.ToString("0.0000000"));
+    url = url.Replace("{maxlat}", gExtent.MaxY.ToString("0.0000000"));
+    url = url.Replace("{maxlon}", gExtent.MaxX.ToString("0.0000000"));
     url = url.Replace("{lev}", zoomLevel.ToString("0"));
 
-    url = url.Replace("{x}", x.ToString("0.00"));
-    url = url.Replace("{y}", y.ToString("0.00"));
-    url = url.Replace("{minx}", minx.ToString("0.00"));
-    url = url.Replace("{miny}", miny.ToString("0.00"));
-    url = url.Replace("{maxx}", maxx.ToString("0.00"));
-    url = url.Replace("{maxy}", maxy.ToString("0.00"));
+    url = url.Replace("{x}", center.X.ToString("0.00"));
+    url = url.Replace("{y}", center.Y.ToString("0.00"));
+    url = url.Replace("{minx}", extent.MinX.ToString("0.00"));
+    url = url.Replace("{miny}", extent.MinY.ToString("0.00"));
+    url = url.Replace("{maxx}", extent.MaxX.ToString("0.00"));
+    url = url.Replace("{maxy}", extent.MaxY.ToString("0.00"));
 
     url = url.Replace("{xm}", xm.ToString("0.00"));
     url = url.Replace("{ym}", ym.ToString("0.00"));

@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -31,6 +31,8 @@ public partial class Configuration
   private static Regex _searchSubstitutionRegex = new Regex(@"\s+\{0\}(\s+|$)");
   private static BooleanSwitch _debugSwitch = new BooleanSwitch("ConfigDebug", "Shows configuration validation performance in the debug window");
 
+  private AppSettings _appSettings = null;
+
   private static string[] TableNames
   {
     get
@@ -38,14 +40,14 @@ public partial class Configuration
       return new string[] {"ZoneLevel", "Application", "Connection", "MapTab", "Layer", "DataTab", "Query", "Search", "SearchInputField", "Proximity", 
 				"ApplicationMapTab", "MapTabLayer", "LayerFunction", "LayerProximity", "TileGroup", "TileLayer", "MapTabTileGroup", "PrintTemplate", 
 				"PrintTemplateContent", "ApplicationPrintTemplate", "MarkupCategory", "ApplicationMarkupCategory", 
-        "Zone", "Level", "ZoneLevelCombo", "MailingLabel", "ExternalMap"};
+        "Zone", "Level", "ZoneLevelCombo", "MailingLabel", "ExternalMap", "Setting"};
     }
   }
 
   public static Configuration GetCurrent()
   {
     Configuration config = new Configuration();
-    string prefix = AppSettings.ConfigurationTablePrefix;
+    string prefix = WebConfigSettings.ConfigurationTablePrefix;
     
     using (OleDbConnection connection = AppContext.GetDatabaseConnection())
     {
@@ -72,6 +74,10 @@ public partial class Configuration
                 inner join {0}Zone b on a.ZoneLevelID = b.ZoneLevelID and a.ZoneID = b.ZoneID
                 inner join {0}Level c on a.ZoneLevelID = c.ZoneLevelID and a.LevelID = c.LevelID
                 order by a.ZoneLevelID, b.SequenceNo, a.ZoneID, c.SequenceNo, a.LevelID", prefix);
+          }
+          else if (tableName == "Setting")
+          {
+            sql = "select Setting, Value from " + prefix + tableName;
           }
           else
           {
@@ -113,6 +119,19 @@ public partial class Configuration
     // return the number of rows (parameters) that are not procedure return values
 
     return procSchema.Select("PARAMETER_TYPE <> 4").Count();
+  }
+
+  public AppSettings AppSettings
+  {
+    get
+    {
+      if (_appSettings == null)
+      {
+        _appSettings = new AppSettings(Setting);
+      }
+
+      return _appSettings;
+    }
   }
 
   public void CascadeDeactivated()

@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ public static class MarkupManager
     Envelope extent = new Envelope();
 
     string idsString = String.Join(",", groupIds.Select(o => o.ToString()).ToArray());
-    string sql = String.Format("select Shape from {0}Markup where GroupID in ({1}) and Deleted = 0", AppSettings.ConfigurationTablePrefix, idsString);
+    string sql = String.Format("select Shape from {0}Markup where GroupID in ({1}) and Deleted = 0", WebConfigSettings.ConfigurationTablePrefix, idsString);
 
     using (OleDbConnection connection = AppContext.GetDatabaseConnection())
     {

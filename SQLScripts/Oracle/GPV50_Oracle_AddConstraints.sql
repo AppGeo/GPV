@@ -179,6 +179,12 @@ EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'SearchInputField ADD ' ||
   '  FieldID' ||
   ')';
 
+EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'Setting ADD ' ||
+  'CONSTRAINT PK_' || prefix || 'Setting PRIMARY KEY ' || 
+  '(' ||
+  '  Setting' ||
+  ')';
+
 EXECUTE IMMEDIATE 'ALTER TABLE ' || prefix || 'TileGroup ADD ' ||
   'CONSTRAINT PK_' || prefix || 'TileGroup PRIMARY KEY ' ||
   '(' ||

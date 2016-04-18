@@ -76,15 +76,21 @@ public class CoordinateSystem
     return base.GetHashCode();
   }
 
-	public void ToGeodetic(double x, double y, out double lon, out double lat)
+	public Coordinate ToGeodetic(Coordinate c)
 	{
-    double[] c = new double[] { x, y };
+    double[] p = new double[] { c.X, c.Y };
     double[] z = new double[] { 0 };
 
-    Reproject.ReprojectPoints(c, z, Projection, _geodetic, 0, 1);
+    Reproject.ReprojectPoints(p, z, Projection, _geodetic, 0, 1);
 
-    lon = c[0];
-    lat = c[1];
+    return new Coordinate(p[0], p[1]);
+  }
+
+  public Envelope ToGeodetic(Envelope extent)
+  {
+    Coordinate min = ToGeodetic(new Coordinate(extent.MinX, extent.MinY));
+    Coordinate max = ToGeodetic(new Coordinate(extent.MaxX, extent.MaxY));
+    return new Envelope(min, max);
   }
 
   public ILineString ToGeodetic(ILineString lineString)
@@ -93,11 +99,7 @@ public class CoordinateSystem
 
     for (int i = 0; i < lineString.Coordinates.Length; ++i)
     {
-      double lon;
-      double lat;
-      ToGeodetic(lineString.Coordinates[i].X, lineString.Coordinates[i].Y, out lon, out lat);
-
-      points[i] = new Coordinate(lon, lat);
+      points[i] = ToGeodetic(lineString.Coordinates[i]);
     }
 
     return new LineString(points);
@@ -109,25 +111,27 @@ public class CoordinateSystem
 
     for (int i = 0; i < polygon.ExteriorRing.Coordinates.Length; ++i)
     {
-      double lon;
-      double lat;
-      ToGeodetic(polygon.ExteriorRing.Coordinates[i].X, polygon.ExteriorRing.Coordinates[i].Y, out lon, out lat);
-
-      points[i] = new Coordinate(lon, lat);
+      points[i] = ToGeodetic(polygon.ExteriorRing.Coordinates[i]);
     }
 
     return new Polygon(new LinearRing(points));
   }
 
-  public void ToProjected(double lon, double lat, out double x, out double y)
+  public Coordinate ToProjected(Coordinate c)
 	{
-    double[] c = new double[] { lon, lat };
+    double[] p = new double[] { c.X, c.Y };
     double[] z = new double[] { 0 };
 
-    Reproject.ReprojectPoints(c, z, _geodetic, Projection, 0, 1);
+    Reproject.ReprojectPoints(p, z, _geodetic, Projection, 0, 1);
 
-    x = c[0];
-    y = c[1];
+    return new Coordinate(p[0], p[1]);
+  }
+
+  public Envelope ToProjected(Envelope extent)
+  {
+    Coordinate min = ToProjected(new Coordinate(extent.MinX, extent.MinY));
+    Coordinate max = ToProjected(new Coordinate(extent.MaxX, extent.MaxY));
+    return new Envelope(min, max);
   }
 
   public ILineString ToProjected(ILineString lineString)
@@ -136,11 +140,7 @@ public class CoordinateSystem
 
     for (int i = 0; i < lineString.Coordinates.Length; ++i)
     {
-      double x;
-      double y;
-      ToProjected(lineString.Coordinates[i].X, lineString.Coordinates[i].Y, out x, out y);
-
-      points[i] = new Coordinate(x, y);
+      points[i] = ToProjected(lineString.Coordinates[i]);
     }
 
     return new LineString(points);
@@ -152,11 +152,7 @@ public class CoordinateSystem
 
     for (int i = 0; i < polygon.ExteriorRing.Coordinates.Length; ++i)
     {
-      double x;
-      double y;
-      ToProjected(polygon.ExteriorRing.Coordinates[i].X, polygon.ExteriorRing.Coordinates[i].Y, out x, out y);
-
-      points[i] = new Coordinate(x, y);
+      points[i] = ToProjected(polygon.ExteriorRing.Coordinates[i]);
     }
 
     return new Polygon(new LinearRing(points));

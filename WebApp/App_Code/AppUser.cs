@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ public static class AppUser
 
     if (AppAuthentication.Mode != AuthenticationMode.None && user.Identity != null && user.Identity.IsAuthenticated)
     {
-      string sql = String.Format("select DisplayName from {0}User where UserName = '{1}'", AppSettings.ConfigurationTablePrefix, Name);
+      string sql = String.Format("select DisplayName from {0}User where UserName = '{1}'", WebConfigSettings.ConfigurationTablePrefix, Name);
       OleDbCommand command = new OleDbCommand(sql, connection);
       displayName = command.ExecuteScalar() as string;
 
@@ -76,7 +76,7 @@ public static class AppUser
       else
       {
         string sql = String.Format("select Role from {0}User where UserName = '{1}' and Role is not null",
-            AppSettings.ConfigurationTablePrefix, user.Identity.Name);
+            WebConfigSettings.ConfigurationTablePrefix, user.Identity.Name);
         OleDbCommand command = new OleDbCommand(sql, connection);
         role = command.ExecuteScalar() as string;
 
