@@ -158,9 +158,9 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'MapTab (' ||
   'DisplayName varchar2(50) NOT NULL,' ||
   'MapHost varchar2(50) NOT NULL,' ||
   'MapService varchar2(50) NOT NULL,' ||
+  'DataFrame varchar2(50),' ||
   'UserName varchar2(50),' ||
   'Password varchar2(50),' ||
-  'DataFrame varchar2(50),' ||
   'InteractiveLegend number(1),' ||
   'Active number(1) default 1' ||
 ')';
@@ -173,7 +173,7 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'MapTabLayer (' ||
   'ShowInLegend number(1),' ||
   'CheckInLegend number(1),' ||
   'IsExclusive number(1),' ||
-  'ShowinPrintLegend number(1)' ||
+  'ShowInPrintLegend number(1)' ||
 ')';
 
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'MapTabTileGroup (' ||

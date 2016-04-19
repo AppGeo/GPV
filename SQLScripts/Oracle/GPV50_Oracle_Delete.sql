@@ -36,42 +36,39 @@ BEGIN
 
 -- drop tables that are not referenced by foreign keys
 
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'ApplicationMapTab CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'ApplicationMarkupCategory CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'ApplicationPrintTemplate CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'DataTab CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'LayerFunction CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'LayerProximity CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'MapTabLayer CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'MapTabTileGroup CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Markup CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'PrintTemplateContent CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Proximity CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Query CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'SearchInputField CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'TileLayer CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'ZoneLevelCombo CASCADE CONSTRAINTS';
 
--- drop tables that are no longer referenced by foreign keys
+-- drop tables that are referenced by foreign keys
 
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'ApplicationMarkupCategory CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'PrintTemplate CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'LayerProximity CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Application CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Level CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'MapTab CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'MarkupGroup CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'PrintTemplate CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Proximity CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Search CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'TileGroup CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Zone CASCADE CONSTRAINTS';
-
--- drop tables that are no longer referenced by foreign keys
-
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'ApplicationPrintTemplate CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Connection CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Layer CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'MapTabTileGroup CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'MarkupCategory CASCADE CONSTRAINTS';
   EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'ZoneLevel CASCADE CONSTRAINTS';
 
--- drop remaining tables in order of referencing by foreign keys
+-- drop tables that are referenced by foreign keys
 
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'MapTabLayer CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'MapTab CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'ApplicationMapTab CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Application CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Connection CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'Layer CASCADE CONSTRAINTS';
+  EXECUTE IMMEDIATE 'DROP TABLE ' || prefix || 'MarkupCategory CASCADE CONSTRAINTS';
 
 END;
 /
