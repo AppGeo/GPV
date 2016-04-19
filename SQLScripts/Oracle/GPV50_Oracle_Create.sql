@@ -420,6 +420,7 @@ EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) va
 EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''SwatchTileWidth'', ''20'', ''pixels'')';
 EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''SwatchTileHeight'', ''20'', ''pixels'')';
 EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''LegendExpanded'', ''yes'', ''yes or no'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''SearchAutoSelect'', ''no'', ''yes or no'')';
 EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''PreserveOnActionChange'', ''selection'', ''target or selection'')';
 EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''CustomStyleSheet'', null, ''URL'')';
 EXECUTE IMMEDIATE 'insert into ' || prefix || 'Setting (Setting, Value, Note) values (''ExportFormat'', ''xls'', ''csv (comma-separated value) or xls (Excel)'')';

@@ -142,10 +142,11 @@ var GPV = (function (gpv) {
               $grdSearch.dataGrid("load", result);
               $labSearchCount.text((result.rows.length == 0 ? "None" : result.rows.length) + " found");
               $cmdShowAllOnMap.toggleClass("Disabled", result.rows.length == 0);
-            }
-          },
-          complete: function () {
 
+              if (gpv.settings.searchAutoSelect && result.rows.length == 1) {
+                showOnMap();
+              }
+            }
           }
         });
       }

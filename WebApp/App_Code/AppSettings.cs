@@ -382,6 +382,14 @@ public class AppSettings
     }
   }
 
+  public bool SearchAutoSelect
+  {
+    get
+    {
+      return GetConfigBoolean("SearchAutoSelect", false);
+    }
+  }
+
   public Color SelectionColor
   {
     get
@@ -642,6 +650,7 @@ public class AppSettings
   public string ToJson()
   {
     Dictionary<String, Object> jsonData = new Dictionary<String, Object>();
+    jsonData.Add("searchAutoSelect", SearchAutoSelect);
     jsonData.Add("showScaleBar", ShowScaleBar);
     jsonData.Add("preserveOnActionChange", PreserveOnActionChange);
     jsonData.Add("isPublic", String.IsNullOrEmpty(AppUser.Name));
