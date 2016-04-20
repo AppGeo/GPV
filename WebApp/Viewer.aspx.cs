@@ -534,6 +534,43 @@ public partial class Viewer : CustomStyledPage
       }
     }
 
+    // === search ===
+
+    if (!application.IsDefaultSearchNull())
+    {
+      _appState.Search = application.DefaultSearch;
+    }
+
+    if (launchParams.ContainsKey("search"))
+    {
+      // the search must exist
+
+      Configuration.SearchRow search = ((Configuration)mapTab.Table.DataSet).Search.FirstOrDefault(o => String.Compare(o.SearchID, launchParams["search"], true) == 0);
+
+      if (search == null)
+      {
+        ShowError("No search exists with the specified ID");
+      }
+
+      // a MapTab must be specified or available by default
+
+      if (mapTab == null)
+      {
+        ShowError("When providing a search, a map tab must also be specified or the application must have a default map tab defined");
+      }
+
+      // the search must be linked to a layer in the MapTab
+
+      string[] layerIDs = mapTab.GetMapTabLayerRows().Select(o => o.LayerID).ToArray();
+
+      if (!layerIDs.Contains(search.LayerID))
+      {
+        ShowError("The specified search is not linked to a layer in map tab " + mapTab.MapTabID);
+      }
+
+      _appState.Search = search.SearchID;
+    }
+
     // === action ===
 
     if (!application.IsDefaultActionNull())

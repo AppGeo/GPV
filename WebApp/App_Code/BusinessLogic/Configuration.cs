@@ -546,9 +546,30 @@ public partial class Configuration
         application.ValidationError = "The default map tab is not a valid map tab in this application";
       }
 
+      // DefaultSearch must be valid if not null
+
+      if (application.IsValidationErrorNull() && !application.IsDefaultSearchNull())
+      {
+        // DefaultMapTab must not be null
+
+        if (application.IsDefaultMapTabNull())
+        {
+          application.ValidationError = "A default map tab must be provided when a default search is defined";
+        }
+        else
+        {
+          Configuration.MapTabRow mapTab = MapTab.First(o => o.MapTabID == application.DefaultMapTab);
+
+          if (!mapTab.GetMapTabLayerRows().Any(o => o.LayerRow.GetSearchRows().Any(o2 => o2.SearchID == application.DefaultSearch)))
+          {
+            application.ValidationError = "The default search is not linked to a layer in the default map tab";
+          }
+        }
+      }
+
       // DefaultAction must be valid if not null
 
-      else if (!application.IsDefaultActionNull())
+      if (application.IsValidationErrorNull() && !application.IsDefaultActionNull())
       {
         string[] validActions = EnumHelper.ToChoiceArray(typeof(Action));
 

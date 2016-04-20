@@ -39,6 +39,7 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'Application (' ||
   'FunctionTabs varchar2(50),' ||
   'DefaultFunctionTab varchar2(50),' ||
   'DefaultMapTab varchar2(50),' ||
+  'DefaultSearch varchar2(50),' ||
   'DefaultAction varchar2(50),' ||
   'DefaultTargetLayer varchar2(50),' ||
   'DefaultProximity varchar2(50),' ||
