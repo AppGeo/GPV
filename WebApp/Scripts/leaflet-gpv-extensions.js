@@ -301,13 +301,15 @@
     var map = initializeDrawing(this);
     var mode = getMode(map);
 
-    if (mode === 'polyline' || mode === 'polygon') {
-      fireShapeEvent(map, 'shapedrawn', e, mode);
-      delete map._drawing.shape;
+    if (!map._drawing.dblclickTimeout) {
+      if (mode === 'polyline' || mode === 'polygon') {
+        fireShapeEvent(map, 'shapedrawn', e, mode);
+        delete map._drawing.shape;
 
-      map._drawing.dblclickTimeout = setTimeout(function () {
-        delete map._drawing.dblclickTimeout;
-      }, 10);
+        map._drawing.dblclickTimeout = setTimeout(function () {
+          delete map._drawing.dblclickTimeout;
+        }, 10);
+      }
     }
   });
 
