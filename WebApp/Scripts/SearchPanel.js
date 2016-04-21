@@ -19,7 +19,6 @@ var GPV = (function (gpv) {
     var config = gpv.configuration;
     var appState = gpv.appState;
     var service = "Services/SearchPanel.ashx";
-    var currentSearch;
     var initializing = true;
 
     // =====  controls  =====
@@ -208,7 +207,7 @@ var GPV = (function (gpv) {
     }
 
     function updateTargets(ids) {
-      var layerID = config.search[currentSearch].layer.id;
+      var layerID = config.search[appState.Search].layer.id;
       var targetIds = $.map(ids, function (id) { return id.m; }).join(",");
       var url = "application:action=0&selectionlayer=&selectionids=&scaleby=1.2&targetlayer=" + layerID + "&targetids=" + targetIds;
 
