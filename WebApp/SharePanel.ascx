@@ -20,7 +20,6 @@
 <div class="FunctionHeader"><span class="glyphicon glyphicon-menu-left FunctionExit" aria-hidden="true"></span>Share</div>
 <div id="pnlShareContent" class="Panel">
   <button id="cmdForPrint" class="share-type" title="Create a printable map"><i class="fa fa-print"></i> Print</button>
-  <button id="cmdForEmail" title="Get a link to this map for emailing"><i class="fa fa-share-alt"></i> Email Link</button>
   <button id="cmdForExport" class="share-type" title="See this area in other maps"><i class="fa fa-map-marker"></i> Go To</button>
   <button id="cmdForDownload" class="share-type" title="Save this map as an image or KML"><i class="fa fa-external-link"></i> Export</button>
   <div id="pnlPrint" class="share">
@@ -44,10 +43,6 @@
       <input type="hidden" name="width" />
 		  <button id="cmdPrint">Create</button>
     </form>
-  </div>
-  <div id="pnlEmail" class="share">
-    <div class="FunctionLabel">Link for Emailing</div><br/>
-    <textarea id="lnkEmail" rows="3" readonly="readonly" style="overflow: hidden" ></textarea>
   </div>
   <div id="pnlExport" class="share">
     <div class="FunctionLabel">See Area in Another Map</div><br>

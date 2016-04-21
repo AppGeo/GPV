@@ -41,6 +41,11 @@
       <uc1:Header ID="Header1" runat="server" />
       <span id="cmdShowDetails" class="glyphicon glyphicon-option-vertical" title="Show/hide details panel" style="font-size: 22px;"></span>
       <a id="cmdHelp" runat="server" class="CommandLink" title="Show the help pages" href="Help.aspx" target="help"><span class="glyphicon glyphicon-question-sign" style="font-size: 22px;"></span></a>
+      <span id="cmdEmail" title="Get a link to this map for emailing"><i class="fa fa-share-alt"></i></span>
+      <div id="pnlEmail" class="input-group">
+        <textarea id="lnkEmail" readonly="readonly" class="form-control custom-control" rows="3" ></textarea>
+        <span id="cmdEmailClose" class="input-group-addon btn">x</span>
+        </div>
     </div>
     <div id="pnlContent" runat="server" class="Panel">
       <div id="pnlFunctionSidebar" runat="server" class="Panel">

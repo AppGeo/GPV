@@ -83,7 +83,7 @@
 
 /* default color of the hamburger menu icon and the help question icon */
 
-#cmdMenu span, #cmdHelp span{
+#cmdMenu span, #cmdHelp span, #cmdEmail i{
 color: #009688;
 }
 

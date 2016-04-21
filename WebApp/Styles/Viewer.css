@@ -127,9 +127,36 @@ button {
   bottom: auto;
 }
 
-#cmdHelp, #cmdShowDetails{
+#pnlEmail
+{
+  position: absolute;
+  top: 42px;
+  right: 0;
+  width: 320px;
+  resize: none;
+  z-index: 5;
+  display: none;
+}
+
+#lnkEmail{
+  width: 89%;
+  background-color: #FFFFFF;
+  overflow: hidden;
+  resize: none;
+}
+
+#cmdEmailClose, #lnkEmail {
+  height: 74px;
+}
+
+#cmdHelp, #cmdShowDetails, #cmdEmail{
   float: right;
   margin: 8px;
+}
+
+#cmdEmail{
+  font-size: 19px;
+  padding: 0 4px;
 }
 
 #cmdShowDetails {
