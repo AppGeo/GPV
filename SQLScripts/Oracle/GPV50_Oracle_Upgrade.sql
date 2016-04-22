@@ -197,6 +197,7 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix50 || 'ZoneLevelCombo AS SELECT * FRO
 -- GPVSetting content
 
 EXECUTE IMMEDIATE 'insert into ' || prefix50 || 'Setting (Setting, Value, Required, Note) values (''AdminEmail'', null, ''YES'', ''email address'')';
+EXECUTE IMMEDIATE 'insert into ' || prefix50 || 'Setting (Setting, Value, Note) values (''AllowShowApps'', ''no'', ''yes or no'')';
 
 EXECUTE IMMEDIATE 'insert into ' || prefix50 || 'Setting (Setting, Value, Note) values (''DefaultApplication'', null, ''ApplicationID'')';
 EXECUTE IMMEDIATE 'insert into ' || prefix50 || 'Setting (Setting, Value, Required, Note) values (''FullExtent'', null, ''YES'', ''min X, minY, max X, max Y in MeasureProjection coordinates'')';
