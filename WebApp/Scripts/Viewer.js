@@ -155,8 +155,7 @@ var GPV = (function (gpv) {
           if (result && result.id) {
             var loc = document.location;
             var url = [loc.protocol, "//", loc.hostname, loc.port.length && loc.port != "80" ? ":" + loc.port : "", loc.pathname, "?state=", result.id].join("");
-            $lnkEmail.val(url)
-            //$(".share").hide();
+            $lnkEmail.val(url);
             $('#pnlEmail').fadeIn(600);
             selectEmailLink();
           }

@@ -25,25 +25,6 @@ var GPV = (function (gpv) {
       $(panel).fadeIn(600);
     });
 
-    //$("#cmdForEmail").on("click", function () {
-    //  gpv.post({
-    //    url: "Services/SaveAppState.ashx",
-    //    data: {
-    //      state: gpv.appState.toJson()
-    //    },
-    //    success: function (result) {
-    //      if (result && result.id) {
-    //        var loc = document.location;
-    //        var url = [loc.protocol, "//", loc.hostname, loc.port.length && loc.port != "80" ? ":" + loc.port : "", loc.pathname, "?state=", result.id].join("");
-    //        $lnkEmail.val(url)
-    //        $(".share").hide();
-    //        $("#pnlEmail").fadeIn(600);
-    //        selectEmailLink();
-    //      }
-    //    }
-    //  });
-    //});
-
     var $cmdExternalMap = $("#cmdExternalMap").on("click", function(e) {
       if (externalMapState === 'posted') {
         externalMapState = 'clicked';
@@ -78,13 +59,6 @@ var GPV = (function (gpv) {
       updatePrintScale();
     });
 
-    var $lnkEmail = $("#lnkEmail").on("mousedown", function (e) {
-      if (e.which > 1) {
-        e.preventDefault();
-        selectEmailLink();
-      }
-    });
-
     $("#tboPrintScale").numericInput({ negative: false, decimal: false }).on("keyup", function () {
       $("#optPrintScaleInput").trigger("click");
     });
@@ -99,10 +73,6 @@ var GPV = (function (gpv) {
     });
 
     // =====  private functions  =====
-
-    function selectEmailLink() {
-      $lnkEmail.prop("selectionStart", 0).prop("selectionEnd", $lnkEmail.val().length);
-    }
 
     function showPrintTemplateInputs() {
       $(".printInput").hide()

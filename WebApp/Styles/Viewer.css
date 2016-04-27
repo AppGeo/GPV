@@ -142,11 +142,12 @@ button {
   width: 89%;
   background-color: #FFFFFF;
   overflow: hidden;
+  font-size: 12px;
   resize: none;
 }
 
 #cmdEmailClose, #lnkEmail {
-  height: 74px;
+  height: 50px;
 }
 
 #cmdHelp, #cmdShowDetails, #cmdEmail{
