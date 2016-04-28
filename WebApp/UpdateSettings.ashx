@@ -183,7 +183,7 @@ public class ConvertSettings : IHttpHandler
 
     parameters.Add("+no_defs");
 
-    return String.Join(" ", parameters);
+    return String.Join(" ", parameters.ToArray());
   }
   
   public bool IsReusable
