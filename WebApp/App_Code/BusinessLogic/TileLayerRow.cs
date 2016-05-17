@@ -31,6 +31,11 @@ public partial class Configuration
         jsonData.Add("attribution", Attribution);
       }
 
+      if (!IsMaxZoomLevelNull())
+      {
+        jsonData.Add("maxZoom", MaxZoomLevel);
+      }
+
       return jsonData;
     }
   }

@@ -329,6 +329,22 @@ li.MapTool span:not(.glyphicon), #selectedTool span:not(.glyphicon){
   height: 100%;
 }
 
+#logo
+{
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  width: 110px;
+  height: 42px;
+  opacity: 0.8;
+  z-index: 1000;
+}
+
+#logo::before
+{
+  content: url(../Images/UI/AppGeo.png);
+}
+
 .MarkupText
 {
   font-family: Verdana, sans-serif;

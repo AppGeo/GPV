@@ -319,6 +319,7 @@ EXECUTE IMMEDIATE  'CREATE TABLE ' || prefix || 'TileLayer (' ||
   'TileLayerID varchar2(50) NOT NULL,' ||
   'TileGroupID varchar2(50) NOT NULL,' ||
   'URL varchar2(400) NOT NULL,' ||
+  'MaxZoomLevel number(2),' ||
   'Attribution varchar2(400),' ||
   'Overlay number(1) default 1,' ||
   'SequenceNo number(2) NOT NULL,' ||

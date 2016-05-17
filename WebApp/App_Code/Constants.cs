@@ -22,5 +22,5 @@ public static class Constants
   public const double SquareFeetPerAcre = 43560;
 
   public const double BasePixelSize = 156543.0339280234;     // Web Mercator level 0 pixel size in meters
-  public const double WebMercatorDelta = 20037508.342787;    // Web Mercator level 1 tile width in meters
+  public const double WebMercatorDelta = 20037508.342787;    // Web Mercator level 0 half tile width in meters
 }

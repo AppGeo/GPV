@@ -296,6 +296,14 @@ public class AppSettings
     }
   }
 
+  public bool ShowLogo
+  {
+    get
+    {
+      return GetConfigBoolean("ShowLogo", true);
+    }
+  }
+
   public bool LegendExpanded
   {
     get
@@ -627,7 +635,7 @@ public class AppSettings
 
   private string GetConfigSetting(string name)
   {
-    return _configSetting[name];
+    return _configSetting.Keys.Contains(name) ? _configSetting[name] : null;
   }
 
   private string GetConfigSetting(string name, string defaultValue)

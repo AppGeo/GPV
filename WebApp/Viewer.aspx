@@ -60,7 +60,7 @@
           </ul>
            <div id="pnlAttribution" class="Panel">
             <span id="spnVersion" runat="server" class="VersionText"></span>&nbsp;&nbsp;
-            <a class="VersionText" href="http://www.appgeo.com" target="AppGeo">AppGeo</a>
+            <a id="logosmall" runat="server" class="VersionText" href="http://www.appgeo.com" target="AppGeo">AppGeo</a>
           </div>
         </div>
         <div id="pnlFunction" runat="server" class="Panel">
@@ -154,6 +154,7 @@
           <div id="progress" style="display: none">
             <div id="progressBar"></div>
           </div>
+          <a id="logo" runat="server" href="http://www.appgeo.com" target="_blank"></a>
         </div>
       </div>
 

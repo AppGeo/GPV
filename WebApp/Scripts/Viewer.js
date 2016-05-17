@@ -346,7 +346,8 @@ var GPV = (function (gpv) {
             return L.tileLayer(tl.url, { 
               zIndex: tl.overlay ? 200 + z : z, 
               attribution: tl.attribution,
-              opacity: tg.opacity
+              opacity: tg.opacity,
+              maxZoom: tl.maxZoom || map.options.maxZoom
             });
           });
         });

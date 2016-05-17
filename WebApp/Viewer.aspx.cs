@@ -204,6 +204,15 @@ public partial class Viewer : CustomStyledPage
 
     spnVersion.InnerText = Version.ToString();
 
+    if (!_config.AppSettings.ShowLogo)
+    {
+      logo.Visible = false;
+    }
+    else
+    {
+      logosmall.Visible = false;
+    }
+
     TrackingManager.TrackUse(launchParams);
   }
 
