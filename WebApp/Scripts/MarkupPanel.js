@@ -643,8 +643,9 @@ var GPV = (function (gpv) {
         var sin = Math.sin(sweepAngle);
 
         var center = map.options.crs.project(shape.getLatLng());
+        var theta = Math.PI * 0.5 - 2 * Math.atan(Math.pow(Math.E, -center.y / 6378137));
         var dx = 0;
-        var dy = shape.getRadius();
+        var dy = shape.getRadius() / theta;
         points = [ L.point(center.x + dx, center.y + dy) ];
 
         for (var i = 0; i < segments - 1; ++i) {

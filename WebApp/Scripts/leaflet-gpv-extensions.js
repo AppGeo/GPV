@@ -155,13 +155,7 @@
 
       case 'circle':
         g0 = map._drawing.shape.getLatLng();
-        p0 = crs.project(g0);
-        p1 = crs.project(latlng);
-        
-        var dx = p1.x - p0.x;
-        var dy = p1.y - p0.y;
-        var radius = Math.sqrt(dx * dx + dy * dy);
-        map._drawing.shape.setRadius(radius);
+        map._drawing.shape.setRadius(g0.distanceTo(latlng));
         break;
 
       case 'polyline':
