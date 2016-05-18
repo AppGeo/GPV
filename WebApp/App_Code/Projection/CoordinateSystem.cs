@@ -93,28 +93,50 @@ public class CoordinateSystem
     return new Envelope(min, max);
   }
 
-  public ILineString ToGeodetic(ILineString lineString)
+  public IGeometry ToGeodetic(IGeometry geometry)
   {
-    Coordinate[] points = new Coordinate[lineString.Coordinates.Length];
+    Coordinate[] points;
 
-    for (int i = 0; i < lineString.Coordinates.Length; ++i)
+    switch (geometry.OgcGeometryType)
     {
-      points[i] = ToGeodetic(lineString.Coordinates[i]);
+      case OgcGeometryType.Point:
+        return new Point(ToGeodetic(geometry.Coordinate));
+
+      case OgcGeometryType.LineString:
+        ILineString lineString = (ILineString)geometry;
+        points = new Coordinate[lineString.Coordinates.Length];
+
+        for (int i = 0; i < lineString.Coordinates.Length; ++i)
+        {
+          points[i] = ToGeodetic(lineString.Coordinates[i]);
+        }
+
+        return new LineString(points);
+
+      case OgcGeometryType.Polygon:
+        IPolygon polygon = (IPolygon)geometry;
+
+        points = new Coordinate[polygon.ExteriorRing.Coordinates.Length];
+
+        for (int i = 0; i < polygon.ExteriorRing.Coordinates.Length; ++i)
+        {
+          points[i] = ToGeodetic(polygon.ExteriorRing.Coordinates[i]);
+        }
+
+        return new Polygon(new LinearRing(points));
     }
 
-    return new LineString(points);
+    return null;
+  }
+
+  public ILineString ToGeodetic(ILineString lineString)
+  {
+    return (ILineString)ToGeodetic((IGeometry)lineString);
   }
 
   public IPolygon ToGeodetic(IPolygon polygon)
   {
-    Coordinate[] points = new Coordinate[polygon.ExteriorRing.Coordinates.Length];
-
-    for (int i = 0; i < polygon.ExteriorRing.Coordinates.Length; ++i)
-    {
-      points[i] = ToGeodetic(polygon.ExteriorRing.Coordinates[i]);
-    }
-
-    return new Polygon(new LinearRing(points));
+    return (IPolygon)ToGeodetic((IGeometry)polygon);
   }
 
   public Coordinate ToProjected(Coordinate c)
@@ -134,28 +156,50 @@ public class CoordinateSystem
     return new Envelope(min, max);
   }
 
-  public ILineString ToProjected(ILineString lineString)
+  public IGeometry ToProjected(IGeometry geometry)
   {
-    Coordinate[] points = new Coordinate[lineString.Coordinates.Length];
+    Coordinate[] points;
 
-    for (int i = 0; i < lineString.Coordinates.Length; ++i)
+    switch (geometry.OgcGeometryType)
     {
-      points[i] = ToProjected(lineString.Coordinates[i]);
+      case OgcGeometryType.Point:
+        return new Point(ToProjected(geometry.Coordinate));
+
+      case OgcGeometryType.LineString:
+        ILineString lineString = (ILineString)geometry;
+        points = new Coordinate[lineString.Coordinates.Length];
+
+        for (int i = 0; i < lineString.Coordinates.Length; ++i)
+        {
+          points[i] = ToProjected(lineString.Coordinates[i]);
+        }
+
+        return new LineString(points);
+
+      case OgcGeometryType.Polygon:
+        IPolygon polygon = (IPolygon)geometry;
+
+        points = new Coordinate[polygon.ExteriorRing.Coordinates.Length];
+
+        for (int i = 0; i < polygon.ExteriorRing.Coordinates.Length; ++i)
+        {
+          points[i] = ToProjected(polygon.ExteriorRing.Coordinates[i]);
+        }
+
+        return new Polygon(new LinearRing(points));
     }
 
-    return new LineString(points);
+    return null;
+  }
+
+  public ILineString ToProjected(ILineString lineString)
+  {
+    return (ILineString)ToProjected((IGeometry)lineString);
   }
 
   public IPolygon ToProjected(IPolygon polygon)
   {
-    Coordinate[] points = new Coordinate[polygon.ExteriorRing.Coordinates.Length];
-
-    for (int i = 0; i < polygon.ExteriorRing.Coordinates.Length; ++i)
-    {
-      points[i] = ToProjected(polygon.ExteriorRing.Coordinates[i]);
-    }
-
-    return new Polygon(new LinearRing(points));
+    return (IPolygon)ToProjected((IGeometry)polygon);
   }
 
   public string ToProj4String()
