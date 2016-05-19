@@ -27,6 +27,7 @@ public class ConvertSettings : IHttpHandler
   {
     context.Response.ContentType = "text/plain";
     context.Response.AddHeader("Content-Disposition", "attachment; filename=UpdateSettings.sql");
+    context.Response.Write("\n-- Note: change the name of the GPVSetting table to match that in your database\n");
 
     string[] settings = new string[] { "AdminEmail", 
       "AllowShowApps", "DefaultApplication", "FullExtent", "ZoomLevels", "ShowScaleBar", "MeasureUnits", 

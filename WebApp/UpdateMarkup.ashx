@@ -15,31 +15,44 @@
 //  limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using GeoAPI.Geometries;
 using NetTopologySuite.IO;
 
 public class UpdateMarkup : IHttpHandler 
 {
+  // at least one of these should be set to true
+  
+  private bool ClosePolygons = true;
+  private bool ReprojectGeometry = true;
+
+  private HttpContext _context = null;
+  
   public void ProcessRequest (HttpContext context) 
   {
-    context.Response.ContentType = "text/plain";
+    _context = context;
+    _context.Response.ContentType = "text/plain";
+    
     AppSettings settings = Configuration.GetCurrent().AppSettings;
     
     using (OleDbConnection connection = AppContext.GetDatabaseConnection())
     {
-      if (!MarkupAlreadyUpdated(connection, context) && CanPerformProjection(settings))
+      if (!MarkupAlreadyUpdated(connection) && (!ReprojectGeometry || CanPerformProjection(settings)))
       {
-        ProcessMarkup(connection, settings);
-        SetMarkupUpdated(connection, context);
+        if (ProcessMarkup(connection, settings))
+        {
+          SetMarkupUpdated(connection);
+        }
       }
     }
   }
 
-  private bool MarkupAlreadyUpdated(OleDbConnection connection, HttpContext context)
+  private bool MarkupAlreadyUpdated(OleDbConnection connection)
   {
     string markupUpdated;
     string sql = String.Format("select Value from {0}Setting where Setting = 'MarkupUpdated'", WebConfigSettings.ConfigurationTablePrefix);
@@ -51,7 +64,7 @@ public class UpdateMarkup : IHttpHandler
 
     if (markupUpdated != null)
     {
-      context.Response.Write("The markup was already updated on " + markupUpdated);
+      _context.Response.Write("The markup was already updated on " + markupUpdated);
     }
 
     return markupUpdated != null;
@@ -59,15 +72,49 @@ public class UpdateMarkup : IHttpHandler
 
   private bool CanPerformProjection(AppSettings settings)
   {
-    return !settings.MapCoordinateSystem.Equals(settings.MeasureCoordinateSystem);
+    bool canProject = !settings.MapCoordinateSystem.Equals(settings.MeasureCoordinateSystem);
+
+    if (!canProject)
+    {
+      _context.Response.Write("No need to update markup; the map projection and measurement projection are the same.");
+    }
+    
+    return canProject;
   }
-  
-  private void ProcessMarkup(OleDbConnection connection, AppSettings settings)
+
+  private string ClosePolygon(string shape)
   {
+    string real = @"-?\d*\.?\d+";
+    string point = real + @"\s+" + real;
+    string pointList = point + @"(\s*,\s*" + point + @")*";
+    Regex polygonRegex = new Regex(@"POLYGON\s*\(\((?<p>" + pointList + @")\)\)");
+    Regex space = new Regex(@"\s+");
+    
+    Match match = polygonRegex.Match(shape);
+
+    if (match.Success)
+    {
+      Capture capture = match.Groups["p"].Captures[0];
+      List<String> points = new List<String>(capture.Value.Split(',').Select(o => space.Replace(o.Trim(), " ")));
+
+      if (points[points.Count - 1] != points[0])
+      {
+        points.Add(points[0]);
+        shape = String.Format("POLYGON(({0}))", String.Join(",", points));
+      }
+    }
+
+    return shape;
+  }
+
+  private bool ProcessMarkup(OleDbConnection connection, AppSettings settings)
+  {
+    bool success = true;
     string sql = String.Format("select MarkupID, Shape from {0}Markup", WebConfigSettings.ConfigurationTablePrefix);    
     DataTable table = new DataTable();
 
-    using (OleDbCommand command = new OleDbCommand(sql, connection))
+    using (OleDbTransaction transaction = connection.BeginTransaction())
+    using (OleDbCommand command = new OleDbCommand(sql, connection, transaction))
     {
       OleDbDataAdapter adapter = new OleDbDataAdapter(command);
       adapter.Fill(table);
@@ -81,23 +128,45 @@ public class UpdateMarkup : IHttpHandler
 
       sql = "update {0}Markup set Shape = '{1}' where MarkupID = {2}";
 
-      foreach (object[] row in rows)
+      try
       {
-        int id = (int)row[0];
-        string shape = (string)row[1];
+        foreach (object[] row in rows)
+        {
+          int id = (int)row[0];
+          string shape = (string)row[1];
 
-        IGeometry geometry = wktReader.Read(shape);
-        geometry = measureProjection.ToGeodetic(geometry);
-        geometry = mapProjection.ToProjected(geometry);
-        shape = wktWriter.Write(geometry);
+          if (ClosePolygons)
+          {
+            shape = ClosePolygon(shape);
+          }
 
-        command.CommandText = String.Format(sql, WebConfigSettings.ConfigurationTablePrefix, shape, id);
-        command.ExecuteNonQuery();
+          if (ReprojectGeometry)
+          {
+            IGeometry geometry = wktReader.Read(shape);
+            geometry = measureProjection.ToGeodetic(geometry);
+            geometry = mapProjection.ToProjected(geometry);
+            shape = wktWriter.Write(geometry);
+          }
+
+          command.CommandText = String.Format(sql, WebConfigSettings.ConfigurationTablePrefix, shape, id);
+          command.ExecuteNonQuery();
+        }
+
+        transaction.Commit();
+      }
+      catch (Exception ex)
+      {
+        transaction.Rollback();
+        success = false;
+        
+        _context.Response.Write("Error encountered while processing, markup remains unchanged.\n  " + ex.Message);
       }
     }
+
+    return success;
   }
 
-  private void SetMarkupUpdated(OleDbConnection connection, HttpContext context)
+  private void SetMarkupUpdated(OleDbConnection connection)
   {
     string markupUpdated = DateTime.Now.ToString("MMMM d, yyyy");
     string sql = String.Format("insert into {0}Setting (Setting, Value) values ('MarkupUpdated', '{1}')", WebConfigSettings.ConfigurationTablePrefix, markupUpdated);
@@ -107,7 +176,7 @@ public class UpdateMarkup : IHttpHandler
       command.ExecuteNonQuery();
     }
 
-    context.Response.Write("The markup has been updated.");
+    _context.Response.Write("The markup has been updated.");
   }
   
   public bool IsReusable {
