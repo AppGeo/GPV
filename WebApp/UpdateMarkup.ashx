@@ -28,10 +28,30 @@ public class UpdateMarkup : IHttpHandler
 {
   // at least one of these should be set to true
   
-  private bool ClosePolygons = true;
-  private bool ReprojectGeometry = true;
+  private bool FixGeometries = true;
+  private bool ReprojectGeometries = true;
 
   private HttpContext _context = null;
+  
+  private static Regex _lineStringRegex = null;
+  private static Regex _polygonRegex = null;
+  private static Regex _typeRegex = null;
+  private static Regex _spaceRegex = null;
+
+  static UpdateMarkup()
+  {
+    string real = @"-?\d*\.?\d+";
+    string point = real + @"\s*" + real;
+    string pointList = point + @"(\s*,\s*" + point + @")*";
+
+    _lineStringRegex = new Regex(@"LINESTRING\s*\((?<p>" + pointList + @")\)");
+    _polygonRegex = new Regex(@"POLYGON\s*\(\((?<p>" + pointList + @")\)\)");
+
+    string type = @"(?<t>POINT|LINESTRING|POLYGON)\s*\(";
+    _typeRegex = new Regex(type);
+
+    _spaceRegex = new Regex(@"\s+");
+  }
   
   public void ProcessRequest (HttpContext context) 
   {
@@ -42,7 +62,7 @@ public class UpdateMarkup : IHttpHandler
     
     using (OleDbConnection connection = AppContext.GetDatabaseConnection())
     {
-      if (!MarkupAlreadyUpdated(connection) && (!ReprojectGeometry || CanPerformProjection(settings)))
+      if (!MarkupAlreadyUpdated(connection) && (!ReprojectGeometries || CanPerformProjection(settings)))
       {
         if (ProcessMarkup(connection, settings))
         {
@@ -82,21 +102,62 @@ public class UpdateMarkup : IHttpHandler
     return canProject;
   }
 
-  private string ClosePolygon(string shape)
+  private string FixGeometry(string shape)
   {
-    string real = @"-?\d*\.?\d+";
-    string point = real + @"\s+" + real;
-    string pointList = point + @"(\s*,\s*" + point + @")*";
-    Regex polygonRegex = new Regex(@"POLYGON\s*\(\((?<p>" + pointList + @")\)\)");
-    Regex space = new Regex(@"\s+");
-    
-    Match match = polygonRegex.Match(shape);
+    Match match = _typeRegex.Match(shape);
+
+    if (match.Success)
+    {
+      Capture capture = match.Groups["t"].Captures[0];
+
+      switch (capture.Value)
+      {
+        case "LINESTRING":
+          shape = FixLineString(shape);
+          break;
+        
+        case "POLYGON":
+          shape = FixPolygon(shape);
+          break;
+      }
+    }
+
+    return shape;
+  }
+
+  private string FixLineString(string shape)
+  {
+    Match match = _lineStringRegex.Match(shape);
 
     if (match.Success)
     {
       Capture capture = match.Groups["p"].Captures[0];
-      List<String> points = new List<String>(capture.Value.Split(',').Select(o => space.Replace(o.Trim(), " ")));
+      List<String> points = new List<String>(capture.Value.Split(',').Select(o => _spaceRegex.Replace(o.Trim(), " ")));
 
+      // make sure the linestring has more than one point
+
+      if (points.Count == 1)
+      {
+        string newPoint = String.Join(" ", points[0].Split(' ').Select(o => Convert.ToDouble(o) + 0.01).Select(o => o.ToString()));
+        points.Add(newPoint);
+        shape = String.Format("LINESTRING({0})", String.Join(",", points));
+      }
+    }
+
+    return shape;
+  }
+  
+  private string FixPolygon(string shape)
+  {
+    Match match = _polygonRegex.Match(shape);
+
+    if (match.Success)
+    {
+      Capture capture = match.Groups["p"].Captures[0];
+      List<String> points = new List<String>(capture.Value.Split(',').Select(o => _spaceRegex.Replace(o.Trim(), " ")));
+
+      // make sure the polygon is closed
+      
       if (points[points.Count - 1] != points[0])
       {
         points.Add(points[0]);
@@ -106,7 +167,7 @@ public class UpdateMarkup : IHttpHandler
 
     return shape;
   }
-
+  
   private bool ProcessMarkup(OleDbConnection connection, AppSettings settings)
   {
     bool success = true;
@@ -135,12 +196,12 @@ public class UpdateMarkup : IHttpHandler
           int id = (int)row[0];
           string shape = (string)row[1];
 
-          if (ClosePolygons)
+          if (FixGeometries)
           {
-            shape = ClosePolygon(shape);
+            shape = FixGeometry(shape);
           }
 
-          if (ReprojectGeometry)
+          if (ReprojectGeometries)
           {
             IGeometry geometry = wktReader.Read(shape);
             geometry = measureProjection.ToGeodetic(geometry);
