@@ -72,22 +72,13 @@ public class UpdateMarkup : IHttpHandler
     }
   }
 
-  private bool MarkupAlreadyUpdated(OleDbConnection connection)
+  private void AddPoint(List<String> points, double xOffset, double yOffset)
   {
-    string markupUpdated;
-    string sql = String.Format("select Value from {0}Setting where Setting = 'MarkupUpdated'", WebConfigSettings.ConfigurationTablePrefix);
-
-    using (OleDbCommand command = new OleDbCommand(sql, connection))
-    {
-      markupUpdated = command.ExecuteScalar() as string;
-    }
-
-    if (markupUpdated != null)
-    {
-      _context.Response.Write("The markup was already updated on " + markupUpdated);
-    }
-
-    return markupUpdated != null;
+    double[] coords = points[points.Count - 1].Split(' ').Select(o => Convert.ToDouble(o)).ToArray();
+    coords[0] += xOffset;
+    coords[1] += yOffset;
+    string newPoint = String.Join(" ", coords.Select(o => o.ToString()));
+    points.Add(newPoint);
   }
 
   private bool CanPerformProjection(AppSettings settings)
@@ -138,8 +129,7 @@ public class UpdateMarkup : IHttpHandler
 
       if (points.Count == 1)
       {
-        string newPoint = String.Join(" ", points[0].Split(' ').Select(o => Convert.ToDouble(o) + 0.01).Select(o => o.ToString()));
-        points.Add(newPoint);
+        AddPoint(points, 0.01, 0.01);
         shape = String.Format("LINESTRING({0})", String.Join(",", points));
       }
     }
@@ -156,6 +146,18 @@ public class UpdateMarkup : IHttpHandler
       Capture capture = match.Groups["p"].Captures[0];
       List<String> points = new List<String>(capture.Value.Split(',').Select(o => _spaceRegex.Replace(o.Trim(), " ")));
 
+      // make sure the polygon has at least three points
+
+      if (points.Count == 1)
+      {
+        AddPoint(points, 0.01, 0.01);
+      }
+
+      if (points.Count == 2)
+      {
+        AddPoint(points, 0.01, -0.01);
+      }
+      
       // make sure the polygon is closed
       
       if (points[points.Count - 1] != points[0])
@@ -166,6 +168,24 @@ public class UpdateMarkup : IHttpHandler
     }
 
     return shape;
+  }
+
+  private bool MarkupAlreadyUpdated(OleDbConnection connection)
+  {
+    string markupUpdated;
+    string sql = String.Format("select Value from {0}Setting where Setting = 'MarkupUpdated'", WebConfigSettings.ConfigurationTablePrefix);
+
+    using (OleDbCommand command = new OleDbCommand(sql, connection))
+    {
+      markupUpdated = command.ExecuteScalar() as string;
+    }
+
+    if (markupUpdated != null)
+    {
+      _context.Response.Write("The markup was already updated on " + markupUpdated);
+    }
+
+    return markupUpdated != null;
   }
   
   private bool ProcessMarkup(OleDbConnection connection, AppSettings settings)
