@@ -23,7 +23,7 @@ public static class Version
   public const int Minor = 0;
   public const int BugFix = 0;
 
-  public const string Release = "alpha";
+  public const string Release = "beta";
   public const int Number = 1;
 
   public static new string ToString()

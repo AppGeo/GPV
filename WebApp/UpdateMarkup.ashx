@@ -159,8 +159,8 @@ public class UpdateMarkup : IHttpHandler
       }
       
       // make sure the polygon is closed
-      
-      if (points[points.Count - 1] != points[0])
+
+      if (points[points.Count - 1] != points[0] || points.Count == 3)
       {
         points.Add(points[0]);
         shape = String.Format("POLYGON(({0}))", String.Join(",", points));
