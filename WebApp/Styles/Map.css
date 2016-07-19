@@ -366,13 +366,3 @@ input.MarkupText
   border: solid 1px rgba(128, 128, 128, 0.5);
   background-color: rgba(255, 255, 255, 0.5);
 }
-
-/*@media screen and (max-device-width: 1024px) {
-  #cmdFullView, #cmdLocation {
-    transform: scale(1.3) translate(10%, 38%);
-    -webkit-transform: scale(1.3) translate(10%, 38%);
-    box-shadow: none;
-    -webkit-box-shadow: none;
-    border: 1px solid rgba(0,0,0,.3);
-  }
-}*/

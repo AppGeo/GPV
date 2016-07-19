@@ -366,46 +366,17 @@ button {
   bottom: 0px;
 }
 
-@media screen and (max-width: 1024px){
+@media screen and (max-width: 600px)
+{
+  #pnlFunctionSidebar
+  {
+    left: -400px;
+  }
 
-  #cmdFullView, #cmdLocation{
-    transform: scale(1) translate(2%, 20%);
-    -webkit-transform: scale(1) translate(2%, 20%);
-    box-shadow: none;
-    -webkit-box-shadow: none;
-    border: 2px solid rgba(0,0,0,.3);
+  #pnlMapSizer
+  {
+    left: 0px;
   }
-  .MapMenu > .dropdown-toggle, .MapMenu > .dropdown-menu {
-    transform: scale(1) translate(10%, 10%);
-    -webkit-transform: scale(1) translate(10%, 10%);
-    box-shadow: none;
-    -webkit-box-shadow: none;
-    border: 2px solid rgba(0,0,0,.3);
-  }
-  #selectMapTheme, #selectMapLevel {
-    transform: scale(1) translate(3%, 2.5%);
-    -webkit-transform: scale(1) translate(3%, 2.5%);
-  }
-  #selectMapTools {
-    transform: scale(1) translate(3%, 1%);
-    -webkit-transform: scale(1) translate(3%, 1%);
-  }
-  .MenuItem {
-    font-size: 2em; /*24px/16px bumped up a little*/
-  }
-  #ddlMapTheme, #ddlLevel {
-  font-size: 1.5em;
-  }
-  .FunctionExit, .DataExit{
-    margin: 5px;
-  }
-  button{
-    margin: 10px 8px;
-  }
-  #ddlDataTheme{
-  font-size: 12px;
-  width: 135px
-}
 }
 
 /* restore shadowed zoom bar on touch devices */

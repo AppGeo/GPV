@@ -306,17 +306,6 @@ li.MapTool:hover, #selectMapTheme li:hover, #selectMapLevel li:hover
   color: #f4f7f7;
 }
 
-/* This is for the MOBILE VERSION ONLY that you would view on a phone - NOT FOR TABLET */
-/* width of the data panel that displays as part of identification */
-
-@media only screen and (min-device-width: 300px) and (max-device-width: 736px) 
-{
-  #pnlDataDisplay
-  {
-    width: 250px;
-  }
-}
-
 /* =================================== */
 /*   Custom header and footer styles   */
 /* =================================== */
