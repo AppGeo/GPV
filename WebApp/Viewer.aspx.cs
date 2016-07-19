@@ -35,15 +35,22 @@ public partial class Viewer : CustomStyledPage
 
   protected void Page_Init(object sender, EventArgs e)
   {
-    // reference minified stylesheets
+    DateTime lastWriteTime;
 
-    DateTime lastWriteTime = MinifiedStylesheetsHandler.GetLastWriteTime();
+    // reference minified stylesheets if not in debug mode
 
-    HtmlLink link = new HtmlLink();
-    link.Attributes["type"] = "text/css";
-    link.Attributes["rel"] ="stylesheet";
-    link.Href = "Styles/MinifiedStylesheets.ashx" + GetCacheControl(lastWriteTime) + "&ext=.css";
-    head.Controls.Add(link);
+    if (System.Diagnostics.Debugger.IsAttached)
+    {
+      foreach (string s in MinifiedStylesheetsHandler.GetList())
+      {
+        head.Controls.Add(MakeStyleReference(s));
+      }
+    }
+    else
+    {
+      lastWriteTime = MinifiedStylesheetsHandler.GetLastWriteTime();
+      head.Controls.Add(MakeStyleReference("Styles/MinifiedStylesheets.ashx" + GetCacheControl(lastWriteTime) + "&ext=.css"));
+    }
 
     // reference minified scripts if not in debug mode
 
@@ -1555,6 +1562,15 @@ public partial class Viewer : CustomStyledPage
     scriptReference.Attributes["type"] = "text/javascript";
     scriptReference.Attributes["src"] = url;
     return scriptReference;
+  }
+
+  private HtmlLink MakeStyleReference(string url)
+  {
+    HtmlLink link = new HtmlLink();
+    link.Attributes["type"] = "text/css";
+    link.Attributes["rel"] = "stylesheet";
+    link.Href = url;
+    return link;
   }
 
   private void RestoreState(string state)

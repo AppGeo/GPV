@@ -192,6 +192,31 @@ a.VersionText
   color: Black;
 }
 
+/* background and border colors of the map theme, level and tool dropdown buttons */
+
+.MapMenu > .dropdown-toggle
+{
+  background-color: White;
+  border-color: #cccccc;
+}
+
+/* background and border colors of the map theme, level and tool dropdown buttons when hovering */
+
+.MapMenu > .dropdown-toggle:hover, .MapMenu.open > .dropdown-toggle
+{
+  background-color: #e6e6e6;
+  border-color: #adadad;  
+}
+
+/* text color of the map theme, level and tool dropdown buttons */
+
+.MapMenu > .dropdown-toggle > span:first-child
+{
+  color: Black;
+}
+
+/* colors of the map theme, level and tool dropdown buttons when hovering */
+
 /* color for function menu left boarder */
 
 .Menu 
@@ -243,7 +268,7 @@ a.VersionText
 
 .MenuItem, .FunctionHeader, .DataHeader
 {
-  font-family: Lora, Times, serif;
+  font-family: Open Sans, Arial, sans-serif;
   font-size: 24px;
 }
 

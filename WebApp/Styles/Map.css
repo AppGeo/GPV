@@ -18,7 +18,7 @@
   top: 0;
   border: none;
 }
-/*moved leaflet attribution for locus map*/
+
 div.leaflet-control-attribution.leaflet-control
 {
   right: 35px;
@@ -132,7 +132,8 @@ div.leaflet-control-attribution.leaflet-control
   z-index: 1000;
 }
 
-#btnToolMenu, #btnMapTheme, #btnMapLevel{
+.MapMenu > .dropdown-toggle
+{
   border: none;
   margin-left: 10px;
   box-shadow: 0 1px 5px rgba(0,0,0,.65);
@@ -146,20 +147,20 @@ div.leaflet-control-attribution.leaflet-control
   padding: 0 10px;
 }
 
-#selectedTool, #selectedTheme, #selectedLevel{
+.MapMenu > .dropdown-toggle > span:first-child {
   letter-spacing: .5px;
   margin-right: 5px;
   vertical-align: middle;
 }
 
-#selectMapTools, #selectMapTheme, #selectMapLevel{
+.MapMenu > .dropdown-menu {
   left: 10px;
   font-size: 13px;
   padding: 8px;
   width: 190px;
 }
 
-li.MapTool, #selectMapTheme li, #selectMapLevel li{
+.MapMenu > .dropdown-menu li {
   cursor: pointer;
   display: inline-block;
   height: 28px;
@@ -167,22 +168,22 @@ li.MapTool, #selectMapTheme li, #selectMapLevel li{
   width: 100%;
 }
 
-li.MapTool span{
+li.MapTool span {
   vertical-align: middle;
 }
 
-li.MapTool.Disabled{
+li.MapTool.Disabled {
   background-color: #F0F0F0;
 }
 
-.dropdown-header{
+.dropdown-header {
   border-bottom: solid 1px #b9b9b9;
   border-top: solid 1px #b9b9b9;
   text-transform: uppercase;
   padding: 3px 10px;
 }
 
-li.MapTool span:not(.glyphicon), #selectedTool span:not(.glyphicon){
+li.MapTool span:not(.glyphicon), #selectedTool span:not(.glyphicon) {
   background-image: url(../Images/UI/Icons.png);
   display: inline-block;
   height: 20px;
@@ -190,7 +191,7 @@ li.MapTool span:not(.glyphicon), #selectedTool span:not(.glyphicon){
   vertical-align: middle;
 }
 
-.pan{
+.pan {
   background-position: -768px 0px;  /* Select.gif */
 }
 

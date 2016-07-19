@@ -375,18 +375,14 @@ button {
     -webkit-box-shadow: none;
     border: 2px solid rgba(0,0,0,.3);
   }
-  #btnToolMenu, #btnMapTheme, #btnMapLevel, #selectMapTools, #selectMapTheme, #selectMapLevel{
+  .MapMenu > .dropdown-toggle, .MapMenu > .dropdown-menu {
     transform: scale(1) translate(10%, 10%);
     -webkit-transform: scale(1) translate(10%, 10%);
     box-shadow: none;
     -webkit-box-shadow: none;
     border: 2px solid rgba(0,0,0,.3);
   }
-  #selectMapTheme {
-    transform: scale(1) translate(3%, 2.5%);
-    -webkit-transform: scale(1) translate(3%, 2.5%);
-  }
-  #selectMapLevel {
+  #selectMapTheme, #selectMapLevel {
     transform: scale(1) translate(3%, 2.5%);
     -webkit-transform: scale(1) translate(3%, 2.5%);
   }

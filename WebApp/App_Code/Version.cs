@@ -24,7 +24,7 @@ public static class Version
   public const int BugFix = 0;
 
   public const string Release = "beta";
-  public const int Number = 1;
+  public const int Number = 2;
 
   public static new string ToString()
   {
