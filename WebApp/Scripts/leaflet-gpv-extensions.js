@@ -52,6 +52,10 @@
     return L.bounds(L.point(cx - dx, cy - dy), L.point(cx + dx, cy + dy));
   };
 
+  L.Bounds.prototype.getCenter = function () {
+    return L.point((this.min.x + this.max.x) * 0.5, (this.min.y + this.max.y) * 0.5);
+  };
+
   L.Bounds.prototype.toArray = function () {
     return [ this.min.x, this.min.y, this.max.x, this.max.y ];
   };
@@ -341,6 +345,12 @@
     }
 
     return L.Util.template(this._url, L.extend(data, this.options));
+  };
+
+  // Web Mercator CRS extension
+
+  L.CRS.EPSG3857.scaleFactorAtLatitude = function (lat) {
+    return 1 / Math.cos(lat * Math.PI / 180);
   };
 
   // Text

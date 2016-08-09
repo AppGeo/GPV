@@ -45,7 +45,12 @@ var GPV = (function (gpv) {
     var crs = L.CRS.EPSG3857;
 
     if (gpv.settings.mapCrs) {
-      var resolutions = [ 0.25 * Math.pow(2, maxZoom) ];
+      crs = new L.Proj.CRS("GPV:1", gpv.settings.mapCrs);
+      var c = crs.unproject(fullExtent.getCenter());
+      var sf = 2 / L.CRS.EPSG3857.scaleFactorAtLatitude(c.lat);
+
+      var isFeet = gpv.settings.mapCrs.indexOf("+to_meter=0.3048") >= 0;
+      var resolutions = [ (isFeet ? 513591 : 156543) * sf ];
 
       for (var i = 0; i < maxZoom; ++i) {
         resolutions.push(resolutions[i] * 0.5);
