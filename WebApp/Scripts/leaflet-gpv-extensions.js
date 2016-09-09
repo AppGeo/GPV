@@ -25,7 +25,7 @@
     var max = this.max;
 
     var widthBuffer = (max.x - min.x) * bufferRatio;
-    var heightBuffer = (max.y - min.y) * bufferRatio,
+    var heightBuffer = (max.y - min.y) * bufferRatio;
 
     min = L.point(min.x - widthBuffer, min.y - heightBuffer);
     max = L.point(max.x + widthBuffer, max.y + heightBuffer);
