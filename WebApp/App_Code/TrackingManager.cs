@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ public static class TrackingManager
 
         using (OleDbConnection connection = AppContext.GetDatabaseConnection())
         {
-          string sql = String.Format("insert into {0}UsageTracking (ApplicationID, UrlQuery, DateStarted, UserAgent, UserHostAddress, UserHostName) values (?, ?, ?, ?, ?, ?)", AppSettings.ConfigurationTablePrefix);
+          string sql = String.Format("insert into {0}UsageTracking (ApplicationID, UrlQuery, DateStarted, UserAgent, UserHostAddress, UserHostName) values (?, ?, ?, ?, ?, ?)", WebConfigSettings.ConfigurationTablePrefix);
 
           using (OleDbCommand command = new OleDbCommand(sql, connection))
           {

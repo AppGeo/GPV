@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -35,21 +35,28 @@ public partial class Viewer : CustomStyledPage
 
   protected void Page_Init(object sender, EventArgs e)
   {
-    // reference minified stylesheets
+    DateTime lastWriteTime;
 
-    DateTime lastWriteTime = MinifiedStylesheetsHandler.GetLastWriteTime();
+    // reference minified stylesheets if not in debug mode
 
-    HtmlLink link = new HtmlLink();
-    link.Attributes["type"] = "text/css";
-    link.Attributes["rel"] ="stylesheet";
-    link.Href = "Styles/MinifiedStylesheets.ashx" + GetCacheControl(lastWriteTime) + "&ext=.css";
-    head.Controls.Add(link);
+    if (System.Diagnostics.Debugger.IsAttached)
+    {
+      foreach (string s in MinifiedStylesheetsHandler.GetList())
+      {
+        head.Controls.Add(MakeStyleReference(s));
+      }
+    }
+    else
+    {
+      lastWriteTime = MinifiedStylesheetsHandler.GetLastWriteTime();
+      head.Controls.Add(MakeStyleReference("Styles/MinifiedStylesheets.ashx" + GetCacheControl(lastWriteTime) + "&ext=.css"));
+    }
 
     // reference minified scripts if not in debug mode
 
     if (System.Diagnostics.Debugger.IsAttached)
     {
-      string query = AppSettings.AllowDevScriptCaching ? "" : GetCacheControl();
+      string query = WebConfigSettings.AllowDevScriptCaching ? "" : GetCacheControl();
 
       foreach (ScriptItem scriptItem in MinifiedScriptsHandler.GetList())
       {
@@ -63,7 +70,7 @@ public partial class Viewer : CustomStyledPage
     }
 
     _config = AppContext.GetConfiguration();
-	}
+  }
 
   protected void Page_Load(object sender, EventArgs e)
   {
@@ -91,6 +98,17 @@ public partial class Viewer : CustomStyledPage
     LoadStateFromLaunchParams(launchParams);
 
     Configuration.ApplicationRow application = _config.Application.FindByApplicationID(_appState.Application);
+
+    if (!application.IsMetaDescriptionNull())
+    {
+      AddMetaTag("description", application.MetaDescription);
+    }
+
+    if (!application.IsMetaKeywordsNull())
+    {
+      AddMetaTag("keywords", application.MetaKeywords);
+    }
+
     Title = application.DisplayName;
 
     SetHelpLink();
@@ -176,12 +194,12 @@ public partial class Viewer : CustomStyledPage
 
     // set the default tool
 
-    HtmlControl defaultTool = null;
-
-    if (launchParams.ContainsKey("tool"))
+    string tool = launchParams.ContainsKey("tool") ? launchParams["tool"] : (!application.IsDefaultToolNull() ? application.DefaultTool : null);
+    
+    if (!String.IsNullOrEmpty(tool))
     {
-      defaultTool = Page.FindControl("opt" + launchParams["tool"], false) as HtmlControl;
-      
+      HtmlControl defaultTool = Page.FindControl("opt" + tool, false) as HtmlControl;
+
       if (defaultTool != null)
       {
         defaultTool.Attributes["class"] += " Selected";
@@ -193,14 +211,31 @@ public partial class Viewer : CustomStyledPage
 
     spnVersion.InnerText = Version.ToString();
 
+    if (!_config.AppSettings.ShowLogo)
+    {
+      logo.Visible = false;
+    }
+    else
+    {
+      logosmall.Visible = false;
+    }
+
     TrackingManager.TrackUse(launchParams);
+  }
+
+  private void AddMetaTag(string name, string content)
+  {
+    HtmlMeta meta = new HtmlMeta();
+    meta.Name = name;
+    meta.Content = content;
+    head.Controls.AddAt(0, meta);
   }
 
   private void CreateActiveSelectionStyle()
   {
     HtmlGenericControl style = new HtmlGenericControl("style");
     head.Controls.Add(style);
-    style.InnerHtml = String.Format(".ActiveGridRowSelect, .ActiveGridRowSelect:hover {{ background-color: {0} }}", ColorTranslator.ToHtml(AppSettings.ActiveColorUI));
+    style.InnerHtml = String.Format(".ActiveGridRowSelect, .ActiveGridRowSelect:hover {{ background-color: {0} }}", ColorTranslator.ToHtml(AppContext.AppSettings.ActiveColorUI));
   }
 
   private void CreateAppStateScript(Configuration.ApplicationRow application)
@@ -210,7 +245,7 @@ public partial class Viewer : CustomStyledPage
     HtmlGenericControl scriptElem = new HtmlGenericControl("script");
     head.Controls.Add(scriptElem);
     scriptElem.Attributes["type"] = "text/javascript";
-    scriptElem.InnerHtml = String.Format(script, application.ToJson(), AppSettings.ToJson(), _appState.ToJson());
+    scriptElem.InnerHtml = String.Format(script, application.ToJson(), AppContext.AppSettings.ToJson(), _appState.ToJson());
   }
 
   private void CreateMapThemes(Configuration.ApplicationRow application)
@@ -244,6 +279,7 @@ public partial class Viewer : CustomStyledPage
   private void LoadStateFromLaunchParams(Dictionary<String, String> launchParams)
   {
     _appState = new AppState();
+    AppSettings appSettings = AppContext.AppSettings;
 
     // recreate application state from a compressed string if provided
 
@@ -253,315 +289,33 @@ public partial class Viewer : CustomStyledPage
       return;
     }
 
-    // otherwise, if no application was specified, show the
-    // available applications or an error
+    // otherwise, if no application was specified, show an error
 
-    if (String.IsNullOrEmpty(AppSettings.DefaultApplication) && !launchParams.ContainsKey("application"))
+    if (String.IsNullOrEmpty(appSettings.DefaultApplication) && !launchParams.ContainsKey("application"))
     {
       ShowError("An application has not been specified");
     }
 
-    // check that Web.config has the necessary settings
+    // check settings that were provided in the GPVSetting table
 
-    if (AppSettings.DefaultFullExtent == null)
+    if (appSettings.AdminEmail == null)
     {
-      ShowError("FullExtent has not been provided or is invalid in Web.config");
+      ShowError("AdminEmail has not been provided in the GPVSetting table");
     }
 
-    if (AppSettings.MapUnits == null)
+    if (appSettings.DefaultFullExtent == null)
     {
-      ShowError("MapUnits has not been provided in Web.config");
-    }
-    else
-    {
-      string mapUnits = AppSettings.MapUnits;
-
-      if (mapUnits != "feet" && mapUnits != "meters")
-      {
-        ShowError("MapUnits is invalid in Web.config, must be \"feet\" or \"meters\"");
-      }
+      ShowError("FullExtent has not been provided or is invalid in the GPVSetting table");
     }
 
-    if (AppSettings.MeasureUnits == null)
+    if (appSettings.MapCoordinateSystem == null)
     {
-      ShowError("MeasureUnits has not been provided in Web.config");
-    }
-    else
-    {
-      string measureUnits = AppSettings.MeasureUnits;
-
-      if (measureUnits != "feet" && measureUnits != "meters" && measureUnits != "both")
-      {
-        ShowError("MeasureUnits is invalid in Web.config, must be \"feet\", \"meters\", or \"both\"");
-      }
+      ShowError("MapProjection is invalid in the GPVSetting table");
     }
 
-    if (AppSettings.CoordinateSystem == null)
+    if (appSettings.MeasureCoordinateSystem == null)
     {
-      ShowError("Projection parameters have not been provided or are invalid in Web.config");
-    }
-
-    // -- Active --
-
-    if (AppSettings.ActiveColor.IsEmpty)
-    {
-      ShowError("ActiveColor has not been provided or is invalid in Web.config");
-    }
-
-    if (Double.IsNaN(AppSettings.ActiveOpacity))
-    {
-      ShowError("ActiveColor has not been provided in Web.config");
-    }
-
-    if (AppSettings.ActiveOpacity < 0 || 1 < AppSettings.ActiveOpacity)
-    {
-      ShowError("ActiveColor is invalid in Web.config");
-    }
-
-    if (AppSettings.ActivePolygonMode == null)
-    {
-      ShowError("ActivePolygonMode has not been provided in Web.config");
-    }
-    else
-    {
-      string polygonMode = AppSettings.ActivePolygonMode;
-
-      if (polygonMode != "fill" && polygonMode != "outline")
-      {
-        ShowError("ActivePolygonMode is invalid in Web.config, must be \"fill\" or \"outline\"");
-      }
-    }
-
-    if (AppSettings.ActivePenWidth == Int32.MinValue)
-    {
-      ShowError("ActivePenWidth has not been provided in Web.config");
-    }
-
-    if (AppSettings.ActivePenWidth <= 0)
-    {
-      ShowError("ActivePenWidth is invalid in Web.config");
-    }
-
-    if (AppSettings.ActiveDotSize == Int32.MinValue)
-    {
-      ShowError("ActiveDotSize has not been provided in Web.config");
-    }
-
-    if (AppSettings.ActiveDotSize <= 0)
-    {
-      ShowError("ActiveDotSize is invalid in Web.config");
-    }
-
-    // -- Target --
-
-    if (AppSettings.TargetColor.IsEmpty)
-    {
-      ShowError("TargetColor has not been provided or is invalid in Web.config");
-    }
-
-    if (Double.IsNaN(AppSettings.TargetOpacity))
-    {
-      ShowError("TargetOpacity has not been provided in Web.config");
-    }
-
-    if (AppSettings.TargetOpacity < 0 || 1 < AppSettings.TargetOpacity)
-    {
-      ShowError("TargetOpacity is invalid in Web.config");
-    }
-
-    if (AppSettings.TargetPolygonMode == null)
-    {
-      ShowError("TargetPolygonMode has not been provided in Web.config");
-    }
-    else
-    {
-      string polygonMode = AppSettings.TargetPolygonMode;
-
-      if (polygonMode != "fill" && polygonMode != "outline")
-      {
-        ShowError("TargetPolygonMode is invalid in Web.config, must be \"fill\" or \"outline\"");
-      }
-    }
-
-    if (AppSettings.TargetPenWidth == Int32.MinValue)
-    {
-      ShowError("TargetPenWidth has not been provided in Web.config");
-    }
-
-    if (AppSettings.TargetPenWidth <= 0)
-    {
-      ShowError("TargetPenWidth is invalid in Web.config");
-    }
-
-    if (AppSettings.TargetDotSize == Int32.MinValue)
-    {
-      ShowError("TargetDotSize has not been provided in Web.config");
-    }
-
-    if (AppSettings.TargetDotSize <= 0)
-    {
-      ShowError("TargetDotSize is invalid in Web.config");
-    }
-
-    // -- Selection --
-
-    if (AppSettings.SelectionColor.IsEmpty)
-    {
-      ShowError("SelectionColor has not been provided or is invalid in Web.config");
-    }
-
-    if (Double.IsNaN(AppSettings.SelectionOpacity))
-    {
-      ShowError("SelectionOpacity has not been provided in Web.config");
-    }
-
-    if (AppSettings.SelectionOpacity < 0 || 1 < AppSettings.SelectionOpacity)
-    {
-      ShowError("SelectionOpacity is invalid in Web.config");
-    }
-
-    if (AppSettings.SelectionPolygonMode == null)
-    {
-      ShowError("SelectionPolygonMode has not been provided in Web.config");
-    }
-    else
-    {
-      string polygonMode = AppSettings.SelectionPolygonMode;
-
-      if (polygonMode != "fill" && polygonMode != "outline")
-      {
-        ShowError("SelectionPolygonMode is invalid in Web.config, must be \"fill\" or \"outline\"");
-      }
-    }
-
-    if (AppSettings.SelectionPenWidth == Int32.MinValue)
-    {
-      ShowError("SelectionPenWidth has not been provided in Web.config");
-    }
-
-    if (AppSettings.SelectionPenWidth <= 0)
-    {
-      ShowError("SelectionPenWidth is invalid in Web.config");
-    }
-
-    if (AppSettings.SelectionDotSize == Int32.MinValue)
-    {
-      ShowError("SelectionDotSize has not been provided in Web.config");
-    }
-
-    if (AppSettings.SelectionDotSize <= 0)
-    {
-      ShowError("SelectionDotSize is invalid in Web.config");
-    }
-
-    // -- Filtered --
-
-    if (AppSettings.FilteredColor.IsEmpty)
-    {
-      ShowError("FilteredColor has not been provided or is invalid in Web.config");
-    }
-
-    if (Double.IsNaN(AppSettings.FilteredOpacity))
-    {
-      ShowError("FilteredOpacity has not been provided in Web.config");
-    }
-
-    if (AppSettings.FilteredOpacity < 0 || 1 < AppSettings.FilteredOpacity)
-    {
-      ShowError("FilteredOpacity is invalid in Web.config");
-    }
-
-    if (AppSettings.FilteredPolygonMode == null)
-    {
-      ShowError("FilteredPolygonMode has not been provided in Web.config");
-    }
-    else
-    {
-      string polygonMode = AppSettings.FilteredPolygonMode;
-
-      if (polygonMode != "fill" && polygonMode != "outline")
-      {
-        ShowError("FilteredPolygonMode is invalid in Web.config, must be \"fill\" or \"outline\"");
-      }
-    }
-
-    if (AppSettings.FilteredPenWidth == Int32.MinValue)
-    {
-      ShowError("FilteredPenWidth has not been provided in Web.config");
-    }
-
-    if (AppSettings.FilteredPenWidth <= 0)
-    {
-      ShowError("FilteredPenWidth is invalid in Web.config");
-    }
-
-    if (AppSettings.FilteredDotSize == Int32.MinValue)
-    {
-      ShowError("FilteredDotSize has not been provided in Web.config");
-    }
-
-    if (AppSettings.FilteredDotSize <= 0)
-    {
-      ShowError("FilteredDotSize is invalid in Web.config");
-    }
-
-    // -- Buffer --
-
-    if (AppSettings.BufferColor.IsEmpty)
-    {
-      ShowError("BufferColor has not been provided or is invalid in Web.config");
-    }
-
-    if (Double.IsNaN(AppSettings.BufferOpacity))
-    {
-      ShowError("BufferOpacity has not been provided in Web.config");
-    }
-
-    if (AppSettings.BufferOpacity < 0 || 1 < AppSettings.BufferOpacity)
-    {
-      ShowError("BufferOpacity is invalid in Web.config");
-    }
-
-    if (AppSettings.BufferOutlineColor.IsEmpty)
-    {
-      ShowError("BufferOutlineColor has not been provided or is invalid in Web.config");
-    }
-
-    if (Double.IsNaN(AppSettings.BufferOutlineOpacity))
-    {
-      ShowError("BufferOutlineOpacity has not been provided in Web.config");
-    }
-
-    if (AppSettings.BufferOutlineOpacity < 0 || 1 < AppSettings.BufferOutlineOpacity)
-    {
-      ShowError("BufferOutlineOpacity is invalid in Web.config");
-    }
-
-    if (AppSettings.BufferOutlineOpacity == Int32.MinValue)
-    {
-      ShowError("BufferOutlineOpacity has not been provided in Web.config");
-    }
-
-    if (AppSettings.ExportFormat == null)
-    {
-      ShowError("ExportFormat has not been provided in Web.config");
-    }
-    else
-    {
-      if (AppSettings.ExportFormat != "csv" && AppSettings.ExportFormat != "xls")
-      {
-        ShowError("ExportFormat is invalid in Web.config, must be \"csv\" or \"xls\"");
-      }
-    }
-
-    if (AppSettings.PreserveOnActionChange != "target" && AppSettings.PreserveOnActionChange != "selection")
-    {
-      ShowError("PreserveOnActionChange is invalid in Web.config, must be \"target\" or \"selection\"");
-    }
-
-    if (AppSettings.MarkupTimeout == Int32.MinValue)
-    {
-      ShowError("MarkupTimeout has not been provided in Web.config");
+      ShowError("MeasureProjection is invalid in the GPVSetting table");
     }
 
     // otherwise, load the query string into the application state
@@ -569,7 +323,7 @@ public partial class Viewer : CustomStyledPage
 
     // === application ===
 
-    _appState.Application = launchParams.ContainsKey("application") ? launchParams["application"] : AppSettings.DefaultApplication;
+    _appState.Application = launchParams.ContainsKey("application") ? launchParams["application"] : appSettings.DefaultApplication;
 
     Configuration.ApplicationRow application = _config.Application.FindByApplicationID(_appState.Application);
     Configuration.MapTabRow mapTab;
@@ -598,11 +352,12 @@ public partial class Viewer : CustomStyledPage
     foreach (Configuration.ApplicationMapTabRow applicationMapTab in application.GetApplicationMapTabRows())
     {
       mapTab = applicationMapTab.MapTabRow;
+      string key = mapTab.MapTabID;
+      StringCollection values;
 
       if (!mapTab.IsInteractiveLegendNull() && mapTab.InteractiveLegend == 1)
       {
-        string key = mapTab.MapTabID;
-        StringCollection values = new StringCollection();
+        values = new StringCollection();
 
         foreach (Configuration.MapTabLayerRow mapTabLayer in mapTab.GetMapTabLayerRows())
         {
@@ -615,6 +370,18 @@ public partial class Viewer : CustomStyledPage
 
         _appState.VisibleLayers.Add(key, values);
       }
+
+      values = new StringCollection();
+
+      foreach (Configuration.MapTabTileGroupRow mapTabTileGroup in mapTab.GetMapTabTileGroupRows())
+      {
+        if (!mapTabTileGroup.IsCheckInLegendNull() && mapTabTileGroup.CheckInLegend == 1)
+        {
+          values.Add(mapTabTileGroup.TileGroupID);
+        }
+      }
+
+      _appState.VisibleTiles.Add(key, values);
     }
 
     // === maptab ===
@@ -709,6 +476,50 @@ public partial class Viewer : CustomStyledPage
       }
     }
 
+    // === tiles on ===
+
+    if (launchParams.ContainsKey("tileson"))
+    {
+      StringCollection tilesOn = StringCollection.FromString(launchParams["tileson"], ',');
+      StringCollection visibleTiles = _appState.VisibleTiles[mapTab.MapTabID];
+
+      foreach (string groupId in tilesOn)
+      {
+        Configuration.MapTabTileGroupRow mapTabTileGroup = mapTab.GetMapTabTileGroupRows().FirstOrDefault(o => o.TileGroupID == groupId);
+
+        if (mapTabTileGroup == null)
+        {
+          ShowError(String.Format("Tile group \"{0}\" does not exist in map tab \"{1}\"", groupId, mapTab.MapTabID));
+        }
+        else if (!visibleTiles.Contains(groupId))
+        {
+          visibleTiles.Add(groupId);
+        }
+      }
+    }
+
+    // === tiles off ===
+
+    if (launchParams.ContainsKey("tilesoff"))
+    {
+      StringCollection tilesOff = StringCollection.FromString(launchParams["tilesoff"], ',');
+      StringCollection visibleTiles = _appState.VisibleTiles[mapTab.MapTabID];
+
+      foreach (string groupId in tilesOff)
+      {
+        Configuration.MapTabTileGroupRow mapTabTileGroup = mapTab.GetMapTabTileGroupRows().FirstOrDefault(o => o.TileGroupID == groupId);
+
+        if (mapTabTileGroup == null)
+        {
+          ShowError(String.Format("Tile group \"{0}\" does not exist in map tab \"{1}\"", groupId, mapTab.MapTabID));
+        }
+        else if (visibleTiles.Contains(groupId))
+        {
+          visibleTiles.Remove(groupId);
+        }
+      }
+    }
+
     // === level ===
 
     Configuration.ZoneLevelRow zoneLevel = application.ZoneLevelRow;
@@ -737,6 +548,43 @@ public partial class Viewer : CustomStyledPage
       {
         _appState.Level = launchParams["level"];
       }
+    }
+
+    // === search ===
+
+    if (!application.IsDefaultSearchNull())
+    {
+      _appState.Search = application.DefaultSearch;
+    }
+
+    if (launchParams.ContainsKey("search"))
+    {
+      // the search must exist
+
+      Configuration.SearchRow search = ((Configuration)mapTab.Table.DataSet).Search.FirstOrDefault(o => String.Compare(o.SearchID, launchParams["search"], true) == 0);
+
+      if (search == null)
+      {
+        ShowError("No search exists with the specified ID");
+      }
+
+      // a MapTab must be specified or available by default
+
+      if (mapTab == null)
+      {
+        ShowError("When providing a search, a map tab must also be specified or the application must have a default map tab defined");
+      }
+
+      // the search must be linked to a layer in the MapTab
+
+      string[] layerIDs = mapTab.GetMapTabLayerRows().Select(o => o.LayerID).ToArray();
+
+      if (!layerIDs.Contains(search.LayerID))
+      {
+        ShowError("The specified search is not linked to a layer in map tab " + mapTab.MapTabID);
+      }
+
+      _appState.Search = search.SearchID;
     }
 
     // === action ===
@@ -1220,23 +1068,29 @@ public partial class Viewer : CustomStyledPage
 
     // === active function tab ===
 
+    string activeTab = !application.IsDefaultFunctionTabNull() ? application.DefaultFunctionTab : null;
+
     if (launchParams.ContainsKey("activefunctiontab"))
     {
-      string tab = launchParams["activefunctiontab"];
+      activeTab = launchParams["activefunctiontab"];
+    }
+
+    if (!String.IsNullOrEmpty(activeTab))
+    {
       FunctionTab functionTab = FunctionTab.None;
 
       try
       {
-        functionTab = (FunctionTab)Enum.Parse(typeof(FunctionTab), tab, true);
+        functionTab = (FunctionTab)Enum.Parse(typeof(FunctionTab), activeTab, true);
       }
       catch
       {
-        ShowError("Invalid active function tab '" + tab + "', must be either " + EnumHelper.ToChoiceString(typeof(FunctionTab)));
+        ShowError("Invalid active function tab '" + activeTab + "', must be either " + EnumHelper.ToChoiceString(typeof(FunctionTab)));
       }
 
       if (functionTab != FunctionTab.None && (functionTab & _appState.FunctionTabs) == FunctionTab.None)
       {
-        ShowError("Function tab '" + tab + "' cannot be activated because is not present in this application");
+        ShowError("Function tab '" + activeTab + "' cannot be activated because is not present in this application");
       }
 
       _appState.ActiveFunctionTab = functionTab;
@@ -1296,7 +1150,7 @@ public partial class Viewer : CustomStyledPage
           }
 
           string sql = String.Format("select CategoryID from {0}MarkupGroup where GroupID = {1}",
-              AppSettings.ConfigurationTablePrefix, groupId);
+              WebConfigSettings.ConfigurationTablePrefix, groupId);
           string categoryID = null;
 
           using (OleDbCommand command = new OleDbCommand(sql, connection))
@@ -1590,21 +1444,12 @@ public partial class Viewer : CustomStyledPage
         ShowError("Invalid center longitude specified");
       }
 
-      double x;
-      double y;
-
-      AppSettings.CoordinateSystem.ToProjected(lon, lat, out x, out y);
-
-      if (AppSettings.MapUnits == "feet")
-      {
-        x *= Constants.FeetPerMeter;
-        y *= Constants.FeetPerMeter;
-      }
+      Coordinate p = AppContext.AppSettings.MapCoordinateSystem.ToProjected(new Coordinate(lon, lat));
 
       double dx = _appState.Extent.Width / 2;
       double dy = _appState.Extent.Height / 2;
 
-      _appState.Extent = new Envelope( new Coordinate(x - dx, y - dy),  new Coordinate(x + dx, y + dy));
+      _appState.Extent = new Envelope(new Coordinate(p.X - dx, p.Y - dy), new Coordinate(p.X + dx, p.Y + dy));
     }
 
     // === scaleby ===
@@ -1719,6 +1564,15 @@ public partial class Viewer : CustomStyledPage
     return scriptReference;
   }
 
+  private HtmlLink MakeStyleReference(string url)
+  {
+    HtmlLink link = new HtmlLink();
+    link.Attributes["type"] = "text/css";
+    link.Attributes["rel"] = "stylesheet";
+    link.Href = url;
+    return link;
+  }
+
   private void RestoreState(string state)
   {
     if (state.Length == 12)
@@ -1728,7 +1582,7 @@ public partial class Viewer : CustomStyledPage
 
       using (OleDbConnection connection = AppContext.GetDatabaseConnection())
       {
-        string sql = "select State from " + AppSettings.ConfigurationTablePrefix + @"SavedState 
+        string sql = "select State from " + WebConfigSettings.ConfigurationTablePrefix + @"SavedState 
 					where StateID = ?";
 
         using (OleDbCommand command = new OleDbCommand(sql, connection))
@@ -1742,7 +1596,7 @@ public partial class Viewer : CustomStyledPage
           ShowError("The map you specified does not exist or is no longer available");
         }
 
-        sql = "update " + AppSettings.ConfigurationTablePrefix + @"SavedState 
+        sql = "update " + WebConfigSettings.ConfigurationTablePrefix + @"SavedState 
 					set DateLastAccessed = ? where StateID = ?";
 
         using (OleDbCommand command = new OleDbCommand(sql, connection))
@@ -1755,6 +1609,19 @@ public partial class Viewer : CustomStyledPage
     }
 
     _appState = AppState.FromCompressedString(state);
+  }
+
+  private bool SetDefaultTool(string name)
+  {
+    HtmlControl defaultTool = Page.FindControl("opt" + name, false) as HtmlControl;
+    bool found = defaultTool != null;
+
+    if (found)
+    {
+      defaultTool.Attributes["class"] += " Selected";
+    }
+
+    return found;
   }
 
   private void SetHelpLink()

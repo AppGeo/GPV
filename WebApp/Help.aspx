@@ -103,12 +103,13 @@
       </p>
       <p class="txtLeft showLegend legend">
         <img class="imgRight" src="Images/Help/LegendPanel.png" alt="legend panel" />
-        <span class="component">Legend Panel:</span> The current application provides a panel which displays the legend 
-        for the current map. Depending on its configuration, parts of the legend may be expandable and collapsible. 
-        Click check boxes or radio buttons to turn thematic layers on and off. The changes to the 
-        layers do not appear immediately on the map.  Click the Refresh Map button at 
-        the top of the legend to see those changes. Layer names that appear as a link are clickable and will open a window
-        that contains more information about that layer.
+        <span class="component">Legend Panel:</span> The current application provides a panel which displays both the 
+        legend for the current map and controls to manage additional basemap options. Depending on the GPV configuration, 
+        parts of the legend may be expandable and collapsible and the basemap controls may be visible. Click check boxes 
+        or radio buttons to turn thematic layers or basemaps on and off. The changes to the layers do not appear immediately 
+        on the map, but changes to basemaps appear immediately. Click the Refresh Map button at the top of the legend to see 
+        layer changes. Layer names that appear as a link are clickable and will open a window that contains more information 
+        about that layer.
       </p>
       <p class="txtRight showLocation location">
         <img class="imgLeft" src="Images/Help/LocationPanel.png" alt="location panel" />

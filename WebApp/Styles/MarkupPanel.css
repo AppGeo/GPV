@@ -109,10 +109,3 @@ label#labMarkupLock {
   top: -19px;
   text-align: center;
 }
-
-@media screen and (max-width: 1024px) {
-  #pnlMarkupContent button {
-    margin: 4px 1px;
-    padding: 0 4px;
-  }
-}

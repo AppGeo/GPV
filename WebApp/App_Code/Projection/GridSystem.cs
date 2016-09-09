@@ -1,4 +1,4 @@
-//  Copyright 2012 Applied Geographics, Inc.
+//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -13,10 +13,11 @@
 //  limitations under the License.
 
 using System;
+using GeoAPI.Geometries;
 
 public abstract class GridSystem
 {
-	public abstract void ToGeodetic(string gridValue, out double lon, out double lat);
+	public abstract Coordinate ToGeodetic(string gridValue);
 
-	public abstract void ToGrid(double lon, double lat, out string gridValue);
+  public abstract string ToGrid(Coordinate g);
 }

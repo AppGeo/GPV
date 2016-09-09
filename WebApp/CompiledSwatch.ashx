@@ -1,6 +1,6 @@
 ﻿<%@ WebHandler Language="C#" Class="CompiledSwatch" %>
 
-//  Copyright 2012 Applied Geographics, Inc.
+//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -61,7 +61,7 @@ public class CompiledSwatch : IHttpHandler
       }
       else
       {
-        image = AppContext.GetDataFrame(mapTab).GetCompiledSwatchImage(AppSettings.SwatchTileWidth, AppSettings.SwatchTileHeight);
+        image = AppContext.GetDataFrame(mapTab).GetCompiledSwatchImage(AppContext.AppSettings.SwatchTileWidth, AppContext.AppSettings.SwatchTileHeight);
         compiledSwatches.Add(dataFrameKey, image);
       }
 

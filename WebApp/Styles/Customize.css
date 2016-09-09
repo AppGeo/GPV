@@ -1,4 +1,4 @@
-﻿/*  Copyright 2012 Applied Geographics, Inc.
+﻿/*  Copyright 2016 Applied Geographics, Inc.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -83,13 +83,15 @@
 
 /* default color of the hamburger menu icon and the help question icon */
 
-#cmdMenu span, #cmdHelp span{
+#cmdMenu span, #cmdHelp span, #cmdEmail i
+{
 color: #009688;
 }
 
 /* default color of the details panel three dot icon */
 
-#cmdShowDetails{
+#cmdShowDetails
+{
   color: #FFB74D;
 }
 
@@ -190,92 +192,120 @@ a.VersionText
   color: Black;
 }
 
-/* text color for function menu items */
+/* background and border colors of the map theme, level and tool dropdown buttons */
+
+.MapMenu > .dropdown-toggle
+{
+  background-color: White;
+  border-color: #cccccc;
+}
+
+/* background and border colors of the map theme, level and tool dropdown buttons when hovering */
+
+.MapMenu > .dropdown-toggle:hover, .MapMenu.open > .dropdown-toggle
+{
+  background-color: #e6e6e6;
+  border-color: #adadad;  
+}
+
+/* text color of the map theme, level and tool dropdown buttons */
+
+.MapMenu > .dropdown-toggle > span:first-child
+{
+  color: Black;
+}
+
+/* colors of the map theme, level and tool dropdown buttons when hovering */
+
 /* color for function menu left boarder */
 
-.Menu{
+.Menu 
+{
   border-left: solid 4px #B2DFDB; 
 }
 
-/* color of function panel menu items with option to have a border under each menu item */
+/* text color for function panel menu items */
 
-.MenuItem {
+.MenuItem 
+{
   color: #00796B;
-  /*border-bottom: solid 1px #B2DFDB;*/
 }
 
-/* Function Panel background color and right border color
- * should match the .FunctionHeader background color below */
+/* function panel background color and right border color; should match the .FunctionHeader background color below */
 
-#pnlFunctionSidebar{
+#pnlFunctionSidebar 
+{
   background-color: #FFFFFF;
   border-right: solid 1px #009688;
 }
 
-/* function header settings */
-/* color sets the color of the function header text */
-/* border-left sets the color and width of the left boarder of function header
- * matches function menu boarder on function menu panel */
-/* background-color can be set to change the function header's background color  */
+/* function panel background color, text color and left border  */
 
-.FunctionHeader {
-  color: #FFFFFF;
+.FunctionHeader 
+{
   background-color: #009688;
+  color: #FFFFFF;
   border-left: #B2DFDB solid 6px;
 }
 
 /* sets the color of the < and > icons used to close the function and data panels 
  * currently set to match the font color in the function header */
 
-.FunctionExit, .DataExit {
+.FunctionExit, .DataExit 
+{
   color: #FFFFFF;
 }
 
-/* data Header settings */
-/* color sets the color of the data header text */
-/* background-color can be set to change the data header's background color  */
+/* data panel header background color and text color  */
 
-.DataHeader {
+.DataHeader 
+{
   background-color: #FFB74D;
   color: #FFFFFF;
 }
 
-/* color of the labels used for various options in the Share Panel*/
+/* font for function panel menu items and headers on the function and data panels */
 
-.FunctionLabel{
+.MenuItem, .FunctionHeader, .DataHeader
+{
+  font-family: Open Sans, Arial, sans-serif;
+  font-size: 24px;
+}
+
+/* color of the labels used for various options in the Share panel */
+
+.FunctionLabel 
+{
   color: #00796B;
 }
 
 /* sets the color in the map tool menu for when hovering over an active map tool item */
 
-li.MapTool:hover, #selectMapTheme li:hover, #selectMapLevel li:hover{
+li.MapTool:hover, #selectMapTheme li:hover, #selectMapLevel li:hover 
+{
   background-color: #B2DFDB;
 }
 
 /* sets the height and width for the overview map popout in the bottom right corner of the map */
 
-.overviewMap{
+.overviewMap 
+{
   height: 250px;
   width: 175px;
 }
 
-/* color of the locator box that shows current extent */
+/* color of the overview map locator box that shows current extent */
 
-#locatorBox{
+#locatorBox 
+{
  border: solid 2px #FF0000;
 }
 
-#pnlSearchGrid, #pnlQueryGrid{
+#pnlSearchGrid, #pnlQueryGrid 
+{
   color: #f4f7f7;
 }
 
-/* This is for the MOBILE VERSION ONLY that you would view on a phone - NOT FOR TABLET */
-/* width of the data panel that displays as part of identification */
-@media only screen and (min-device-width: 300px) and (max-device-width: 736px) {
-  #pnlDataDisplay{
-    width: 250px;
-  }
-}
 /* =================================== */
 /*   Custom header and footer styles   */
 /* =================================== */

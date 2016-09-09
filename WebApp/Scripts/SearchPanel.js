@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ var GPV = (function (gpv) {
     var config = gpv.configuration;
     var appState = gpv.appState;
     var service = "Services/SearchPanel.ashx";
-    var currentSearch;
+    var initializing = true;
 
     // =====  controls  =====
     
@@ -90,6 +90,59 @@ var GPV = (function (gpv) {
       });
     }
 
+    function getSearchResults() {
+      gpv.post({
+        url: service,
+        data: {
+          state: appState.toJson("Application", "Search", "SearchCriteria")
+        },
+        success: function (result) {
+          if (result) {
+            $grdSearch.dataGrid("load", result);
+            $labSearchCount.text((result.rows.length == 0 ? "None" : result.rows.length) + " found");
+            $cmdShowAllOnMap.toggleClass("Disabled", result.rows.length == 0);
+
+            if (!initializing && gpv.settings.searchAutoSelect && result.rows.length == 1) {
+              showOnMap();
+            }
+          }
+        }
+      });
+    }
+
+    function initialize() {
+      gpv.loadOptions($ddlSearch, config.mapTab[appState.MapTab].search);
+
+      if (!appState.Search && $ddlSearch.val()) {
+        appState.Search = $ddlSearch.val();
+      }
+
+      if (appState.Search) {
+        $ddlSearch.val(appState.Search);
+        var $panel = $container.find(".Search").filter("[data-search='" + appState.Search + "']").show();
+        var keys = Object.keys(appState.SearchCriteria);
+
+        if (keys.length) {
+          Object.keys(appState.SearchCriteria).forEach(function (k) {
+            var $input = $panel.find(".SearchInputField .Input[data-id='" + k + "']")
+            var v = appState.SearchCriteria[k];
+
+            if ($input.hasClass("DateRange") || $input.hasClass("NumberRange")) {
+              $input.filter(".1").val(v[0]);
+              $input.filter(".2").val(v[1]);
+            }
+            else {
+              $input.val(v);
+            }
+          });
+
+          getSearchResults();
+        }
+      }
+
+      initializing = undefined;
+    }
+
     function reset() {
       if (!$cmdReset.hasClass("Disabled")) {
         $("#pnlSearchScroll").find("input:text").val('');
@@ -112,14 +165,14 @@ var GPV = (function (gpv) {
     function search() {
       if (!$cmdSearch.hasClass("Disabled")) {
         emptyResultGrid();
-        var criteria = {};
+        var criteria = appState.SearchCriteria = {};
 
         getFilledInputs().each(function () {
           var $this = $(this);
           var id = $this.attr("data-id");
 
           if ($this.hasClass("DateRange") || $this.hasClass("NumberRange")) {
-            if (!criteria.hasOwnProperty(id)) {
+            if (!appState.SearchCriteria.hasOwnProperty(id)) {
               criteria[id] = [null, null];
             }
 
@@ -130,38 +183,22 @@ var GPV = (function (gpv) {
           }
         });
 
-        gpv.post({
-          url: service,
-          data: {
-            app: appState.Application,
-            search: $container.find(".Search:visible").attr("data-search"),
-            criteria: JSON.stringify(criteria)
-          },
-          success: function (result) {
-            if (result) {
-              $grdSearch.dataGrid("load", result);
-              $labSearchCount.text((result.rows.length == 0 ? "None" : result.rows.length) + " found");
-              $cmdShowAllOnMap.toggleClass("Disabled", result.rows.length == 0);
-            }
-          },
-          complete: function () {
-
-          }
-        });
+        getSearchResults();
       }
     }
 
     function searchChanged() {
       var $search = $container.find(".Search").hide();
-      currentSearch = null;
+      appState.Search = "";
       var $opt = $ddlSearch.find("option:selected");
 
       if ($opt.length) {
-        currentSearch = $opt.val();
-        $search.filter("[data-search='" + currentSearch + "']").show();
+        appState.Search = $opt.val();
+        $search.filter("[data-search='" + appState.Search + "']").show();
       }
 
       emptyResultGrid();
+      appState.SearchCriteria = {};
     }
 
     function showOnMap() {
@@ -170,7 +207,7 @@ var GPV = (function (gpv) {
     }
 
     function updateTargets(ids) {
-      var layerID = config.search[currentSearch].layer.id;
+      var layerID = config.search[appState.Search].layer.id;
       var targetIds = $.map(ids, function (id) { return id.m; }).join(",");
       var url = "application:action=0&selectionlayer=&selectionids=&scaleby=1.2&targetlayer=" + layerID + "&targetids=" + targetIds;
 
@@ -183,7 +220,7 @@ var GPV = (function (gpv) {
       $("#tabSelection").trigger("click");
     }
 
-    fillSearches();
+    initialize();
   });
 
   return gpv;

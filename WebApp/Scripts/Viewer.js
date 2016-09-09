@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ var GPV = (function (gpv) {
     var appState = gpv.appState;
 
     var fullExtent = L.Bounds.fromArray(gpv.configuration.fullExtent);
+    var tileLayers = {};
     var resizeHandle;
     var redrawPost;
 
@@ -41,23 +42,24 @@ var GPV = (function (gpv) {
     // =====  map control  =====
 
     var maxZoom = gpv.settings.zoomLevels - 1;
-    var resolutions = [ 0.25 * Math.pow(2, maxZoom) ];
+    var crs = L.CRS.EPSG3857;
 
-    for (var i = 0; i < maxZoom; ++i) {
-      resolutions.push(resolutions[i] * 0.5);
+    if (gpv.settings.mapCrs) {
+      crs = new L.Proj.CRS("GPV:1", gpv.settings.mapCrs);
+      var c = crs.unproject(fullExtent.getCenter());
+      var sf = 2 / L.CRS.EPSG3857.scaleFactorAtLatitude(c.lat);
+
+      var isFeet = gpv.settings.mapCrs.indexOf("+to_meter=0.3048") >= 0;
+      var resolutions = [ (isFeet ? 513591 : 156543) * sf ];
+
+      for (var i = 0; i < maxZoom; ++i) {
+        resolutions.push(resolutions[i] * 0.5);
+      }
+
+      crs = new L.Proj.CRS("GPV:1", gpv.settings.mapCrs, {
+        resolutions: resolutions
+      });
     }
-
-    var crs = new L.Proj.CRS("GPV:1", gpv.settings.coordinateSystem, {
-      resolutions: resolutions
-    });
-
-    crs.distance = function (a, b) {
-      a = crs.project(a);
-      b = crs.project(b);
-      var dx = a.x - b.x;
-      var dy = a.y - b.y;
-      return Math.sqrt(dx * dx + dy * dy) * (gpv.settings.mapUnits === "feet" ? 0.3048 : 1);
-    };
 
     var map = L.map("mapMain", {
       crs: crs,
@@ -81,7 +83,11 @@ var GPV = (function (gpv) {
 
     map.on("click", identify);
 
-    var shingleLayer = L.shingleLayer({ urlBuilder: refreshMap }).on("shingleload", function () {
+    var shingleLayer = L.shingleLayer({ 
+      urlBuilder: refreshMap, 
+      zIndex: 100, 
+      preserveOnPan: false          // TO DO: reset based on presence of underlay tiles
+    }).on("shingleload", function () {
       gpv.progress.clear();
       updateOverviewExtent();
 
@@ -143,6 +149,40 @@ var GPV = (function (gpv) {
         shingleLayer.redraw();
       }, 250);
     });
+
+    $("#cmdEmail").on("click", function () {
+      gpv.post({
+        url: "Services/SaveAppState.ashx",
+        data: {
+          state: gpv.appState.toJson()
+        },
+        success: function (result) {
+          if (result && result.id) {
+            var loc = document.location;
+            var url = [loc.protocol, "//", loc.hostname, loc.port.length && loc.port != "80" ? ":" + loc.port : "", loc.pathname, "?state=", result.id].join("");
+            $lnkEmail.val(url);
+            $('#pnlEmail').fadeIn(600);
+            selectEmailLink();
+          }
+        }
+      });
+    });
+
+    $('#cmdEmailClose').on('click', function(e){
+      e.preventDefault();
+      $('#pnlEmail').fadeOut(600);
+    });
+
+    var $lnkEmail = $("#lnkEmail").on("mousedown", function (e) {
+      if (e.which > 1) {
+        e.preventDefault();
+        selectEmailLink();
+      }
+    });
+
+    function selectEmailLink() {
+      $lnkEmail.prop("selectionStart", 0).prop("selectionEnd", $lnkEmail.val().length);
+    }
 
     $("#cmdFullView").on("click", function () {
       zoomToFullExtent();
@@ -257,6 +297,7 @@ var GPV = (function (gpv) {
       appState.update({ MapTab: mapTab });
       triggerMapTabChanged();
       shingleLayer.redraw();
+      drawTileLayers();
     });
 
     $("#selectMapLevel li").click(function () {
@@ -296,6 +337,46 @@ var GPV = (function (gpv) {
     });
 
     // =====  private functions  =====
+
+    function createTileLayers() {
+      Object.keys(gpv.configuration.mapTab).forEach(function (m) {
+        tileLayers[m] = {};
+
+        gpv.configuration.mapTab[m].tileGroup.forEach(function (tg) {
+          var z = -1;
+
+          tileLayers[m][tg.group.id] = tg.group.tileLayer.map(function (tl) {
+            z += 1;
+
+            return L.tileLayer(tl.url, { 
+              zIndex: tl.overlay ? 200 + z : z, 
+              attribution: tl.attribution,
+              opacity: tg.opacity,
+              maxZoom: tl.maxZoom || map.options.maxZoom
+            });
+          });
+        });
+      });
+    }
+
+    function drawTileLayers() {
+      map.eachLayer(function (layer) {
+        if (layer.constructor === L.TileLayer) {
+          map.removeLayer(layer);
+        }
+      });
+
+      var mapTab = appState.MapTab;
+      var visible = gpv.legendPanel.getVisibleTiles(mapTab);
+
+      Object.keys(tileLayers[mapTab]).forEach(function (tg) {
+        if (visible.indexOf(tg) >= 0) {
+          tileLayers[mapTab][tg].forEach(function (tl) {
+            tl.addTo(map);
+          });
+        }
+      });
+    }
 
     function hideFunctionMenu(callback) {
       $("#pnlFunctionTabs").animate({ left: "-400px", opacity: "0" }, panelAnimationTime, callback);
@@ -443,6 +524,17 @@ var GPV = (function (gpv) {
       }
     }
 
+    function toggleTileGroup(groupId, visible) {
+      tileLayers[appState.MapTab][groupId].forEach(function (tl) {
+        if (visible) {
+          tl.addTo(map);
+        }
+        else {
+          map.removeLayer(tl);
+        }
+      });
+    }
+
     function triggerMapTabChanged() {
       $.each(mapTabChangedHandlers, function () {
         this();
@@ -569,17 +661,20 @@ var GPV = (function (gpv) {
       refreshMap: function () { showLevel(); shingleLayer.redraw(); },
       setExtent: setExtent,
       switchToPanel: switchToPanel,
+      toggleTileGroup: toggleTileGroup,
       zoomToActive: zoomToActive
     };
 
     // =====  finish initialization  =====
 
-    map.fitProjectedBounds(L.Bounds.fromArray(gpv.appState.Extent.bbox));
+    map.fitProjectedBounds(L.Bounds.fromArray(appState.Extent.bbox));
 
     //need to add title attribute due to bootstrap overwriting title with popover
     $("#cmdLocation").attr("title", "Current Location");
 
     gpv.loadComplete();
+    createTileLayers();
+    drawTileLayers();
     $MapTool.filter(".Selected").trigger("click");
     triggerMapTabChanged();
   });

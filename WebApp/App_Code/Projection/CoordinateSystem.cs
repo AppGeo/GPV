@@ -1,4 +1,4 @@
-//  Copyright 2012 Applied Geographics, Inc.
+//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -13,48 +13,197 @@
 //  limitations under the License.
 
 using System;
+using DotSpatial.Projections;
+using DotSpatial.Projections.Transforms;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 public class CoordinateSystem
 {
-	protected Projection Projection;
-	protected double FalseEasting;
-	protected double FalseNorthing;
+  private ProjectionInfo _geodetic = KnownCoordinateSystems.Geographic.World.WGS1984;
 
-	protected CoordinateSystem() { }
+  protected ProjectionInfo Projection;
 
-	public CoordinateSystem(Projection projection, double falseEasting, double falseNorthing)
+  protected CoordinateSystem() { }
+
+	public CoordinateSystem(string proj4String)
 	{
-		Projection = projection;
-		FalseEasting = falseEasting;
-		FalseNorthing = falseNorthing;
+    Projection = ProjectionInfo.FromProj4String(proj4String);
 	}
 
-	public void ToGeodetic(double x, double y, out double lon, out double lat)
+  public bool IsWebMercator
+  {
+    get
+    {
+      Spheroid spheroid = Projection.GeographicInfo.Datum.Spheroid;
+
+      return Projection.Transform.Proj4Name == "merc" && Projection.Unit.Name == "Meter" &&
+        spheroid.EquatorialRadius == 6378137 && spheroid.PolarRadius == 6378137;
+    }
+  }
+
+  public string MapUnits
+  {
+    get
+    {
+      if (Projection.Unit.Name == "Meter")
+      {
+        return "meters";
+      }
+      else if (Projection.Unit.Name == "Foot_US" || Projection.Unit.Name == "Foot")
+      {
+        return "feet";
+      }
+
+      return "unknown";
+    }
+  }
+
+  public override bool Equals(object obj)
+  {
+    CoordinateSystem other = obj as CoordinateSystem;
+
+    if (other == null)
+    {
+      return false;
+    }
+
+    return Projection.Equals(other.Projection);
+  }
+
+  public override int GetHashCode()
+  {
+    return base.GetHashCode();
+  }
+
+	public Coordinate ToGeodetic(Coordinate c)
 	{
-		x -= FalseEasting;
-		y -= FalseNorthing;
+    double[] p = new double[] { c.X, c.Y };
+    double[] z = new double[] { 0 };
 
-		Projection.ToGeodetic(x, y, out lon, out lat);
-	}
+    Reproject.ReprojectPoints(p, z, Projection, _geodetic, 0, 1);
 
-	public void ToProjected(double lon, double lat, out double x, out double y)
+    return new Coordinate(p[0], p[1]);
+  }
+
+  public Envelope ToGeodetic(Envelope extent)
+  {
+    Coordinate min = ToGeodetic(new Coordinate(extent.MinX, extent.MinY));
+    Coordinate max = ToGeodetic(new Coordinate(extent.MaxX, extent.MaxY));
+    return new Envelope(min, max);
+  }
+
+  public IGeometry ToGeodetic(IGeometry geometry)
+  {
+    Coordinate[] points;
+
+    switch (geometry.OgcGeometryType)
+    {
+      case OgcGeometryType.Point:
+        return new Point(ToGeodetic(geometry.Coordinate));
+
+      case OgcGeometryType.LineString:
+        ILineString lineString = (ILineString)geometry;
+        points = new Coordinate[lineString.Coordinates.Length];
+
+        for (int i = 0; i < lineString.Coordinates.Length; ++i)
+        {
+          points[i] = ToGeodetic(lineString.Coordinates[i]);
+        }
+
+        return new LineString(points);
+
+      case OgcGeometryType.Polygon:
+        IPolygon polygon = (IPolygon)geometry;
+
+        points = new Coordinate[polygon.ExteriorRing.Coordinates.Length];
+
+        for (int i = 0; i < polygon.ExteriorRing.Coordinates.Length; ++i)
+        {
+          points[i] = ToGeodetic(polygon.ExteriorRing.Coordinates[i]);
+        }
+
+        return new Polygon(new LinearRing(points));
+    }
+
+    return null;
+  }
+
+  public ILineString ToGeodetic(ILineString lineString)
+  {
+    return (ILineString)ToGeodetic((IGeometry)lineString);
+  }
+
+  public IPolygon ToGeodetic(IPolygon polygon)
+  {
+    return (IPolygon)ToGeodetic((IGeometry)polygon);
+  }
+
+  public Coordinate ToProjected(Coordinate c)
 	{
-		Projection.ToProjected(lon, lat, out x, out y);
+    double[] p = new double[] { c.X, c.Y };
+    double[] z = new double[] { 0 };
 
-		x += FalseEasting;
-		y += FalseNorthing;
-	}
+    Reproject.ReprojectPoints(p, z, _geodetic, Projection, 0, 1);
+
+    return new Coordinate(p[0], p[1]);
+  }
+
+  public Envelope ToProjected(Envelope extent)
+  {
+    Coordinate min = ToProjected(new Coordinate(extent.MinX, extent.MinY));
+    Coordinate max = ToProjected(new Coordinate(extent.MaxX, extent.MaxY));
+    return new Envelope(min, max);
+  }
+
+  public IGeometry ToProjected(IGeometry geometry)
+  {
+    Coordinate[] points;
+
+    switch (geometry.OgcGeometryType)
+    {
+      case OgcGeometryType.Point:
+        return new Point(ToProjected(geometry.Coordinate));
+
+      case OgcGeometryType.LineString:
+        ILineString lineString = (ILineString)geometry;
+        points = new Coordinate[lineString.Coordinates.Length];
+
+        for (int i = 0; i < lineString.Coordinates.Length; ++i)
+        {
+          points[i] = ToProjected(lineString.Coordinates[i]);
+        }
+
+        return new LineString(points);
+
+      case OgcGeometryType.Polygon:
+        IPolygon polygon = (IPolygon)geometry;
+
+        points = new Coordinate[polygon.ExteriorRing.Coordinates.Length];
+
+        for (int i = 0; i < polygon.ExteriorRing.Coordinates.Length; ++i)
+        {
+          points[i] = ToProjected(polygon.ExteriorRing.Coordinates[i]);
+        }
+
+        return new Polygon(new LinearRing(points));
+    }
+
+    return null;
+  }
+
+  public ILineString ToProjected(ILineString lineString)
+  {
+    return (ILineString)ToProjected((IGeometry)lineString);
+  }
+
+  public IPolygon ToProjected(IPolygon polygon)
+  {
+    return (IPolygon)ToProjected((IGeometry)polygon);
+  }
 
   public string ToProj4String()
   {
-    return ToProj4String("meters");
-	}
-
-  public string ToProj4String(string units)
-  {
-    double toMeters = units == "meters" ? 1 : Constants.MetersPerFoot;
-
-    return String.Format("{0} +x_0={1} +y_0={2} +to_meter={3}", Projection.ToProj4String(), FalseEasting,
-      FalseNorthing, toMeters);
+    return Projection.ToProj4String().Trim();
   }
 }

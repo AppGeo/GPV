@@ -1,4 +1,4 @@
-//  Copyright 2012 Applied Geographics, Inc.
+//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -53,8 +53,8 @@ public partial class StartViewer : CustomStyledPage
 		}
 
     bool isDebugging = launchParams.Count == 0 && System.Diagnostics.Debugger.IsAttached;
-    bool hasShowApps = AppSettings.AllowShowApps && launchParams.Count == 1 && launchParams.ContainsKey("showapps");
-    bool hasApplication = (!hasShowApps && !String.IsNullOrEmpty(AppSettings.DefaultApplication)) || launchParams.ContainsKey("application") || launchParams.ContainsKey("state");
+    bool hasShowApps = AppContext.AppSettings.AllowShowApps && launchParams.Count == 1 && launchParams.ContainsKey("showapps");
+    bool hasApplication = (!hasShowApps && !String.IsNullOrEmpty(AppContext.AppSettings.DefaultApplication)) || launchParams.ContainsKey("application") || launchParams.ContainsKey("state");
 
     if (hasApplication)
 		{

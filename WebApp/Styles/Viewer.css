@@ -1,4 +1,4 @@
-﻿/*  Copyright 2012 Applied Geographics, Inc.
+﻿/*  Copyright 2016 Applied Geographics, Inc.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -127,9 +127,37 @@ button {
   bottom: auto;
 }
 
-#cmdHelp, #cmdShowDetails{
+#pnlEmail
+{
+  position: absolute;
+  top: 42px;
+  right: 0;
+  width: 320px;
+  resize: none;
+  z-index: 5;
+  display: none;
+}
+
+#lnkEmail{
+  width: 89%;
+  background-color: #FFFFFF;
+  overflow: hidden;
+  font-size: 12px;
+  resize: none;
+}
+
+#cmdEmailClose, #lnkEmail {
+  height: 50px;
+}
+
+#cmdHelp, #cmdShowDetails, #cmdEmail{
   float: right;
   margin: 8px;
+}
+
+#cmdEmail{
+  font-size: 19px;
+  padding: 0 4px;
 }
 
 #cmdShowDetails {
@@ -178,19 +206,20 @@ button {
   opacity: 1;
 }
 
-.Menu{
+.Menu
+{
   margin-top: 20px;
 }
 
-.MenuItem{
+.MenuItem
+{
   display: block;
-  font-family: Lora, Times, serif;
-  font-size: 24px;
   padding: 8px;
   cursor: pointer;
 }
 
-.MenuItem:last-child{
+.MenuItem:last-child
+{
   border-bottom: none;
 }
 
@@ -204,16 +233,16 @@ button {
   opacity: 0;
 }
 
-.FunctionHeader{
-  font-family: Lora, Times, serif;
-  font-size: 24px;
+.FunctionHeader
+{
   letter-spacing: .25px;
   height: 40px;
   padding: 3px 0;
   cursor: pointer;
 }
 
-.FunctionExit, .DataExit{
+.FunctionExit, .DataExit
+{
   font-size: 18px;
   margin: 5px 10px;
   cursor: pointer;
@@ -230,31 +259,36 @@ button {
   transform: rotate(180deg);
 }
 
-.FunctionExitOpen{
+.FunctionExitOpen
+{
   transform: rotate(0deg);
   -webkit-transform: rotate(0deg);
   -moz-transform: rotate(0deg);
   -ms-transform: rotate(0deg);
 }
 
-.DataExitOpen {
+.DataExitOpen 
+{
   transform: rotate(360deg);
   -webkit-transform: rotate(360deg);
   -moz-transform: rotate(360deg);
   -ms-transform: rotate(360deg);
 }
 
-.FunctionPanel{
+.FunctionPanel
+{
   right: 1px;
 }
 
-#pnlAttribution {
+#pnlAttribution 
+{
   top: auto;
   bottom: 5px;
   height: 15px;
 }
 
-#pnlDataDisplay{
+#pnlDataDisplay
+{
   background-color: #FFFFFF;
   display: none;
   left: auto;
@@ -267,9 +301,8 @@ button {
   z-index: 11;
 }
 
-.DataHeader{
-  font-family: Lora, Times, serif;
-  font-size: 24px;
+.DataHeader
+{
   letter-spacing: .25px;
   text-align: right;
   height: 40px;
@@ -333,50 +366,17 @@ button {
   bottom: 0px;
 }
 
-@media screen and (max-width: 1024px){
+@media screen and (max-width: 600px)
+{
+  #pnlFunctionSidebar
+  {
+    left: -400px;
+  }
 
-  #cmdFullView, #cmdLocation{
-    transform: scale(1) translate(2%, 20%);
-    -webkit-transform: scale(1) translate(2%, 20%);
-    box-shadow: none;
-    -webkit-box-shadow: none;
-    border: 2px solid rgba(0,0,0,.3);
+  #pnlMapSizer
+  {
+    left: 0px;
   }
-  #btnToolMenu, #btnMapTheme, #btnMapLevel, #selectMapTools, #selectMapTheme, #selectMapLevel{
-    transform: scale(1) translate(10%, 10%);
-    -webkit-transform: scale(1) translate(10%, 10%);
-    box-shadow: none;
-    -webkit-box-shadow: none;
-    border: 2px solid rgba(0,0,0,.3);
-  }
-  #selectMapTheme {
-    transform: scale(1) translate(3%, 2.5%);
-    -webkit-transform: scale(1) translate(3%, 2.5%);
-  }
-  #selectMapLevel {
-    transform: scale(1) translate(3%, 2.5%);
-    -webkit-transform: scale(1) translate(3%, 2.5%);
-  }
-  #selectMapTools {
-    transform: scale(1) translate(3%, 1%);
-    -webkit-transform: scale(1) translate(3%, 1%);
-  }
-  .MenuItem {
-    font-size: 2em; /*24px/16px bumped up a little*/
-  }
-  #ddlMapTheme, #ddlLevel {
-  font-size: 1.5em;
-  }
-  .FunctionExit, .DataExit{
-    margin: 5px;
-  }
-  button{
-    margin: 10px 8px;
-  }
-  #ddlDataTheme{
-  font-size: 12px;
-  width: 135px
-}
 }
 
 /* restore shadowed zoom bar on touch devices */

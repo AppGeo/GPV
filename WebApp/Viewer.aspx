@@ -1,5 +1,5 @@
 ﻿<%-- 
-  Copyright 2012 Applied Geographics, Inc.
+  Copyright 2016 Applied Geographics, Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -41,6 +41,11 @@
       <uc1:Header ID="Header1" runat="server" />
       <span id="cmdShowDetails" class="glyphicon glyphicon-option-vertical" title="Show/hide details panel" style="font-size: 22px;"></span>
       <a id="cmdHelp" runat="server" class="CommandLink" title="Show the help pages" href="Help.aspx" target="help"><span class="glyphicon glyphicon-question-sign" style="font-size: 22px;"></span></a>
+      <span id="cmdEmail" title="Get a link to this map for emailing"><i class="fa fa-share-alt"></i></span>
+      <div id="pnlEmail" class="input-group">
+        <textarea id="lnkEmail" readonly="readonly" class="form-control custom-control" rows="3" ></textarea>
+        <span id="cmdEmailClose" class="input-group-addon btn">x</span>
+        </div>
     </div>
     <div id="pnlContent" runat="server" class="Panel">
       <div id="pnlFunctionSidebar" runat="server" class="Panel">
@@ -55,7 +60,7 @@
           </ul>
            <div id="pnlAttribution" class="Panel">
             <span id="spnVersion" runat="server" class="VersionText"></span>&nbsp;&nbsp;
-            <a class="VersionText" href="http://www.appgeo.com" target="AppGeo">AppGeo</a>
+            <a id="logosmall" runat="server" class="VersionText" href="http://www.appgeo.com" target="AppGeo">AppGeo</a>
           </div>
         </div>
         <div id="pnlFunction" runat="server" class="Panel">
@@ -149,6 +154,7 @@
           <div id="progress" style="display: none">
             <div id="progressBar"></div>
           </div>
+          <a id="logo" runat="server" href="http://www.appgeo.com" target="_blank"></a>
         </div>
       </div>
 

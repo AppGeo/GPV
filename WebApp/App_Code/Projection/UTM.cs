@@ -1,4 +1,4 @@
-//  Copyright 2012 Applied Geographics, Inc.
+//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
 //  limitations under the License.
 
 using System;
+using DotSpatial.Projections;
 
 public class UTM : CoordinateSystem
 {
@@ -68,9 +69,11 @@ public class UTM : CoordinateSystem
 
 	public UTM(int zone, Hemisphere hemisphere)
 	{
-		Projection = new TransverseMercator(zone * 6.0 - 183, 0, 0.9996, Spheroid.WGS84);
-		FalseNorthing = hemisphere == Hemisphere.North ? 0 : 10000000;
-		FalseEasting = 500000;
+    double centralMeridian = zone * 6.0 - 183;
+    double falseNorthing = hemisphere == Hemisphere.North ? 0 : 10000000;
+    string proj4Format = "+proj=tmerc +lon_0={0} +lat_0=0 +k=0.9996 +x_0=500000 +y_0={1} +ellps=GRS80 +datum=NAD83 +to_meter=1 +no_defs";
+
+    Projection = ProjectionInfo.FromProj4String(String.Format(proj4Format, centralMeridian, falseNorthing));
 	}
 }
 

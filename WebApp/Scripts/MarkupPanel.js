@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -22,11 +22,22 @@ var GPV = (function (gpv) {
     var isPublic = gpv.settings.isPublic;
     var service = "Services/MarkupPanel.ashx";
 
-    var metersPerFoot = 0.3048;
+    var metersPerFoot = 0.3048333333333333;
     var feetPerMile = 5280;
     var squareFeetPerAcre = 43560;
 
     var measureText;
+    var measureCrs = proj4(gpv.settings.measureCrs);
+
+    measureCrs.project = function (latlng) {
+      var c = this.forward([ latlng.lng, latlng.lat ]);
+      return { x: c[0], y: c[1] };
+    };
+
+    measureCrs.unproject = function (p) {
+      var c = this.inverse([ p.x, p.y ]);
+      return L.latLng(c[1], c[0]);
+    };
 
     // =====  controls  =====
 
@@ -164,6 +175,11 @@ var GPV = (function (gpv) {
     // =====  private functions  =====
 
     function addMarkup(e, option) {
+      if (!isValid(e.shape)) {
+        map.removeLayer(e.shape);
+        return;
+      }
+
       currentShape = e.shape;
 
       var data = {
@@ -370,8 +386,69 @@ var GPV = (function (gpv) {
       });
     }
 
+    function getAreaCentroid(points) {
+      var k = getCoordinateKeys(points);
+      var centroid = L.point(0, 0);
+      var area = 0;
+      var n;
+
+      for (i = 1; i <= points.length; ++i) {
+        j = i % points.length;
+        n = (points[i - 1][k.x] * points[j][k.y]) - (points[j][k.x] * points[i - 1][k.y]);
+        centroid.x += (points[i - 1][k.x] + points[j][k.x]) * n;
+        centroid.y += (points[i - 1][k.y] + points[j][k.y]) * n;
+        area += n;
+      }
+
+      centroid.x /= 3 * area;
+      centroid.y /= 3 * area;
+      area = Math.abs(area * 0.5);
+
+      return { area: area, centroid: centroid };
+    }
+
+    function getCoordinateKeys(points) {
+      return {
+        x: 'lng' in points[0] ? 'lng' : 'x',
+        y: 'lat' in points[0] ? 'lat' : 'y'
+      }
+    }
+
+    function getLength(points) {
+      var k = getCoordinateKeys(points);
+      var length = 0;
+
+      for (i = 1; i < points.length; ++i) {
+        var dx = points[i][k.x] - points[i - 1][k.x];
+        var dy = points[i][k.y] - points[i - 1][k.y];
+        length += Math.sqrt(dx * dx + dy * dy);
+      }
+
+      return length;
+    }
+
     function getMarkupColor() {
       return $cmdMarkupColor.colorSelector("color");
+    }
+
+    function isValid(shape) {
+      var valid = true;
+
+      if (shape instanceof L.Polyline) {
+        var points = shape.getLatLngs();
+          
+        if (shape instanceof L.Polygon) {
+          valid = getAreaCentroid(points[0]).area > 0;
+        }
+        else {
+          valid = getLength(points) > 0;
+        }
+      }
+      else if (shape instanceof L.Circle) {
+        valid = shape.getRadius() > 0;
+      }
+
+      return valid;
     }
 
     function lockMarkupGroup() {
@@ -505,13 +582,12 @@ var GPV = (function (gpv) {
         var units = gpv.settings.measureUnits;
         var inFeet = units == "feet" || units == "both";
         var inMeters = units == "meters" || units == "both";
-        var convert = 1 / (gpv.settings.mapUnits == "feet" ? 1 : metersPerFoot);
+        var convert = 1 / (gpv.settings.measureCrsUnits == "feet" ? 1 : metersPerFoot);
 
         var latlngs = currentTool === 'optDrawLength' ? e.shape.getLatLngs() : e.shape.getLatLngs()[0];
-        var lastLatLng = latlngs[latlngs.length - 1];
 
-        var c = $.map(latlngs, function (latlng) {
-          return map.options.crs.project(latlng);
+        var points = $.map(latlngs, function (latlng) {
+          return measureCrs.project(latlng);
         });
 
         if (measureText) {
@@ -522,81 +598,55 @@ var GPV = (function (gpv) {
         var i, j;
 
         if (currentTool === 'optDrawLength') {
-          if (c.length >= 2) {
-            var length = 0;
+          var length = getLength(points);
 
-            for (i = 1; i < c.length; ++i) {
-              var dx = c[i].x - c[i - 1].x;
-              var dy = c[i].y - c[i - 1].y;
-              length += Math.sqrt(dx * dx + dy * dy);
+          if (length > 0) {
+            length *= convert;
+
+            if (inFeet) {
+              value.push(length < feetPerMile ? Math.round(length) + " ft" : (length / feetPerMile).toFixed(1) + " mi");
             }
 
-            if (length > 0) {
-              length *= convert;
-
-              if (inFeet) {
-                value.push(length < feetPerMile ? Math.round(length) + " ft" : (length / feetPerMile).toFixed(1) + " mi");
-              }
-
-              if (inMeters) {
-                length *= metersPerFoot;
-                value.push(length < 1000 ? Math.round(length) + " m" : (length / 1000).toFixed(1) + " km");
-              }
-
-              measureText = L.text({ 
-                latlng: lastLatLng,
-                className: "MeasureText",
-                value: value.join("\n"), 
-                pointerEvents: 'none' 
-              }).addTo(map);
+            if (inMeters) {
+              length *= metersPerFoot;
+              value.push(length < 1000 ? Math.round(length) + " m" : (length / 1000).toFixed(1) + " km");
             }
+
+            measureText = L.text({ 
+              latlng: latlngs[latlngs.length - 1],
+              className: "MeasureText",
+              value: value.join("\n"), 
+              pointerEvents: 'none' 
+            }).addTo(map);
           }
         }
         else {
-          if (c.length >= 3) {
-            var x = 0;
-            var y = 0;
-            var area = 0;
-            var n;
+          var ca = getAreaCentroid(points);
 
-            for (i = 1; i <= c.length; ++i) {
-              j = i % c.length;
-              n = (c[i - 1].x * c[j].y) - (c[j].x * c[i - 1].y);
-              x += (c[i - 1].x + c[j].x) * n;
-              y += (c[i - 1].y + c[j].y) * n;
-              area += n;
+          if (ca.area > 0) {
+            var area = ca.area * convert * convert;
+            var acres = area / squareFeetPerAcre;
+
+            if (inFeet) {
+              var squareMile = feetPerMile * feetPerMile;
+              value.push(area <= squareMile ? Math.round(area) + " sq ft" : (area / squareMile).toFixed(2) + " sq mi");
             }
 
-            x /= 3 * area;
-            y /= 3 * area;
-
-            area = Math.abs(area * 0.5);
-
-            if (area > 0) {
-              area *= convert * convert;
-              var acres = area / squareFeetPerAcre;
-
-              if (inFeet) {
-                var squareMile = feetPerMile * feetPerMile;
-                value.push(area <= squareMile ? Math.round(area) + " sq ft" : (area / squareMile).toFixed(2) + " sq mi");
-              }
-
-              if (inMeters) {
-                area *= metersPerFoot * metersPerFoot;
-                value.push(area <= 100000 ? Math.round(area) + " sq m" : (area / 1000000).toFixed(2) + " sq km");
-              }
-
-              if (inFeet) {
-                value.push(acres.toFixed(2) + " acres");
-              }
-
-              measureText = L.text({ 
-                latlng: map.options.crs.unproject(L.point(x, y)),
-                className: "MeasureText " + (inFeet ? "Area3" : "Area2"),
-                value: value.join("\n"), 
-                pointerEvents: 'none' 
-              }).addTo(map);
+            if (inMeters) {
+              area *= metersPerFoot * metersPerFoot;
+              value.push(area <= 100000 ? Math.round(area) + " sq m" : (area / 1000000).toFixed(2) + " sq km");
             }
+
+            if (inFeet) {
+              value.push(acres.toFixed(2) + " acres");
+            }
+
+            measureText = L.text({ 
+              latlng: measureCrs.unproject(ca.centroid),
+              className: "MeasureText " + (inFeet ? "Area3" : "Area2"),
+              value: value.join("\n"), 
+              pointerEvents: 'none' 
+            }).addTo(map);
           }
         }
       }
@@ -632,8 +682,9 @@ var GPV = (function (gpv) {
         var sin = Math.sin(sweepAngle);
 
         var center = map.options.crs.project(shape.getLatLng());
+        var theta = Math.PI * 0.5 - 2 * Math.atan(Math.pow(Math.E, -center.y / 6378137));
         var dx = 0;
-        var dy = shape.getRadius();
+        var dy = shape.getRadius() / theta;
         points = [ L.point(center.x + dx, center.y + dy) ];
 
         for (var i = 0; i < segments - 1; ++i) {

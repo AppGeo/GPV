@@ -1,4 +1,4 @@
-//  Copyright 2012 Applied Geographics, Inc.
+//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
 //  limitations under the License.
 
 using System;
+using GeoAPI.Geometries;
 
 public class MGRS : GridSystem
 {
@@ -34,7 +35,7 @@ public class MGRS : GridSystem
 		_precision = precision;
 	}
 
-	public override void ToGeodetic(string gridValue, out double lon, out double lat)
+	public override Coordinate ToGeodetic(string gridValue)
 	{
 		gridValue = gridValue.Replace(" ", String.Empty).ToUpper();
 
@@ -126,25 +127,25 @@ public class MGRS : GridSystem
 
 		Hemisphere hemisphere = letters[0] > 'M' ? Hemisphere.North : Hemisphere.South;
 		UTM utm = new UTM(zone, hemisphere);
-		utm.ToGeodetic(x, y, out lon, out lat);
+		return utm.ToGeodetic(new Coordinate(x, y));
 	}
 
-	public override void ToGrid(double lon, double lat, out string gridValue)
+	public override string ToGrid(Coordinate g)
 	{
 		char[] letters = new char[3];
 
-		double zoneLat = lat < -80 ? -80 : lat > 72 ? 72 : lat;
+    double zoneLat = g.Y < -80 ? -80 : g.Y > 72 ? 72 : g.Y;
 		letters[0] = _zoneLetters[Convert.ToInt32(Math.Floor((zoneLat + 80) / 8))];
 
-		double n = lon >= 180 ? lon - 180 : lon + 180;
+    double n = g.X >= 180 ? g.X - 180 : g.X + 180;
 		int zone = Convert.ToInt32(Math.Floor(n / 6)) + 1;
-		Hemisphere hemisphere = lat >= 0 ? Hemisphere.North : Hemisphere.South;
+    Hemisphere hemisphere = g.Y >= 0 ? Hemisphere.North : Hemisphere.South;
 
 		UTM utm = new UTM(zone, hemisphere);
 
-		double x;
-		double y;
-		utm.ToProjected(lon, lat, out x, out y);
+		Coordinate p = utm.ToProjected(g);
+    double x = p.X;
+    double y = p.Y;
 
 		double divisor = Math.Pow(10, 5 - _precision);
 		x = Math.Round(x / divisor) * divisor;
@@ -162,7 +163,7 @@ public class MGRS : GridSystem
 		y = (y % 100000) / divisor;
 
 		string f = new String('0', _precision);
-		gridValue = String.Format("{0}{1} {2} {3}", zone, new String(letters), x.ToString(f), y.ToString(f));
+		return String.Format("{0}{1} {2} {3}", zone, new String(letters), x.ToString(f), y.ToString(f));
 	}
 }
 

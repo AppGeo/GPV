@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ public class MarkupPanelHandler : WebServiceHandler
       using (OleDbConnection connection = AppContext.GetDatabaseConnection())
       {
         string sql = String.Format("insert into {0}Markup (MarkupID, GroupID, Shape, Color, Glow, Text, Measured, DateCreated, Deleted) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            AppSettings.ConfigurationTablePrefix);
+            WebConfigSettings.ConfigurationTablePrefix);
 
         using (OleDbCommand command = new OleDbCommand(sql, connection))
         {
@@ -87,7 +87,7 @@ public class MarkupPanelHandler : WebServiceHandler
       using (OleDbConnection connection = AppContext.GetDatabaseConnection())
       {
         string sql = String.Format("insert into {0}MarkupGroup (GroupID, CategoryID, DisplayName, CreatedBy, CreatedByUser, Locked, DateCreated, DateLastAccessed, Deleted) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            AppSettings.ConfigurationTablePrefix);
+            WebConfigSettings.ConfigurationTablePrefix);
 
         using (OleDbCommand command = new OleDbCommand(sql, connection))
         {
@@ -156,7 +156,7 @@ public class MarkupPanelHandler : WebServiceHandler
         using (OleDbConnection connection = AppContext.GetDatabaseConnection())
         {
           bool deletedInGroup = false;
-          string sql = String.Format("select MarkupID, Shape, Text, Measured from {0}Markup where GroupID = ?", AppSettings.ConfigurationTablePrefix);
+          string sql = String.Format("select MarkupID, Shape, Text, Measured from {0}Markup where GroupID = ?", WebConfigSettings.ConfigurationTablePrefix);
 
           using (OleDbCommand command = new OleDbCommand(sql, connection))
           {
@@ -177,7 +177,7 @@ public class MarkupPanelHandler : WebServiceHandler
 
               if (hitType != HitType.None)
               {
-                command.CommandText = String.Format("update {0}Markup set Deleted = 1 where MarkupID = {1}", AppSettings.ConfigurationTablePrefix, row["MarkupID"]);
+                command.CommandText = String.Format("update {0}Markup set Deleted = 1 where MarkupID = {1}", WebConfigSettings.ConfigurationTablePrefix, row["MarkupID"]);
                 command.ExecuteNonQuery();
                 deletedInGroup = true;
               }
@@ -215,15 +215,15 @@ public class MarkupPanelHandler : WebServiceHandler
     {
       using (OleDbConnection connection = AppContext.GetDatabaseConnection())
       {
-        string sql = String.Format("update {0}Markup set Deleted = 1 where GroupID = ?", AppSettings.ConfigurationTablePrefix);
+        string sql = String.Format("update {0}Markup set Deleted = 1 where GroupID = ?", WebConfigSettings.ConfigurationTablePrefix);
 
         using (OleDbCommand command = new OleDbCommand(sql, connection))
         {
           command.Parameters.Add("@1", OleDbType.Integer).Value = groupId;
           command.ExecuteNonQuery();
         }
-        
-        sql = String.Format("update {0}MarkupGroup set Deleted = 1, DateLastAccessed = ? where GroupID = ?", AppSettings.ConfigurationTablePrefix);
+
+        sql = String.Format("update {0}MarkupGroup set Deleted = 1, DateLastAccessed = ? where GroupID = ?", WebConfigSettings.ConfigurationTablePrefix);
 
         using (OleDbCommand command = new OleDbCommand(sql, connection))
         {
@@ -275,7 +275,7 @@ public class MarkupPanelHandler : WebServiceHandler
         using (OleDbConnection connection = AppContext.GetDatabaseConnection())
         {
           bool foundInGroup = false;
-          string sql = String.Format("select MarkupID, Shape, Text, Measured from {0}Markup where GroupID = ?", AppSettings.ConfigurationTablePrefix);
+          string sql = String.Format("select MarkupID, Shape, Text, Measured from {0}Markup where GroupID = ?", WebConfigSettings.ConfigurationTablePrefix);
 
           using (OleDbCommand command = new OleDbCommand(sql, connection))
           {
@@ -296,13 +296,13 @@ public class MarkupPanelHandler : WebServiceHandler
 
               if (hitType != HitType.None)
               {
-                command.CommandText = String.Format("update {0}Markup set Color = '{1}' where MarkupID = {2}", AppSettings.ConfigurationTablePrefix, markupColor, row["MarkupID"]);
+                command.CommandText = String.Format("update {0}Markup set Color = '{1}' where MarkupID = {2}", WebConfigSettings.ConfigurationTablePrefix, markupColor, row["MarkupID"]);
                 command.ExecuteNonQuery();
 
                 if (hitType == HitType.Text || hitType == HitType.Coordinate)
                 {
                   string glow = textGlowColor == null ? "null" : String.Format("'{0}'", textGlowColor);
-                  command.CommandText = String.Format("update {0}Markup set Glow = {1} where MarkupID = {2}", AppSettings.ConfigurationTablePrefix, glow, row["MarkupID"]);
+                  command.CommandText = String.Format("update {0}Markup set Glow = {1} where MarkupID = {2}", WebConfigSettings.ConfigurationTablePrefix, glow, row["MarkupID"]);
                   command.ExecuteNonQuery();
                 }
 
@@ -354,12 +354,12 @@ public class MarkupPanelHandler : WebServiceHandler
     using (OleDbConnection connection = AppContext.GetDatabaseConnection())
     {
       string sql = String.Format("select GroupID, DateCreated, CreatedBy, DisplayName from {0}MarkupGroup where CategoryID = ? and DateLastAccessed >= ? and Deleted = 0 order by DateCreated desc",
-          AppSettings.ConfigurationTablePrefix);
+          WebConfigSettings.ConfigurationTablePrefix);
 
       using (OleDbCommand command = new OleDbCommand(sql, connection))
       {
         command.Parameters.Add("@1", OleDbType.VarWChar).Value = category;
-        command.Parameters.Add("@2", OleDbType.Date).Value = DateTime.Now.AddDays(0 - AppSettings.MarkupTimeout);
+        command.Parameters.Add("@2", OleDbType.Date).Value = DateTime.Now.AddDays(0 - AppContext.AppSettings.MarkupTimeout);
 
         using (OleDbDataReader reader = command.ExecuteReader())
         {
@@ -396,7 +396,7 @@ public class MarkupPanelHandler : WebServiceHandler
 
     using (OleDbConnection connection = AppContext.GetDatabaseConnection())
     {
-      string sql = String.Format("select CreatedByUser, Locked from {0}MarkupGroup where GroupID = ?", AppSettings.ConfigurationTablePrefix);
+      string sql = String.Format("select CreatedByUser, Locked from {0}MarkupGroup where GroupID = ?", WebConfigSettings.ConfigurationTablePrefix);
 
       using (OleDbCommand command = new OleDbCommand(sql, connection))
       {
@@ -458,7 +458,7 @@ public class MarkupPanelHandler : WebServiceHandler
       System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(new System.Drawing.Bitmap(10, 10));
 
       Coordinate origin = ((IPoint)geometry).Coordinate;
-      System.Drawing.SizeF textSize = graphics.MeasureString(markup.Text, AppSettings.MarkupFont);
+      System.Drawing.SizeF textSize = graphics.MeasureString(markup.Text, AppContext.AppSettings.MarkupFont);
 
       Envelope box = new Envelope(new Coordinate(origin.X, origin.Y), new Coordinate(origin.X + textSize.Width * scale, origin.Y + textSize.Height * scale));
 
@@ -482,7 +482,7 @@ public class MarkupPanelHandler : WebServiceHandler
     {
       using (OleDbConnection connection = AppContext.GetDatabaseConnection())
       {
-        string sql = String.Format("update {0}MarkupGroup set Locked = ? where GroupID = ?", AppSettings.ConfigurationTablePrefix);
+        string sql = String.Format("update {0}MarkupGroup set Locked = ? where GroupID = ?", WebConfigSettings.ConfigurationTablePrefix);
 
         using (OleDbCommand command = new OleDbCommand(sql, connection))
         {
@@ -536,7 +536,7 @@ public class MarkupPanelHandler : WebServiceHandler
       {
         using (OleDbConnection connection = AppContext.GetDatabaseConnection())
         {
-          string sql = String.Format("select Shape, Color, Glow, Text, Measured from {0}Markup where GroupID = ?", AppSettings.ConfigurationTablePrefix);
+          string sql = String.Format("select Shape, Color, Glow, Text, Measured from {0}Markup where GroupID = ?", WebConfigSettings.ConfigurationTablePrefix);
           DataTable table = new DataTable();
 
           using (OleDbCommand command = new OleDbCommand(sql, connection))
@@ -583,7 +583,7 @@ public class MarkupPanelHandler : WebServiceHandler
 
   private void UpdateMarkupGroupLastAccessed(int groupId, DateTime date, OleDbConnection connection)
   {
-    string sql = String.Format("update {0}MarkupGroup set DateLastAccessed = ? where GroupID = {1}", AppSettings.ConfigurationTablePrefix, groupId);
+    string sql = String.Format("update {0}MarkupGroup set DateLastAccessed = ? where GroupID = {1}", WebConfigSettings.ConfigurationTablePrefix, groupId);
 
     using (OleDbCommand command = new OleDbCommand(sql, connection))
     {
@@ -605,7 +605,7 @@ public class MarkupPanelHandler : WebServiceHandler
     {
       using (OleDbConnection connection = AppContext.GetDatabaseConnection())
       {
-        string sql = String.Format("update {0}MarkupGroup set DisplayName = ?, DateLastAccessed = ? where GroupID = ?", AppSettings.ConfigurationTablePrefix);
+        string sql = String.Format("update {0}MarkupGroup set DisplayName = ?, DateLastAccessed = ? where GroupID = ?", WebConfigSettings.ConfigurationTablePrefix);
 
         using (OleDbCommand command = new OleDbCommand(sql, connection))
         {

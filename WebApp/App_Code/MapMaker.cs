@@ -1,4 +1,4 @@
-//  Copyright 2012 Applied Geographics, Inc.
+//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -36,7 +36,8 @@ public class MapMaker
 
   private Envelope _extent;
   private AffineTransformation _transform;
-  private CoordinateSystem _coordinateSystem = null;
+
+  private AppSettings _appSettings = AppContext.AppSettings;
 
   public MapMaker(AppState appState, int width, int height)
   {
@@ -46,19 +47,6 @@ public class MapMaker
   public MapMaker(AppState appState, int width, int height, double resolution)
   {
     Initialize(appState, width, height, resolution);
-  }
-
-  private CoordinateSystem CoordinateSystem
-  {
-    get
-    {
-      if (_coordinateSystem == null)
-      {
-        _coordinateSystem = AppSettings.CoordinateSystem;
-      }
-
-      return _coordinateSystem;
-    }
   }
 
   private void Initialize(AppState appState, int width, int height, double resolution)
@@ -88,19 +76,7 @@ public class MapMaker
   {
     DrawCross(graphics, p, pen, 10);
 
-    double x = p.Coordinate.X;
-    double y = p.Coordinate.Y;
-
-    if (AppSettings.MapUnits == "feet")
-    {
-      x *= Constants.MetersPerFoot;
-      y *= Constants.MetersPerFoot;
-    }
-
-    double lon;
-    double lat;
-    CoordinateSystem.ToGeodetic(x, y, out lon, out lat);
-
+    Coordinate g = _appSettings.MapCoordinateSystem.ToGeodetic(p.Coordinate);
     double xOffset = 2;
 
     foreach (string mode in coordinateModes)
@@ -111,28 +87,34 @@ public class MapMaker
       switch (mode)
       {
         case "dms":
-          yText = (lat < 0 ? "S " : "N ") + ToDms(lat);
-          xText = (lon < 0 ? "W " : "E ") + ToDms(lon);
+          yText = (g.Y < 0 ? "S " : "N ") + ToDms(g.Y);
+          xText = (g.X < 0 ? "W " : "E ") + ToDms(g.X);
           break;
 
         case "dd":
-          yText = (lat < 0 ? "S " : "N ") + Math.Abs(lat).ToString("0.000000") + "°";
-          xText = (lon < 0 ? "W " : "E ") + Math.Abs(lon).ToString("0.000000") + "°";
+          yText = (g.Y < 0 ? "S " : "N ") + Math.Abs(g.Y).ToString("0.000000") + "°";
+          xText = (g.X < 0 ? "W " : "E ") + Math.Abs(g.X).ToString("0.000000") + "°";
           break;
 
         case "usng":
           yText = "";
           MGRS mgrs = new MGRS();
-          mgrs.ToGrid(lon, lat, out xText);
+          xText = mgrs.ToGrid(g);
           break;
 
         default:
-          string unit = AppSettings.MapUnits == "feet" ? " ft" : " m";
-          yText = "N " + p.Coordinate.Y.ToString("#,##0") + unit;
-          xText = "E " + p.Coordinate.X.ToString("#,##0") + unit;
+          Coordinate c = p.Coordinate;
+
+          if (!_appSettings.MapCoordinateSystem.Equals(_appSettings.MeasureCoordinateSystem))
+          {
+            c = _appSettings.MeasureCoordinateSystem.ToProjected(g);
+          }
+
+          string unit = _appSettings.MeasureCoordinateSystem.MapUnits == "feet" ? " ft" : " m";
+          yText = "N " + c.X.ToString("#,##0") + unit;
+          xText = "E " + c.Y.ToString("#,##0") + unit;
           break;
       }
-
 
       DrawText(graphics, p, String.Format("{0}\n{1}", yText, xText), font, textBrush, shadowBrush, xOffset, -3, format);
 
@@ -305,7 +287,7 @@ public class MapMaker
         foreach (string groupId in _appState.MarkupGroups)
         {
           string sql = String.Format("update {0}MarkupGroup set DateLastAccessed = ? where GroupID = {1}",
-              AppSettings.ConfigurationTablePrefix, groupId);
+              WebConfigSettings.ConfigurationTablePrefix, groupId);
 
           using (OleDbCommand command = new OleDbCommand(sql, connection))
           {
@@ -314,7 +296,7 @@ public class MapMaker
           }
 
           sql = String.Format("select Shape, Color, Glow, Text, Measured from {0}Markup where GroupID = {1} and Deleted = 0",
-              AppSettings.ConfigurationTablePrefix, groupId);
+              WebConfigSettings.ConfigurationTablePrefix, groupId);
 
           using (OleDbCommand command = new OleDbCommand(sql, connection))
           {
@@ -351,9 +333,9 @@ public class MapMaker
 
     float dotSize = Convert.ToSingle(10 * _resolution);
 
-    System.Drawing.Font font = AppSettings.MarkupFont;
+    System.Drawing.Font font = _appSettings.MarkupFont;
     font = new System.Drawing.Font(font.FontFamily, Convert.ToSingle(font.Size * _resolution), font.Style, font.Unit);
-    System.Drawing.Font coordinatesFont = AppSettings.CoordinatesFont;
+    System.Drawing.Font coordinatesFont = _appSettings.CoordinatesFont;
     coordinatesFont = new System.Drawing.Font(coordinatesFont.FontFamily, Convert.ToSingle(coordinatesFont.Size * _resolution), coordinatesFont.Style, coordinatesFont.Unit);
     SolidBrush textBrush = new SolidBrush(Color.FromArgb(192, 0, 0));
     SolidBrush glowBrush = new SolidBrush(Color.Black);
@@ -436,11 +418,11 @@ public class MapMaker
 
   private void DrawMeasure(Graphics graphics, IGeometry geometry)
   {
-    string measureUnits = AppSettings.MeasureUnits;
+    string measureUnits = _appSettings.MeasureUnits;
     bool inFeet = measureUnits == "feet" || measureUnits == "both";
     bool inMeters = measureUnits == "meters" || measureUnits == "both";
 
-    System.Drawing.Font font = AppSettings.MeasureFont;
+    System.Drawing.Font font = _appSettings.MeasureFont;
     font = new System.Drawing.Font(font.FontFamily, Convert.ToSingle(font.Size * _resolution), font.Style, font.Unit);
     SolidBrush brush = new SolidBrush(Color.FromArgb(64, 64, 64));
     SolidBrush glowBrush = new SolidBrush(Color.White);
@@ -449,15 +431,26 @@ public class MapMaker
     format.Alignment = StringAlignment.Center;
     format.LineAlignment = StringAlignment.Center;
 
-    double convert = 1 / (AppSettings.MapUnits == "feet" ? 1 : Constants.MetersPerFoot);
+    double convert = 1 / (_appSettings.MapUnits == "feet" ? 1 : Constants.MetersPerFoot);
     StringCollection text = new StringCollection();
 
     switch (geometry.OgcGeometryType)
     {
       case OgcGeometryType.LineString:
         ILineString lineString = (ILineString)geometry;
+        double d;
 
-        double d = lineString.Length * convert;
+        if (_appSettings.MapCoordinateSystem.Equals(_appSettings.MeasureCoordinateSystem))
+        {
+          d = lineString.Length * convert;
+        }
+        else
+        {
+          ILineString measureLineString = _appSettings.MapCoordinateSystem.ToGeodetic(lineString);
+          measureLineString = _appSettings.MeasureCoordinateSystem.ToProjected(measureLineString);
+          convert = 1 / (_appSettings.MeasureCoordinateSystem.MapUnits == "feet" ? 1 : Constants.MetersPerFoot);
+          d = measureLineString.Length * convert;
+        }
 
         if (inFeet)
         {
@@ -507,7 +500,20 @@ public class MapMaker
 
         if (c != null)
         {
-          double a = polygon.Area * convert * convert;
+          double a;
+
+          if (_appSettings.MapCoordinateSystem.Equals(_appSettings.MeasureCoordinateSystem))
+          {
+            a = polygon.Area * convert * convert;
+          }
+          else
+          {
+            IPolygon measurePolygon = _appSettings.MapCoordinateSystem.ToGeodetic(polygon);
+            measurePolygon = _appSettings.MeasureCoordinateSystem.ToProjected(measurePolygon);
+            convert = 1 / (_appSettings.MeasureCoordinateSystem.MapUnits == "feet" ? 1 : Constants.MetersPerFoot);
+            a = measurePolygon.Area * convert * convert;
+          }
+
           double acres = a / Constants.SquareFeetPerAcre;
 
           if (inFeet)
@@ -731,6 +737,7 @@ public class MapMaker
 
       map.Resolution = _resolution;
       map.ImageType = CommonImageType.Png;
+      map.TransparentBackground = true;
 
       double pixelSize = map.Extent.Width / _width;
 
@@ -761,31 +768,6 @@ public class MapMaker
 
           layerList.Add(index, commonLayer);
           definitionList.Add(index, layer.GetLevelQuery(commonLayer, _appState.Level));
-        }
-      }
-
-      if (!mapTab.IsBaseMapIDNull())
-      {
-        foreach (Configuration.LayerRow layer in config.Layer.Where(o => !o.IsBaseMapIDNull() && o.BaseMapID == mapTab.BaseMapID))
-        {
-          if (!mapTabLayerIds.Contains(layer.LayerID))
-          {
-            CommonLayer commonLayer = dataFrame.Layers.FirstOrDefault(o => String.Compare(o.Name, layer.LayerName, true) == 0);
-            int index = dataFrame.Layers.IndexOf(commonLayer);
-
-            bool visibleAtScale = commonLayer.IsWithinScaleThresholds(pixelSize);
-
-            if (!layerList.ContainsKey(index) && visibleAtScale)
-            {
-              if (commonLayer.Type == CommonLayerType.Image)
-              {
-                map.ImageType = CommonImageType.Jpg;
-              }
-
-              layerList.Add(index, commonLayer);
-              definitionList.Add(index, layer.GetLevelQuery(commonLayer, _appState.Level));
-            }
-          }
         }
       }
 
@@ -822,17 +804,17 @@ public class MapMaker
 
         PrepareIds(out targetIds, out filteredIds, out selectionIds);
 
-        DrawFeatures(graphics, _appState.TargetLayer, filteredIds, AppSettings.FilteredColor, AppSettings.FilteredOpacity, AppSettings.FilteredPolygonMode, AppSettings.FilteredPenWidth, AppSettings.FilteredDotSize);
-        DrawFeatures(graphics, _appState.SelectionLayer, selectionIds, AppSettings.SelectionColor, AppSettings.SelectionOpacity, AppSettings.SelectionPolygonMode, AppSettings.SelectionPenWidth, AppSettings.SelectionDotSize);
-        DrawFeatures(graphics, _appState.TargetLayer, targetIds, AppSettings.TargetColor, AppSettings.TargetOpacity, AppSettings.TargetPolygonMode, AppSettings.TargetPenWidth, AppSettings.TargetDotSize);
-        DrawFeatures(graphics, _appState.TargetLayer, _appState.ActiveMapId, AppSettings.ActiveColor, AppSettings.ActiveOpacity, AppSettings.ActivePolygonMode, AppSettings.ActivePenWidth, AppSettings.ActiveDotSize);
+        DrawFeatures(graphics, _appState.TargetLayer, filteredIds, _appSettings.FilteredColor, _appSettings.FilteredOpacity, _appSettings.FilteredPolygonMode, _appSettings.FilteredPenWidth, _appSettings.FilteredDotSize);
+        DrawFeatures(graphics, _appState.SelectionLayer, selectionIds, _appSettings.SelectionColor, _appSettings.SelectionOpacity, _appSettings.SelectionPolygonMode, _appSettings.SelectionPenWidth, _appSettings.SelectionDotSize);
+        DrawFeatures(graphics, _appState.TargetLayer, targetIds, _appSettings.TargetColor, _appSettings.TargetOpacity, _appSettings.TargetPolygonMode, _appSettings.TargetPenWidth, _appSettings.TargetDotSize);
+        DrawFeatures(graphics, _appState.TargetLayer, _appState.ActiveMapId, _appSettings.ActiveColor, _appSettings.ActiveOpacity, _appSettings.ActivePolygonMode, _appSettings.ActivePenWidth, _appSettings.ActiveDotSize);
 
         IGeometry selectionBuffer = _appState.SelectionManager.GetSelectionBuffer();
 
         if (selectionBuffer != null)
         {
-          Brush bufferBrush = new SolidBrush(Color.FromArgb(Convert.ToInt32(255 * AppSettings.BufferOpacity), AppSettings.BufferColor));
-          Pen bufferPen = AppSettings.BufferOutlineOpacity > 0 ? new Pen(new SolidBrush(Color.FromArgb(Convert.ToInt32(255 * AppSettings.BufferOutlineOpacity), AppSettings.BufferOutlineColor)), AppSettings.BufferOutlinePenWidth) : null;
+          Brush bufferBrush = new SolidBrush(Color.FromArgb(Convert.ToInt32(255 * _appSettings.BufferOpacity), _appSettings.BufferColor));
+          Pen bufferPen = _appSettings.BufferOutlineOpacity > 0 ? new Pen(new SolidBrush(Color.FromArgb(Convert.ToInt32(255 * _appSettings.BufferOutlineOpacity), _appSettings.BufferOutlineColor)), _appSettings.BufferOutlinePenWidth) : null;
           
           switch (selectionBuffer.OgcGeometryType)
           {

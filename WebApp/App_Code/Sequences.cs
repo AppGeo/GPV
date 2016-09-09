@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ public static class Sequences
   {
     get
     {
-      return IncrementSequence(AppSettings.ConfigurationTablePrefix + "MarkupSequence", "NextGroupID");
+      return IncrementSequence(WebConfigSettings.ConfigurationTablePrefix + "MarkupSequence", "NextGroupID");
     }
   }
 
@@ -32,7 +32,7 @@ public static class Sequences
   {
     get
     {
-      return IncrementSequence(AppSettings.ConfigurationTablePrefix + "MarkupSequence", "NextMarkupID");
+      return IncrementSequence(WebConfigSettings.ConfigurationTablePrefix + "MarkupSequence", "NextMarkupID");
     }
   }
 

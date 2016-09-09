@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ public static class EnvelopeExtensions
     {
       try
       {
-        return FromArray(env.Split(separator).Select(o => Convert.ToDouble(o)).ToArray());
+        return FromArray(env.Split(separator).Select(o => Convert.ToDouble(o.Trim())).ToArray());
       }
       catch { }
     }
