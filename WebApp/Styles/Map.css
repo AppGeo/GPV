@@ -24,6 +24,10 @@ div.leaflet-control-attribution.leaflet-control
   right: 35px;
 }
 
+.leaflet-left .leaflet-control-scale {
+    margin-left: 120px;
+}
+
 #pnlOverview{
   position: absolute;
   bottom: 5px;

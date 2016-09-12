@@ -86,7 +86,7 @@ var GPV = (function (gpv) {
         var mapWidth = map.getSize().x;
         $("#labPrintScaleCurrent").text("Current (1\" = " + Math.round(extentWidth * 96 / mapWidth).format() + " ft)");
 
-        mapWidth = gpv.configuration.printTemplate[$ddlPrintTemplate.val()].mapWidth || 7;
+        mapWidth = ($ddlPrintTemplate.val() && gpv.configuration.printTemplate[$ddlPrintTemplate.val()].mapWidth) || 7;
         $("#labPrintScaleWidth").text("Preserve extent width (1\" = " + Math.round(extentWidth / mapWidth).format() + " ft)");
       }
     }

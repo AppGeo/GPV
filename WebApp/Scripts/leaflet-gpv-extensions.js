@@ -347,6 +347,11 @@
     return L.Util.template(this._url, L.extend(data, this.options));
   };
 
+  // make sure all CRS's can measure distance
+
+  L.Proj.CRS.prototype.R = L.CRS.Earth.R;
+  L.Proj.CRS.prototype.distance = L.CRS.Earth.distance;
+
   // Web Mercator CRS extension
 
   L.CRS.EPSG3857.scaleFactorAtLatitude = function (lat) {
