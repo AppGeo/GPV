@@ -44,7 +44,7 @@
 
 /* top and bottom of the main content area (map and function panels); */
 /* top and bottom of the main content area should match the hight of the header */
-/* and the footer respecitvely */
+/* and the footer respectively */
 
 #pnlContent
 {
@@ -217,7 +217,7 @@ a.VersionText
 
 /* colors of the map theme, level and tool dropdown buttons when hovering */
 
-/* color for function menu left boarder */
+/* color for function menu left border */
 
 .Menu 
 {

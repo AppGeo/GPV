@@ -208,12 +208,13 @@ public class UpdateMarkup : IHttpHandler
       WKTWriter wktWriter = new WKTWriter();
 
       sql = "update {0}Markup set Shape = '{1}' where MarkupID = {2}";
-
+      int id = 0;
+      
       try
       {
         foreach (object[] row in rows)
         {
-          int id = (int)row[0];
+          id = (int)row[0];
           string shape = (string)row[1];
 
           if (FixGeometries)
@@ -240,7 +241,7 @@ public class UpdateMarkup : IHttpHandler
         transaction.Rollback();
         success = false;
         
-        _context.Response.Write("Error encountered while processing, markup remains unchanged.\n  " + ex.Message);
+        _context.Response.Write(String.Format("Error encountered while processing row {0}, markup remains unchanged.\n  {1}", id, ex.Message));
       }
     }
 
