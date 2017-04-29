@@ -21,7 +21,7 @@ public static class Version
 {
   public const int Major = 5;
   public const int Minor = 0;
-  public const int BugFix = 0;
+  public const int BugFix = 1;
 
   public const string Release = "production";
   public const int Number = 0;
