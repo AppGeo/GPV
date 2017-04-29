@@ -91,6 +91,8 @@ var GPV = (function (gpv) {
     }
 
     function getSearchResults() {
+      $labSearchCount.text("searching...");
+
       gpv.post({
         url: service,
         data: {
@@ -147,6 +149,7 @@ var GPV = (function (gpv) {
       if (!$cmdReset.hasClass("Disabled")) {
         $("#pnlSearchScroll").find("input:text").val('');
         $("#pnlSearchScroll").find("select").prop('selectedIndex', 0);
+        $labSearchCount.text("");
         $cmdSearch.toggleClass("Disabled");
         $cmdReset.toggleClass("Disabled");
         emptyResultGrid();

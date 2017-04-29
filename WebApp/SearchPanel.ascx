@@ -31,7 +31,7 @@
     <table id="grdSearch" class="DataGrid"></table>
   </div>
   <div id="pnlSearchCommand" class="searchCommand Panel">
-    <div id="labSearchCount">None found</div>
+    <div id="labSearchCount"></div>
     <button id="cmdShowOnMap" class="Disabled" title="Show on Map">Show on Map</button>
     <button id="cmdShowAllOnMap" class="Disabled" title="Show All on Map">Show All on Map</button>
   </div>
