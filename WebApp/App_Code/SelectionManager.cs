@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2017 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -23,11 +23,26 @@ using AppGeo.Clients;
 public class SelectionManager
 {
   private AppState _appState = null;
+  private AppSettings _appSettings = null;
 
 	public SelectionManager(AppState appState)
 	{
     _appState = appState;
+    _appSettings = Configuration.GetCurrent().AppSettings;
 	}
+
+  private double AdjustBufferDistance(double distance, IGeometry selectionShape)
+  {
+    if (_appSettings.MapCoordinateSystem.IsWebMercator && !_appSettings.MeasureCoordinateSystem.IsWebMercator)
+    {
+      IPoint p = selectionShape.Centroid;
+      ILineString mapLine = new LineString(new Coordinate[] { p.Coordinate, new Coordinate(p.X + 1, p.Y) });
+      ILineString measureLine = _appSettings.MeasureCoordinateSystem.ToProjected(_appSettings.MapCoordinateSystem.ToGeodetic(mapLine));
+      distance /= measureLine.Length;
+    }
+
+    return distance;
+  }
 
   public Envelope GetExtent(FeatureType featureType)
   {
@@ -154,7 +169,8 @@ public class SelectionManager
         if (table != null && table.Rows.Count > 0)
         {
           IGeometry selectionShape = MergeShapes(table);
-          selectionBuffer = selectionShape.Buffer(proximity.Distance);
+          double distance = AdjustBufferDistance(proximity.Distance, selectionShape);
+          selectionBuffer = selectionShape.Buffer(distance);
         }
       }
     }
@@ -271,7 +287,8 @@ public class SelectionManager
 
           if (proximity.Distance > 0)
           {
-            selectionShape = selectionShape.Buffer(proximity.Distance);
+            double distance = AdjustBufferDistance(proximity.Distance, selectionShape);
+            selectionShape = selectionShape.Buffer(distance);
           }
 
           targetTable = targetLayer.GetFeatureTable(String.Format("{0},{1}", targetLayer.GeometryField.Name, keyField.Name), selectionShape);
