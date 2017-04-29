@@ -22,6 +22,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 
 public class UpdateMarkup : IHttpHandler 
@@ -194,6 +195,8 @@ public class UpdateMarkup : IHttpHandler
     string sql = String.Format("select MarkupID, Shape from {0}Markup", WebConfigSettings.ConfigurationTablePrefix);    
     DataTable table = new DataTable();
 
+    bool shiftGeometry = !Double.IsNaN(settings.MarkupShiftX) && !Double.IsNaN(settings.MarkupShiftY);
+
     using (OleDbTransaction transaction = connection.BeginTransaction())
     using (OleDbCommand command = new OleDbCommand(sql, connection, transaction))
     {
@@ -227,6 +230,12 @@ public class UpdateMarkup : IHttpHandler
             IGeometry geometry = wktReader.Read(shape);
             geometry = measureProjection.ToGeodetic(geometry);
             geometry = mapProjection.ToProjected(geometry);
+
+            if (shiftGeometry)
+            {
+              geometry = ((Geometry)geometry).Translate(settings.MarkupShiftX, settings.MarkupShiftY);
+            }
+            
             shape = wktWriter.Write(geometry);
           }
 

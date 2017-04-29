@@ -22,6 +22,7 @@ using System.IO;
 using System.Linq;
 using System.Web.UI;
 using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using AppGeo.Clients;
 using AppGeo.Clients.Transform;
@@ -29,6 +30,7 @@ using AppGeo.Clients.ArcIms;
 
 public class MapMaker
 {
+  private AppSettings _settings;
   private AppState _appState;
   private int _width;
   private int _height;
@@ -51,6 +53,7 @@ public class MapMaker
 
   private void Initialize(AppState appState, int width, int height, double resolution)
   {
+    _settings = AppContext.GetConfiguration().AppSettings;
     _appState = appState;
     _width = width;
     _height = height;
@@ -68,6 +71,7 @@ public class MapMaker
 
     _extent = _appState.Extent;
     _extent.Reaspect(_width, _height);
+
     _transform = new AffineTransformation(_width, _height, _extent);
   }
 
@@ -108,11 +112,16 @@ public class MapMaker
           if (!_appSettings.MapCoordinateSystem.Equals(_appSettings.MeasureCoordinateSystem))
           {
             c = _appSettings.MeasureCoordinateSystem.ToProjected(g);
+
+            if (!Double.IsNaN(_appSettings.MarkupShiftX) && !Double.IsNaN(_appSettings.MarkupShiftY))
+            {
+              c = c.Translate(-_appSettings.MarkupShiftX, -_appSettings.MarkupShiftY);
+            }
           }
 
           string unit = _appSettings.MeasureCoordinateSystem.MapUnits == "feet" ? " ft" : " m";
-          yText = "N " + c.X.ToString("#,##0") + unit;
-          xText = "E " + c.Y.ToString("#,##0") + unit;
+          yText = "N " + c.Y.ToString("#,##0") + unit;
+          xText = "E " + c.X.ToString("#,##0") + unit;
           break;
       }
 
@@ -222,30 +231,37 @@ public class MapMaker
 
     foreach (DataRow row in table.Rows)
     {
+      Geometry geometry = (Geometry)row[layer.GeometryField.Name];
+
+      if (!Double.IsNaN(_settings.SelectionShiftX) && !Double.IsNaN(_settings.SelectionShiftY))
+      {
+        geometry = geometry.Translate(_settings.SelectionShiftX, _settings.SelectionShiftY);
+      }
+
       switch (geometryType)
       {
         case OgcGeometryType.Point:
-          IPoint point = (IPoint)row[layer.GeometryField.Name];
+          IPoint point = (IPoint)geometry;
           DrawPoint(imageGraphics, point, brush, dot);
           break;
 
         case OgcGeometryType.MultiPoint:
-          IMultiPoint multiPoint = (IMultiPoint)row[layer.GeometryField.Name];
+          IMultiPoint multiPoint = (IMultiPoint)geometry;
           DrawPoint(imageGraphics, (IPoint)multiPoint[0], brush, dot);
           break;
 
         case OgcGeometryType.MultiLineString:
-          DrawMultiLineString(imageGraphics, (IMultiLineString)row[layer.GeometryField.Name], pen);
+          DrawMultiLineString(imageGraphics, (IMultiLineString)geometry, pen);
           break;
 
         case OgcGeometryType.MultiPolygon:
           if (drawPolygonOutlines)
           {
-            DrawMultiPolygon(imageGraphics, (IMultiPolygon)row[layer.GeometryField.Name], null, null, pen);
+            DrawMultiPolygon(imageGraphics, (IMultiPolygon)geometry, null, null, pen);
           }
           else
           {
-            DrawMultiPolygon(imageGraphics, (IMultiPolygon)row[layer.GeometryField.Name], brush, bufferPen);
+            DrawMultiPolygon(imageGraphics, (IMultiPolygon)geometry, brush, bufferPen);
           }
 
           break;
@@ -733,7 +749,19 @@ public class MapMaker
 
     if (image == null)
     {
-      CommonMap map = dataFrame.GetMap(_width, _height, _extent);
+      Envelope extent = _extent;
+
+      if (!Double.IsNaN(_settings.DynamicMapImageShiftX) && !Double.IsNaN(_settings.DynamicMapImageShiftY))
+      {
+        extent = new Envelope(
+          extent.MinX - _settings.DynamicMapImageShiftX,
+          extent.MaxX - _settings.DynamicMapImageShiftX,
+          extent.MinY - _settings.DynamicMapImageShiftY,
+          extent.MaxY - _settings.DynamicMapImageShiftY
+        );
+      }
+
+      CommonMap map = dataFrame.GetMap(_width, _height, extent);
 
       map.Resolution = _resolution;
       map.ImageType = CommonImageType.Png;

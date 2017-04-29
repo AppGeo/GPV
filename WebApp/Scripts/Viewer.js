@@ -199,7 +199,7 @@ var GPV = (function (gpv) {
         showGpsError();
       }
     }).popover({
-      content: 'GPS is not enabled on this device',
+      content: 'Your location is not available on this device',
       delay: { show: 500, hide: 500 },
       placement: 'right',
       trigger: 'manual'

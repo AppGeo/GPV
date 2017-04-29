@@ -234,6 +234,22 @@ public class AppSettings
     }
   }
 
+  public double DynamicMapImageShiftX
+  {
+    get
+    {
+      return GetConfigDouble("DynamicMapImageShiftX");
+    }
+  }
+
+  public double DynamicMapImageShiftY
+  {
+    get
+    {
+      return GetConfigDouble("DynamicMapImageShiftY");
+    }
+  }
+
   public string ExportFormat
   {
     get
@@ -333,6 +349,22 @@ public class AppSettings
     get
     {
       return new System.Drawing.Font("Verdana", 10, System.Drawing.FontStyle.Bold);
+    }
+  }
+
+  public double MarkupShiftX
+  {
+    get
+    {
+      return GetConfigDouble("MarkupShiftX");
+    }
+  }
+
+  public double MarkupShiftY
+  {
+    get
+    {
+      return GetConfigDouble("MarkupShiftY");
     }
   }
 
@@ -450,6 +482,22 @@ public class AppSettings
       }
 
       return mode;
+    }
+  }
+
+  public double SelectionShiftX
+  {
+    get
+    {
+      return GetConfigDouble("SelectionShiftX");
+    }
+  }
+
+  public double SelectionShiftY
+  {
+    get
+    {
+      return GetConfigDouble("SelectionShiftY");
     }
   }
 
