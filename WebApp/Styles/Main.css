@@ -1575,3 +1575,6 @@ li.MapTool:hover, #selectMapTheme li:hover, #selectMapLevel li:hover{
     position: absolute;
     left: 10px;
 }
+.dropdown-menu>li>a{
+  padding: 3px 7px;
+}

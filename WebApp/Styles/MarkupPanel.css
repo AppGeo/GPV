@@ -71,8 +71,8 @@ label#labMarkupLock {
 
 #pnlMarkupGrid {
   top: 150px;
-  border-top: solid 1px #b9b9b9;
-  background-color: #F0F0F0;
+  /*border-top: solid 1px #b9b9b9;
+  background-color: #F0F0F0;*/
   overflow: auto;
 }
 
