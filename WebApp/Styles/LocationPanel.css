@@ -57,7 +57,7 @@
   right: 0;
   bottom: 0;
   border-top: solid 1px #b9b9b9;
-  background-color: White;
+  /*background-color: White;*/
   overflow: auto; 
 }
 

@@ -127,11 +127,11 @@
           settings.showSelector = function () {
             if (settings.enabled && !$selector) {
               var selectorClass = settings.selectorClass;
-              $selector = $('<div style="position: absolute; width: 123px; height: 130px; z-index: 2" />').addClass(selectorClass).addClass(surfaceClass);
+              $selector = $('<div style="position: absolute; width: 134px; height: 130px; z-index: 2" />').addClass(selectorClass).addClass(surfaceClass);
               var p = $button.offset();
               var w = $(window).width();
               var h = $(window).height();
-              $selector.offset({ left: p.left - 110, top: p.top + 10 });
+              $selector.offset({ left: p.left - 8, top: p.top + 23 });
 
               currentColor = toHsv(settings.color);
 

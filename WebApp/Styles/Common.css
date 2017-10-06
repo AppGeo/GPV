@@ -1,3 +1,4 @@
+﻿
 ﻿/*  Copyright 2012 Applied Geographics, Inc.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +16,15 @@
 
 /* =====  CSS reset  ===== */
 
+.LegendScroll {
+    top: -32px;
+    /* bottom: 0; */
+    /* left: 10px; */
+    /* right: 10px; */
+    padding-left: 10px;
+ 
+    overflow: auto;
+}
 html
 {
 	color: #000;
@@ -78,16 +88,16 @@ button::-moz-focus-inner {
 
 body, div, span, td, th, input, select
 {
-  font-family: 'Open Sans', Helvetica, San-Serif;
+  /* font-family: 'Open Sans', Helvetica, San-Serif;
   font-size: 14px;
   letter-spacing: .2px;
-  color: Black;
+ color: Black;*/
 }
 
 input, select
 {
-  padding: 1px;
-  font-size: 14px;
+  /*padding: 1px;
+  font-size: 14px;*/
 }
 
 .Title
@@ -131,8 +141,9 @@ a:hover, .CommandLink:hover
 
 input.Button
 {
+    /*
   font-weight: bold;
-  padding: 1px 6px 1px 6px;
+  padding: 1px 6px 1px 6px;*/
 }
 
 #pnlBody

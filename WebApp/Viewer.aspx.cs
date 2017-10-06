@@ -1,4 +1,4 @@
-﻿//  Copyright 2016 Applied Geographics, Inc.
+﻿﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -108,14 +108,32 @@ public partial class Viewer : CustomStyledPage
     {
       AddMetaTag("keywords", application.MetaKeywords);
     }
+    string tool = launchParams.ContainsKey("tool") ? launchParams["tool"] : (!application.IsDefaultToolNull() ? application.DefaultTool : null);
+
+    if (!String.IsNullOrEmpty(tool))
+    {
+      HtmlControl defaultTool = Page.FindControl("opt" + tool, false) as HtmlControl;
+
+      //if (defaultTool != null)
+      //{
+      defaultTool.Attributes["class"] += " Selected";
+      //}
+    }
+    else
+    {
+      HtmlControl defaultTool = Page.FindControl("optIdentify", false) as HtmlControl;
+
+      defaultTool.Attributes["class"] += " Selected";
+    }
 
     Title = application.DisplayName;
 
     SetHelpLink();
-    CreateMapThemes(application);
+    ucLegendPanel.CreateMapThemes(application, _appState);
 
     bool isPublic = AppAuthentication.Mode == AuthenticationMode.None;
     ucLegendPanel.Initialize(_config, _appState, application);
+    ucBaseMapPanel.Initialize(_config, _appState, application);
     ucSharePanel.Initialize(_config, application);
 
     if (_appState.ActiveFunctionTab != FunctionTab.None)
@@ -135,8 +153,8 @@ public partial class Viewer : CustomStyledPage
       {
         pnlSearch.Style["display"] = "block";
       }
-    } 
-      
+    }
+
     if ((_appState.FunctionTabs & FunctionTab.Selection) == FunctionTab.Selection)
     {
       tabSelection.Style["display"] = "block";
@@ -148,13 +166,22 @@ public partial class Viewer : CustomStyledPage
       }
     }
 
+    if ((_appState.FunctionTabs & FunctionTab.Details) == FunctionTab.Details)
+    {
+      tabMobDetails.Style["display"] = "block";
+      if (_appState.ActiveFunctionTab == FunctionTab.Details)
+      {
+        pnlDetails.Style["display"] = "block";
+      }
+
+    }
+
     if ((_appState.FunctionTabs & FunctionTab.Legend) == FunctionTab.Legend)
     {
       tabLegend.Style["display"] = "block";
-
       if (_appState.ActiveFunctionTab == FunctionTab.Legend)
       {
-        pnlLegend.Style["display"] = "block";;
+        pnlLegend.Style["display"] = "block"; ;
       }
     }
 
@@ -172,7 +199,7 @@ public partial class Viewer : CustomStyledPage
     if ((_appState.FunctionTabs & FunctionTab.Markup) == FunctionTab.Markup)
     {
       tabMarkup.Style["display"] = "block";
-      ucMarkupPanel.Initialize(_config, _appState, application);
+      ucMarkupPanel.Initialize(_config, _appState, application, launchParams);
 
       if (_appState.ActiveFunctionTab == FunctionTab.Markup)
       {
@@ -188,23 +215,23 @@ public partial class Viewer : CustomStyledPage
       {
         pnlShare.Style["display"] = "block";
       }
-    } 
+    }
 
     ShowLevelSelector(application);
 
     // set the default tool
 
-    string tool = launchParams.ContainsKey("tool") ? launchParams["tool"] : (!application.IsDefaultToolNull() ? application.DefaultTool : null);
-    
-    if (!String.IsNullOrEmpty(tool))
-    {
-      HtmlControl defaultTool = Page.FindControl("opt" + tool, false) as HtmlControl;
+    //string tool = launchParams.ContainsKey("tool") ? launchParams["tool"] : (!application.IsDefaultToolNull() ? application.DefaultTool : null);
 
-      if (defaultTool != null)
-      {
-        defaultTool.Attributes["class"] += " Selected";
-      }
-    }
+    //if (!String.IsNullOrEmpty(tool))
+    //{
+    //    HtmlControl defaultTool = Page.FindControl("opt" + tool, false) as HtmlControl;
+
+    //    if (defaultTool != null)
+    //    {
+    //        defaultTool.Attributes["class"] += " Selected";
+    //    }
+    //}
 
     CreateAppStateScript(application);
     CreateActiveSelectionStyle();
@@ -221,6 +248,8 @@ public partial class Viewer : CustomStyledPage
     }
 
     TrackingManager.TrackUse(launchParams);
+    //New Code for pageLoad
+
   }
 
   private void AddMetaTag(string name, string content)
@@ -248,23 +277,7 @@ public partial class Viewer : CustomStyledPage
     scriptElem.InnerHtml = String.Format(script, application.ToJson(), AppContext.AppSettings.ToJson(), _appState.ToJson());
   }
 
-  private void CreateMapThemes(Configuration.ApplicationRow application)
-  {
-    // add map tabs
 
-    foreach (Configuration.ApplicationMapTabRow appMapTabRow in application.GetApplicationMapTabRows())
-    {
-      HtmlGenericControl li = new HtmlGenericControl("li");
-      phlMapTheme.Controls.Add(li);
-      li.InnerHtml = appMapTabRow.MapTabRow.DisplayName.Replace(" ", "&nbsp;");
-      li.Attributes["data-maptab"] = appMapTabRow.MapTabID;
-
-      if (_appState.MapTab == appMapTabRow.MapTabID)
-      {
-        selectedTheme.InnerHtml = appMapTabRow.MapTabRow.DisplayName.Replace(" ", "&nbsp;");
-      }
-    }
-  }
 
   private string GetCacheControl()
   {
@@ -1269,7 +1282,7 @@ public partial class Viewer : CustomStyledPage
         double xmax = Convert.ToDouble(ext[2]);
         double ymax = Convert.ToDouble(ext[3]);
 
-        _appState.Extent = new Envelope(new Coordinate(xmin, ymin),  new Coordinate(xmax, ymax));
+        _appState.Extent = new Envelope(new Coordinate(xmin, ymin), new Coordinate(xmax, ymax));
       }
       catch
       {
@@ -1367,7 +1380,7 @@ public partial class Viewer : CustomStyledPage
       }
 
       double dx = _appState.Extent.Width / 2;
-      _appState.Extent = new Envelope( new Coordinate(x - dx, _appState.Extent.MinY),  new Coordinate(x + dx, _appState.Extent.MaxY));
+      _appState.Extent = new Envelope(new Coordinate(x - dx, _appState.Extent.MinY), new Coordinate(x + dx, _appState.Extent.MaxY));
     }
 
     // === centery ===
@@ -1401,7 +1414,7 @@ public partial class Viewer : CustomStyledPage
       }
 
       double dy = _appState.Extent.Height / 2;
-      _appState.Extent = new Envelope( new Coordinate(_appState.Extent.MinX, y - dy),  new Coordinate(_appState.Extent.MaxX, y + dy));
+      _appState.Extent = new Envelope(new Coordinate(_appState.Extent.MinX, y - dy), new Coordinate(_appState.Extent.MaxX, y + dy));
     }
 
     // === centerlat ===
@@ -1487,7 +1500,7 @@ public partial class Viewer : CustomStyledPage
     if (launchParams.ContainsKey("markcenter"))
     {
       string label = launchParams["markcenter"];
-      
+
       Coordinate center = _appState.Extent.Centre;
       string point = String.Format("POINT({0} {1})", center.X, center.Y);
       Markup markup = new Markup(point, "#000000", 1);
@@ -1684,4 +1697,56 @@ public partial class Viewer : CustomStyledPage
       }
     }
   }
+
+
+  //New code for BaseLayer
+  //private void AddTiles(Configuration.MapTabRow mapTabRow, AppState appState)
+  //{
+  //    StringCollection visibleTiles = appState.VisibleTiles[mapTabRow.MapTabID];
+
+  //     create the top level legend control for this map tab
+
+  //    HtmlGenericControl parentLegend = new HtmlGenericControl("div");
+  //    divBaseLayer.Controls.Add(parentLegend);
+  //    parentLegend.Attributes["data-maptab"] = mapTabRow.MapTabID;
+  //    parentLegend.Attributes["class"] = "LegendTop";
+  //    parentLegend.Style["display"] = "block";// mapTabRow.MapTabID == appState.MapTab ? "block" : "none";
+
+  //    foreach (Configuration.MapTabTileGroupRow mapTabTileGroupRow in mapTabRow.GetMapTabTileGroupRows())
+  //    {
+  //        Configuration.TileGroupRow tileGroupRow = mapTabTileGroupRow.TileGroupRow;
+
+  //        HtmlGenericControl legendEntry = new HtmlGenericControl("div");
+  //        parentLegend.Controls.Add(legendEntry);
+  //        legendEntry.Attributes["class"] = "LegendEntry";
+
+  //        HtmlGenericControl legendHeader = new HtmlGenericControl("div");
+  //        legendEntry.Controls.Add(legendHeader);
+  //        legendHeader.Attributes["class"] = "LegendHeader";
+
+  //        HtmlGenericControl visibility = new HtmlGenericControl("span");
+  //        legendHeader.Controls.Add(visibility);
+  //        visibility.Attributes["class"] = "LegendVisibility";
+
+  //        HtmlInputCheckBox checkBox = new HtmlInputCheckBox();
+  //        visibility.Controls.Add(checkBox);
+  //        checkBox.Checked = visibleTiles.Contains(tileGroupRow.TileGroupID);
+  //        checkBox.Attributes["class"] = "LegendCheck";
+  //        checkBox.Attributes["data-tilegroup1"] = tileGroupRow.TileGroupID;
+
+  //        HtmlGenericControl name = new HtmlGenericControl("span");
+  //        legendHeader.Controls.Add(name);
+  //        name.Attributes["class"] = "LegendName";
+  //        name.InnerText = tileGroupRow.DisplayName;
+  //    }
+  //}
+  //public void Initialize(Configuration config, AppState appState, Configuration.ApplicationRow application)
+  //{
+  //    foreach (Configuration.ApplicationMapTabRow appMapTabRow in application.GetApplicationMapTabRows())
+  //    {
+  //        Configuration.MapTabRow mapTabRow = appMapTabRow.MapTabRow;
+  //        AddTiles(mapTabRow, appState);
+  //    }
+  //}
+
 }

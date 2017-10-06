@@ -1,4 +1,4 @@
-﻿/*  Copyright 2016 Applied Geographics, Inc.
+﻿﻿/*  Copyright 2016 Applied Geographics, Inc.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -13,24 +13,27 @@
  *  limitations under the License.
  */
 
-#pnlLegendContent
-{
-  top: 40px;
-}
+
 
 #pnlLayers
 {
   position: absolute;
   width: 100%;
   height: 80%;
+  color:white;
 }
 
 #pnlBaseMaps
 {
-  position: absolute;
+ /* position: absolute;
   top: 80%;
   width: 100%;
-  height: 20%;
+  height: 20%;*/
+}
+
+#pnlLegendContent
+{
+  top: 190px;
 }
 
 #pnlLegendContent label
@@ -49,12 +52,12 @@
 
 .LegendScroll
 {
-  top: 40px;
+ 
   bottom: 0px;
   left: 10px;
   right: 10px;
   padding-left: 10px;
-  background-color: White;
+  margin-bottom :50px;
   overflow: auto; 
 }
 
@@ -77,6 +80,8 @@
 .LegendExpander, .LegendVisibility, .LegendName, .LegendSwatch, .LegendClassName
 {
   vertical-align: middle;
+  color:white;
+  font-size:13px;
 }
 
 .LegendEntry
@@ -85,7 +90,7 @@
 
 .LegendHeader
 {
-  margin-bottom: 4px;
+  /*margin-bottom: 4px;*/
 }
 
 .LegendExpander

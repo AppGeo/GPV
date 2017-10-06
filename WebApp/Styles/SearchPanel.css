@@ -17,23 +17,33 @@
 {
   bottom: 0;
   top: 40px;
+  width: 100%;
+  float: left;
+  overflow: auto;
+  height: calc(100vh - 202px);
+  margin-top: 10px;
 }
 
-#ddlSearches {
+/*#ddlSearches {
   position: absolute;
   z-index: 10;
   width: 60%;
-}
+}*/
 
 #pnlSearchInputField
 {
-  padding: 5px;
-  height: 285px;
+ /* padding: 5px;
+  height: 285px;*/
+
 }
 
 #cmdSearch, #cmdReset {
-  float: left;
+  /*float: left;*/
   margin-left: 10px;
+  min-width: 77px;
+}
+#cmdReset{
+  margin-right: 2px;
 }
 
 #pnlSearchGrid
@@ -52,9 +62,10 @@
 
 .searchCommand 
 {
-  top: auto;
-  bottom: 0;
-  height: 41px;
+    top: auto;
+    bottom: 0;
+    height: auto;
+    padding: 10px 6px;
 }
 
 #labSearchCount
@@ -62,12 +73,13 @@
   float: left;
   margin-left: 10px;
   margin-top: 12px;
+  max-width: 80px;
 }
 
 #cmdShowOnMap, #cmdShowAllOnMap 
 {
   float: right;
-  margin: 10px 5px;
+  margin: 10px 4px;
 }
 
 #pnlSearchScroll
@@ -83,6 +95,7 @@
 .Search
 {
   width: 100%;
+  float: left;
 }
 
 .SearchInputField
@@ -135,3 +148,53 @@
   top: auto;
 }
 
+/* Styles for search panel */
+#pnlSearchScroll .SearchInputField .Label{
+    display: inline-block;
+    width: 118px;
+    float: left;
+    color: #fff;
+    text-align: left;
+    font-weight: normal;
+    font-size: 13px;
+}
+#pnlSearchScroll .SearchInputField .Input{
+    width: calc(100% - 125px);
+    margin: 0 2px;
+
+    border: none;
+    border-radius: 3px;
+    padding: 5px 8px;
+    font-size: 13px;
+    height: 30px;
+}
+
+#pnlSearchScroll .SearchInputField .NumberRange{
+      width: calc(100% / 2 - 70px);
+      display: inline-block;  
+}
+.SearchInputField{
+    margin: 15px 0 0;
+}
+.Search .SearchInputField:first-child{
+  margin-top: 5px;
+}
+#pnlSearchGrid{
+      overflow: auto;
+    background-color: transparent;
+    width: 95%;
+    border: none;
+}
+#pnlSearchFields div.frm_box:first-child{
+    padding-top: 2px;
+    padding-bottom: 6px;
+}
+#mCSB_1_container{
+    overflow-x: auto;  
+}
+#pnlSearchFields .mCSB_container{
+    padding-right: 4px;
+}
+#mCSB_1_scrollbar_vertical{
+  margin-right: 3px;
+}

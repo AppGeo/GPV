@@ -1,0 +1,640 @@
+﻿@charset "UTF-8";
+
+
+@media only screen and (max-width: 767px){
+	#tabMobDetails{
+    	display: list-item!important;
+	}
+	#pnlDataDisplay{
+		display: none!important;
+	}
+	#cmdShowDetails{
+		display: none;
+	}
+	header.main {
+    	background-color: #367fa9;
+	}
+	/*#pnlLegendContent{
+		height:calc(100vh - 370px);
+	}*/
+
+
+	/* details panel */
+	#pnlMarkup #pnlMarkupContent {
+    	/*padding-top: 4px;*/
+    	padding-right: 5px;
+
+	}
+	.left_details .customScroll {
+	    /*height: calc(100vh - 260px);
+	    overflow-y: hidden;
+	    padding: 0;*/
+	}
+	.DataList .RowSetHeader, .DataList .RowSetSubheader {
+    	font-weight: normal;
+	}
+	.DataList .Label{
+		font-weight: normal;
+	}
+	/*#pnlMobDataList{
+		border: none;
+		height: calc(100vh - 177px);
+    	overflow-y: auto;
+	}*/
+	#MobDetailContent{
+		border: none;
+		height: calc(100vh - 202px);
+    	overflow-y: auto;
+	}
+
+	#pnlDetails .customScroll{
+		padding: 0px;
+		margin-top: 0px;
+	}
+	#pnlDetails .mCustomScrollBox{
+		border: 1px solid #526870;
+		border-radius: 3px;
+	}
+	#pnlDetails .mCSB_draggerContainer{
+		border: 0;
+	}
+	#ddlMobDataTheme{
+		width: 85%;
+	}
+	.dtlPrint{
+		width: 20px;
+	    display: inline-block;
+	    /* float: right; */
+	    position: relative;
+	    top: 4px;
+	    left: 9px;
+	}
+	.DataList .Label, .DataList .Separator, .DataList .Value {
+    	font-size: 12px;
+	}
+	.frmInput{
+		height: 26px;
+	}
+	.customCategory select {
+    	height: 26px;
+	}
+	.customCategory:after {
+    	height: 26px;
+	}
+	#pnlData{
+
+	}
+
+}
+@media only screen and (max-width: 767px){
+	.leftNav_panel {
+	    min-width: auto;
+	    width: 53px;
+	}
+	.leftNav_panel .topSection .rightCol{
+		display: none;
+	}
+	.leftLinks ul li .linkTxt {
+    	display: none;
+	}
+	.leftLinks ul li .linkIcon {
+	    padding-right: 3px;
+	    width: auto;
+	}
+	.leftNav_panel .leftLinks ul li a{
+		text-align: center;
+    	padding: 11px 4px;
+	}
+	.leftNav_panel .leftLinks ul li.active a {
+	    background-color: #374c5a;
+	    background-image: none;
+   	}
+   	.left_details {
+	    left: 51px!important;
+	    display: none;
+	}
+    #pnlMapSizer {
+     left: 52px;
+    }
+    .leftNav_panel .topSection {
+	    padding: 14px 10px 8px;
+	}
+	#pnlSelectionOptions .frm_row .twoCol:first-child{
+		margin-bottom: 10px;
+	}
+	#pnlSelection .data_box{
+		height: 187px;
+	}
+	.dataTable{
+		border: none;
+	}
+	.leaflet-left .leaflet-control-scale {
+    	top: -20px;
+	}
+
+}
+@media only screen and (max-width: 620px){
+	.LegendClass{
+		height: 20px !important;
+    	overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	/*.LegendEntry .LegendSwatch{
+		float: left;
+	}
+	.LegendClassName{
+		display: flex;
+	}
+	*/
+	
+	#cmdEmail {
+		width: 25px;
+		background-size: 70%;
+		margin: 0 5px;
+		padding: 14px 0px;
+		text-indent: -9999px;
+		background-position: 19% 50%;
+
+	}
+	.helpTxt {
+		width: 25px;
+		background-size: 70%;
+		margin: 0px 5px;
+		padding: 14px 0px;
+		text-indent: -9999px;
+	}
+	.topHead .prev_arrw{
+		display: none;
+	}
+	
+	/* 03-10-2017 changes */
+	#pnlMapMenus {
+		float: right;
+		right: 10px;
+		position: relative;
+		margin-left: 8px;
+		margin-top: 15px;
+	}
+	#pnlBasemapMenu {
+		z-index: 9999;
+		margin: 3px;
+		position: absolute;
+		right: 0px;
+		top: 75px;
+	}
+	.leaflet-top {
+		top: 40px;
+		margin-top: 83px;
+		float: right;
+	}
+	.leaflet-left {
+		left: auto;
+		right: 12px;
+	}
+	.mapNavigation {
+		float: none;
+	}
+	#pnlMapLevels{
+		margin: 10px 3px 3px 3px;
+		right: -12px;
+	}
+	.DropdownPanel {
+		left: -139px !important;
+	}
+	#pnlMapTools {
+		z-index: 99999;
+	}
+	#pnlMapLevels {
+		z-index: 9999;
+	}
+	#pnlContent {
+        height: calc(100vh - 70px);
+    }
+    .leaflet-control-scale-line{
+    	margin-right: 21px;
+    }
+
+}
+@media only screen and (max-width: 480px){
+	header.main {
+	    min-height: auto;
+	    /*height: 30px;*/
+	}
+	header.main ul.rightLinks li {
+	    padding: 5px 9px 0px;
+	}
+	header.main .logo {
+	    padding: 2px 0;
+	    font-size: 18px;
+	}
+    #pnlContent {
+        top: 46px;
+        height: calc(100vh - 46px);
+    	overflow: hidden;
+    }
+
+}
+@media only screen and (max-width: 420px){
+	.left_details {
+	    min-width: auto;
+	    width: 251px;
+	}
+	.frmBtn {
+	    padding: 5px 6px;
+	    /*min-width: 80px;*/
+	    min-width: 63px;
+	    font-size: 12px;
+	    height: 25px;
+	}
+	.rightMargin {
+    	margin-right: 5px;
+	}
+	.frm_row .twoCol {
+    	width: 100%;
+	}
+	.frm_row .twoCol:first-child {
+	    margin-right: 0px;
+	    margin-bottom: 0px;
+	}
+	.frm_row {
+	    margin-top: 10px;
+	}
+	.frmBtn2 {
+    	min-width: 66px;
+	}
+	.paddngLftRght15 {
+    	padding: 0 10px;
+	}
+	.widthSttng75{
+    	width: 168px!important;
+	}
+	.widthSttng75 select.frmSelect {
+    	padding: 5px 2px;
+	}
+	.left_details .frm_box {
+    	padding: 10px 5px 10px 10px;
+	}
+	.frm_row .fourCol {
+    	width: calc(100% / 2 - 4px);
+	}
+	.rsponsBttmMrgn{
+		margin-bottom: 10px;
+	}
+	.markup .fourCol:first-child, .markup .fourCol:nth-of-type(3){
+		margin-right: 4px;
+	}
+	.markup .fourCol:first-child{
+		margin-bottom: 10px;
+	}
+	.markup .btnSettng .frmBtn{
+	    min-width: 50px;
+	    padding: 5px 3px;
+	    float: left;
+	    font-size: 11px;
+	}
+	.markup .btnSettng .checkBoxWrap{
+		    float: left;
+		    margin-left: 1px;
+		    margin-right: 1px;
+		    top: 4px;
+	}
+	.markup .btnSettng .frmBtn.rightMargin{
+		margin-right: 0;
+	}
+	.btnPrint, .LocPrint, .exprtPrint {
+    	min-width: 73px;
+    	padding-left: 25px;
+		background-position: 8px center;
+	}
+	.btnPrint{
+		background-size: 14px;
+	}
+	.LocPrint{
+		background-size: 11px;
+		padding-left: 15px!important;
+	}
+	.exprtPrint {
+    	background-size: 13px;
+    	padding-left: 17px!important;
+	}
+
+	.frm_row .threeCol:nth-of-type(2) {
+    	margin: 0 2px;
+	}
+	.frm_row .threeCol {
+	    width: calc(100% / 3 - 4px);
+	}
+	.radioWrap{
+		/*margin-bottom: 10px;*/
+		/*margin-top: 10px;*/
+	}
+	#cmdMarkupColor, #cmdTextGlowColor {
+	    top: 6px!important;
+	    left: 5px!important;
+	    height: 14px;
+    	width: 13px;
+	}
+	#pnlMarkupContent .mrkpTxt{
+    	font-size: 12.7px;
+	}
+	#btnTextGlowColor .mrkpTxt{
+		margin-left: 15px;
+	}
+	.frm_row .arrwAhead .arrw {
+    	background-image: none;
+	}
+	#pnlZoneLevelScroll {
+    	top: 118px;
+	}
+	#pnlSelection .data_box {
+    	height: 78px;
+	}
+	#pnlSelection .frm_row{
+		position: relative;
+		margin-top: 10px;
+	}
+	#labSelectionCount {
+	    position: absolute;
+	}
+/*	#pnlSelection .mailingLblBtn{
+		padding-left: 19px;
+	}*/
+	#pnlSelection .spreadsheetBtn, #pnlSelection .mailingLblBtn{
+		padding-left: 20px;
+		margin-top: 25px;
+	}
+	#pnlSelection .mailingLblBtn{
+		margin-right: 5px;
+	}
+	#pnlSelection .spreadsheetBtn{
+		background-position: 4px 7px;
+	}
+	#ddlZoneLevelSelect{
+		width: 90%;
+	}
+	.leftNav_panel{
+		height: calc(100vh - 66px);		
+	}
+	.left_details {
+    	height: calc(100vh - 66px);
+	}
+	.markup .data_box {
+    	/*height: calc(100vh - 558px);*/
+    	    /*height: calc(100vh - 548px);*/
+    	/*height: calc(100vh - 416px);*/
+	}
+	#mCSB_5_container{
+		overflow-x: scroll;
+	}
+
+	.markup .tabMrkp{
+		/*height: calc(100vh - 543px);*/
+		height: initial;
+	}
+	.markup .quickTab {
+    	/*height: calc(100vh - 384px);*/
+    	    /*height: calc(100vh - 548px);*/
+	}
+
+	#cmdRefreshMap{
+		 margin-right: 13px;
+	}
+	#pnlSelection .frm_box{
+		margin-top: 5px;
+	}
+	#pnlMarkup #sample{
+		margin-bottom: 5px;	
+	}
+	.markup .btnLarge{
+		min-width: calc(50% - 19px);
+	}
+	.markup .btnLarge{
+		line-height: 1.1;
+	}
+	#labSearchCount{
+		position: absolute;
+		top: 3px;
+		margin-top: 0;
+	}
+	#cmdShowOnMap, #cmdShowAllOnMap {
+    	float: none;
+    	margin-right: 0px;
+	}
+	#pnlFooter a{
+		font-size: 12px;
+	}
+
+	/* nav menu position */
+	.pnlMapMenus_option {
+    	margin-left: 270px!important;
+	}
+	.pnlMapMenus_option #pnlMapTools {
+	    top: -40px;
+	    left: -90px;
+	}
+	.pnlMapMenus_option #pnlMapLevels {
+	    top: -35px;
+	    left: -84px;
+	}
+	.pnlMapMenus_option #pnlBasemapMenu {
+	    top: 75px;
+	}
+	.pnlMapMenus_option .leaflet-left .leaflet-control {
+    	top: 40px;
+	}
+	.pnlMapMenus_option .leaflet-bar a, .leaflet-bar a:hover{
+		/*top: 75px;
+    	position: relative;*/
+	}
+	.pnlMapMenus_option #cmdFullView{
+		top: 80px;
+	}
+	.pnlMapMenus_option #cmdLocation{
+		top: 80px;
+	}
+	.pnlMapMenus_option .leaflet-control-zoom{
+		top: 75px;
+	}
+
+	/*#btnMarkupColor{
+		    min-width: 94px;
+	}
+	#btnTextGlowColor{
+		    min-width: 94px;
+	}*/
+	.share .share_box .frmLabel{
+		width: 100%;
+	}
+	.share .share_box .frmField {
+    	width: 100%;
+	}
+	.printInput label, .printInput input{
+    	width: 100%!important;
+	}
+	#labPrintScaleWidth{
+		width: 90%!important;
+	}
+	#pnlPrintInputs label{
+		margin-bottom: 10px;
+	}
+	#pnlPrintInputs input{
+		margin-bottom: 0;
+	}
+	.seg_title {
+    	font-size: 14px;
+	}
+	#frmPrint .topMargin{
+		/*margin-top: 0;*/
+	}
+	.customPrint{
+		margin-top: 10px;
+	}
+	#frmPrint div:nth-of-type(3) .frmLabel{
+		margin-bottom: 10px;
+	}
+	.customGoto{
+		width: 74%!important;
+    	float: left!important;
+    	margin-left: 0!important;
+	}
+	#pnlShareContent .share_box .frm_row .twoCol {
+	    float: left;
+	    width: 26%;
+	}
+	#cmdExternalMap{
+		min-width: 44px;
+    	float: right;
+    	min-height: 29px;
+	}
+	#pnlDownload .share_box .frm_row div.threeCol:first-child{
+		width: 50px;
+		padding-top: 5px;
+	}
+	#pnlDownload .share_box .frm_row .customExport{
+		width: 73%;
+	}
+	#pnlDownload .share_box .frm_row div.threeCol:nth-of-type(3){
+		    margin-top: 10px;
+	    width: 75%;
+	    float: right;
+	}
+	#cmdSaveMap{
+		float: left;
+	}
+	#pnlMarkup div:nth-of-type(3){
+
+	}
+	#pnlBody{
+    	min-height: auto;
+	}
+	#logo {
+    	bottom: 17px;
+	}
+	#pnlOverview {
+    	bottom: 25px;
+	}
+	.leaflet-bottom {
+    	bottom: 21px;
+	}
+	#pnlMarkupContent button{
+		font-size: 12.5px!important;
+	}
+	#divMarkupSearch .fourCol{
+		width: calc(100%/2 - 6px);
+	}
+	.frmBtnFlex{
+		min-width: 57px;
+		font-size: 12.2px;
+	}
+
+
+	/* Search panel styles */
+	#pnlSearchScroll .SearchInputField .Label{
+		width: 100%;
+		margin-bottom: 10px;
+	}
+	#pnlSearchScroll .SearchInputField .Input{
+		width: 100%;
+	}
+	#pnlSearchScroll .SearchInputField .NumberRange{
+		width: calc(100%/2 - 10px);
+	}
+
+	.SearchInputField{
+		margin: 10px 0 0;
+	}
+	.SearchInputField span:nth-of-type(3){
+
+	}
+
+	/* Search panel */
+	#pnlSearchFields{
+	    height: 360px;
+	}
+	.searchCommand{
+		padding: 16px 6px 10px;
+	}
+	#pnlSearchFields .mCSB_container{
+		padding-right: 14px;
+	}
+}
+@media only screen and (max-width: 320px){
+	.left_details {
+    	width: 231px;
+	}
+	.search .frmBtn{
+		margin-right: 0;
+		font-size: 12px;
+	}
+	.widthSttng75 {
+    	width: 158px!important;
+    }
+    .widthSttng75 select.frmSelect {
+    	font-size: 12px;
+	}
+	.frm_row .frmLabel {
+	    width: 100%;
+	    margin-bottom: 10px;
+	}
+	.frm_row .frmField {
+	    width: 100%;
+	}
+	.search .frm_row .frmLabel{
+		width: 100%;
+	}
+	.search .frm_row .frmField {
+    	width: 100%;
+	}
+	.markup .btnSettng .frmBtn.rightMargin {
+    	margin-right: 10px;
+	}
+	.markup .btnSettng .frmBtn {
+	    padding: 5px 6px;
+	    font-size: 13px;
+	    min-width: 80px;
+	}
+	.btnPrint, .LocPrint, .exprtPrint {
+	    min-width: 66px;
+	    padding-left: 25px;
+	    background-position: 6px center!important;
+    	font-size: 12px;
+    	padding-left: 20px!important;
+	}
+	#cmdClearSelection {
+	    float: none;
+	   	margin-left: 4px;
+	}
+	#pnlSelection .data_box {
+	    height: 78px;
+	}
+
+	#pnlDownload .share_box .frm_row div.threeCol:first-child{
+		width: 47px;
+	}
+	#pnlDownload .share_box .frm_row .customExport{
+		width: 71%;
+	}
+	#pnlDownload .share_box .frm_row div.threeCol:nth-of-type(3){
+	    width: 73%;
+	}
+}

@@ -30,19 +30,19 @@ var GPV = (function (gpv) {
     var measureCrs = proj4(gpv.settings.measureCrs);
 
     measureCrs.project = function (latlng) {
-      var c = this.forward([ latlng.lng, latlng.lat ]);
+      var c = this.forward([latlng.lng, latlng.lat]);
       return { x: c[0], y: c[1] };
     };
 
     measureCrs.unproject = function (p) {
-      var c = this.inverse([ p.x, p.y ]);
+      var c = this.inverse([p.x, p.y]);
       return L.latLng(c[1], c[0]);
     };
 
     // =====  controls  =====
 
     $("#tboMarkupUser").attr("placeholder", "enter name");
-    
+
     var $colorSelectors = $(".Color").colorSelector({
       selectorClass: "ColorSelector",
       disabledClass: "Disabled",
@@ -55,6 +55,9 @@ var GPV = (function (gpv) {
     $("#cmdDeleteMarkup").on("click", function () {
       if (!$(this).hasClass("Disabled")) {
         deleteMarkupGroup();
+        $("#cmdExportMarkup").addClass("btnControlLock");
+        $("#cmdDeleteMarkup").addClass("btnControlLock");
+        $("#cmdZoomToMarkup").addClass("btnControlLock");
       }
     });
 
@@ -67,6 +70,9 @@ var GPV = (function (gpv) {
     var $cmdNewMarkup = $("#cmdNewMarkup").on("click", function () {
       if (!$(this).hasClass("Disabled")) {
         createMarkupGroup();
+        $("#cmdExportMarkup").removeClass("btnControlLock");
+        $("#cmdDeleteMarkup").removeClass("btnControlLock");
+        $("#cmdZoomToMarkup").removeClass("btnControlLock");
       }
     });
 
@@ -119,6 +125,43 @@ var GPV = (function (gpv) {
       }
     }).on("blur", updateMarkupGroupTitle);
 
+    // date 05-08-2017
+    var $tboMarkupDetails = $("#tboMarkupDetails").on("keydown", function (e) {
+      if (e.keyCode == 13) {
+        updateMarkupGroupTitle();
+      }
+    }).on("blur", updateMarkupGroupTitle);
+
+    //===for drop down selection 
+    $(".dropdown .imgflag").addClass("flagvisibility");
+
+    $(".dropdown dt a").click(function () {
+      $(".dropdown dd ul").toggle();
+    });
+
+    $(".dropdown dd ul li a").click(function () {
+      var text = $(this).html();
+      $(".dropdown dt a span").html(text);
+      $(".dropdown dd ul").hide();
+      $("#result").html("Selected value is: " + getSelectedValue("sample"));
+    });
+
+    function getSelectedValue(id) {
+      return $("#" + id).find("dt a span.value").html();
+    }
+
+    $(document).bind('click', function (e) {
+      var $clicked = $(e.target);
+      if (!$clicked.parents().hasClass("dropdown"))
+        $(".dropdown dd ul").hide();
+    });
+
+
+
+    $(".dropdown .imgflag").toggleClass("flagvisibility");
+
+    // close 
+
     var $tboMarkupUser = $("#tboMarkupUser").on("keyup", function () {
       var name = $(this).val();
       gpv.store("markupUser", name);
@@ -128,46 +171,75 @@ var GPV = (function (gpv) {
     // =====  map tools  =====
 
     var $MapTool = $(".MapTool");
+    $("#btnCreateMarkup").on("click", function () {
+      $("#divMarkupSearch").removeClass("hidden");
+      $("#btnCreateMarkup").addClass("active");
+      $("#btnQuickSketch").removeClass("active");
+      $("#pnlMarkupGrid").addClass("tabMrkp");
+    });
+    $("#btnQuickSketch").on("click", function () {
+      $("#divMarkupSearch").addClass("hidden");
+      $("#btnQuickSketch").addClass("active");
+      $("#btnCreateMarkup").removeClass("active");
+      $("#pnlMarkupGrid").removeClass("tabMrkp");
+    });
+    $("#btnShow").on("click", function () {
 
-    $("#optColorPicker,#optPaintBucket").on("click", function () {
+      $("#pnlMarkupGrid").slideToggle();
+      $("#btnShow").addClass("hidden");
+      $("#btnHide").removeClass("hidden");
+    });
+    $("#btnHide").on("click", function () {
+      $("#pnlMarkupGrid").slideToggle();
+      $("#btnShow").removeClass("hidden");
+      $("#btnHide").addClass("hidden");
+    });
+    $("#ucMarkupPanel_optColorPicker,#ucMarkupPanel_optPaintBucket").on("click", function () {
       gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "point" } });
     });
 
-    $("#optDeleteMarkup").on("click", function () {
+    $("#ucMarkupPanel_optDeleteMarkup").on("click", function () {
       gpv.selectTool($(this), map, { cursor: 'default', dragging: false, boxZoom: false, drawing: { mode: 'rectangle', style: { color: '#c0c0c0', fill: true, fillColor: '#e0e0e0' } } });
     });
 
-    $("#optDrawArea").on("click", function () {
+    $("#ucMarkupPanel_optDrawArea").on("click", function () {
       var c = getMarkupColor();
       gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "polygon", style: { color: c, fill: true, fillColor: c } }, doubleClickZoom: false });
     });
 
-    $("#optDrawCircle").on("click", function () {
+    $("#ucMarkupPanel_optDrawCircle").on("click", function () {
       var c = getMarkupColor();
       gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "circle", style: { color: c, fill: true, fillColor: c } }, dragging: false });
     });
 
-    $("#optDrawPoint,#optDrawCoordinates").on("click", function () {
+    $("#ucMarkupPanel_optDrawPoint,#ucMarkupPanel_optDrawCoordinates").on("click", function () {
       var c = getMarkupColor();
       gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "point", style: { color: c, fill: true, fillColor: c } } });
     });
 
-    $("#optDrawText").on("click", function () {
+    $("#ucMarkupPanel_optDrawText").on("click", function () {
       var c = getMarkupColor();
       gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "text", text: { color: c } } });
     });
 
-    $("#optDrawLength").on("click", function () {
+    $("#ucMarkupPanel_optDrawLength").on("click", function () {
+
       var c = getMarkupColor();
       gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "polyline", style: { color: c, fill: false } }, doubleClickZoom: false });
     });
 
-    $("#optDrawLine").on("click", function () {
+    $("#ucMarkupPanel_optDrawLine").on("click", function () {
       var c = getMarkupColor();
       gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "polyline", style: { color: c, fill: false } }, doubleClickZoom: false });
     });
 
-    $("#optDrawPolygon").on("click", function () {
+
+    function DrawLineOpen() {
+      var c = getMarkupColor();
+      gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "polyline", style: { color: c, fill: false } }, doubleClickZoom: false });
+    }
+
+    $("#ucMarkupPanel_optDrawPolygon").on("click", function () {
       var c = getMarkupColor();
       gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "polygon", style: { color: c, fill: true, fillColor: c } }, doubleClickZoom: false });
     });
@@ -227,8 +299,10 @@ var GPV = (function (gpv) {
         },
         success: function (result) {
           if (result) {
+            console.log('---', result);
             appState.update({ MarkupGroups: [result.id] });
             $tboMarkupTitle.val(result.title);
+            $("#tboMarkupDetails").val(result.details);
             $chkMarkupLock.prop("checked", result.locked);
             enableControls();
             fillGrid();
@@ -279,6 +353,7 @@ var GPV = (function (gpv) {
           if (result) {
             appState.update({ MarkupGroups: [] });
             $tboMarkupTitle.val("");
+            $("#tboMarkupDetails").val("");
             enableControls();
             $grdMarkup.dataGrid("deleteSelection");
             gpv.viewer.refreshMap();
@@ -436,7 +511,7 @@ var GPV = (function (gpv) {
 
       if (shape instanceof L.Polyline) {
         var points = shape.getLatLngs();
-          
+
         if (shape instanceof L.Polygon) {
           valid = getAreaCentroid(points[0]).area > 0;
         }
@@ -470,23 +545,23 @@ var GPV = (function (gpv) {
       }
 
       switch ($MapTool.filter(".Selected").attr("id")) {
-        case "optDrawCircle":
-        case "optDrawPoint":
-        case "optDrawLine":
-        case "optDrawPolygon":
+        case "ucMarkupPanel_optDrawCircle":
+        case "ucMarkupPanel_optDrawPoint":
+        case "ucMarkupPanel_optDrawLine":
+        case "ucMarkupPanel_optDrawPolygon":
           addMarkup(e);
           return;
 
-        case "optDrawCoordinates":
-        case "optDrawLength":
-        case "optDrawArea":
+        case "ucMarkupPanel_optDrawCoordinates":
+        case "ucMarkupPanel_optDrawLength":
+        case "ucMarkupPanel_optDrawArea":
           addMarkup(e, "measured");
           return;
 
-        case "optDeleteMarkup": deleteMarkup(e); return;
-        case "optColorPicker": pickColors(e); return;
-        case "optPaintBucket": floodColors(e); return;
-        case "optDrawText": addMarkup(e, "text"); return;
+        case "ucMarkupPanel_optDeleteMarkup": deleteMarkup(e); return;
+        case "ucMarkupPanel_optColorPicker": pickColors(e); return;
+        case "ucMarkupPanel_optPaintBucket": floodColors(e); return;
+        case "ucMarkupPanel_optDrawText": addMarkup(e, "text"); return;
       }
     }
 
@@ -540,9 +615,15 @@ var GPV = (function (gpv) {
       appState.update({ MarkupGroups: $grdMarkup.dataGrid("getSelection") });
       var numGroups = appState.MarkupGroups.length;
       var markupTitle = numGroups == 1 ? $grdMarkup.dataGrid("getData", appState.MarkupGroups[0])[2] : "";
+      var markupDetails = numGroups == 1 ? $grdMarkup.dataGrid("getData", appState.MarkupGroups[0])[3] : "";
 
       $tboMarkupTitle.val(markupTitle);
+      $("#tboMarkupDetails").val(markupDetails);
+
       enableControls();
+      $("#cmdExportMarkup").removeClass("btnControlLock");
+      $("#cmdDeleteMarkup").removeClass("btnControlLock");
+      $("#cmdZoomToMarkup").removeClass("btnControlLock");
 
       if (numGroups) {
         zoomToMarkupGroup();
@@ -578,13 +659,13 @@ var GPV = (function (gpv) {
     function shapeDrawing(e) {
       var currentTool = $MapTool.filter(".Selected").attr("id");
 
-      if (currentTool === 'optDrawLength' || currentTool === 'optDrawArea') {
+      if (currentTool === 'ucMarkupPanel_optDrawLength' || currentTool === 'ucMarkupPanel_optDrawArea') {
         var units = gpv.settings.measureUnits;
         var inFeet = units == "feet" || units == "both";
         var inMeters = units == "meters" || units == "both";
         var convert = 1 / (gpv.settings.measureCrsUnits == "feet" ? 1 : metersPerFoot);
 
-        var latlngs = currentTool === 'optDrawLength' ? e.shape.getLatLngs() : e.shape.getLatLngs()[0];
+        var latlngs = currentTool === 'ucMarkupPanel_optDrawLength' ? e.shape.getLatLngs() : e.shape.getLatLngs()[0];
 
         var points = $.map(latlngs, function (latlng) {
           return measureCrs.project(latlng);
@@ -597,7 +678,7 @@ var GPV = (function (gpv) {
         var value = [];
         var i, j;
 
-        if (currentTool === 'optDrawLength') {
+        if (currentTool === 'ucMarkupPanel_optDrawLength') {
           var length = getLength(points);
 
           if (length > 0) {
@@ -612,11 +693,11 @@ var GPV = (function (gpv) {
               value.push(length < 1000 ? Math.round(length) + " m" : (length / 1000).toFixed(1) + " km");
             }
 
-            measureText = L.text({ 
+            measureText = L.text({
               latlng: latlngs[latlngs.length - 1],
               className: "MeasureText",
-              value: value.join("\n"), 
-              pointerEvents: 'none' 
+              value: value.join("\n"),
+              pointerEvents: 'none'
             }).addTo(map);
           }
         }
@@ -641,11 +722,11 @@ var GPV = (function (gpv) {
               value.push(acres.toFixed(2) + " acres");
             }
 
-            measureText = L.text({ 
+            measureText = L.text({
               latlng: measureCrs.unproject(ca.centroid),
               className: "MeasureText " + (inFeet ? "Area3" : "Area2"),
-              value: value.join("\n"), 
-              pointerEvents: 'none' 
+              value: value.join("\n"),
+              pointerEvents: 'none'
             }).addTo(map);
           }
         }
@@ -671,12 +752,12 @@ var GPV = (function (gpv) {
         }
       }
       else if (shape instanceof L.LatLng) {
-        return "POINT(" + toWktCoordinates([ map.options.crs.project(shape) ]) + ")";
+        return "POINT(" + toWktCoordinates([map.options.crs.project(shape)]) + ")";
       }
       else if (shape instanceof L.Circle) {
         var sweepAngle = 3;
         var segments = 360 / sweepAngle;
-          
+
         sweepAngle *= Math.PI / 180;
         var cos = Math.cos(sweepAngle);
         var sin = Math.sin(sweepAngle);
@@ -685,7 +766,7 @@ var GPV = (function (gpv) {
         var theta = Math.PI * 0.5 - 2 * Math.atan(Math.pow(Math.E, -center.y / 6378137));
         var dx = 0;
         var dy = shape.getRadius() / theta;
-        points = [ L.point(center.x + dx, center.y + dy) ];
+        points = [L.point(center.x + dx, center.y + dy)];
 
         for (var i = 0; i < segments - 1; ++i) {
           var ndx = dx * cos + dy * sin;
@@ -716,17 +797,24 @@ var GPV = (function (gpv) {
       if (appState.MarkupGroups.length == 1) {
         var id = appState.MarkupGroups[0];
         var title = $tboMarkupTitle.val();
+        var details = $('#tboMarkupDetails').val();
 
         post({
           data: {
             m: "UpdateMarkupGroupTitle",
             id: id,
-            title: title
+            title: title,
+            details: details,
+
           },
           success: function (result) {
             if (result) {
+
               var data = $grdMarkup.dataGrid("getData", id);
               data[2] = title;
+              data[3] = details;
+
+
               $grdMarkup.dataGrid("setData", id, data);
             }
           }
@@ -756,7 +844,8 @@ var GPV = (function (gpv) {
     // =====  public interface  =====
 
     gpv.markupPanel = {
-      setMap: setMap
+      setMap: setMap,
+      DrawLineOpen: DrawLineOpen
     };
 
     // =====  finish initialization  =====

@@ -109,3 +109,79 @@ label#labMarkupLock {
   top: -19px;
   text-align: center;
 }
+ .frmBtn:hover{
+    background-color: #ffb74d;
+    color: #fff;
+}
+.frmBtn{
+  padding: 5px 10px;
+  font-size: 13px;
+  min-width: 80px;
+  border-radius: 3px;
+  background-color: #fff;
+  cursor: pointer;
+}
+.frm_row .twoCol{
+  width: calc(100% / 2 - 8px);
+  display: inline-block;
+}
+.frm_row .twoCol:first-child{
+    margin-right:12px;
+}
+.markup .twoCol button{
+    width: 100%;
+}
+.markup .frm_row .twoCol:first-child {
+    margin-right: 1px;
+}
+.markup .frm_row .twoCol {
+    width: calc(100% / 2 - 3px);
+}
+.markup .tabBtn{
+    height: 32px; 
+    background-color: #839aa3;
+    color: #fff;
+    font-size: 14px;
+}
+.markup .tabBtn:hover{
+    background-color: #758f98;
+}
+.markup .tabBtn.active{
+    background-color: #fff;
+    color: #614545;
+    font-weight: bold; 
+}
+.markup .tabBtn.active:hover{
+    background-color: #f8f8f8;    
+}
+.rightMargin{
+    margin-right: 10px;
+}
+.markup .btnLarge{
+    min-width: calc(50% - 21px);
+    position: relative;
+}
+.btnSquare{
+    width: 20px;
+    height: 16px;
+    background: #0099cc;
+    display: inline-block;
+    margin-right: 5px;
+    position: absolute;
+    left: 7px;
+    position: absolute !important;
+    top: 5px !important;
+}
+.btnSquare.grey{
+    background: #cccccc !important;
+}
+.divMargin{
+    margin-right:10px;
+}
+.markup .data_box{
+    height: calc(100vh - 330px);
+    overflow-y: auto;
+}
+.markup .tabMrkp{
+    height: calc(100vh - 547px);
+}

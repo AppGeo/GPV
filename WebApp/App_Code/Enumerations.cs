@@ -52,6 +52,7 @@ public enum FunctionTab
 	Markup = 8,
 	Location = 16,
   Share = 32,
+  Details = 61,
 	All = 63
 }
 

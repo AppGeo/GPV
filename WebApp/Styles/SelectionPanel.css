@@ -16,9 +16,9 @@
 
 #pnlQuery
 {
-  bottom: 0;
+ /* bottom: 0;
   top: 40px;
-  min-height: 212px;
+  min-height: 212px;*/
 }
 
 #selectionDivider
@@ -39,23 +39,24 @@
 }
 
 #pnlSelectionOptions {
-  left: 5px; 
+ /* left: 5px; 
   top: 3px; 
-  right: 5px; 
-  height: 86px;
+  right: 5px; */
+ 
 }
 
 #ddlAction, #ddlProximity {
-  float: left;
+ /* float: left;
   width: 53%;
-  margin: 2px;
+  margin: 2px;*/
 }
 
 #ddlTargetLayer, #ddlSelectionLayer{
-  float: right;
+ /* float: right;
   width: 44%;
   margin: 2px;
   border-left: solid 6px;
+     */
 }
 
 #ddlQuery{
@@ -64,14 +65,16 @@
 }
 
 #pnlSelectTools{
-  top: 87px;
-  width: 400px;
+  top: auto;
+ /* width: 400px;
   padding: 2px 5px;
-  height: 35px;
+  height: auto;*/
+ font-size:13px;
 }
 #pnlSelectTools button{
-  display: inline-block;
+/*  display: inline-block;
   margin: 2px;
+*/
 }
 
 .select-view, .select-zoom, .select-clear{
@@ -86,7 +89,7 @@
 }
 
 #cmdClearSelection{
-  float: right;
+
 }
 
 .select-view
@@ -111,13 +114,14 @@
 
 #pnlQueryGrid
 {
-  top: 122px;
+  height:auto;
+  /*top:auto;
   bottom: 35px;
   margin-top: 3px;
   border-top: solid 1px #b9b9b9;
   border-bottom: solid 1px #b9b9b9;
   background-color: #f4f7f7;
-  overflow: auto;
+  overflow: auto;*/
 }
 
 #pnlQueryCommand
@@ -128,16 +132,569 @@
 }
 
 #labSelectionCount {
-  float: left;
+ /* float: left;
   margin-left: 10px;
-  margin-top: 12px
+  margin-top: 12px;
+  color:white;*/
 }
 
 #cmdMailingLabels, #cmdExportData{
-  float: right;
+ /* float: right;
   margin: 10px 5px;
-  display: block;
+  display: block;*/
+    position: relative;
+    top: 3px;
+    float: right;
+}
+#cmdExportData{
+    margin-right: 5px;
 }
 #cmdMailingLabels.Disabled, #cmdExportData.Disabled{
   display: none;
+}
+
+
+
+
+
+
+/* ===========================SelectCustom DropDown============================= */
+
+.customSelect {
+  position: relative;
+  /*Don't really need this just for demo styling*/
+  float: left;
+  min-width: calc(100% / 2 - 8px);
+}
+
+.customSelect:after {
+    content: url('../Images/arrow.png');/*\f078*/
+   /* font: normal normal normal 17px/1 FontAwesome;*/
+    color: #b7b7b7;
+    right: 11px;
+    top: 0px;
+    height: 29px;
+    padding: 5px 0px 0px 8px;
+    border-left: 1px solid #b7b7b7;
+    position: absolute;
+    pointer-events: none;
+	background-color: #fff;
+}
+
+/* IE11 hide native button (thanks Matt!) */
+select::-ms-expand {
+display: none;
+}
+
+.customSelect select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Add some styling */
+  
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: 29px;
+  float: right;
+  margin: 0px;
+  padding: 0px 40px 0 5px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: #333;
+  background-color: #ffffff;
+  background-image: none;
+  border: none;
+  -ms-word-break: normal;
+  word-break: normal;
+  outline: none;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+
+/* ===============================Search Custom DropDown=========================== */
+
+.customSearch {
+  position: relative;
+  /*Don't really need this just for demo styling*/
+  float: left;
+  min-width: calc(100% / 2 - 8px);
+}
+
+.customSearch:after {
+    content: url('../Images/arrow.png');/*\f078*/
+    font: normal normal normal 17px/1 FontAwesome;
+    color: #b7b7b7;
+    right: 11px;
+    top: 0px;
+    height: 29px;
+    padding: 5px 0px 0px 8px;
+    border-left: 1px solid #b7b7b7;
+    position: absolute;
+    pointer-events: none;
+	background-color: #fff;
+}
+
+/* IE11 hide native button (thanks Matt!) */
+select::-ms-expand {
+display: none;
+}
+
+.customSearch select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Add some styling */
+  
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: 29px;
+  float: right;
+  margin: 0px;
+  padding: 0px 40px 0px 5px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: #333;
+  background-color: #ffffff;
+  background-image: none;
+  border: none;
+  -ms-word-break: normal;
+  word-break: normal;
+  outline: none;
+}
+
+/* =============================Map Custom DropDown=========================== */
+
+.customMaps {
+  position: relative;
+  /*Don't really need this just for demo styling*/
+  float: left;
+  min-width: calc(100% / 2 - 8px);
+}
+
+.customMaps:after {
+    content: url('../Images/arrow.png');/*\f078*/
+    font: normal normal normal 17px/1 FontAwesome;
+    color: #b7b7b7;
+    right: 11px;
+    top: 0px;
+    height: 29px;
+    padding: 5px 0px 0px 8px;
+    border-left: 1px solid #b7b7b7;
+    position: absolute;
+    pointer-events: none;
+	background-color: #fff;
+}
+
+/* IE11 hide native button (thanks Matt!) */
+select::-ms-expand {
+display: none;
+}
+
+.customMaps button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Add some styling */
+  
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: 29px;
+  float: right;
+  margin: 0px;
+  padding: 0px 40px 0px 5px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: #333;
+  background-color: #ffffff;
+  background-image: none;
+  border: none;
+  -ms-word-break: normal;
+  word-break: normal;
+  text-align: left;
+  outline: none;
+}
+
+
+/* =============================Location Custom DropDown=========================== */
+
+.customLocation {
+  position: relative;
+  /*Don't really need this just for demo styling*/
+  float: none !important;
+  min-width: calc(100%/2 - 8px);
+  width: auto !important;
+}
+
+.customLocation:after {
+    content: url('../Images/arrow.png');/*\f078*/
+    font: normal normal normal 17px/1 FontAwesome;
+    color: #b7b7b7;
+    right: 11px;
+    top: 0px;
+    height: 29px;
+    padding: 5px 0px 0px 8px;
+    border-left: 1px solid #b7b7b7;
+    position: absolute;
+    pointer-events: none;
+	background-color: #fff;
+	margin: 10px;
+}
+
+/* IE11 hide native button (thanks Matt!) */
+select::-ms-expand {
+display: none;
+}
+
+.customLocation select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Add some styling */
+  
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: 29px;
+  float: right;
+  margin: 0px;
+  padding: 0px 40px 0px 5px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: #333;
+  background-color: #ffffff;
+  background-image: none;
+  border: none;
+  -ms-word-break: normal;
+  word-break: normal;
+  text-align: left;
+  outline: none;
+}
+
+
+/* ===========================DrowTools Custom DropDown============================= */
+
+.customDrawTools {
+  position: relative;
+  /*Don't really need this just for demo styling*/
+  float: left;
+  min-width: calc(100% / 2 - 8px);
+}
+
+.customDrawTools:after {
+    content: url(../Images/arrow.png);
+	/* font: normal normal normal 17px/1 FontAwesome;*/
+    color: #b7b7b7;
+    right: 11px;
+    top: 0;
+    height: 30px;
+    padding: 5px 0 0 8px;
+    border-left: 1px solid #b7b7b7;
+    position: absolute;
+    pointer-events: none;
+    background-color: #fff;
+}
+
+/* IE11 hide native button (thanks Matt!) */
+select::-ms-expand {
+display: none;
+}
+
+.customDrawTools dl {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Add some styling */
+  
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: 30px;
+  float: right;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.75;
+  color: #333;
+  background-color: #fff;
+  background-image: none;
+  border: none;
+  -ms-word-break: normal;
+  word-break: normal;
+  outline: none;
+  border-radius: 3px;
+}
+
+/* ===========================DrowCategory Custom DropDown============================= */
+
+.customCategory {
+  position: relative;
+  /*Don't really need this just for demo styling*/
+  float: left;
+  min-width: calc(100% / 2 - 8px);
+}
+
+.customCategory:after {
+    content: url('../Images/arrow.png');/*\f078*/
+   /* font: normal normal normal 17px/1 FontAwesome;*/
+    color: #b7b7b7;
+    right: 11px;
+    top: 0px;
+    height: 29px;
+    padding: 5px 0px 0px 8px;
+    border-left: 1px solid #b7b7b7;
+    position: absolute;
+    pointer-events: none;
+	background-color: #fff;
+}
+
+/* IE11 hide native button (thanks Matt!) */
+select::-ms-expand {
+display: none;
+}
+
+.customCategory select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Add some styling */
+  
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: 29px;
+  float: right;
+  margin: 0px;
+  padding: 0px 40px 0 5px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: #333;
+  background-color: #ffffff;
+  background-image: none;
+  border: none;
+  -ms-word-break: normal;
+  word-break: normal;
+  outline: none;
+}
+
+
+/* ===========================SharePrint Custom DropDown============================= */
+
+.customPrint {
+  position: relative;
+  /*Don't really need this just for demo styling*/
+  float: left;
+  min-width: calc(100% / 2 - 8px);
+}
+
+.customPrint:after {
+    content: url('../Images/arrow.png');/*\f078*/
+   /* font: normal normal normal 17px/1 FontAwesome;*/
+    color: #b7b7b7;
+    right: 11px;
+    top: 0px;
+    height: 29px;
+    padding: 5px 0px 0px 8px;
+    border-left: 1px solid #b7b7b7;
+    position: absolute;
+    pointer-events: none;
+	background-color: #fff;
+}
+
+/* IE11 hide native button (thanks Matt!) */
+select::-ms-expand {
+display: none;
+}
+
+.customPrint select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Add some styling */
+  
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: 29px;
+  float: right;
+  margin: 0px;
+  padding: 0px 40px 0 5px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: #333;
+  background-color: #ffffff;
+  background-image: none;
+  border: none;
+  -ms-word-break: normal;
+  word-break: normal;
+  outline: none;
+}
+
+
+/* ===========================ShareGoto Custom DropDown============================= */
+
+.customGoto {
+  position: relative;
+  /*Don't really need this just for demo styling*/
+  float: left;
+  min-width: calc(100% / 2 - 8px);
+}
+
+.customGoto:after {
+    content: url('../Images/arrow.png');/*\f078*/
+   /* font: normal normal normal 17px/1 FontAwesome;*/
+    color: #b7b7b7;
+    right: 11px;
+    top: 0px;
+    height: 29px;
+    padding: 5px 0px 0px 8px;
+    border-left: 1px solid #b7b7b7;
+    position: absolute;
+    pointer-events: none;
+	background-color: #fff;
+}
+
+/* IE11 hide native button (thanks Matt!) */
+select::-ms-expand {
+display: none;
+}
+
+.customGoto select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Add some styling */
+  
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: 29px;
+  float: right;
+  margin: 0px;
+  padding: 0px 40px 0 5px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: #333;
+  background-color: #ffffff;
+  background-image: none;
+  border: none;
+  -ms-word-break: normal;
+  word-break: normal;
+  outline: none;
+}
+
+
+
+/* ===========================ShareExport Custom DropDown============================= */
+
+.customExport {
+  position: relative;
+  /*Don't really need this just for demo styling*/
+  float: left;
+  /*min-width: calc(100% / 2 - 8px);*/
+}
+
+.customExport:after {
+    content: url('../Images/arrow.png');/*\f078*/
+   /* font: normal normal normal 17px/1 FontAwesome;*/
+    color: #b7b7b7;
+    right: 11px;
+    top: 0px;
+    height: 29px;
+    padding: 5px 0px 0px 8px;
+    border-left: 1px solid #b7b7b7;
+    position: absolute;
+    pointer-events: none;
+	background-color: #fff;
+}
+
+/* IE11 hide native button (thanks Matt!) */
+select::-ms-expand {
+display: none;
+}
+
+.customExport select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Add some styling */
+  
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: 29px;
+  float: right;
+  margin: 0px;
+  padding: 0px 40px 0 5px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: #333;
+  background-color: #ffffff;
+  background-image: none;
+  border: none;
+  -ms-word-break: normal;
+  word-break: normal;
+  outline: none;
+}
+
+/* ===========================modified styles============================= */
+
+#ddlQuery {
+    width: 100%;
+    margin: 0px;
+}
+#pnlMarkup #sample {
+    padding-top: 0px !important;
+}
+
+
+/* ===========================Changes main.css============================= */
+
+.printInput input {
+    margin-bottom: 12px;
+    display: inline-block;
+    width: calc(100% - 47px) !important; /* no need important*/
+    float: right;
+    border: none;
+    border-radius: 3px;
+    padding: 5px 8px;
+    font-size: 13px;
+    height: 30px;
+}
+.printInput label {
+    margin-bottom: 15px;
+    display: inline-block;
+    width: 47px !important;/* no need important*/
+    float: left;
+    font-weight: unset;
+}
+.btnPrint {
+    background-image: url(../Images/print-icon-black.png);
+    background-repeat: no-repeat;
+    background-position: 8px center !important;/* no need important*/
+    padding-left: 12px !important;/* no need important*/
+}
+.LocPrint {
+    background-image: url(../Images/loc-icon-black.png);
+    background-repeat: no-repeat;
+    background-repeat: no-repeat;
+    background-position: 8px center !important;/* no need important*/
+    padding-left: 8px !important;/* no need important*/
+}
+.exprtPrint {
+    background-image: url(../Images/export-icon-black.png);
+    background-repeat: no-repeat;
+    background-repeat: no-repeat;
+    background-position: 8px center !important;/* no need important*/
+    padding-left: 18px !important;/* no need important*/
+}
+
+/* New code for */
+#labSelectionCount {
+    max-width: 60px;
+    display: inline-block;
+    position: relative;
+    top: -2px;
 }

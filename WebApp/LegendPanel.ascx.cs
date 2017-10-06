@@ -1,28 +1,28 @@
-﻿//  Copyright 2016 Applied Geographics, Inc.
-//
-//  Licensed under the Apache License, Version 2.0 (the "License");
-//  you may not use this file except in compliance with the License.
-//  You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-//  Unless required by applicable law or agreed to in writing, software
-//  distributed under the License is distributed on an "AS IS" BASIS,
-//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//  See the License for the specific language governing permissions and
-//  limitations under the License.
+﻿  ﻿//  Copyright 2016 Applied Geographics, Inc.
+  //
+  //  Licensed under the Apache License, Version 2.0 (the "License");
+  //  you may not use this file except in compliance with the License.
+  //  You may obtain a copy of the License at
+  //
+  //      http://www.apache.org/licenses/LICENSE-2.0
+  //
+  //  Unless required by applicable law or agreed to in writing, software
+  //  distributed under the License is distributed on an "AS IS" BASIS,
+  //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  //  See the License for the specific language governing permissions and
+  //  limitations under the License.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using AppGeo.Clients;
-using System.Web.UI.HtmlControls;
-using System.IO;
-using System.Drawing;
-using System.Data;
+  using System;
+  using System.Collections.Generic;
+  using System.Linq;
+  using System.Web;
+  using System.Web.UI;
+  using System.Web.UI.WebControls;
+  using AppGeo.Clients;
+  using System.Web.UI.HtmlControls;
+  using System.IO;
+  using System.Drawing;
+  using System.Data;
 
 public partial class LegendPanel : System.Web.UI.UserControl
 {
@@ -38,6 +38,7 @@ public partial class LegendPanel : System.Web.UI.UserControl
     int tileWidth = AppContext.AppSettings.SwatchTileWidth;
     int tileHeight = AppContext.AppSettings.SwatchTileHeight;
     bool expanded = AppContext.AppSettings.LegendExpanded;
+    bool collapsed = AppContext.AppSettings.LegendCollapsed;
 
     HtmlGenericControl legendEntry = new HtmlGenericControl("div");
     container.Controls.Add(legendEntry);
@@ -49,7 +50,7 @@ public partial class LegendPanel : System.Web.UI.UserControl
 
     HtmlGenericControl expander = new HtmlGenericControl("span");
     legendHeader.Controls.Add(expander);
-    expander.Attributes["class"] = "LegendExpander " + (expanded ? "Expanded" : "Collapsed");
+    // expander.Attributes["class"] = "LegendExpander " + (collapsed ? "Collapsed" : "Expanded");
 
     if (layerProperties[i].CheckMode != CheckMode.None)
     {
@@ -67,12 +68,29 @@ public partial class LegendPanel : System.Web.UI.UserControl
           radio.Checked = layerProperties[i].CheckMode == CheckMode.Checked;
           radio.Name = String.Format("{0}_{1}", mapTabId, layer.Parent.ID);
           check = radio;
+          if (radio.Checked == true)
+          {
+            expander.Attributes["class"] = "LegendExpander Expanded";
+          }
+          else
+          {
+            expander.Attributes["class"] = "LegendExpander Collapsed";
+          }
         }
         else
         {
           HtmlInputCheckBox checkBox = new HtmlInputCheckBox();
           checkBox.Checked = layerProperties[i].CheckMode == CheckMode.Checked;
           check = checkBox;
+          if (checkBox.Checked == true)
+          {
+            expander.Attributes["class"] = "LegendExpander Expanded";
+          }
+          else
+          {
+            expander.Attributes["class"] = "LegendExpander Collapsed";
+          }
+
         }
 
         visibility.Controls.Add(check);
@@ -101,7 +119,15 @@ public partial class LegendPanel : System.Web.UI.UserControl
 
     HtmlGenericControl content = new HtmlGenericControl("div");
     content.Attributes["class"] = "LegendContent";
-    content.Style["display"] = expanded ? "block" : "none";
+    if (expander.Attributes["class"] == "LegendExpander Collapsed")
+    {
+      content.Style["display"] = "none";// collapsed ? "none" : "block";
+    }
+    else
+    {
+      content.Style["display"] = "block";// expanded ? "block" : "none";
+    }
+
 
     switch (layer.Type)
     {
@@ -274,11 +300,12 @@ public partial class LegendPanel : System.Web.UI.UserControl
     }
   }
 
+  // removing this fron viwer page 
   private void AddTiles(Configuration.MapTabRow mapTabRow, AppState appState)
   {
     StringCollection visibleTiles = appState.VisibleTiles[mapTabRow.MapTabID];
 
-    // create the top level legend control for this map tab
+    //create the top level legend control for this map tab
 
     HtmlGenericControl parentLegend = new HtmlGenericControl("div");
     pnlTileScroll.Controls.Add(parentLegend);
@@ -301,7 +328,7 @@ public partial class LegendPanel : System.Web.UI.UserControl
       HtmlGenericControl visibility = new HtmlGenericControl("span");
       legendHeader.Controls.Add(visibility);
       visibility.Attributes["class"] = "LegendVisibility";
-      
+
       HtmlInputCheckBox checkBox = new HtmlInputCheckBox();
       visibility.Controls.Add(checkBox);
       checkBox.Checked = visibleTiles.Contains(tileGroupRow.TileGroupID);
@@ -321,6 +348,8 @@ public partial class LegendPanel : System.Web.UI.UserControl
     {
       Configuration.MapTabRow mapTabRow = appMapTabRow.MapTabRow;
       AddLayers(mapTabRow, appState);
+
+      // Removing this from viwer page
       AddTiles(mapTabRow, appState);
     }
   }
@@ -340,6 +369,24 @@ public partial class LegendPanel : System.Web.UI.UserControl
       CheckMode = checkMode;
       IsExclusive = isExclusive;
       MetaDataUrl = metaDataUrl;
+    }
+  }
+
+  public void CreateMapThemes(Configuration.ApplicationRow application, AppState _appState)
+  {
+    // add map tabs
+
+    foreach (Configuration.ApplicationMapTabRow appMapTabRow in application.GetApplicationMapTabRows())
+    {
+      HtmlGenericControl li = new HtmlGenericControl("li");
+      phlMapTheme.Controls.Add(li);
+      li.InnerHtml = appMapTabRow.MapTabRow.DisplayName.Replace(" ", "&nbsp;");
+      li.Attributes["data-maptab"] = appMapTabRow.MapTabID;
+
+      if (_appState.MapTab == appMapTabRow.MapTabID)
+      {
+        selectedTheme.InnerHtml = appMapTabRow.MapTabRow.DisplayName.Replace(" ", "&nbsp;");
+      }
     }
   }
 }

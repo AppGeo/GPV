@@ -312,6 +312,14 @@ public class AppSettings
     }
   }
 
+  public bool LegendCollapsed
+  {
+    get
+    {
+      return GetConfigBoolean("LegendCollapsed", true);
+    }
+  }
+  
   public CoordinateSystem MapCoordinateSystem
   {
     get
