@@ -94,7 +94,7 @@
 	.leftNav_panel .topSection .rightCol{
 		display: none;
 	}
-	.leftLinks ul li .linkTxt {
+	.leftNav_panel .leftLinks ul li .linkTxt {
     	display: none;
 	}
 	.leftLinks ul li .linkIcon {

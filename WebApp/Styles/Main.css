@@ -159,23 +159,23 @@ header.main .logo{
     width: 162px;
 }
 /* header section ends here */
-	/*//////// active class //////////*/		
-.leftNav_panel.active{		
-    min-width: auto;		
-    width: 53px;		
-}		
-.leftNav_panel.active .leftLinks ul li .linkTxt {		
-    display: none;		
-}		
-.leftNav_panel.active .topSection .rightCol {		
-    display: none;		
-}		
-.leftNav_panel.active .left_details {		
-    left: 51px;		
-}		
 
 
-/* left nav panel styles */
+
+/* Left Nav panel styles */     
+.leftNav_panel.active{      
+    min-width: auto;        
+    width: 53px;        
+}       
+.leftNav_panel.active .leftLinks ul li .linkTxt {       
+    display: none;      
+}       
+.leftNav_panel.active .topSection .rightCol {       
+    display: none;      
+}       
+.leftNav_panel.active .left_details {       
+    left: 51px;     
+}       
 .leftNav_panel{
     width: 163px;
     /*background-color: #172936;*/
@@ -246,13 +246,13 @@ header.main .logo{
     background-color: #374c5a;    
     text-decoration: none;
 }
-.leftLinks ul li .linkIcon{
+.leftNav_panel .leftLinks ul li .linkIcon{
     display: inline-block;
     padding: 0px 10px 0 3px;
     width: 35px;/*44px*/
     text-align: center;
 }
-.leftLinks ul li .linkTxt{
+.leftNav_panel .leftLinks ul li .linkTxt{
     display: inline-block;
 }
 .topSection .hamburger{
@@ -265,8 +265,8 @@ header.main .logo{
 .topSection .hamburger:hover{
     background-image: url(../Images/hamburger-icon_over.png);
 }
-
 /* left nav panel ends here */
+
 
 
 /* left details panel styles */
@@ -320,15 +320,6 @@ header.main .logo{
     /*margin-top: 10px;*/
     font-size: 13px;
 }
-.frmSelect{
-    width: 100%;
-    border: none;
-    border-radius: 3px;
-    padding: 3px 4px 5px;
-    font-size: 13px;
-    border: 1px solid #c1c1c1;
-    height: 28px;
-}
 .frm_row{
     width: 100%;
     float: left;
@@ -339,6 +330,18 @@ header.main .logo{
 }
 #pnlSelection .frm_box{
     margin-top: 10px;
+}
+
+
+/* elements styles - select/input/button/radio/checkbox/textarea */
+.frmSelect{
+    width: 100%;
+    border: none;
+    border-radius: 3px;
+    padding: 3px 4px 5px;
+    font-size: 13px;
+    border: 1px solid #c1c1c1;
+    height: 28px;
 }
 .frmBtn{
     padding: 5px 10px;
@@ -422,11 +425,13 @@ header.main .logo{
 .search .frm_row .frmField {
     width: calc(100% - 118px);
 }
-.markup .btnLarge{		
-    min-width: calc(50% - 21px);		
-    position: relative;	
-    line-height: 1.3;	
+.markup .btnLarge{      
+    min-width: calc(50% - 21px);        
+    position: relative; 
+    line-height: 1.3;   
 }
+
+/* customized columns */
 .dataCol{
     /*border: 1px solid #949494;*/
     border-radius: 3px;
@@ -473,17 +478,19 @@ header.main .logo{
 .frm_row .fourCol:last-child{
     margin-right: 0;
 }
-.frm_row .arrwAhead{		
-    position: relative;		
-}		
-.frm_row .arrwAhead .arrw{		
+
+/* midd arrows between two select bars  */
+.frm_row .arrwAhead{        
+    position: relative;     
+}       
+.frm_row .arrwAhead .arrw{      
 width: 7px;
     height: 9px;
     background-image: url(../Images/left-arrw.png);
     background-repeat: no-repeat;
     position: absolute;
     right: -12px;
-    top: 10px;	
+    top: 10px;  
 }
 .btnfix{
 
@@ -586,13 +593,13 @@ width: 7px;
 
 }
 .btnSquare{
-     width: 20px;		   
+     width: 20px;          
     height: 16px;
     background: #0099cc;
     display: inline-block;
     margin-right: 5px;
-     position: absolute;		
-    left: 7px;		
+     position: absolute;        
+    left: 7px;      
     top: 5px;
 }
 .btnSquare.grey{
@@ -697,6 +704,7 @@ option .toolsTxt{
     /*top: -40px!important;*/
     width: 100%;
 }
+
 .drop-down,.drop-down select{
     width: 100%;
 }
@@ -751,36 +759,36 @@ option .toolsTxt{
 .close_btn:hover{
     background-image: url(../Images/close-over.png);    
 }
-.markup .tabBtn{		
-    height: 32px; 		
-    background-color: #839aa3;		
-    color: #fff;		
-    font-size: 13px;	
-    font-weight: 400;	
-}		
-.markup .tabBtn:hover{		
-    background-color: #758f98;		
-}		
-.markup .tabBtn.active{		
-    /*background-color: #ffb74d;*/		
-    color: #000;		/*614545*/
+.markup .tabBtn{        
+    height: 32px;       
+    background-color: #839aa3;      
+    color: #fff;        
+    font-size: 13px;    
+    font-weight: 400;   
+}       
+.markup .tabBtn:hover{      
+    background-color: #758f98;      
+}       
+.markup .tabBtn.active{     
+    /*background-color: #ffb74d;*/      
+    color: #000;        /*614545*/
     /*font-weight: bold;*/
     font-weight: bold;   
     
-}		
-.markup .tabBtn.active:hover{		
-    background-color: #f8f8f8;    		
-}		
-.markup .tab1{		
-    border-radius: 3px 0 0 3px;		
-    /*font-weight: bold;*/		
-    		
-    /*color: #614545;*/		
-}		
-.markup .tab2{		
-    border-radius: 0 3px 3px 0;		
-    /*font-weight: bold;*/		
-    /*font-size: 15px; */   		
+}       
+.markup .tabBtn.active:hover{       
+    background-color: #f8f8f8;          
+}       
+.markup .tab1{      
+    border-radius: 3px 0 0 3px;     
+    /*font-weight: bold;*/      
+            
+    /*color: #614545;*/     
+}       
+.markup .tab2{      
+    border-radius: 0 3px 3px 0;     
+    /*font-weight: bold;*/      
+    /*font-size: 15px; */           
 }
 .mapNavigation{
     float: left;
@@ -795,10 +803,10 @@ option .toolsTxt{
     float: left;
     margin-left: 15px;
 }
-	.mapNavigation .selectCol button{		
-    background-color: #172936;		
+    .mapNavigation .selectCol button{       
+    background-color: #172936;      
     color: #fff;
-    height:26px;		
+    height:26px;        
 }
 .mapNavigation button {
     background:#ffffff url("../Images/index.png") no-repeat scroll right center;
@@ -808,15 +816,15 @@ option .toolsTxt{
     border-radius: 3px;
     height: 30px;
 }
-.mapNavigation ul{		
+.mapNavigation ul{      
     background-color: #172936;
-    min-width : auto;		
-}		
-.mapNavigation  ul li a .txt{		
-    color: #fff;		
-}		
-.mapNavigation  ul li a:hover{		
-    background-color: #2c4d65;		
+    min-width : auto;       
+}       
+.mapNavigation  ul li a .txt{       
+    color: #fff;        
+}       
+.mapNavigation  ul li a:hover{      
+    background-color: #2c4d65;      
 }
 .selectCol .dropdown img.flag {
     margin-left: 5px;
@@ -922,83 +930,51 @@ option .toolsTxt{
 .DataList .ResultSet .ValueSet .Label, .DataList .ResultSet .ValueSet .Value{
     color: #fff;
 }
-.seg_title{		
-    font-size: 16px;		
-}		
-.share_box{		
-    width: 100%;		
-    float: left;		
-    border: 1px solid #949494;		
-    min-height: 250px;		
-    margin-top: 20px;		
-    padding: 12px 15px;		
-}		
-.share .share_box .frmLabel{		
-    width: 43px;		
-}		
-.share .share_box .frmField{		
-    width: calc(100% - 47px);		
-}
-#pnlShareContent .share_box {
-   padding: 12px 12px;
-}
-.share .share_box .frmField .frmRadio{
-        position: relative;
-    top: -1px;
-    float: left;
-}
-.share .share_box .frmField .inlineCol{		
-    display: inline-block;		
-}		
-.share .share_box .frmField .inlineCol .ratting{		
-    width: 60px;		
-    border-radius: 0;		
-}
-.spreadsheetBtn{		
-    background-image: url(../Images/spreadsheet-icon.png);		
-    background-repeat: no-repeat;		
-    padding-left: 22px;		
-    background-position: 5px 8px;		
-}		
-.mailingLblBtn{		
-        background-image: url(../Images/maillingLbl-icon.png);		
-    background-repeat: no-repeat;		
-    padding-left: 19px;		
-    background-position: 5px 8px;		
-}		
-.dropOpt_menu{		
-    width: 166px;		
-    background-color: #fff;		
-    border: 1px solid #9ca7aa;		
-    position: relative;		
-    top: 27px;		
-    left: 0px;		
-    z-index: 99;		
-    color: #333333;		
-    text-align: left;	
-    min-height: 140px;	
-}		
-.dropOpt_menu ul{		
-    padding-left: 0;		
-    margin-left: 0;		
-    margin-bottom: 0;		
-}		
-.dropOpt_menu ul li{		
-    padding: 15px 20px;		
-    border-bottom: 1px solid #f7f7f7;		
-    font-size: 13px;		
-}		
-.dropOpt_menu ul li:last-child{		
-    border-bottom: none;		
-}		
-.dropOpt_menu ul li:hover{		
-    background-color: #ddf0e3;		
-}		
-.dropOpt_menu ul li .rdo{		
-    position: relative;		
-    top: 3px;		
-    display: inline-block;		
-    margin-right: 3px;		
+.spreadsheetBtn{        
+    background-image: url(../Images/spreadsheet-icon.png);      
+    background-repeat: no-repeat;       
+    padding-left: 22px;     
+    background-position: 5px 8px;       
+}       
+.mailingLblBtn{     
+        background-image: url(../Images/maillingLbl-icon.png);      
+    background-repeat: no-repeat;       
+    padding-left: 19px;     
+    background-position: 5px 8px;       
+}       
+.dropOpt_menu{      
+    width: 166px;       
+    background-color: #fff;     
+    border: 1px solid #9ca7aa;      
+    position: relative;     
+    top: 27px;      
+    left: 0px;      
+    z-index: 99;        
+    color: #333333;     
+    text-align: left;   
+    min-height: 140px;  
+}       
+.dropOpt_menu ul{       
+    padding-left: 0;        
+    margin-left: 0;     
+    margin-bottom: 0;       
+}       
+.dropOpt_menu ul li{        
+    padding: 15px 20px;     
+    border-bottom: 1px solid #f7f7f7;       
+    font-size: 13px;        
+}       
+.dropOpt_menu ul li:last-child{     
+    border-bottom: none;        
+}       
+.dropOpt_menu ul li:hover{      
+    background-color: #ddf0e3;      
+}       
+.dropOpt_menu ul li .rdo{       
+    position: relative;     
+    top: 3px;       
+    display: inline-block;      
+    margin-right: 3px;      
 }
 #pnlMapSizer .DropdownMain {
     position: absolute;
@@ -1167,11 +1143,40 @@ a:hover, .CommandLink:hover {
         padding: 10px 15px;
     }
 
-/*share panel*/
-    
 
-
-
+/* share panel */
+    .seg_title{     
+        font-size: 16px;        
+    }       
+    .share_box{     
+        width: 100%;        
+        float: left;        
+        border: 1px solid #949494;      
+        min-height: 250px;      
+        margin-top: 20px;       
+        padding: 12px 15px;     
+    }       
+    .share .share_box .frmLabel{        
+        width: 43px;        
+    }       
+    .share .share_box .frmField{        
+        width: calc(100% - 47px);       
+    }
+    #pnlShareContent .share_box {
+       padding: 12px 12px;
+    }
+    .share .share_box .frmField .frmRadio{
+            position: relative;
+        top: -1px;
+        float: left;
+    }
+    .share .share_box .frmField .inlineCol{     
+        display: inline-block;      
+    }       
+    .share .share_box .frmField .inlineCol .ratting{        
+        width: 60px;        
+        border-radius: 0;       
+    }
     .customGoto{
         width: 74%!important;
         float: left!important;
@@ -1202,21 +1207,17 @@ a:hover, .CommandLink:hover {
         float: left;
     }
     #pnlMarkup div:nth-of-type(3){
-
     }
     #cmdSaveMap{
             min-width: 70px;
     }
-    /* ends */
+/* share panel ends */
 
 
 
 
-
-
-
-/* selector styles */
- .desc { color:#6b6b6b;}
+/* Dropdown select menu styles */
+        .desc { color:#6b6b6b;}
         .desc a {color:#0092dd;}
         .dropdown{
             /*margin-bottom: 0;*/
@@ -1227,7 +1228,8 @@ a:hover, .CommandLink:hover {
         .dropdown a:hover { color:#5d4617;}
         .dropdown dt a:hover { color:#5d4617; border: none;}
         /*.dropdown dt a {background:#ffffff url('http://www.jankoatwarpspeed.com/wp-content/uploads/examples/reinventing-drop-down/arrow.png') no-repeat scroll right center; display:block; padding-right:20px;*/
-        .dropdown dt a { display:block; padding-right:20px;
+        .dropdown dt a { 
+            display:block; padding-right:20px;
             border:none; width:100%;
             border-radius: 3px;
             height: 30px;
@@ -1250,8 +1252,11 @@ a:hover, .CommandLink:hover {
             padding: 0px 7px 0px 8px;
         }
         .flagvisibility { display:none;}
+/* Dropdown styles ends here */
 
-/* New class add */
+
+
+/* Styles for pnlMapMenus and dropdowns */
 .DropdownPanel {
         background: #fff;
 }
@@ -1292,7 +1297,6 @@ a:hover, .CommandLink:hover {
     font-size: 13px;
     padding: 8px;
 }
-
 button.dropdown-toggle{
     background: #ffffff url('../Images/index.png') no-repeat scroll right center;
     display: block;
@@ -1313,16 +1317,16 @@ button.dropdown-toggle{
 }
 
 .leaflet-touch .leaflet-bar a {
-	width: 26px;
-	height: 26px;
-	line-height: 26px;
+    width: 26px;
+    height: 26px;
+    line-height: 26px;
 }
 
 .leaflet-touch .leaflet-control-zoom-in {
-	font-size: 18px;
+    font-size: 18px;
 }
 .leaflet-touch .leaflet-control-zoom-out {
-	font-size: 20px;
+    font-size: 20px;
 }
 #grdQuery{
     width:95%;
@@ -1378,42 +1382,13 @@ button.dropdown-toggle{
     margin-right: 20px !important;
 }
 /* close*/
+
 #mCSB_5_container{
-	margin-right: 0px !important;
+    margin-right: 0px !important;
 }
 
 
-/* need this styles to stay below to all */
-.septr{
-    border-top: 1px solid #526870;
-}
-.alignRight{
-    text-align: right;
-}
-.noTopMargin{
-    margin-top: 0!important;
-}
-.topMargin{
-    margin-top: 10px;
-}
-.rightMargin{
-    margin-right: 10px;
-}
-.overflw{
-    overflow-y: scroll;
-}
-.bigSizeTxt{
-    font-size: 16px;
-}
-.brdrAllSide{
-    border: 1px solid #526870;
-}
-.floatRight{
-    float: right;
-}
-
-.mCSB_scrollTools
-{
+.mCSB_scrollTools{
    box-shadow:none !important;
    width:12px!important;
 }
@@ -1446,19 +1421,18 @@ button.dropdown-toggle{
     background-size: 22%;
 }
 #cmdEmail:hover{
-	background-color: #367fa9;
+    background-color: #367fa9;
 }
 
 .fa-share-alt{
-	display: none;
+    display: none;
 }
 #cmdHelp{
-	margin: 0px !important;
+    margin: 0px !important;
 }
 .helpTxt{
-
     background-image: url(../Images/help.png);
-	width: 85px;
+    width: 85px;
     height: 50px;
     background-repeat: no-repeat;
     background-size: 22%;
@@ -1467,37 +1441,37 @@ button.dropdown-toggle{
     background-position: 20% 50%;
     margin: 0px;
     padding: 14px 35px;
-	cursor: pointer;
-	float: left;
+    cursor: pointer;
+    float: left;
 }
 .helpTxt:hover{
-	background-color: #367fa9;
+    background-color: #367fa9;
 }
 .glyphicon-question-sign{
-	font-size: 18px !important;
-	margin-right: 5px;
+    font-size: 18px !important;
+    margin-right: 5px;
 }
 #cmdShowDetails{
-	margin: 0 8px 0 0;
-	color: #fff;
+    margin: 0 8px 0 0;
+    color: #fff;
 }
 #cmdShowDetails:hover{
-	color: #FFB74D;
+    color: #FFB74D;
 }
 #cmdHelp span:hover {
     color: #fff;
 }
 .glyphicon-option-vertical:before{
-	line-height: 46px;
+    line-height: 46px;
 }
 
 
 .DataList .Value{
-	text-align: left;
+    text-align: left;
 }
 
 .hamburgerClose{
-	background-image: url(../Images/close-btn.png);
+    background-image: url(../Images/close-btn.png);
     background-size: 65%;
     background-position: 75% center;
     height: 18px;
@@ -1541,6 +1515,8 @@ li.MapTool span:not(.glyphicon), #selectedTool span:not(.glyphicon), #selectedMa
 label{
     font-weight: normal;
 }
+
+
 /* Maps dropdown */
 .MapMenu>.dropdown-menu{
     top: 27px!important;
@@ -1552,6 +1528,9 @@ label{
 .MapMenu>.dropdown-menu li {
     padding: 5px 8px;
     height: auto;
+}
+.dropdown-menu>li>a{
+  padding: 3px 7px;
 }
 #ucLegendPanel_selectedTheme{
     padding-left: 4px;
@@ -1575,6 +1554,36 @@ li.MapTool:hover, #selectMapTheme li:hover, #selectMapLevel li:hover{
     position: absolute;
     left: 10px;
 }
-.dropdown-menu>li>a{
-  padding: 3px 7px;
+
+
+
+
+/* styles for alteration => need this styles to stay below to all */
+.septr{
+    border-top: 1px solid #526870;
 }
+.alignRight{
+    text-align: right;
+}
+.noTopMargin{
+    margin-top: 0!important;
+}
+.topMargin{
+    margin-top: 10px;
+}
+.rightMargin{
+    margin-right: 10px;
+}
+.overflw{
+    overflow-y: scroll;
+}
+.bigSizeTxt{
+    font-size: 16px;
+}
+.brdrAllSide{
+    border: 1px solid #526870;
+}
+.floatRight{
+    float: right;
+}
+/* alteration code ends here */
