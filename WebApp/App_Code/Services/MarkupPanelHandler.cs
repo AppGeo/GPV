@@ -346,14 +346,14 @@ public class MarkupPanelHandler : WebServiceHandler
     string category = Request.Form["category"];
 
     Dictionary<String, Object> result = new Dictionary<String, Object>();
-    result.Add("headers", new string[] { "Created", "By", "Title" });
+    result.Add("headers", new string[] { "Created", "By", "Title" ,"Details" });
     
     List<Dictionary<String, Object>> rows = new List<Dictionary<String, Object>>();
     result.Add("rows", rows);
    
     using (OleDbConnection connection = AppContext.GetDatabaseConnection())
     {
-      string sql = String.Format("select GroupID, DateCreated, CreatedBy, DisplayName from {0}MarkupGroup where CategoryID = ? and DateLastAccessed >= ? and Deleted = 0 order by DateCreated desc",
+      string sql = String.Format("select GroupID, DateCreated, CreatedBy, DisplayName ,Details  from {0}MarkupGroup where CategoryID = ? and DateLastAccessed >= ? and Deleted = 0 order by DateCreated desc",
           WebConfigSettings.ConfigurationTablePrefix);
 
       using (OleDbCommand command = new OleDbCommand(sql, connection))

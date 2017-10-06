@@ -149,7 +149,7 @@
             <img src="Images/circleMinus-icon.png" /></a>
 
     </div>
-    <div class="data_box customScroll" id="pnlMarkupGrid">
+    <div class="data_box " id="pnlMarkupGrid">
         <table id="grdMarkup" class="dataTable"></table>
     </div>
 </div>
