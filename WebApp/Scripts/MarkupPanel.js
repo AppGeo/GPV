@@ -15,20 +15,16 @@
 var GPV = (function (gpv) {
   $(function () {
     var map, shingleLayer, currentShape;
-
     var $container = $("#pnlMarkup");
     var config = gpv.configuration;
     var appState = gpv.appState;
     var isPublic = gpv.settings.isPublic;
     var service = "Services/MarkupPanel.ashx";
-
     var metersPerFoot = 0.3048333333333333;
     var feetPerMile = 5280;
     var squareFeetPerAcre = 43560;
-
     var measureText;
     var measureCrs = proj4(gpv.settings.measureCrs);
-
     measureCrs.project = function (latlng) {
       var c = this.forward([latlng.lng, latlng.lat]);
       return { x: c[0], y: c[1] };
@@ -42,7 +38,6 @@ var GPV = (function (gpv) {
     // =====  controls  =====
 
     $("#tblMarkupUser").attr("placeholder", "enter name");
-
     var $colorSelectors = $(".Color").colorSelector({
       selectorClass: "ColorSelector",
       disabledClass: "Disabled",
@@ -52,6 +47,7 @@ var GPV = (function (gpv) {
     var $chkMarkupLock = $("#chkMarkupLock").on("click", lockMarkupGroup);
     var $chkTextGlow = $("#chkTextGlow");
 
+    // ==== this function for disable button after Delete click event ====
     $("#cmdDeleteMarkup").on("click", function () {
       if (!$(this).hasClass("Disabled")) {
         deleteMarkupGroup();
@@ -61,12 +57,14 @@ var GPV = (function (gpv) {
       }
     });
 
+    // ==== this function Export  data  ====
     $("#cmdExportMarkup").on("click", function () {
       if (!$(this).hasClass("Disabled")) {
         window.location.href = "ExportMarkup.ashx?app=" + appState.Application + "&group=" + appState.MarkupGroups[0];
       }
     });
 
+    //  ====  When click New button other three button (Export , Delete , Zoom to) Enable ====
     var $cmdNewMarkup = $("#cmdNewMarkup").on("click", function () {
       if (!$(this).hasClass("Disabled")) {
         createMarkupGroup();
@@ -125,20 +123,18 @@ var GPV = (function (gpv) {
       }
     }).on("blur", updateMarkupGroupTitle);
 
-    // date 05-08-2017
+    // ====  For detail data updating    ==== 
     var $tblMarkupDetails = $("#tblMarkupDetails").on("keydown", function (e) {
       if (e.keyCode == 13) {
         updateMarkupGroupTitle();
       }
     }).on("blur", updateMarkupGroupTitle);
 
-    //===for drop down selection 
+    // ===for drop down selection in Markup tool Panel ==== 
     $(".dropdown .imgflag").addClass("flagvisibility");
-
     $(".dropdown dt a").click(function () {
       $(".dropdown dd ul").toggle();
     });
-
     $(".dropdown dd ul li a").click(function () {
       var text = $(this).html();
       $(".dropdown dt a span").html(text);
@@ -155,12 +151,9 @@ var GPV = (function (gpv) {
       if (!$clicked.parents().hasClass("dropdown"))
         $(".dropdown dd ul").hide();
     });
-
-
-
     $(".dropdown .imgflag").toggleClass("flagvisibility");
 
-    // close 
+    // ==== close ====
 
     var $tblMarkupUser = $("#tblMarkupUser").on("keyup", function () {
       var name = $(this).val();
@@ -169,7 +162,7 @@ var GPV = (function (gpv) {
     });
 
     // =====  map tools  =====
-
+    // ==== this is for hiding and showing panel on CreateMarkup and QuickSketch button click ====
     var $MapTool = $(".MapTool");
     $("#btnCreateMarkup").on("click", function () {
       $("#divMarkupSearch").removeClass("hidden");
@@ -177,23 +170,15 @@ var GPV = (function (gpv) {
       $("#btnQuickSketch").removeClass("active");
       $("#pnlMarkupGrid").addClass("tabMrkp");
     });
+
     $("#btnQuickSketch").on("click", function () {
       $("#divMarkupSearch").addClass("hidden");
       $("#btnQuickSketch").addClass("active");
       $("#btnCreateMarkup").removeClass("active");
       $("#pnlMarkupGrid").removeClass("tabMrkp");
     });
-    $("#btnShow").on("click", function () {
 
-      $("#pnlMarkupGrid").slideToggle();
-      $("#btnShow").addClass("hidden");
-      $("#btnHide").removeClass("hidden");
-    });
-    $("#btnHide").on("click", function () {
-      $("#pnlMarkupGrid").slideToggle();
-      $("#btnShow").removeClass("hidden");
-      $("#btnHide").addClass("hidden");
-    });
+    // ==== this is for markup tool functionallity
     $("#ucMarkupPanel_optColorPicker,#ucMarkupPanel_optPaintBucket").on("click", function () {
       gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "point" } });
     });
@@ -278,7 +263,6 @@ var GPV = (function (gpv) {
       else {
         data.m = "AddMarkup";
         data.id = appState.MarkupGroups[0];
-
         post({
           data: data,
           success: function (result) {
@@ -299,7 +283,6 @@ var GPV = (function (gpv) {
         },
         success: function (result) {
           if (result) {
-            console.log('---', result);
             appState.update({ MarkupGroups: [result.id] });
             $tblMarkupTitle.val(result.title);
             $("#tblMarkupDetails").val(result.details);
@@ -393,6 +376,7 @@ var GPV = (function (gpv) {
       }
     }
 
+    // ==== for markup data fill in table ====
     function fillGrid() {
       if (!appState.MarkupCategory) {
         $grdMarkup.dataGrid("empty");
@@ -616,15 +600,12 @@ var GPV = (function (gpv) {
       var numGroups = appState.MarkupGroups.length;
       var markupTitle = numGroups == 1 ? $grdMarkup.dataGrid("getData", appState.MarkupGroups[0])[2] : "";
       var markupDetails = numGroups == 1 ? $grdMarkup.dataGrid("getData", appState.MarkupGroups[0])[3] : "";
-
       $tblMarkupTitle.val(markupTitle);
       $("#tblMarkupDetails").val(markupDetails);
-
       enableControls();
-      $("#cmdExportMarkup").removeClass("btnControlLock");
-      $("#cmdDeleteMarkup").removeClass("btnControlLock");
-      $("#cmdZoomToMarkup").removeClass("btnControlLock");
-
+      $("#cmdExportMarkup").removeClass("btnControlLock");  // select any row from table , ExportMarkup button enable
+      $("#cmdDeleteMarkup").removeClass("btnControlLock");  // select any row from table , DeleteMarkup button enable
+      $("#cmdZoomToMarkup").removeClass("btnControlLock");  // select any row from table , ZoomTobutton enable
       if (numGroups) {
         zoomToMarkupGroup();
       }
@@ -658,15 +639,12 @@ var GPV = (function (gpv) {
 
     function shapeDrawing(e) {
       var currentTool = $MapTool.filter(".Selected").attr("id");
-
       if (currentTool === 'ucMarkupPanel_optDrawLength' || currentTool === 'ucMarkupPanel_optDrawArea') {
         var units = gpv.settings.measureUnits;
         var inFeet = units == "feet" || units == "both";
         var inMeters = units == "meters" || units == "both";
         var convert = 1 / (gpv.settings.measureCrsUnits == "feet" ? 1 : metersPerFoot);
-
         var latlngs = currentTool === 'ucMarkupPanel_optDrawLength' ? e.shape.getLatLngs() : e.shape.getLatLngs()[0];
-
         var points = $.map(latlngs, function (latlng) {
           return measureCrs.project(latlng);
         });
@@ -674,25 +652,19 @@ var GPV = (function (gpv) {
         if (measureText) {
           map.removeLayer(measureText);
         }
-
         var value = [];
         var i, j;
-
         if (currentTool === 'ucMarkupPanel_optDrawLength') {
           var length = getLength(points);
-
           if (length > 0) {
             length *= convert;
-
             if (inFeet) {
               value.push(length < feetPerMile ? Math.round(length) + " ft" : (length / feetPerMile).toFixed(1) + " mi");
             }
-
             if (inMeters) {
               length *= metersPerFoot;
               value.push(length < 1000 ? Math.round(length) + " m" : (length / 1000).toFixed(1) + " km");
             }
-
             measureText = L.text({
               latlng: latlngs[latlngs.length - 1],
               className: "MeasureText",
@@ -707,21 +679,17 @@ var GPV = (function (gpv) {
           if (ca.area > 0) {
             var area = ca.area * convert * convert;
             var acres = area / squareFeetPerAcre;
-
             if (inFeet) {
               var squareMile = feetPerMile * feetPerMile;
               value.push(area <= squareMile ? Math.round(area) + " sq ft" : (area / squareMile).toFixed(2) + " sq mi");
             }
-
             if (inMeters) {
               area *= metersPerFoot * metersPerFoot;
               value.push(area <= 100000 ? Math.round(area) + " sq m" : (area / 1000000).toFixed(2) + " sq km");
             }
-
             if (inFeet) {
               value.push(acres.toFixed(2) + " acres");
             }
-
             measureText = L.text({
               latlng: measureCrs.unproject(ca.centroid),
               className: "MeasureText " + (inFeet ? "Area3" : "Area2"),
@@ -735,11 +703,9 @@ var GPV = (function (gpv) {
 
     function toWkt(shape) {
       var points;
-
       if (shape instanceof L.Text) {
         shape = shape.options.latlng;
       }
-
       if (shape instanceof L.Polyline) {
         if (shape instanceof L.Polygon) {
           points = projectLatLngs(shape.getLatLngs()[0]);
@@ -757,17 +723,14 @@ var GPV = (function (gpv) {
       else if (shape instanceof L.Circle) {
         var sweepAngle = 3;
         var segments = 360 / sweepAngle;
-
         sweepAngle *= Math.PI / 180;
         var cos = Math.cos(sweepAngle);
         var sin = Math.sin(sweepAngle);
-
         var center = map.options.crs.project(shape.getLatLng());
         var theta = Math.PI * 0.5 - 2 * Math.atan(Math.pow(Math.E, -center.y / 6378137));
         var dx = 0;
         var dy = shape.getRadius() / theta;
         points = [L.point(center.x + dx, center.y + dy)];
-
         for (var i = 0; i < segments - 1; ++i) {
           var ndx = dx * cos + dy * sin;
           var ndy = dy * cos - dx * sin;
@@ -775,7 +738,6 @@ var GPV = (function (gpv) {
           dy = ndy;
           points.push(L.point(center.x + dx, center.y + dy));
         }
-
         points.push(points[0]);
         return "POLYGON((" + toWktCoordinates(points) + "))";
       }
@@ -785,7 +747,6 @@ var GPV = (function (gpv) {
       var prec = Math.log(map.getProjectedPixelSize()) / Math.LN10;
       prec = prec >= 0 ? 0 : 0 - Math.floor(prec);
       var c = [];
-
       for (var i = 0; i < points.length; ++i) {
         c.push(points[i].x.toFixed(prec) + " " + points[i].y.toFixed(prec));
       }
@@ -793,28 +754,25 @@ var GPV = (function (gpv) {
       return c.join(",");
     }
 
+    // ==== for updating markup data ====
+
     function updateMarkupGroupTitle() {
       if (appState.MarkupGroups.length == 1) {
         var id = appState.MarkupGroups[0];
         var title = $tblMarkupTitle.val();
         var details = $('#tblMarkupDetails').val();
-
         post({
           data: {
             m: "UpdateMarkupGroupTitle",
             id: id,
             title: title,
             details: details,
-
           },
           success: function (result) {
             if (result) {
-
               var data = $grdMarkup.dataGrid("getData", id);
               data[2] = title;
               data[3] = details;
-
-
               $grdMarkup.dataGrid("setData", id, data);
             }
           }

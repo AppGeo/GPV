@@ -1,4 +1,19 @@
-﻿@charset "UTF-8";
+﻿﻿ /*  Copyright 2016 Applied Geographics, Inc.
+*
+*  Licensed under the Apache License, Version 2.0 (the "License");
+*  you may not use this file except in compliance with the License.
+*  You may obtain a copy of the License at
+*
+*      http://www.apache.org/licenses/LICENSE-2.0
+*
+*  Unless required by applicable law or agreed to in writing, software
+*  distributed under the License is distributed on an "AS IS" BASIS,
+*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*  See the License for the specific language governing permissions and
+*  limitations under the License.
+*/
+
+@charset "UTF-8";
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700');
 /* fonts import */
 
@@ -29,9 +44,10 @@ html {
     color: #fff;
     font-size: 1em;
     line-height: 1.4;
-      font-family: sans-serif; /* 1 */
+    font-family: sans-serif; /* 1 */
   -ms-text-size-adjust: 100%; /* 2 */
   -webkit-text-size-adjust: 100%; /* 2 */
+  overflow: hidden;
 }
 /*
  * Remove default fieldset styles.
@@ -388,6 +404,9 @@ option .toolsTxt{
     background-repeat: no-repeat;
     display: inline-block;
 }
+.topHead .nxt_arrw:hover{
+    background-image: url(../Images/nxt_arrw_over.png);
+}
 .topHead .prev_arrw:hover{
     background-image: url(../Images/prev_arrw_over.png);
 }
@@ -591,9 +610,29 @@ label{
 #cmdRefreshMap i{
     padding-right: 5px;
 }
+#pnlLayers{
+    font-size: 15px;
+}
+#pnlLegend .themeTitle{
+    font-size: 15px;
+    width: 100px;
+}
 /* ends here */
 
 /* resposive panel details */
+#pnlDetails #pnlData{
+    height: calc(100vh - 127px);
+}
+#MobDetailContent{
+    height: calc(100vh - 194px);
+}
+
+#MobDetailContent .mCSB_scrollTools .mCSB_draggerContainer{
+    top: 4px;
+}
+#MobDetailContent .mCSB_scrollTools {
+    right: 3px;
+}
 .printRght_icon{
     width: 18px;
     height: 17px;
@@ -608,8 +647,12 @@ label{
 }
 #pnlData{
     background-color: #182a36;
-    border: 1px solid #526870;
-    height: 92.5%;
+    /*border: 1px solid #526870;*/
+    /*height: 92.5%;*/
+    height:calc(100vh - 117px);
+}
+#pnlData .frm_box{
+    padding: 10px 0px;
 }
 /* ends here */
 
@@ -646,7 +689,7 @@ label{
     height: 30px;
 }
 .seg_title{     
-    font-size: 16px;        
+    font-size: 15px;        
 }       
 .share_box{     
     width: 100%;        
@@ -976,15 +1019,13 @@ button.dropdown-toggle{
     /*height: calc(100vh - 334px);*/
     height: initial;
 }
-.markup .tabMrkp {
-    /*height: calc(100vh - 584px);*/
-    height: initial;
-}
+
 #pnlQuery .upperSelection{
     float: left;
     width: 100%;
     /* height: 35px; */
     padding: 10px 15px;
+    font-size: 15px;
 }
 #grdQuery{
     width:95%;
@@ -1230,7 +1271,7 @@ button.dropdown-toggle{
 }
 #chkTextGlow{
     position: relative;
-    left: -3px;
+    left: 1px;
     top: 4px;
 }
 .list_headng .divMargin{
@@ -1254,10 +1295,15 @@ button.dropdown-toggle{
 }
 .btnControlLock{
     pointer-events: none;
-    background-color: #ebebe4;
+    background-color: #cacac9;
 }
-.markup .tabMrkp{
-    height: calc(100vh - 584px);
+#tblMarkupTitle{
+    background-color: #cacac9;
+    color: #000;    
+}
+.markup .tabMrkp {
+    /*height: calc(100vh - 584px);*/
+    height: initial;
 }
 .drawCntWrap{
     float: left;

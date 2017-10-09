@@ -33,7 +33,7 @@ limitations under the License.
 </div>
 <div class="frm_box">
   <div class="frm_row">
-    <div class="frmLabel">
+    <div class="frmLabel themeTitle">
       Map Themes
     </div>
   </div>

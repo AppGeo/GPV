@@ -124,10 +124,6 @@ limitations under the License.
   <div class="frm_box septr topMargin">
     <div class="list_headng noTopMargin divMargin ">
       <span class="divMargin">Markup History </span>
-      <a id="btnShow" class="hidden">
-        <img src="Images/circlePlus-icon.png" /></a>
-      <a id="btnHide" class="hidden">
-        <img src="Images/circleMinus-icon.png" /></a>
     </div>
     <div class="data_box " id="pnlMarkupGrid">
       <table id="grdMarkup" class="dataTable"></table>

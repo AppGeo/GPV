@@ -1,17 +1,17 @@
 ﻿/*  Copyright 2012 Applied Geographics, Inc.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
+*
+*  Licensed under the Apache License, Version 2.0 (the "License");
+*  you may not use this file except in compliance with the License.
+*  You may obtain a copy of the License at
+*
+*      http://www.apache.org/licenses/LICENSE-2.0
+*
+*  Unless required by applicable law or agreed to in writing, software
+*  distributed under the License is distributed on an "AS IS" BASIS,
+*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*  See the License for the specific language governing permissions and
+*  limitations under the License.
+*/
 
 /* =====  CSS reset  ===== */
 
@@ -138,7 +138,6 @@ ul.bullet-list {
   box-shadow: 0px 0px 3px 2px #CECECE;
 }
 
-
 .txtLeft {
   float: left;
 }
@@ -172,7 +171,7 @@ td {
     display: block;
   }
 
-  table.mobile{
+  table.mobile {
     display: table;
   }
 
@@ -180,15 +179,15 @@ td {
     display: table-row;
   }
 
-  tr.mobile * {
-    display: table-cell;
-  }
+    tr.mobile * {
+      display: table-cell;
+    }
 
   td {
     padding: 10px 5px;
   }
 
-  td img {
-    float: right;
-  }
+    td img {
+      float: right;
+    }
 }

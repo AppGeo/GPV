@@ -14,26 +14,21 @@
 
 var GPV = (function (gpv) {
   $(function () {
-
     var appState = gpv.appState;
-
     var fullExtent = L.Bounds.fromArray(gpv.configuration.fullExtent);
     var tileLayers = {};
     var resizeHandle;
     var redrawPost;
-
     var $mapOverview = $("#mapOverview");
     var $locatorBox = $("#locatorBox");
     var overviewMapHeight = null;
     var overviewMapWidth = null;
     var locatorPanning = false;
     var overviewExtent;
-
     var mapTabChangedHandlers = [];
     var functionTabChangedHandlers = [];
     var extentChangedHandlers = [];
     var mapRefreshedHandlers = [];
-
     var panelAnimationTime = 0;
 
     // =====  controls required prior to map control creation  =====
@@ -44,19 +39,15 @@ var GPV = (function (gpv) {
 
     var maxZoom = gpv.settings.zoomLevels - 1;
     var crs = L.CRS.EPSG3857;
-
     if (gpv.settings.mapCrs) {
       crs = new L.Proj.CRS("GPV:1", gpv.settings.mapCrs);
       var c = crs.unproject(fullExtent.getCenter());
       var sf = 2 / L.CRS.EPSG3857.scaleFactorAtLatitude(c.lat);
-
       var isFeet = gpv.settings.mapCrs.indexOf("+to_meter=0.3048") >= 0;
       var resolutions = [(isFeet ? 513591 : 156543) * sf];
-
       for (var i = 0; i < maxZoom; ++i) {
         resolutions.push(resolutions[i] * 0.5);
       }
-
       crs = new L.Proj.CRS("GPV:1", gpv.settings.mapCrs, {
         resolutions: resolutions
       });
@@ -93,7 +84,6 @@ var GPV = (function (gpv) {
     }).on("shingleload", function () {
       gpv.progress.clear();
       updateOverviewExtent();
-
       $.each(mapRefreshedHandlers, function () {
         this();
       });
@@ -133,8 +123,7 @@ var GPV = (function (gpv) {
     });
 
     map.addControl(new fullViewTool())
-       .addControl(new locationTool());
-
+    .addControl(new locationTool());
     gpv.mapTip.setMap(map);
     gpv.selectionPanel.setMap(map);
     gpv.markupPanel.setMap(map);
@@ -208,15 +197,16 @@ var GPV = (function (gpv) {
       trigger: 'manual'
     });
 
+    //  ==== fort detail panel display ( in large device) ====
     $("#cmdShowDetails").on("click", function () {
       var myw = $pnlDataDisplay.css("right").substring(0, 1);
       if ($pnlDataDisplay.css("right").substring(0, 1) === "-") {
         $pnlDataDisplay.show();
-        $pnlDataDisplay.animate({ right: 0, opacity: "1.0" }, 800, function () {
+        $pnlDataDisplay.animate({ right: 0, opacity: "1.0" }, 600, function () {
           $(".DataExit").addClass("DataExitOpen");
         });
-        $("#pnlOverview").animate({ right: 295 }, 800);
-        $("div.leaflet-control-attribution.leaflet-control").animate({ right: 346 }, 800);
+        $("#pnlOverview").animate({ right: 290 }, 600);   // shift pnlOverview when detail panel show
+        $("div.leaflet-control-attribution.leaflet-control").animate({ right: 322 }, 600);
       }
       else {
         $(".DataHeader").trigger("click");
@@ -227,6 +217,7 @@ var GPV = (function (gpv) {
       zoomToSelection(1.2);
     });
 
+    // ==== detail panel hide ( in large device) ====
     $(".DataHeader").on("click", function () {
       var width = "-" + $pnlDataDisplay.css("width");
       $pnlDataDisplay.animate({ right: width, opacity: "0" }, 800, function () {
@@ -236,7 +227,6 @@ var GPV = (function (gpv) {
       $("#pnlOverview").animate({ right: 5 }, 800);
       $("div.leaflet-control-attribution.leaflet-control").animate({ right: 35 }, 800);
     });
-
 
     $("#cmdOverview").on("click", function () {
       if ($("#mapOverview").css("background-image") === "none") {
@@ -266,40 +256,32 @@ var GPV = (function (gpv) {
         }
       }
     });
-    // for base map dropdown
 
-
-    // end 
     function OpenSelectionTab(name) {
-
-
       hideFunctionMenu(function () { showFunctionPanel(name); });
-
       $.each(functionTabChangedHandlers, function () {
         this(name);
       });
     }
+
     $("#optSelect").on("click", function () {
       gpv.selectTool($(this), map, { cursor: 'default', dragging: false, boxZoom: false, drawing: { mode: 'rectangle', style: { color: '#c0c0c0', fill: true, fillColor: '#e0e0e0' } } });
       HidePanel();
       $(".MenuItem").removeClass("active");
       $("#tabSelection").addClass("active");
-
-      showFunctionPanel("Selection");
+      showFunctionPanel("Selection");   // open selection panel when Select selected in Maptool
       $.each(functionTabChangedHandlers, function () {
         this("Selection");
       });
     });
 
     $("#selectMapTheme li").click(function () {
-
       $("#ucLegendPanel_selectedTheme").html($(this).html());
       var mapTab = $(this).attr("data-maptab");
       appState.update({ MapTab: mapTab });
       triggerMapTabChanged();
       shingleLayer.redraw();
       drawTileLayers();
-
     });
 
     $("#selectMapLevel li").click(function () {
@@ -316,12 +298,11 @@ var GPV = (function (gpv) {
       }
     });
 
+    // ==== cusror type selection when Identify select in MapTool ====
     var $MapTool = $(".MapTool");
-
     var $optIdentify = $("#optIdentify");
     $optIdentify.hasClass("Selected")
     {
-
       gpv.selectTool($(this), map, { cursor: 'default', drawing: { mode: 'off' } });
     }
     $optIdentify.on("click", function () {
@@ -348,13 +329,10 @@ var GPV = (function (gpv) {
     function createTileLayers() {
       Object.keys(gpv.configuration.mapTab).forEach(function (m) {
         tileLayers[m] = {};
-
         gpv.configuration.mapTab[m].tileGroup.forEach(function (tg) {
           var z = -1;
-
           tileLayers[m][tg.group.id] = tg.group.tileLayer.map(function (tl) {
             z += 1;
-
             return L.tileLayer(tl.url, {
               zIndex: tl.overlay ? 200 + z : z,
               attribution: tl.attribution,
@@ -374,11 +352,7 @@ var GPV = (function (gpv) {
       });
 
       var mapTab = appState.MapTab;
-      //if legent panel code remove 
-      //var visible = gpv.legendPanel.getVisibleTiles(mapTab);
 
-
-      // if only baseMap code working 
       var visible = gpv.baselayer.getVisibleTiles(mapTab);
 
       Object.keys(tileLayers[mapTab]).forEach(function (tg) {
@@ -390,19 +364,7 @@ var GPV = (function (gpv) {
       });
     }
 
-    // hide and show panel
-
-    ////$(".linkIcon").on("click", function () {
-    ////    var name = $(this).text();
-    ////    hideFunctionMenu(function () { showFunctionPanel(name); });
-
-    ////    $.each(functionTabChangedHandlers, function () {
-    ////        this(name);
-    ////    });
-    ////});
-
-
-
+    // ==== for open any Panel ====
     $(".MenuItem").on("click", function () {
       var name = $(this).text();
       var trimName = $.trim(name);
@@ -415,19 +377,25 @@ var GPV = (function (gpv) {
       $(".MenuItem").removeClass("active");
       $("#tab" + trimName).addClass("active");
       $(".share").hide();
-
-      hideFunctionMenu(function () { showFunctionPanel(trimName); });
+      hideFunctionMenu(function () {
+        showFunctionPanel(trimName);
+      });
 
       $.each(functionTabChangedHandlers, function () {
         this(trimName);
       });
     });
 
+    // ==== for closing any panel
     $(".FunctionHeader").on("click", function () {
-      hideFunctionPanel(showFunctionMenu);
+      if ($(window).width() < 700) {  
+        $("#btnHamburger").removeClass("hidden");
+        $("#btnHamburgerClose").addClass("hidden");
+      }
+        hideFunctionPanel(showFunctionMenu);
     });
 
-
+    // ==== function for hiding all panel
     function HidePanel() {
       $("#pnlMarkup").attr("style", "display:none;");
       $("#pnlShare").attr("style", "display:none;");
@@ -437,25 +405,24 @@ var GPV = (function (gpv) {
       $("#pnlSearch").attr("style", "display:none;");
       $(".share").hide();
     }
-    // End above 
 
-    // new code for test
-    if ($(window).width() < 700) {
+    // ==== Hamburger functionally ====
+
+    if ($(window).width() < 700) {    // for small device open panel
       $("#btnHamburger").on("click", function () {
         $("#btnHamburger").addClass("hidden");
         $("#btnHamburgerClose").removeClass("hidden");
         $("#tabSearch").trigger("click");
 
       });
-      $("#btnHamburgerClose").on("click", function () {
+      $("#btnHamburgerClose").on("click", function () {   // for small device close panel
         $("#btnHamburger").removeClass("hidden");
         $("#btnHamburgerClose").addClass("hidden");
         hideFunctionPanel(showFunctionMenu);
       });
     }
     else {
-      $(".hamburger").on("click", function () {
-        ////var hide = $("#pnlFunctionSidebar").css("left") === "0px";
+      $(".hamburger").on("click", function () {   // for large device
         if ($(".leftNav_panel").hasClass("active")) {
           $(".leftNav_panel").removeClass("active");
         }
@@ -467,10 +434,7 @@ var GPV = (function (gpv) {
         { pnlFunctionWidth = 0; }
         else
         { pnlFunctionWidth = $("#pnlFunction").width(); }
-
-
         $("#pnlFunction").animate({ left: pnlFunctionTabsWidth, opacity: $("#pnlFunction").css("opacity") }, panelAnimationTime, function () {
-
           $("#pnlMapSizer").animate({ left: parseInt(pnlFunctionTabsWidth) }, {
             duration: panelAnimationTime,
             progress: function () {
@@ -481,17 +445,16 @@ var GPV = (function (gpv) {
               shingleLayer.redraw();
             }
           });
-
         });
       });
     }
 
     function showFunctionMenu() {
-      //$("#pnlFunctionTabs").animate({ left: "0px", opacity: "1.0" }, panelAnimationTime);
       $(".share").hide();
       $(".FunctionExit").removeClass("FunctionExitOpen");
     }
     var pnlFuctionLeft, pnlMapSizerLaft, pnlFunctionTabsWidth, pnlFunctionWidth;
+    // ==== fuction for Show Panel ====
     function showFunctionPanel(name) {
       if ($(window).width() < 700) {
         if ($("#btnHamburgerClose").hasClass("hidden")) {
@@ -517,63 +480,56 @@ var GPV = (function (gpv) {
       $("#pnlFunction").css("display", "block");
       $("#pnlFunction").animate({ left: pnlFunctionTabsWidth, opacity: "1.0" }, 800);
       $("#pnlMapSizer").animate({ left: pnlFunctionTabsWidth }, {
-        // duration: 800, 
         progress: function () {
           map.invalidateSize();
         },
         complete: function () {
           map.invalidateSize();
           shingleLayer.redraw();
-          if ($(window).width() > 700) {
+          if ($(window).width() > 700) { // for large device
             $("#pnlMapMenus").addClass("pnlMapMenus_option");
             $("#mapMain .leaflet-left").addClass("pnlMapMenus_option");
             $(".leaflet-left .leaflet-control").css("margin-left", "3px");
             $("#pnlMap #logo").addClass("pnlMapMenus_option");
           }
-
         }
       });
-
     }
 
     function hideFunctionMenu(callback) {
       $("#pnlFunctionTabs").animate({ left: "0px", opacity: "1" }, panelAnimationTime, callback);
     }
 
+    // hide (close) panel 
     function hideFunctionPanel(callback) {
       pnlFunctionTabsWidth = $("#pnlFunctionSidebar").width();
       $("#pnlFunction").animate({ left: -355, opacity: "0" }, 800, function () {
         $("#pnlFunction").css("display", "none");
       });
       $("#pnlMapSizer").animate({ left: pnlFunctionTabsWidth }, {
-        //  duration: 800,
         progress: function () {
           map.invalidateSize();
         },
         complete: function () {
           map.invalidateSize();
           shingleLayer.redraw();
-          if ($(window).width() > 700) {
+          if ($(window).width() > 700) { // for large device
             $("#pnlMapMenus").removeClass("pnlMapMenus_option");
             $("#mapMain .leaflet-left").removeClass("pnlMapMenus_option");
             $(".leaflet-left .leaflet-control").css("margin-left", "10px");
             $("#pnlMap #logo").removeClass("pnlMapMenus_option");
             $(".leaflet-control-scale leaflet-control").addClass("dimensionDetail");
           }
-
         }
       });
 
     }
 
-    // end test
     function identify(e) {
       if ($MapTool.filter(".Selected").attr("id") === "optIdentify") {
         var visibleLayers = gpv.legendPanel.getVisibleLayers(appState.MapTab);
-
         if (visibleLayers.length) {
           var p = map.options.crs.project(e.latlng);
-
           $.ajax({
             url: "Services/MapIdentify.ashx",
             data: {
@@ -592,24 +548,24 @@ var GPV = (function (gpv) {
                 $("#pnlDataList").empty().append(html);
                 $("#pnlMobDataList").empty().append(html);
                 $("#cmdDataPrint").removeClass("Disabled").data("printdata", [
-                  "maptab=", encodeURIComponent(appState.MapTab),
-                  "&visiblelayers=", encodeURIComponent(visibleLayers.join("\x01")),
-                  "&level=", appState.Level,
-                  "&x=", p.x,
-                  "&y=", p.y,
-                  "&distance=", gpv.searchDistance(),
-                  "&scale=", map.getProjectedPixelSize(),
-                  "&print=1"
+                "maptab=", encodeURIComponent(appState.MapTab),
+                "&visiblelayers=", encodeURIComponent(visibleLayers.join("\x01")),
+                "&level=", appState.Level,
+                "&x=", p.x,
+                "&y=", p.y,
+                "&distance=", gpv.searchDistance(),
+                "&scale=", map.getProjectedPixelSize(),
+                "&print=1"
                 ].join(""));
-                $("#cmdMobDataPrint").removeClass("Disabled").data("printdata", [
-                 "maptab=", encodeURIComponent(appState.MapTab),
-                 "&visiblelayers=", encodeURIComponent(visibleLayers.join("\x01")),
-                 "&level=", appState.Level,
-                 "&x=", p.x,
-                 "&y=", p.y,
-                 "&distance=", gpv.searchDistance(),
-                 "&scale=", map.getProjectedPixelSize(),
-                 "&print=1"
+                $("#cmdMobDataPrint").removeClass("Disabled").data("printdata", [  // for small device
+                "maptab=", encodeURIComponent(appState.MapTab),
+                "&visiblelayers=", encodeURIComponent(visibleLayers.join("\x01")),
+                "&level=", appState.Level,
+                "&x=", p.x,
+                "&y=", p.y,
+                "&distance=", gpv.searchDistance(),
+                "&scale=", map.getProjectedPixelSize(),
+                "&print=1"
                 ].join(""));
               }
               else {
@@ -617,28 +573,24 @@ var GPV = (function (gpv) {
                 '<p style="text-align: center; margin-top: 10px; color: #898989;">' +
                 'No Results</p></div>');
                 $("#pnlMobDataList").empty().append('<div class="DataList">' +
-               '<p style="text-align: center; margin-top: 10px; color: #898989;">' +
-               'No Results</p></div>');
+                '<p style="text-align: center; margin-top: 10px; color: #898989;">' +
+                'No Results</p></div>');
               }
-
-
 
               var $pnlDataDisplay = $("#pnlDataDisplay");
               $pnlDataDisplay.show();
               $pnlDataDisplay.find("#spnDataTheme").text("Identify");
               $pnlDataDisplay.find("#ddlDataTheme").hide();
               $("#ddlMobDataTheme").hide();
-
-
-              if ($("#tabMobDetails").css("display") != "none") {
+              if ($("#tabMobDetails").css("display") != "none") {   // for small device trigger tabMobDetails click for showing Detail panel
                 $("#tabMobDetails").trigger("click");
               }
               else {
-                if ($pnlDataDisplay.css("right").substring(0, 1) === "-") {
+                if ($pnlDataDisplay.css("right").substring(0, 1) === "-") {   // for large device showing Detail panel
                   $pnlDataDisplay.animate({ right: 0, opacity: "1.0" }, 600, function () {
                     $(".DataExit").addClass("DataExitOpen");
                   });
-                  $("#pnlOverview").animate({ right: 288 }, 600);
+                  $("#pnlOverview").animate({ right: 288 }, 600);   // shift pnlOverview Control when Detail panel show in large device
                   $("div.leaflet-control-attribution.leaflet-control").animate({ right: 318 }, 800);
 
                 }
@@ -658,7 +610,6 @@ var GPV = (function (gpv) {
       extent.bbox = bbox;
       var layers = appState.VisibleLayers;
       layers[appState.MapTab] = gpv.legendPanel.getVisibleLayers(appState.MapTab);
-
       appState.update({
         Extent: extent,
         VisibleLayers: layers
@@ -675,7 +626,6 @@ var GPV = (function (gpv) {
       }
 
       gpv.progress.start();
-
       redrawPost = gpv.post({
         url: "Services/MapImage.ashx",
         data: {
@@ -709,9 +659,6 @@ var GPV = (function (gpv) {
         this("Markup");
       });
     });
-
-
-
 
     function showLevel() {
       var $li = $("#selectMapLevel li[data-level=\"" + appState.Level + "\"]");
@@ -785,13 +732,10 @@ var GPV = (function (gpv) {
       if (locatorPanning) {
         panLocatorBox(e);
         locatorPanning = false;
-
         var x = e.pageX - $mapOverview.offset().left;
         var y = e.pageY - $mapOverview.offset().top;
-
         x = (x * overviewExtent.getSize().x / $mapOverview.width()) + overviewExtent.min.x;
         y = overviewExtent.max.y - (y * overviewExtent.getSize().y / $mapOverview.height());
-
         map.panTo(map.options.crs.unproject(L.point(x, y)));
       }
     });
@@ -834,19 +778,16 @@ var GPV = (function (gpv) {
       }
 
       var extent = map.getProjectedBounds();
-
       var left = toScreenX(extent.min.x);
       var top = toScreenY(extent.max.y);
       var right = toScreenX(extent.max.x);
       var bottom = toScreenY(extent.min.y);
       var width = $mapOverview.width();
       var height = $mapOverview.height();
-
       $locatorBox.css({ left: left - 2 + "px", top: top - 2 + "px", width: right - left + "px", height: bottom - top + "px" });
     }
     function ClickIdentity() {
       map.on("click", identify);
-
     }
 
     function showGpsError() {
@@ -870,9 +811,6 @@ var GPV = (function (gpv) {
       switchToPanel: switchToPanel,
       toggleTileGroup: toggleTileGroup,
       OpenSelectionTab: OpenSelectionTab,
-      //CalloptIdentify: CalloptIdentify,
-      //CalloptPan: CalloptPan,
-      //ClickIdentity: ClickIdentity,
       zoomToActive: zoomToActive
     };
 
@@ -882,11 +820,9 @@ var GPV = (function (gpv) {
 
     //need to add title attribute due to bootstrap overwriting title with popover
     $("#cmdLocation").attr("title", "Current Location");
-
     gpv.loadComplete();
     createTileLayers();
     drawTileLayers();
-    //$MapTool.filter(".Selected").trigger("click");
     triggerMapTabChanged();
     $('input').on('change', function () {
       var dataTile = $(this).attr('data-tilegroup');
@@ -903,7 +839,7 @@ var GPV = (function (gpv) {
         }
       }
     });
-    //New Code;
+
     var $layerContainer = $("#pnlBaseMap");
     var $baseMapContainer = $('#pnlBaseMaps');
     var itm = document.getElementById('pnlBaseMaps');
@@ -916,13 +852,14 @@ var GPV = (function (gpv) {
       }
     });
 
+    // ==== for custom scrollbar theme ====
     $('.customScroll').mCustomScrollbar({
       theme: "3d-thick"
     })
-
+    //$('.horizontalScroll').mCustomScrollbar({
+    //  theme: "3d-thick",
+    //  axis: "x"
+    //})
   });
-
   return gpv;
-
-
 })(GPV || {});
