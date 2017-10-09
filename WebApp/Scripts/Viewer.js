@@ -570,10 +570,10 @@ var GPV = (function (gpv) {
               }
               else {
                 $("#pnlDataList").empty().append('<div class="DataList">' +
-                '<p style="text-align: center; margin-top: 10px; color: #898989;">' +
+                '<p class="dtlPara" style="text-align: center; margin-top: 10px; color: #898989;">' +
                 'No Results</p></div>');
                 $("#pnlMobDataList").empty().append('<div class="DataList">' +
-                '<p style="text-align: center; margin-top: 10px; color: #898989;">' +
+                '<p class="dtlPara" style="text-align: center; margin-top: 10px; color: #898989;">' +
                 'No Results</p></div>');
               }
 
