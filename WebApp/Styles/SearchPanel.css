@@ -198,3 +198,47 @@
 #mCSB_1_scrollbar_vertical{
   margin-right: 3px;
 }
+
+/**
+  New Style for Search Panel 
+  Date 12-09-2017
+*/
+/* Search details panel */
+.topLftTxt{
+    font-size: 15px;
+    position: relative;
+    top: -3px;
+}
+.topLftTxt .topTxt{
+    margin-right: 7px;
+}
+.topLftTxt .picLink{
+    display: inline-block;
+    /* float: left; */
+    margin-left: 6px;
+    position: relative;
+    top: -2px;
+}
+#pnlSearchFields div.frm_box:nth-of-type(2) button:first-child{
+    margin-left: 0;
+}
+#pnlSearchFields div.frm_box:nth-of-type(2){
+    padding-top: 15px;
+}
+#pnlLegendContent .mCustomScrollBox{
+    height: 100%;
+}
+#pnlSearchScroll{
+    top: 10px;
+    left: 0;
+    right: 0;
+    overflow-y: auto;
+    bottom: 0;
+    z-index: 5;
+    position: relative;
+    width: 100%;
+    float: left;
+    min-height: auto;
+}
+/* ends here */
+

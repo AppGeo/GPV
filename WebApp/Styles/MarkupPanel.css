@@ -185,3 +185,172 @@ label#labMarkupLock {
 .markup .tabMrkp{
     height: calc(100vh - 547px);
 }
+/**
+New Style for Markup Panel
+*/
+/* Draw details panel */
+.frmBg_box{
+    width: 100%;
+    float: left;
+    background-color: #172936;
+    border: 1px solid #526870;
+}
+.markup .frmBg_box{
+    background-color: transparent;
+    padding: 0 8px 10px;
+}
+.checkBoxWrap{
+    display: inline-block;
+    position: relative;
+    top: 2px;
+    margin-right: 11px;
+
+}
+.btnSquare{
+     width: 20px;
+    height: 16px;
+    background: #0099cc;
+    display: inline-block;
+    margin-right: 5px;
+     position: absolute;
+    left: 7px;
+    top: 5px;
+}
+.btnSquare.grey{
+    background: #cccccc;
+}
+.btnPrint{
+    background-image: url(../Images/print-icon-black.png);
+    background-repeat: no-repeat;
+    background-position: 19px center;
+    padding-left: 39px;
+}
+.btnPrint:hover{
+    background-image: url(../Images/print-icon-white.png);
+}
+.LocPrint{
+    background-image: url(../Images/loc-icon-black.png);
+    background-repeat: no-repeat;
+    background-repeat: no-repeat;
+    background-position: 19px center;
+    padding-left: 32px;
+}
+.LocPrint:hover{
+    background-image: url(../Images/loc-icon-white.png);
+}
+.exprtPrint{
+    background-image: url(../Images/export-icon-black.png);
+    background-repeat: no-repeat;
+    background-repeat: no-repeat;
+    background-position: 15px center;
+    padding-left: 36px;
+}
+.exprtPrint:hover{
+    background-image: url(../Images/export-icon-white.png);
+}
+.btnPrint, .LocPrint, .exprtPrint{
+    min-width: 94px;
+}
+.markup .twoCol button{
+    width: 100%;
+}
+.markup .frm_row .twoCol:first-child {
+    margin-right: 1px;
+}
+.markup .frm_row .twoCol {
+    width: calc(100% / 2 - 3px);
+}
+.close_btn{
+    width: 24px;
+    height: 25px;
+    background-image: url(../Images/close.png);
+    background-repeat: no-repeat;
+    display: inline-block;
+}
+.close_btn:hover{
+    background-image: url(../Images/close-over.png);
+}
+.markup .tabBtn{
+    height: 32px;
+    background-color: #839aa3;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 400;
+}       
+.markup .tabBtn:hover{
+    background-color: #758f98;
+}       
+.markup .tabBtn.active{
+    color: #000;
+    font-weight: bold;
+}       
+.markup .tabBtn.active:hover{
+    background-color: #f8f8f8;
+}       
+.markup .tab1{
+    border-radius: 3px 0 0 3px;
+}
+.markup .tab2{
+    border-radius: 0 3px 3px 0;
+}
+#pnlMarkup #pnlMarkupContent{
+    padding-top: 0px;
+    padding-bottom: 6px;
+}
+#pnlMarkup #sample{
+    padding-top: 6px;
+    margin-bottom: 13px;
+}
+#chkTextGlow{
+    position: relative;
+    left: 1px;
+    top: 4px;
+}
+.list_headng .divMargin{
+    font-size: 15px;
+}
+.divMargin{
+    margin-right: 7px;
+}
+#pnlMarkupContent .mrkpTxt{
+    color: #333!important;
+}
+#divMarkupSearch .fourCol{
+    width:calc(100%/2 - 4.9px);
+}
+#divMarkupSearch .fourCol:first-child{
+    margin-bottom: 10px;
+    margin-right: 6px;
+}
+#divMarkupSearch .fourCol:nth-of-type(3){
+    margin-right: 6px;
+}
+.btnControlLock{
+    pointer-events: none;
+    background-color: #cacac9;
+}
+#tblMarkupTitle{
+    background-color: #cacac9;
+    color: #000;    
+}
+.markup .tabMrkp {
+    /*height: calc(100vh - 584px);*/
+    height: initial;
+}
+.drawCntWrap{
+    float: left;
+    width: 100%;
+    height: calc(100vh - 117px);
+    overflow-y: auto;
+    padding-top: 10px;
+    padding-right: 5px;
+    padding-bottom: 10px;
+}
+.drawCntWrap .frm_box{
+    padding-right: 0;
+    width: 95%;
+}
+li.MapTool span:not(.glyphicon), #selectedTool span:not(.glyphicon), #selectedMarkupTool span:not(.glyphicon){
+    width: 26px;
+}
+/* ends here */

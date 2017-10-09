@@ -34,6 +34,7 @@ public class MinifiedStylesheetsHandler : IHttpHandler
       "Styles/leaflet.css",
       "Styles/jquery-ui-datepicker.css",
       "Styles/jquery.mCustomScrollbar.css",
+      "Styles/Customize.css",
       "Styles/DataList.css",
       "Styles/Viewer.css",
       "Styles/MapTip.css",
@@ -46,8 +47,7 @@ public class MinifiedStylesheetsHandler : IHttpHandler
       "Styles/SharePanel.css",
       "Styles/LegendPanel.css",
       "Styles/Main.css",
-      "Styles/Responsive.css",
-      "Styles/Customize.css"
+      "Styles/Responsive.css"
     });
   }
 

@@ -157,10 +157,10 @@ button {
   margin: 8px;
 }
 
-#cmdEmail{
+/*#cmdEmail{
   font-size: 19px;
   padding: 0 4px;
-}
+}*/
 
 #cmdShowDetails {
   cursor: pointer;
@@ -457,4 +457,78 @@ button {
 }
 #cmdHelp span:hover,#cmdShowDetails:hover {
     color:#007c70;
+}
+
+/**
+New Style for right header #cmdSHelp #cmdEmail
+Date 17-09-2017
+*/
+#cmdEmail{
+    background-image: url(../Images/Links.png);
+    width: 95px;
+    height: 50px;
+    background-repeat: no-repeat;
+    font-size: 13px;
+    line-height: 18px;
+    background-position: 16% 45%;
+    margin: 0;
+    padding: 14px 10px 14px 35px;
+    cursor: pointer;
+    background-size: 22%;
+}
+#cmdEmail:hover{
+    background-color: #367fa9;
+}
+.fa-share-alt{
+    display: none;
+}
+#cmdHelp{
+    margin: 0px !important;
+}
+.helpTxt{
+    background-image: url(../Images/help.png);
+    width: 85px;
+    height: 50px;
+    background-repeat: no-repeat;
+    background-size: 22%;
+    font-size: 13px;
+    line-height: 18px;
+    background-position: 20% 50%;
+    margin: 0px;
+    padding: 14px 35px;
+    cursor: pointer;
+    float: left;
+}
+.helpTxt:hover{
+    background-color: #367fa9;
+}
+.glyphicon-question-sign{
+    font-size: 18px !important;
+    margin-right: 5px;
+}
+#cmdShowDetails{
+    margin: 0 8px 0 0;
+    color: #fff;
+}
+#cmdShowDetails:hover{
+    color: #FFB74D;
+}
+#cmdHelp span:hover {
+    color: #fff;
+}
+.glyphicon-option-vertical:before{
+    line-height: 46px;
+}
+a:hover, .CommandLink:hover {
+    text-decoration: none;
+    color: #ffb74d;
+}
+option .toolsImg{
+    display: inline-block;
+    margin-right: 10px;
+}
+option .toolsTxt{
+    display: inline-block;
+    position: relative;
+    top: 2px;
 }
