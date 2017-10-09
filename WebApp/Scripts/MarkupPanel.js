@@ -41,7 +41,7 @@ var GPV = (function (gpv) {
 
     // =====  controls  =====
 
-    $("#tboMarkupUser").attr("placeholder", "enter name");
+    $("#tblMarkupUser").attr("placeholder", "enter name");
 
     var $colorSelectors = $(".Color").colorSelector({
       selectorClass: "ColorSelector",
@@ -99,7 +99,7 @@ var GPV = (function (gpv) {
           MarkupCategory: $ddlMarkupCategory.val(),
           MarkupGroups: []
         });
-        $tboMarkupTitle.val("");
+        $tblMarkupTitle.val("");
         $chkMarkupLock.prop("checked", false);
         enableControls();
         gpv.viewer.refreshMap();
@@ -119,14 +119,14 @@ var GPV = (function (gpv) {
       selectionChanged: selectionChanged
     });
 
-    var $tboMarkupTitle = $("#tboMarkupTitle").on("keydown", function (e) {
+    var $tblMarkupTitle = $("#tblMarkupTitle").on("keydown", function (e) {
       if (e.keyCode == 13) {
         updateMarkupGroupTitle();
       }
     }).on("blur", updateMarkupGroupTitle);
 
     // date 05-08-2017
-    var $tboMarkupDetails = $("#tboMarkupDetails").on("keydown", function (e) {
+    var $tblMarkupDetails = $("#tblMarkupDetails").on("keydown", function (e) {
       if (e.keyCode == 13) {
         updateMarkupGroupTitle();
       }
@@ -162,7 +162,7 @@ var GPV = (function (gpv) {
 
     // close 
 
-    var $tboMarkupUser = $("#tboMarkupUser").on("keyup", function () {
+    var $tblMarkupUser = $("#tblMarkupUser").on("keyup", function () {
       var name = $(this).val();
       gpv.store("markupUser", name);
       $cmdNewMarkup.toggleClass("Disabled", name.length == 0);
@@ -295,14 +295,14 @@ var GPV = (function (gpv) {
         data: {
           m: "CreateMarkupGroup",
           category: appState.MarkupCategory,
-          user: $tboMarkupUser.val()
+          user: $tblMarkupUser.val()
         },
         success: function (result) {
           if (result) {
             console.log('---', result);
             appState.update({ MarkupGroups: [result.id] });
-            $tboMarkupTitle.val(result.title);
-            $("#tboMarkupDetails").val(result.details);
+            $tblMarkupTitle.val(result.title);
+            $("#tblMarkupDetails").val(result.details);
             $chkMarkupLock.prop("checked", result.locked);
             enableControls();
             fillGrid();
@@ -352,8 +352,8 @@ var GPV = (function (gpv) {
         success: function (result) {
           if (result) {
             appState.update({ MarkupGroups: [] });
-            $tboMarkupTitle.val("");
-            $("#tboMarkupDetails").val("");
+            $tblMarkupTitle.val("");
+            $("#tblMarkupDetails").val("");
             enableControls();
             $grdMarkup.dataGrid("deleteSelection");
             gpv.viewer.refreshMap();
@@ -389,7 +389,7 @@ var GPV = (function (gpv) {
         }
 
         $container.find(".Toggleable").toggleClass("Disabled", !enable);
-        $tboMarkupTitle.add("#tboMarkupText").prop("disabled", !enable);
+        $tblMarkupTitle.add("#tblMarkupText").prop("disabled", !enable);
       }
     }
 
@@ -617,8 +617,8 @@ var GPV = (function (gpv) {
       var markupTitle = numGroups == 1 ? $grdMarkup.dataGrid("getData", appState.MarkupGroups[0])[2] : "";
       var markupDetails = numGroups == 1 ? $grdMarkup.dataGrid("getData", appState.MarkupGroups[0])[3] : "";
 
-      $tboMarkupTitle.val(markupTitle);
-      $("#tboMarkupDetails").val(markupDetails);
+      $tblMarkupTitle.val(markupTitle);
+      $("#tblMarkupDetails").val(markupDetails);
 
       enableControls();
       $("#cmdExportMarkup").removeClass("btnControlLock");
@@ -796,8 +796,8 @@ var GPV = (function (gpv) {
     function updateMarkupGroupTitle() {
       if (appState.MarkupGroups.length == 1) {
         var id = appState.MarkupGroups[0];
-        var title = $tboMarkupTitle.val();
-        var details = $('#tboMarkupDetails').val();
+        var title = $tblMarkupTitle.val();
+        var details = $('#tblMarkupDetails').val();
 
         post({
           data: {

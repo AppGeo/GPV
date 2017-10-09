@@ -77,6 +77,7 @@ public class MarkupPanelHandler : WebServiceHandler
 
     int id = Sequences.NextMarkupGroupId;
     string title = "[untitled]";
+    string details = "[unDetailed]";
     bool locked = AppAuthentication.Mode != AuthenticationMode.None;
     DateTime now = DateTime.Now;
 
@@ -86,7 +87,7 @@ public class MarkupPanelHandler : WebServiceHandler
     {
       using (OleDbConnection connection = AppContext.GetDatabaseConnection())
       {
-        string sql = String.Format("insert into {0}MarkupGroup (GroupID, CategoryID, DisplayName, CreatedBy, CreatedByUser, Locked, DateCreated, DateLastAccessed, Deleted) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        string sql = String.Format("insert into {0}MarkupGroup (GroupID, CategoryID, DisplayName, CreatedBy, CreatedByUser, Locked, DateCreated, DateLastAccessed, Deleted,Details) values (?, ?, ?, ?, ?, ?, ?, ?, ? ,?)",
             WebConfigSettings.ConfigurationTablePrefix);
 
         using (OleDbCommand command = new OleDbCommand(sql, connection))
@@ -100,6 +101,7 @@ public class MarkupPanelHandler : WebServiceHandler
           command.Parameters.Add("@7", OleDbType.Date).Value = now;
           command.Parameters.Add("@8", OleDbType.Date).Value = now;
           command.Parameters.Add("@9", OleDbType.Integer).Value = 0;
+          command.Parameters.Add("@10", OleDbType.VarWChar).Value = details;
           command.ExecuteNonQuery();
         }
       }
@@ -597,7 +599,7 @@ public class MarkupPanelHandler : WebServiceHandler
   {
     int groupId = Convert.ToInt32(Request.Form["id"]);
     string title = Request.Form["title"];
-
+    string details = Request.Form["details"];
     DateTime now = DateTime.Now;
     bool success = false;
 
@@ -605,13 +607,14 @@ public class MarkupPanelHandler : WebServiceHandler
     {
       using (OleDbConnection connection = AppContext.GetDatabaseConnection())
       {
-        string sql = String.Format("update {0}MarkupGroup set DisplayName = ?, DateLastAccessed = ? where GroupID = ?", WebConfigSettings.ConfigurationTablePrefix);
+        string sql = String.Format("update {0}MarkupGroup set DisplayName = ?, Details=? , DateLastAccessed = ? where GroupID = ?", WebConfigSettings.ConfigurationTablePrefix);
 
         using (OleDbCommand command = new OleDbCommand(sql, connection))
         {
           command.Parameters.Add("@1", OleDbType.VarWChar).Value = title;
-          command.Parameters.Add("@2", OleDbType.Date).Value = now;
-          command.Parameters.Add("@3", OleDbType.Integer).Value = Convert.ToInt32(groupId);
+          command.Parameters.Add("@2", OleDbType.VarWChar).Value = details;
+          command.Parameters.Add("@3", OleDbType.Date).Value = now;
+          command.Parameters.Add("@4", OleDbType.Integer).Value = Convert.ToInt32(groupId);
 
           command.ExecuteNonQuery();
         }

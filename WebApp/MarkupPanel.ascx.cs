@@ -31,8 +31,8 @@ public partial class MarkupPanel : System.Web.UI.UserControl
 
       if (AppAuthentication.Mode != AuthenticationMode.None)
       {
-        tboMarkupUser.Attributes["value"] = AppUser.GetDisplayName(connection);
-        //tboMarkupUser.Attributes["disabled"] = "disabled";
+        tblMarkupUser.Attributes["value"] = AppUser.GetDisplayName(connection);
+        //tblMarkupUser.Attributes["disabled"] = "disabled";
         // chkMarkupLock.Style["visibility"] = "visible";
         labMarkupLock.Style["visibility"] = "visible";
         cmdNewMarkup.Attributes["class"] = "CommandLink";
