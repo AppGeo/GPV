@@ -59,3 +59,107 @@
 {
   margin-top: 6px;
 }
+
+/**
+New style for share panel
+Date 14-09-2017
+*/
+/* Share details panel */
+#pnlShareContent .share_box .frm_row .twoCol {
+    float: left;
+}
+#pnlShareContent .share_box .frm_row .threeCol {
+    float: left;
+}
+#pnlPrint .PrintOptionLabel{
+    float: left;
+    position: relative;
+    top: 2px;
+    left: 5px;
+    font-size: 12.5px;
+}
+.printInput label {
+    margin-bottom: 15px;
+    display: inline-block;
+    width: 50px;
+    float: left;
+    font-weight : unset;
+}
+.printInput input {
+    margin-bottom: 12px;
+    display: inline-block;
+    width: calc(100% - 50px);
+    float: right;
+     border: none;
+    border-radius: 3px;
+    padding: 5px 8px;
+    font-size: 13px;
+    height: 30px;
+}
+.seg_title{     
+    font-size: 15px;        
+}       
+.share_box{     
+    width: 100%;        
+    float: left;        
+    border: 1px solid #949494;      
+    min-height: 250px;      
+    margin-top: 20px;       
+    padding: 12px 15px;     
+}       
+.share .share_box .frmLabel{        
+    width: 43px;        
+}       
+.share .share_box .frmField{        
+    width: calc(100% - 47px);       
+}
+#pnlShareContent .share_box {
+   padding: 12px 12px;
+}
+.share .share_box .frmField .frmRadio{
+        position: relative;
+    top: -1px;
+    float: left;
+}
+.share .share_box .frmField .inlineCol{     
+    display: inline-block;      
+}       
+.share .share_box .frmField .inlineCol .ratting{        
+    width: 60px;        
+    border-radius: 0;       
+}
+.customGoto{
+    width: 74%!important;
+    float: left!important;
+    margin-left: 0!important;
+}
+#pnlShareContent .share_box .frm_row .twoCol {
+    float: left;
+    width: 20%;
+}
+#cmdExternalMap{
+    min-width: 56px;
+    float: right;
+    min-height: 29px;
+}
+#pnlDownload .share_box .frm_row div.threeCol:first-child{
+    width: 50px;
+    padding-top: 5px;
+}
+#pnlDownload .share_box .frm_row .customExport{
+    width: 76%;
+}
+#pnlDownload .share_box .frm_row div.threeCol:nth-of-type(3){
+    margin-top: 10px;
+    width: 79%;
+    float: right;
+}
+#cmdSaveMap{
+    float: left;
+}
+#pnlMarkup div:nth-of-type(3){
+}
+#cmdSaveMap{
+    min-width: 70px;
+}
+/* share panel ends */

@@ -84,3 +84,38 @@
 {
   height: 4px;
 }
+
+/**
+New Style for Data List
+Date 12-09-2017
+*/
+/* table styles */
+.dataTable{
+    text-align: center;
+    font-size: 12px;
+   /* margin-top: 10px;*/
+    border: 1px solid #526870;
+    width:100%;
+}
+.dataTable tr td{
+    border: 1px solid #526870;
+}
+.dataTable tr th{
+    border: 1px solid #526870;
+    font-size: 13px;
+    color: #fff;
+    font-weight: normal;
+}
+.dataTable thead{
+    background-color: #849ba4;
+    font-size:14px;
+}
+
+ thead th{
+    text-align: center;
+    padding :2px;
+}
+.DataList .Value{
+    text-align: left;
+}
+/* ends here */

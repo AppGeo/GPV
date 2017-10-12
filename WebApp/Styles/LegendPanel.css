@@ -138,3 +138,38 @@
   margin-left: 10px;
   margin-right: 4px;
 }
+
+/**
+New Style for Legend/Map Panel
+Date 14-09-2017
+*/
+/* Map details panel */
+.list_headng{
+    width: 100%;
+    float: left;
+    /*font-family: 'openSans-bold', sans-serif;*/
+    margin: 10px 0;
+}
+.dropdown-menu{
+    /*top: -40px!important;*/
+    width: 100%;
+}
+#pnlLegend div.frm_box:nth-of-type(2){
+    padding-top: 4px;
+    padding-bottom: 18px;
+}
+#cmdRefreshMap{
+    margin-right: 18px;
+    padding: 5px 8px;
+}
+#cmdRefreshMap i{
+    padding-right: 5px;
+}
+#pnlLayers{
+    font-size: 15px;
+}
+#pnlLegend .themeTitle{
+    font-size: 15px;
+    width: 100px;
+}
+/* ends here */
