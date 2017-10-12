@@ -57,7 +57,7 @@
   right: 0;
   bottom: 0;
   border-top: solid 1px #b9b9b9;
-  background-color: White;
+  /*background-color: White;*/
   overflow: auto; 
 }
 
@@ -86,3 +86,31 @@
 {
   padding-bottom: 6px;
 }
+
+/**
+New Style for Location Panel
+Date 13-09-2017
+*/
+/* Location details panel */
+#pnlZoneLevelScroll{
+    margin-top: 0;
+    top: 96px;
+    border-top: 1px solid #526870;
+}
+#pnlZoneLevelControl{
+    top: 95px;
+}
+#pnlLocationContent {
+    top: 41px;
+}
+.ZoneLevelTable th{
+    text-align: left;
+}
+#ddlZoneLevelSelect{
+    min-width: 168px;
+}
+#mCSB_5_container{
+    margin-right: 0px !important;
+}
+/* ends here */
+

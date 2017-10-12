@@ -18,41 +18,42 @@ using System.Linq;
 
 public enum Action
 {
-	Select = 0,
-	FindAllWithin = 1,
-	FindNearest1 = 2,
-	FindNearest2 = 3,
-	FindNearest3 = 4,
-	FindNearest4 = 5,
-	FindNearest5 = 6
+  Select = 0,
+  FindAllWithin = 1,
+  FindNearest1 = 2,
+  FindNearest2 = 3,
+  FindNearest3 = 4,
+  FindNearest4 = 5,
+  FindNearest5 = 6
 }
 
 public enum CoordinateMode
 {
-	DMS = 0,
-	DD = 1,
-	NE = 2,
-	USNG = 3
+  DMS = 0,
+  DD = 1,
+  NE = 2,
+  USNG = 3
 }
 
 public enum FeatureType
 {
-	Active = 0,
-	Target = 1,
-	Selection = 2,
-	Filtered = 3
+  Active = 0,
+  Target = 1,
+  Selection = 2,
+  Filtered = 3
 }
 
 public enum FunctionTab
 {
   None = 0,
-	Legend = 1,
-	Selection = 2,
+  Legend = 1,
+  Selection = 2,
   Search = 4,
-	Markup = 8,
-	Location = 16,
+  Markup = 8,
+  Location = 16,
   Share = 32,
-	All = 63
+  Details = 61,
+  All = 63
 }
 
 public enum CheckMode

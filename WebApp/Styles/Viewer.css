@@ -1,4 +1,4 @@
-﻿/*  Copyright 2016 Applied Geographics, Inc.
+﻿﻿/*  Copyright 2016 Applied Geographics, Inc.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -61,9 +61,9 @@ div.Button.Selected, div.Button.Selected:hover
 }
 
 button {
-  margin: 10px;
+/*  margin: 10px;
   border-width: 1px;
-  padding: 2px 5px;
+  padding: 2px 5px;*/
 }
 
 .DataGrid
@@ -73,17 +73,19 @@ button {
 
 .DataGrid thead tr, .DataGridRow
 {
-  background-color: white;
+  /*background-color: white; */
 }
 
 .DataGridRow:hover, .DataGridRowAlternate:hover
 {
   background-color: #FFF9C4;
+  color:black;
 }
 
 .DataGridRowSelect, .DataGridRowSelect:hover
 {
-  background-color: #FFEB3B;
+ background-color: #FFEB3B;
+ color:black;
 }
 
 .DataGrid th, .DataGrid td
@@ -155,10 +157,10 @@ button {
   margin: 8px;
 }
 
-#cmdEmail{
+/*#cmdEmail{
   font-size: 19px;
   padding: 0 4px;
-}
+}*/
 
 #cmdShowDetails {
   cursor: pointer;
@@ -169,15 +171,9 @@ button {
   margin: 8px;
 }
 
-#pnlMapSizer
-{
-  left: 400px;
-  right: 0;
-}
-
 #pnlFunctionSidebar {
-  left: 0;
-  width: 400px;
+  left: -1px;
+/*width: 400px;*/
   z-index: 2;
 }
 
@@ -198,12 +194,12 @@ button {
 
 #pnlFunctionTabs
 {
-  left: 12px;
+ /* left: 12px;
   right: 12px;
   width: 376px;
   bottom: 0;
   overflow: hidden;
-  opacity: 1;
+  opacity: 1;*/
 }
 
 .Menu
@@ -214,7 +210,7 @@ button {
 .MenuItem
 {
   display: block;
-  padding: 8px;
+ /* padding: 8px;*/
   cursor: pointer;
 }
 
@@ -225,25 +221,25 @@ button {
 
 #pnlFunction
 {
-  position: absolute;
+  /*position: absolute;
   left: -400px;
   width: 400px;
   bottom: 0;
   overflow: hidden;
-  opacity: 0;
+  opacity: 0;*/
 }
 
 .FunctionHeader
 {
-  letter-spacing: .25px;
+/*  letter-spacing: .25px;
   height: 40px;
   padding: 3px 0;
-  cursor: pointer;
+  cursor: pointer;*/
 }
 
 .FunctionExit, .DataExit
 {
-  font-size: 18px;
+  /*font-size: 18px;
   margin: 5px 10px;
   cursor: pointer;
   -webkit-transition: 0.5s;
@@ -256,28 +252,28 @@ button {
   -webkit-transform: rotate(180deg);
   -moz-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
-  transform: rotate(180deg);
+  transform: rotate(180deg);*/
 }
 
 .FunctionExitOpen
 {
-  transform: rotate(0deg);
+  /*transform: rotate(0deg);
   -webkit-transform: rotate(0deg);
   -moz-transform: rotate(0deg);
-  -ms-transform: rotate(0deg);
+  -ms-transform: rotate(0deg);*/
 }
 
 .DataExitOpen 
 {
-  transform: rotate(360deg);
+  /*transform: rotate(360deg);
   -webkit-transform: rotate(360deg);
   -moz-transform: rotate(360deg);
-  -ms-transform: rotate(360deg);
+  -ms-transform: rotate(360deg);*/
 }
 
 .FunctionPanel
 {
-  right: 1px;
+ /* right: 1px;*/
 }
 
 #pnlAttribution 
@@ -289,7 +285,7 @@ button {
 
 #pnlDataDisplay
 {
-  background-color: #FFFFFF;
+/*  background-color: #FFFFFF;
   display: none;
   left: auto;
   right: -355px;
@@ -298,16 +294,16 @@ button {
   box-shadow: -4px 0px 5px -2px #b9b9b9;
   -webkit-box-shadow: -4px 0px 5px -2px #b9b9b9;
   -moz-box-shadow: -4px 0px 5px -2px #b9b9b9;
-  z-index: 11;
+  z-index: 11;*/
 }
 
 .DataHeader
 {
-  letter-spacing: .25px;
+/*  letter-spacing: .25px;
   text-align: right;
   height: 40px;
   padding: 3px 10px;
-  cursor: pointer;
+  cursor: pointer;*/
 }
 
 .DataLabel {
@@ -315,9 +311,9 @@ button {
 }
 
 #ddlDataTheme{
-  margin: 7px 10px;
+ /* margin: 7px 10px;
   font-size: 14px;
-  width: 215px
+  width: 215px*/
 }
 
 #pnlDataTabs
@@ -336,28 +332,28 @@ button {
 
 #pnlDataList
 {
-  left: 0px;
+ /* left: 0px;
   top: 43px;
   right: 0px;
   bottom: 0px;
   border-top: solid 1px #b9b9b9;
   background-color: White;
-  overflow: auto;
+  overflow: auto;*/
 }
 
 #pnlDataList .DataList
 {
-  left: 10px;
+ /* left: 10px;
   top: 10px;
-  right: 30px;
+  right: 30px;*/
 }
 
 #cmdDataPrint
 {
-  position: absolute;
+/*  position: absolute;
   top: 6px;
   right: 10px;
-  margin: 0;
+  margin: 0;*/
 }
 
 #pnlFooter
@@ -370,7 +366,7 @@ button {
 {
   #pnlFunctionSidebar
   {
-    left: -400px;
+    /*left: -400px;*/
   }
 
   #pnlMapSizer
@@ -397,4 +393,142 @@ button {
 }
 .leaflet-touch .leaflet-control-zoom-out {
 	font-size: 20px;
+}
+
+/*Change base layer to common*/
+#pnlBaseMaps
+{
+  /*position: absolute;
+  top: 80%;
+  width: 100%;
+  height: 20%;*/
+}
+
+/*Change base layer style*/
+
+.DropdownMainPanel{
+    top:39px;
+}
+.DropdownMain{
+    width:270px !important;
+    height:200px !important;
+}
+.DropdownPanel{
+    top: -20px !important;
+    left: 0px !important;
+    border-radius: 4px;
+    padding-right:10px;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,.25);
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+
+.LegendHeader{
+   /* border-bottom:1px solid #ececec;
+    padding: 6px 0px;*/
+}
+
+.layerImagePanel{
+    position: relative; 
+    display: inline-block; 
+    width: 26px; 
+    height: 26px;
+}
+
+.layerImage{
+    /*width: 30px; 
+    margin-top: 8px; 
+    position: absolute; 
+    cursor: pointer; 
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    bottom: 0; 
+    background-color: #ccc; 
+    -webkit-transition: .4s; 
+    transition: .4s;
+    -webkit-box-shadow: 0 1px 5px rgba(0,0,0,.65);
+    box-shadow: 0 1px 5px rgba(0,0,0,.65);*/
+}
+/*Hover style for right link buttons*/ 
+#cmdHelp span, #cmdShowDetails {
+    color: #ffffff;
+}
+#cmdHelp span:hover,#cmdShowDetails:hover {
+    color:#007c70;
+}
+
+/**
+New Style for right header #cmdSHelp #cmdEmail
+Date 17-09-2017
+*/
+#cmdEmail{
+    background-image: url(../Images/Links.png);
+    width: 95px;
+    height: 50px;
+    background-repeat: no-repeat;
+    font-size: 13px;
+    line-height: 18px;
+    background-position: 16% 45%;
+    margin: 0;
+    padding: 14px 10px 14px 35px;
+    cursor: pointer;
+    background-size: 22%;
+}
+#cmdEmail:hover{
+    background-color: #367fa9;
+}
+.fa-share-alt{
+    display: none;
+}
+#cmdHelp{
+    margin: 0px !important;
+}
+.helpTxt{
+    background-image: url(../Images/help.png);
+    width: 85px;
+    height: 50px;
+    background-repeat: no-repeat;
+    background-size: 22%;
+    font-size: 13px;
+    line-height: 18px;
+    background-position: 20% 50%;
+    margin: 0px;
+    padding: 14px 35px;
+    cursor: pointer;
+    float: left;
+}
+.helpTxt:hover{
+    background-color: #367fa9;
+}
+.glyphicon-question-sign{
+    font-size: 18px !important;
+    margin-right: 5px;
+}
+#cmdShowDetails{
+    margin: 0 8px 0 0;
+    color: #fff;
+}
+#cmdShowDetails:hover{
+    color: #FFB74D;
+}
+#cmdHelp span:hover {
+    color: #fff;
+}
+.glyphicon-option-vertical:before{
+    line-height: 46px;
+}
+a:hover, .CommandLink:hover {
+    text-decoration: none;
+    color: #ffb74d;
+}
+option .toolsImg{
+    display: inline-block;
+    margin-right: 10px;
+}
+option .toolsTxt{
+    display: inline-block;
+    position: relative;
+    top: 2px;
 }

@@ -1,4 +1,4 @@
-﻿/*  Copyright 2016 Applied Geographics, Inc.
+﻿﻿/*  Copyright 2016 Applied Geographics, Inc.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -13,24 +13,27 @@
  *  limitations under the License.
  */
 
-#pnlLegendContent
-{
-  top: 40px;
-}
+
 
 #pnlLayers
 {
   position: absolute;
   width: 100%;
   height: 80%;
+  color:white;
 }
 
 #pnlBaseMaps
 {
-  position: absolute;
+ /* position: absolute;
   top: 80%;
   width: 100%;
-  height: 20%;
+  height: 20%;*/
+}
+
+#pnlLegendContent
+{
+  top: 190px;
 }
 
 #pnlLegendContent label
@@ -49,12 +52,12 @@
 
 .LegendScroll
 {
-  top: 40px;
+ 
   bottom: 0px;
   left: 10px;
   right: 10px;
   padding-left: 10px;
-  background-color: White;
+  margin-bottom :50px;
   overflow: auto; 
 }
 
@@ -77,6 +80,8 @@
 .LegendExpander, .LegendVisibility, .LegendName, .LegendSwatch, .LegendClassName
 {
   vertical-align: middle;
+  color:white;
+  font-size:13px;
 }
 
 .LegendEntry
@@ -85,7 +90,7 @@
 
 .LegendHeader
 {
-  margin-bottom: 4px;
+  /*margin-bottom: 4px;*/
 }
 
 .LegendExpander
@@ -134,3 +139,37 @@
   margin-right: 4px;
 }
 
+/**
+New Style for Legend/Map Panel
+Date 14-09-2017
+*/
+/* Map details panel */
+.list_headng{
+    width: 100%;
+    float: left;
+    /*font-family: 'openSans-bold', sans-serif;*/
+    margin: 10px 0;
+}
+.dropdown-menu{
+    /*top: -40px!important;*/
+    width: 100%;
+}
+#pnlLegend div.frm_box:nth-of-type(2){
+    padding-top: 4px;
+    padding-bottom: 18px;
+}
+#cmdRefreshMap{
+    margin-right: 18px;
+    padding: 5px 8px;
+}
+#cmdRefreshMap i{
+    padding-right: 5px;
+}
+#pnlLayers{
+    font-size: 15px;
+}
+#pnlLegend .themeTitle{
+    font-size: 15px;
+    width: 100px;
+}
+/* ends here */
