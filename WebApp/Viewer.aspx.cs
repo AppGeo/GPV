@@ -161,7 +161,7 @@ public partial class Viewer : CustomStyledPage
       tabLegend.Style["display"] = "block";
       if (_appState.ActiveFunctionTab == FunctionTab.Legend)
       {
-        pnlLegend.Style["display"] = "block"; ;
+        pnlLegend.Style["display"] = "block"; 
       }
     }
     if ((_appState.FunctionTabs & FunctionTab.Location) == FunctionTab.Location)

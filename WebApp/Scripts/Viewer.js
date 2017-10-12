@@ -831,10 +831,8 @@ var GPV = (function (gpv) {
     $('input').on('change', function () {
       var dataTile = $(this).attr('data-tilegroup');
       var isChecked = $(this).is(':checked')
-      console.log(isChecked);
       var ele = $(document).find($('input[data-tilegroup= "' + dataTile + '"]'));
       for (var i = 0; i < ele.length; i++) {
-        console.log(ele[i]);
         if (isChecked) {
           $(ele[i]).prop('checked', true);
         }

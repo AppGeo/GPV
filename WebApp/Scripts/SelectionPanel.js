@@ -535,7 +535,6 @@ var GPV = (function (gpv) {
                   layer: appState.TargetLayer
                 },
                 success: function (result) {
-                  console.log(result);
                   if (result) {
                     $("#cmdMailingLabels").toggleClass("Disabled", result.supportsMailingLabels);
                     $("#cmdExportData").toggleClass("Disabled", result.supportsExportData);
