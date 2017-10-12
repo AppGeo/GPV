@@ -632,7 +632,7 @@ label{
 }
 
 #MobDetailContent .mCSB_scrollTools .mCSB_draggerContainer{
-    top: 4px;
+    top: -3px;
 }
 #MobDetailContent .mCSB_scrollTools {
     right: 3px;

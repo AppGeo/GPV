@@ -35,8 +35,10 @@
     width: 20px;
     display: inline-block;
     position: relative;
-    top: 4px;
+    top: 6px;
     left: 9px;
+    float: right;
+    margin-right: 9px;
   }
 
   #ddlMobDataTheme {
@@ -247,6 +249,16 @@ padding: 0;*/
   .leaflet-control-scale-line {
     margin-right: 21px;
   }
+
+  .popover{
+    left: -100px!important;
+    margin-right: 40px;
+  }
+  .popover.right>.arrow{
+  	left: 87px;
+  	transform: rotate(180deg);
+  }
+
 }
 
 @media only screen and (max-width: 480px) {
@@ -684,11 +696,18 @@ position: relative;*/
   }
 
   .searchCommand {
+  	
     padding: 16px 6px 10px;
   }
 
   #pnlSearchFields .mCSB_container {
     padding-right: 14px;
+  }
+
+  /* Search panel select arrw styles */
+  #pnlSearchScroll .Search .SearchInputField:nth-of-type(4):after, #pnlSearchScroll .Search .SearchInputField:nth-of-type(5):after {
+    top: 26px;
+    height: 30px;
   }
 }
 

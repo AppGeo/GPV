@@ -168,19 +168,58 @@
     font-size: 13px;
     height: 30px;
 }
-
 #pnlSearchScroll .SearchInputField .NumberRange{
-      width: calc(100% / 2 - 70px);
-      display: inline-block;  
+    width: calc(100% / 2 - 70px);
+    display: inline-block;  
 }
 .SearchInputField{
     margin: 15px 0 0;
 }
+#pnlSearchScroll .Search .SearchInputField:nth-of-type(4), #pnlSearchScroll .Search .SearchInputField:nth-of-type(5){
+    position: relative;
+    float: left;
+    min-width: calc(100% / 2 - 8px);
+}
+#pnlSearchScroll .Search .SearchInputField:nth-of-type(4):after, #pnlSearchScroll .Search .SearchInputField:nth-of-type(5):after{
+    content: url('../Images/arrow.png'); /*\f078*/
+    font: normal normal normal 17px/1 FontAwesome;
+    color: #b7b7b7;
+    right: 11px;
+    top: 0px;
+    height: 29px;
+    padding: 5px 0px 0px 8px;
+    border-left: 1px solid #b7b7b7;
+    position: absolute;
+    pointer-events: none;
+    background-color: #fff;
+}
+.SearchInputField select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* Add some styling */
+    display: block;
+    width: 100%;
+    max-width: 320px;
+    height: 29px;
+    float: right;
+    margin: 0px;
+    padding: 0px 40px 0px 5px;
+    font-size: 13px;
+    line-height: 1.75;
+    color: #333;
+    background-color: #ffffff;
+    background-image: none;
+    border: none;
+    -ms-word-break: normal;
+    word-break: normal;
+    outline: none;
+}
 .Search .SearchInputField:first-child{
-  margin-top: 5px;
+    margin-top: 5px;
 }
 #pnlSearchGrid{
-      overflow: auto;
+    overflow: auto;
     background-color: transparent;
     width: 95%;
     border: none;
