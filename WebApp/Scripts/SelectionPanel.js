@@ -264,10 +264,12 @@ var GPV = (function (gpv) {
             $pnlDataDisplay.show();
             $pnlDataDisplay.find("#spnDataTheme").text("Data Set");
             $pnlDataDisplay.find("#ddlDataTheme").show();
-            // this is for Detail panel display when device is mobile or other 
+            // this is for Detail panel display when device is mobile or other
             if ($("#tabMobDetails").css("display") != "none") {
               $("#ddlMobDataTheme").show();
               $("#tabMobDetails").trigger("click");
+              $(".MenuItem").removeClass("active");
+              $("#tabMobDetails").addClass("active");
             }
             else {
               if ($pnlDataDisplay.css("right").substring(0, 1) === "-") {

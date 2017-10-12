@@ -388,11 +388,12 @@ var GPV = (function (gpv) {
 
     // ==== for closing any panel
     $(".FunctionHeader").on("click", function () {
-      if ($(window).width() < 700) {  
+      if ($(window).width() < 700) {
+        $(".MenuItem").removeClass("active");
         $("#btnHamburger").removeClass("hidden");
         $("#btnHamburgerClose").addClass("hidden");
       }
-        hideFunctionPanel(showFunctionMenu);
+      hideFunctionPanel(showFunctionMenu);
     });
 
     // ==== function for hiding all panel
@@ -416,6 +417,7 @@ var GPV = (function (gpv) {
 
       });
       $("#btnHamburgerClose").on("click", function () {   // for small device close panel
+        $(".MenuItem").removeClass("active");
         $("#btnHamburger").removeClass("hidden");
         $("#btnHamburgerClose").addClass("hidden");
         hideFunctionPanel(showFunctionMenu);
@@ -584,6 +586,8 @@ var GPV = (function (gpv) {
               $("#ddlMobDataTheme").hide();
               if ($("#tabMobDetails").css("display") != "none") {   // for small device trigger tabMobDetails click for showing Detail panel
                 $("#tabMobDetails").trigger("click");
+                $(".MenuItem").removeClass("active");
+                $("#tabMobDetails").addClass("active");
               }
               else {
                 if ($pnlDataDisplay.css("right").substring(0, 1) === "-") {   // for large device showing Detail panel
