@@ -467,13 +467,18 @@ var GPV = (function (gpv) {
       }
       $(".FunctionPanel").hide();
       $("#pnl" + name).show();
-      if (name == "Selection") {
+      if (name == "Selection") {  // When Selection panel open , Select tool selected in pnlMapTools Dropdown 
         gpv.selectTool($(this), map, { cursor: 'default', dragging: false, boxZoom: false, drawing: { mode: 'rectangle', style: { color: '#c0c0c0', fill: true, fillColor: '#e0e0e0' } } });
+        $("#optSelect").addClass("Selected");
+        $("#selectedTool").html($("#optSelect").html());
       }
-      else if (name == "Markup") {
+      else if (name == "Markup") {     // When Draw panel open , Draw tool selected in pnlMapTools Dropdown 
         $("#ucMarkupPanel_optDrawLine").trigger("click");
+        $("#optMarkupTool").addClass("Selected");
+        $("#selectedTool").html($("#optMarkupTool").html());
       }
-      else {
+      else {    // When Share ,Search , Map ,Location  panel open , Identify tool selected in pnlMapTools Dropdown 
+        $("#optIdentify").addClass("Selected");
         $("#optIdentify").trigger("click");
       }
       pnlFunctionTabsWidth = $("#pnlFunctionTabs").width();
@@ -653,6 +658,7 @@ var GPV = (function (gpv) {
       map.fitProjectedBounds(L.Bounds.fromArray(extent));
       return map.getProjectedBounds().toArray();
     }
+
     var $optMarkupTool = $("#optMarkupTool").on("click", function () {
       $(".MenuItem").removeClass("active");
       $("#tabMarkup").addClass("active");
@@ -801,6 +807,8 @@ var GPV = (function (gpv) {
         $("#cmdLocation").popover('hide');
       }, 2000);
     }
+
+
 
     // =====  public interface  =====
 

@@ -168,6 +168,7 @@ var GPV = (function (gpv) {
       $("#divMarkupSearch").removeClass("hidden");
       $("#btnCreateMarkup").addClass("active");
       $("#btnQuickSketch").removeClass("active");
+      $("#divTblWithHead").removeClass("hidden");
       $("#pnlMarkupGrid").addClass("tabMrkp");
     });
 
@@ -175,6 +176,7 @@ var GPV = (function (gpv) {
       $("#divMarkupSearch").addClass("hidden");
       $("#btnQuickSketch").addClass("active");
       $("#btnCreateMarkup").removeClass("active");
+      $("#divTblWithHead").addClass("hidden");
       $("#pnlMarkupGrid").removeClass("tabMrkp");
     });
 
