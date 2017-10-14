@@ -217,7 +217,7 @@ public partial class LegendPanel : System.Web.UI.UserControl
   {
     CommonDataFrame dataFrame = AppContext.GetDataFrame(mapTabRow);
 
-    bool isInteractive = !mapTabRow.IsInteractiveLegendNull() && mapTabRow.InteractiveLegend == 1;
+        bool isInteractive = !mapTabRow.IsInteractiveLegendNull() && mapTabRow.InteractiveLegend == 1;
     CheckMode checkMode = CheckMode.None;
 
     List<CommonLayer> configuredLayers = new List<CommonLayer>();
@@ -301,46 +301,46 @@ public partial class LegendPanel : System.Web.UI.UserControl
   }
 
   // removing this fron viwer page 
-  private void AddTiles(Configuration.MapTabRow mapTabRow, AppState appState)
-  {
-    StringCollection visibleTiles = appState.VisibleTiles[mapTabRow.MapTabID];
+  //private void AddTiles(Configuration.MapTabRow mapTabRow, AppState appState)
+  //{
+  //  StringCollection visibleTiles = appState.VisibleTiles[mapTabRow.MapTabID];
 
-    //create the top level legend control for this map tab
+  //  //create the top level legend control for this map tab
 
-    HtmlGenericControl parentLegend = new HtmlGenericControl("div");
-    pnlTileScroll.Controls.Add(parentLegend);
-    parentLegend.Attributes["data-maptab"] = mapTabRow.MapTabID;
-    parentLegend.Attributes["class"] = "LegendTop";
-    parentLegend.Style["display"] = mapTabRow.MapTabID == appState.MapTab ? "block" : "none";
+  //  HtmlGenericControl parentLegend = new HtmlGenericControl("div");
+  //  pnlTileScroll.Controls.Add(parentLegend);
+  //  parentLegend.Attributes["data-maptab"] = mapTabRow.MapTabID;
+  //  parentLegend.Attributes["class"] = "LegendTop";
+  //  parentLegend.Style["display"] = mapTabRow.MapTabID == appState.MapTab ? "block" : "none";
 
-    foreach (Configuration.MapTabTileGroupRow mapTabTileGroupRow in mapTabRow.GetMapTabTileGroupRows())
-    {
-      Configuration.TileGroupRow tileGroupRow = mapTabTileGroupRow.TileGroupRow;
+  //  foreach (Configuration.MapTabTileGroupRow mapTabTileGroupRow in mapTabRow.GetMapTabTileGroupRows())
+  //  {
+  //    Configuration.TileGroupRow tileGroupRow = mapTabTileGroupRow.TileGroupRow;
 
-      HtmlGenericControl legendEntry = new HtmlGenericControl("div");
-      parentLegend.Controls.Add(legendEntry);
-      legendEntry.Attributes["class"] = "LegendEntry";
+  //    HtmlGenericControl legendEntry = new HtmlGenericControl("div");
+  //    parentLegend.Controls.Add(legendEntry);
+  //    legendEntry.Attributes["class"] = "LegendEntry";
 
-      HtmlGenericControl legendHeader = new HtmlGenericControl("div");
-      legendEntry.Controls.Add(legendHeader);
-      legendHeader.Attributes["class"] = "LegendHeader";
+  //    HtmlGenericControl legendHeader = new HtmlGenericControl("div");
+  //    legendEntry.Controls.Add(legendHeader);
+  //    legendHeader.Attributes["class"] = "LegendHeader";
 
-      HtmlGenericControl visibility = new HtmlGenericControl("span");
-      legendHeader.Controls.Add(visibility);
-      visibility.Attributes["class"] = "LegendVisibility";
+  //    HtmlGenericControl visibility = new HtmlGenericControl("span");
+  //    legendHeader.Controls.Add(visibility);
+  //    visibility.Attributes["class"] = "LegendVisibility";
 
-      HtmlInputCheckBox checkBox = new HtmlInputCheckBox();
-      visibility.Controls.Add(checkBox);
-      checkBox.Checked = visibleTiles.Contains(tileGroupRow.TileGroupID);
-      checkBox.Attributes["class"] = "LegendCheck";
-      checkBox.Attributes["data-tilegroup"] = tileGroupRow.TileGroupID;
+  //    HtmlInputRadioButton radio = new HtmlInputRadioButton();
+  //    visibility.Controls.Add(radio);
+  //    radio.Checked = visibleTiles.Contains(tileGroupRow.TileGroupID);
+  //    radio.Attributes["class"] = "LegendCheck";
+  //    radio.Attributes["data-tilegroup"] = tileGroupRow.TileGroupID;
 
-      HtmlGenericControl name = new HtmlGenericControl("span");
-      legendHeader.Controls.Add(name);
-      name.Attributes["class"] = "LegendName";
-      name.InnerText = tileGroupRow.DisplayName;
-    }
-  }
+  //    HtmlGenericControl name = new HtmlGenericControl("span");
+  //    legendHeader.Controls.Add(name);
+  //    name.Attributes["class"] = "LegendName";
+  //    name.InnerText = tileGroupRow.DisplayName;
+  //  }
+  //}
 
   public void Initialize(Configuration config, AppState appState, Configuration.ApplicationRow application)
   {
@@ -350,7 +350,7 @@ public partial class LegendPanel : System.Web.UI.UserControl
       AddLayers(mapTabRow, appState);
 
       // Removing this from viwer page
-      AddTiles(mapTabRow, appState);
+      //AddTiles(mapTabRow, appState);
     }
   }
 

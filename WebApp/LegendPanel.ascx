@@ -22,7 +22,7 @@ limitations under the License.
     <div class="FunctionHeader">
       <span class="topLftTxt ">
         <span class="topTxt">Maps</span>
-        <a href="#">
+        <a class ="helpIcon" type ="maps">
           <img src="Images/faq-icon.png"></a>
       </span>
       <span class="rightCol">

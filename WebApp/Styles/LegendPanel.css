@@ -59,6 +59,7 @@
   padding-left: 10px;
   margin-bottom :50px;
   overflow: auto; 
+  border-radius: 3px;
 }
 
 .LegendTop
@@ -117,8 +118,12 @@
 
 .LegendVisibility
 {
-  margin-right: 5px;
+  margin-right: 6px;
   margin-top: 2px;
+}
+.LegendCheck{
+  width: 15px;
+  height: 15px;
 }
 
 .LegendContent

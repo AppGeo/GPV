@@ -44,11 +44,13 @@ public partial class BaseMap : System.Web.UI.UserControl
       HtmlGenericControl visibility = new HtmlGenericControl("span");
       legendHeader.Controls.Add(visibility);
       visibility.Attributes["class"] = "LegendVisibility";
-      HtmlInputCheckBox checkBox = new HtmlInputCheckBox();
-      visibility.Controls.Add(checkBox);
-      checkBox.Checked = visibleTiles.Contains(tileGroupRow.TileGroupID);
-      checkBox.Attributes["class"] = "LegendCheck";
-      checkBox.Attributes["data-tilegroup"] = tileGroupRow.TileGroupID;
+     // HtmlInputCheckBox radio = new HtmlInputCheckBox();
+
+      HtmlInputRadioButton radio = new HtmlInputRadioButton();
+      visibility.Controls.Add(radio);
+      radio.Checked = visibleTiles.Contains(tileGroupRow.TileGroupID);
+      radio.Attributes["class"] = "LegendCheck";
+      radio.Attributes["data-tilegroup"] = tileGroupRow.TileGroupID;
       HtmlGenericControl name = new HtmlGenericControl("span");
       legendHeader.Controls.Add(name);
       name.Attributes["class"] = "LegendName";

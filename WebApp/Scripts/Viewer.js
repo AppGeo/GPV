@@ -828,7 +828,8 @@ var GPV = (function (gpv) {
     createTileLayers();
     drawTileLayers();
     triggerMapTabChanged();
-    $('input').on('change', function () {
+
+    /*$('input').on('change', function () {
       var dataTile = $(this).attr('data-tilegroup');
       var isChecked = $(this).is(':checked')
       var ele = $(document).find($('input[data-tilegroup= "' + dataTile + '"]'));
@@ -840,7 +841,7 @@ var GPV = (function (gpv) {
           $(ele[i]).prop('checked', false);
         }
       }
-    });
+    });*/
 
     var $layerContainer = $("#pnlBaseMap");
     var $baseMapContainer = $('#pnlBaseMaps');
@@ -862,6 +863,85 @@ var GPV = (function (gpv) {
     //  theme: "3d-thick",
     //  axis: "x"
     //})
+
+    // ==== Help popUp ====
+    var showHelpPopup = function (type, ele) {
+      var helpTxtObj = {
+        'search': {
+          'title': 'Search',
+          'desc': 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. '+
+          'Lorem Ipsum has been the industrys standard dummy text ever since the 1500s,'+ 
+          'when an unknown printer took a galley of type and scrambled it to make a type specimen book.'
+        },
+        'selection': {
+          'title': 'Selection',
+          'desc': 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. '+
+          'Lorem Ipsum has been the industrys standard dummy text ever since the 1500s,'+ 
+          'when an unknown printer took a galley of type and scrambled it to make a type specimen book.'
+        },
+        'maps': {
+          'title': 'Maps',
+          'desc': 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ' +
+          'Lorem Ipsum has been the industrys standard dummy text ever since the 1500s,' +
+          'when an unknown printer took a galley of type and scrambled it to make a type specimen book.'
+        },
+        'location': {
+          'title': 'Location',
+          'desc': 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ' +
+          'Lorem Ipsum has been the industrys standard dummy text ever since the 1500s,' +
+          'when an unknown printer took a galley of type and scrambled it to make a type specimen book.'
+        },
+        'draw': {
+          'title': 'Draw',
+          'desc': 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ' +
+          'Lorem Ipsum has been the industrys standard dummy text ever since the 1500s,' +
+          'when an unknown printer took a galley of type and scrambled it to make a type specimen book.'
+        },
+        'share': {
+          'title': 'Share',
+          'desc': 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ' +
+          'Lorem Ipsum has been the industrys standard dummy text ever since the 1500s,' +
+          'when an unknown printer took a galley of type and scrambled it to make a type specimen book.'
+        }
+      }
+
+      var infoBox = '<div class = "dtlInfoPopup">'+
+                    '<div class="arrw"></div>'+
+                    '<div class ="title">'+
+                     helpTxtObj[type].title +
+                    '</div>' +
+                    '<div class="helpClose"></div>' +
+                    '<div class = "content">'+
+                    helpTxtObj[type].desc+
+                    '</div>'+
+                    '</div>';
+
+      $(ele).append(infoBox);
+    }
+
+    $(".helpIcon").on("click", function (event) {
+      if ($(event.target).hasClass('helpClose')) {
+        removeHelpPopup();
+        event.stopPropagation();
+      } else {
+        event.stopPropagation();
+        var ele = event.target.closest('a');//.attributes;//.attr('type') || event.target.parent('a').attr('type');
+        var type = $(ele).attr('type');
+        showHelpPopup(type, ele);
+      }
+    });
+
+    var removeHelpPopup = function () {
+      $('.helpIcon .dtlInfoPopup').remove();
+    }
+
+    $(window).on('click', function (event) {
+      var ele = event.target;
+      var flag = $(ele).parents().hasClass('helpIcon');
+      if (!flag) {
+        removeHelpPopup();
+      }
+    });
   });
   return gpv;
 })(GPV || {});
