@@ -933,7 +933,7 @@ var GPV = (function (gpv) {
         event.stopPropagation();
       } else {
         event.stopPropagation();
-        var ele = event.target.closest('a');//.attributes;//.attr('type') || event.target.parent('a').attr('type');
+        var ele = event.target.closest('a');
         var type = $(ele).attr('type');
         showHelpPopup(type, ele);
       }
