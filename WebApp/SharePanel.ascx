@@ -22,7 +22,7 @@ limitations under the License.
     <div class="FunctionHeader">
       <span class="topLftTxt ">
         <span class="topTxt">Share</span>
-        <a href="#">
+        <a class ="helpIcon" type ="share">
           <img src="Images/faq-icon.png"></a>
       </span>
       <span class="rightCol">

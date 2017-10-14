@@ -217,7 +217,7 @@ limitations under the License.
           <a id="logo" runat="server" href="http://www.appgeo.com" target="_blank"></a>
         </div>
       </div>
-      <div id="pnlDataDisplay" class="right_details Panel detailNav">
+      <div id="pnlDataDisplay" class="right_details detailNav">
         <div class="DataHeader topHead">
           <div class="inner">
             <span class="topLftTxt">Details

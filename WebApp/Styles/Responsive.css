@@ -367,7 +367,6 @@ padding: 0;*/
   .markup .btnSettng .frmBtn.rightMargin {
     margin-right: 0;
   }
-
   .btnPrint, .LocPrint, .exprtPrint {
     min-width: 73px;
     padding-left: 25px;
@@ -708,6 +707,11 @@ position: relative;*/
   #pnlSearchScroll .Search .SearchInputField:nth-of-type(4):after, #pnlSearchScroll .Search .SearchInputField:nth-of-type(5):after {
     top: 26px;
     height: 30px;
+  }
+
+  .dtlInfoPopup {
+    background-color: #fff;
+    width: 170px;
   }
 }
 

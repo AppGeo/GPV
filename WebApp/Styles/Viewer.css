@@ -18,14 +18,7 @@ body
   overflow: hidden;
 }
 
-.Panel
-{
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  right: 0px;
-  bottom: 0px;
-}
+
 
 div.Button, div.Button.Disabled:hover
 {
@@ -414,7 +407,7 @@ button {
     height:200px !important;
 }
 .DropdownPanel{
-    top: -20px !important;
+    top: -35px !important;
     left: 0px !important;
     border-radius: 4px;
     padding-right:10px;

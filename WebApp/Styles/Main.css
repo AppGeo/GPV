@@ -50,8 +50,8 @@ html {
   overflow: hidden;
 }
 /*
- * Remove default fieldset styles.
- */
+* Remove default fieldset styles.
+*/
 
 fieldset {
     border: 0;
@@ -59,8 +59,8 @@ fieldset {
     padding: 0;
 }
 /*
- * Hide visually and from screen readers
- */
+* Hide visually and from screen readers
+*/
 
 .hidden {
     display: none !important;
@@ -73,8 +73,8 @@ body {
   font-family: 'Open Sans', sans-serif;
   font-size: 13px;
  /* background-image: url(../Images/bg-map2.jpg);*/
-      background-position-y: 50px;
-      /*font-weight: 300;*/
+  background-position-y: 50px;
+  /*font-weight: 300;*/
 }
 article,
 aside,
@@ -97,6 +97,14 @@ a:hover {
 }
 img {
   border: 0;
+}
+.Panel
+{
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
 }
 /* custom styles */
 
@@ -292,7 +300,55 @@ header.main .logo{
 .topSection .pinIco:hover{
     background-image: url(../Images/pin-icon_over.png);
 }
+.helpIcon{
+    position: relative;
+}
+.dtlInfoPopup{
+    background-color: #fff;
+    width: 220px;
+    min-height: 46px;
+    color: #000;
+    position: absolute;
+    top: -7px;
+    z-index: 9999;
+    left: 33px;
+    border-radius: 4px;
+    padding: 6px 10px;
+    box-shadow: 2px 2px 10px #949494;
+}
+.dtlInfoPopup .arrw{
+    background-image: url(../images/popup-arrw.png);
+    background-repeat: no-repeat;
+    width: 10px;
+    height: 20px;
+    position: absolute;
+    left: -10px;
+    top: 12px;
+    /*bottom: 0;
+    margin: auto 0;*/
+}
+.dtlInfoPopup .content{
+    font-size: 12px;
+    margin-top: 5px;
+}
+.dtlInfoPopup .title{
+    font-weight: bold;
+    border-bottom: 1px solid #dcdcdc;
+}
+.dtlInfoPopup .helpClose{
+    width: 10px;
+    height: 10px;
+    background-image: url(../images/helpClose.png);
+    background-repeat: no-repeat;
+    position: absolute;
+    right: 13px;
+    top: 12px;
+}
+.dtlInfoPopup .helpClose:hover{
+    background-image: url(../images/helpClose-over.png);
+}
 /* left nav panel ends here */
+
 
 /* left details panel styles */
 .left_details{
@@ -351,12 +407,6 @@ header.main .logo{
 .frm_row{
     width: 100%;
     float: left;
-    margin-top: 10px;
-}
-#pnlSelection .frm_row{
-    margin-top: 16px;
-}
-#pnlSelection .frm_box{
     margin-top: 10px;
 }
 /* ends here */
@@ -450,11 +500,7 @@ header.main .logo{
 .search .frm_row .frmField {
     width: calc(100% - 118px);
 }
-.markup .btnLarge{
-    min-width: calc(50% - 21px);
-    position: relative; 
-    line-height: 1.3;
-}
+
 label{
     font-weight: normal;
 }
@@ -604,8 +650,6 @@ label{
 .flagvisibility { display:none;}
 /* Dropdown styles ends here */
 
-
-
 /* map dropdown styles */
 .mapNavigation{
     float: left;
@@ -714,6 +758,20 @@ label{
     display: inline-block;
     margin-right: 3px;
 }
+#pnlBaseMapScroll .LegendEntry{
+    padding: 8px 12px;
+    border-bottom: 1px solid #f7f7f7;
+    font-size: 13px;
+    cursor: pointer;
+}
+#pnlBaseMapScroll .LegendEntry:hover{
+  background-color: #ddf0e3;
+}
+
+#pnlBaseMaps .LegendScroll{
+    padding-left: 0px;
+    padding-right: 0;
+}
 .pnlMapMenus_option {
     margin-left:340px;
 }
@@ -786,6 +844,7 @@ button.dropdown-toggle{
     left: 160px;
     right: 0; 
 }
+
 /* ends here */
 
 /* Custom scroll bar */
@@ -974,6 +1033,17 @@ button.dropdown-toggle{
 }
 .ActiveGridRowSelect, .ActiveGridRowSelect:hover{
     color: #000!important;
+}
+
+.close_btn{
+    width: 24px;
+    height: 25px;
+    background-image: url(../Images/close.png);
+    background-repeat: no-repeat;
+    display: inline-block;
+}
+.close_btn:hover{
+    background-image: url(../Images/close-over.png);
 }
 /* ends here */
 

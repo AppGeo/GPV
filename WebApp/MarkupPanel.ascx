@@ -19,7 +19,7 @@ limitations under the License.
     <div class="FunctionHeader">
       <span class="topLftTxt ">
         <span class="topTxt">Draw</span>
-        <a href="#">
+        <a class ="helpIcon" type ="draw">
           <img src="Images/faq-icon.png"></a>
       </span>
       <span class="rightCol">
@@ -108,7 +108,7 @@ limitations under the License.
           </span>
         </div>
         <div class="frmField">
-          <input type="text" id="tblMarkupTitle" class="frmInput" disabled="disabled" placeholder="Title" title="Title of the current markup group" /><br />
+          <input type="text" id="tblMarkupTitle" class="frmInput btnControlLock" disabled="disabled" placeholder="Title" title="Title of the current markup group" /><br />
         </div>
       </div>
       <div class="frm_row">

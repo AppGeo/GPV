@@ -179,9 +179,9 @@ padding: 0 10px;*/
   }
 
 .MapMenu > .dropdown-menu {
-  left: 10px;
+  left: 0px;
   font-size: 13px;
-  padding: 8px;
+  padding: 8px 0;
   min-width: auto;
 }
 
@@ -189,7 +189,7 @@ padding: 0 10px;*/
   cursor: pointer;
   display: inline-block;
   height: 28px;
-  padding: 4px 0;
+  padding: 4px 8px;
   width: 100%;
 }
 

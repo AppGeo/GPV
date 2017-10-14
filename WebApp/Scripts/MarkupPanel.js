@@ -68,6 +68,7 @@ var GPV = (function (gpv) {
     var $cmdNewMarkup = $("#cmdNewMarkup").on("click", function () {
       if (!$(this).hasClass("Disabled")) {
         createMarkupGroup();
+        $("#tblMarkupTitle").removeClass("btnControlLock");
         $("#cmdExportMarkup").removeClass("btnControlLock");
         $("#cmdDeleteMarkup").removeClass("btnControlLock");
         $("#cmdZoomToMarkup").removeClass("btnControlLock");
