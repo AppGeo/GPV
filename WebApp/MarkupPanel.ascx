@@ -121,11 +121,11 @@ limitations under the License.
       </div>
     </div>
   </div>
-  <div class="frm_box septr topMargin">
+  <div class="frm_box septr topMargin hidden" id="divTblWithHead">
     <div class="list_headng noTopMargin divMargin ">
       <span class="divMargin">Markup History </span>
     </div>
-    <div class="data_box " id="pnlMarkupGrid">
+    <div class="data_box" id="pnlMarkupGrid">
       <table id="grdMarkup" class="dataTable"></table>
     </div>
   </div>
