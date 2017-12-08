@@ -30,7 +30,7 @@ var GPV = (function (gpv) {
     var extentChangedHandlers = [];
     var mapRefreshedHandlers = [];
     var panelAnimationTime = 0;
-
+    
     // =====  controls required prior to map control creation  =====
 
     var $pnlDataDisplay = $("#pnlDataDisplay");
@@ -327,21 +327,24 @@ var GPV = (function (gpv) {
     // =====  private functions  =====
 
     function createTileLayers() {
-      Object.keys(gpv.configuration.mapTab).forEach(function (m) {
+      console.log(gpv.configuration.mapTab);
+      Object.keys(gpv.configuration.mapTab).forEach(function (m) {        
         tileLayers[m] = {};
         gpv.configuration.mapTab[m].tileGroup.forEach(function (tg) {
           var z = -1;
           tileLayers[m][tg.group.id] = tg.group.tileLayer.map(function (tl) {
-            z += 1;
+            z += 1;            
             return L.tileLayer(tl.url, {
               zIndex: tl.overlay ? 200 + z : z,
               attribution: tl.attribution,
               opacity: tg.opacity,
               maxZoom: tl.maxZoom || map.options.maxZoom
             });
+
           });
+          
         });
-      });
+      });      
     }
 
     function drawTileLayers() {
@@ -685,9 +688,10 @@ var GPV = (function (gpv) {
     }
 
     function toggleTileGroup(groupId, visible) {
+     
       tileLayers[appState.MapTab][groupId].forEach(function (tl) {
-        if (visible) {
-          tl.addTo(map);
+        if (visible) {         
+           tl.addTo(map);
         }
         else {
           map.removeLayer(tl);
@@ -833,10 +837,11 @@ var GPV = (function (gpv) {
     //need to add title attribute due to bootstrap overwriting title with popover
     $("#cmdLocation").attr("title", "Current Location");
     gpv.loadComplete();
+    
     createTileLayers();
     drawTileLayers();
     triggerMapTabChanged();
-
+    SetDefaultTile();
     /*$('input').on('change', function () {
       var dataTile = $(this).attr('data-tilegroup');
       var isChecked = $(this).is(':checked')
@@ -949,7 +954,16 @@ var GPV = (function (gpv) {
       if (!flag) {
         removeHelpPopup();
       }
+     
     });
+    //Set Imagery as default baselayer selected Item
+    // toggleTileGroup('Imagery', true);
+    function SetDefaultTile() {
+      //console.log($($("#pnlBaseMapScroll").find('input[data-tilegroup="Imagery"]')[0]));//.trigger('click');
+      $($("#pnlBaseMapScroll").find('input[data-tilegroup="Imagery"]')[0]).trigger('click');
+      toggleTileGroup('Imagery', true);
+    }
+    
   });
   return gpv;
 })(GPV || {});
