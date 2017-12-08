@@ -309,7 +309,7 @@ var GPV = (function (gpv) {
       gpv.selectTool($(this), map, { cursor: 'default', drawing: { mode: 'off' } });
     });
 
-    $("#ucMarkupPanel_optPan").on("click", function () {
+    $("#optPan").on("click", function () {
       gpv.selectTool($(this), map, { cursor: '', drawing: { mode: 'off' } });
     });
 
@@ -327,7 +327,6 @@ var GPV = (function (gpv) {
     // =====  private functions  =====
 
     function createTileLayers() {
-      console.log(gpv.configuration.mapTab);
       Object.keys(gpv.configuration.mapTab).forEach(function (m) {        
         tileLayers[m] = {};
         gpv.configuration.mapTab[m].tileGroup.forEach(function (tg) {
@@ -476,7 +475,7 @@ var GPV = (function (gpv) {
         $("#selectedTool").html($("#optSelect").html());
       }
       else if (name == "Markup") {     // When Draw panel open , Draw tool selected in pnlMapTools Dropdown 
-        $("#ucMarkupPanel_optDrawLine").trigger("click");
+        $("#optDrawLine").trigger("click");
         $("#optMarkupTool").addClass("Selected");
         $("#selectedTool").html($("#optMarkupTool").html());
       }
@@ -957,9 +956,7 @@ var GPV = (function (gpv) {
      
     });
     //Set Imagery as default baselayer selected Item
-    // toggleTileGroup('Imagery', true);
     function SetDefaultTile() {
-      //console.log($($("#pnlBaseMapScroll").find('input[data-tilegroup="Imagery"]')[0]));//.trigger('click');
       $($("#pnlBaseMapScroll").find('input[data-tilegroup="Imagery"]')[0]).trigger('click');
       toggleTileGroup('Imagery', true);
     }

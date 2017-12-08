@@ -43,15 +43,15 @@ limitations under the License.
         <dt id="btnMarkupToolMenu"><a href="#"><span id="selectedMarkupTool"><span class="imgflag draw-line"></span>Draw Line</span></a></dt>
         <dd>
           <ul id="selectMarkupTools">
-            <li id="optDrawPoint" runat="server" class=" MapTool"><a href="#"><span class="imgflag draw-point"></span>Draw Point</a></li>
-            <li id="optDrawLine" runat="server" class=" MapTool"><a href="#"><span class="imgflag draw-line"></span>Draw Line</a></li>
-            <li id="optDrawPolygon" runat="server" class=" MapTool "><a href="#"><span class="imgflag draw-polygon"></span>Draw Polygon</a></li>
-            <li id="optDrawCircle" runat="server" class=" MapTool"><a href="#"><span class="imgflag draw-circle"></span>Draw Circle</a></li>
-            <li id="optDrawText" runat="server" class=" MapTool "><a href="#"><span class="imgflag draw-text"></span>Draw Text</a></li>
-            <li id="optDrawCoordinates" runat="server" class=" MapTool"><a href="#"><span class="imgflag draw-coordinates"></span>Draw Coordinates</a></li>
-            <li id="optDeleteMarkup" runat="server" class=" MapTool "><a href="#"><span class="imgflag delete-markup"></span>Delete Markup</a></li>
-            <li id="optColorPicker" runat="server" class=" MapTool MarkupTool "><a href="#"><span class="imgflag color-picker"></span>Pick Color</a></li>
-            <li id="optPaintBucket" runat="server" class="MapTool MarkupTool "><a href="#"><span class="imgflag paint-bucket"></span>Fill With Color</a></li>
+            <li id="optDrawPoint" runat="server" ClientIDMode="static" class=" MapTool"><a href="#"><span class="imgflag draw-point"></span>Draw Point</a></li>
+            <li id="optDrawLine" runat="server" ClientIDMode="static" class=" MapTool"><a href="#"><span class="imgflag draw-line"></span>Draw Line</a></li>
+            <li id="optDrawPolygon" runat="server"  ClientIDMode="static" class=" MapTool "><a href="#"><span class="imgflag draw-polygon"></span>Draw Polygon</a></li>
+            <li id="optDrawCircle" runat="server"  ClientIDMode="static" class=" MapTool"><a href="#"><span class="imgflag draw-circle"></span>Draw Circle</a></li>
+            <li id="optDrawText" runat="server"  ClientIDMode="static" class=" MapTool "><a href="#"><span class="imgflag draw-text"></span>Draw Text</a></li>
+            <li id="optDrawCoordinates" runat="server"  ClientIDMode="static" class=" MapTool"><a href="#"><span class="imgflag draw-coordinates"></span>Draw Coordinates</a></li>
+            <li id="optDeleteMarkup" runat="server"  ClientIDMode="static" class=" MapTool "><a href="#"><span class="imgflag delete-markup"></span>Delete Markup</a></li>
+            <li id="optColorPicker" runat="server"  ClientIDMode="static" class=" MapTool MarkupTool "><a href="#"><span class="imgflag color-picker"></span>Pick Color</a></li>
+            <li id="optPaintBucket" runat="server"  ClientIDMode="static" class="MapTool MarkupTool "><a href="#"><span class="imgflag paint-bucket"></span>Fill With Color</a></li>
           </ul>
         </dd>
       </dl>

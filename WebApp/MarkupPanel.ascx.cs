@@ -42,7 +42,7 @@ public partial class MarkupPanel : System.Web.UI.UserControl
 
     if (!String.IsNullOrEmpty(tool))
     {
-      HtmlControl defaultTool = Page.FindControl("ucMarkupPanel_opt" + tool, false) as HtmlControl;
+      HtmlControl defaultTool = Page.FindControl("opt" + tool, false) as HtmlControl;
 
       //if (defaultTool != null)
       //{
@@ -96,7 +96,7 @@ public partial class MarkupPanel : System.Web.UI.UserControl
 
   private bool SetDefaultTool(string name)
   {
-    HtmlControl defaultTool = Page.FindControl("ucMarkupPanel_opt" + name, false) as HtmlControl;
+    HtmlControl defaultTool = Page.FindControl("opt" + name, false) as HtmlControl;
     bool found = defaultTool != null;
 
     if (found)

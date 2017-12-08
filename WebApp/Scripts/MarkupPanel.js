@@ -182,41 +182,41 @@ var GPV = (function (gpv) {
     });
 
     // ==== this is for markup tool functionallity
-    $("#ucMarkupPanel_optColorPicker,#ucMarkupPanel_optPaintBucket").on("click", function () {
+    $("#optColorPicker,#optPaintBucket").on("click", function () {
       gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "point" } });
     });
 
-    $("#ucMarkupPanel_optDeleteMarkup").on("click", function () {
+    $("#optDeleteMarkup").on("click", function () {
       gpv.selectTool($(this), map, { cursor: 'default', dragging: false, boxZoom: false, drawing: { mode: 'rectangle', style: { color: '#c0c0c0', fill: true, fillColor: '#e0e0e0' } } });
     });
 
-    $("#ucMarkupPanel_optDrawArea").on("click", function () {
+    $("#optDrawArea").on("click", function () {
       var c = getMarkupColor();
       gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "polygon", style: { color: c, fill: true, fillColor: c } }, doubleClickZoom: false });
     });
 
-    $("#ucMarkupPanel_optDrawCircle").on("click", function () {
+    $("#optDrawCircle").on("click", function () {
       var c = getMarkupColor();
       gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "circle", style: { color: c, fill: true, fillColor: c } }, dragging: false });
     });
 
-    $("#ucMarkupPanel_optDrawPoint,#ucMarkupPanel_optDrawCoordinates").on("click", function () {
+    $("#optDrawPoint,#optDrawCoordinates").on("click", function () {
       var c = getMarkupColor();
       gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "point", style: { color: c, fill: true, fillColor: c } } });
     });
 
-    $("#ucMarkupPanel_optDrawText").on("click", function () {
+    $("#optDrawText").on("click", function () {
       var c = getMarkupColor();
       gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "text", text: { color: c } } });
     });
 
-    $("#ucMarkupPanel_optDrawLength").on("click", function () {
+    $("#optDrawLength").on("click", function () {
 
       var c = getMarkupColor();
       gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "polyline", style: { color: c, fill: false } }, doubleClickZoom: false });
     });
 
-    $("#ucMarkupPanel_optDrawLine").on("click", function () {
+    $("#optDrawLine").on("click", function () {
       var c = getMarkupColor();
       gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "polyline", style: { color: c, fill: false } }, doubleClickZoom: false });
     });
@@ -227,7 +227,7 @@ var GPV = (function (gpv) {
       gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "polyline", style: { color: c, fill: false } }, doubleClickZoom: false });
     }
 
-    $("#ucMarkupPanel_optDrawPolygon").on("click", function () {
+    $("#optDrawPolygon").on("click", function () {
       var c = getMarkupColor();
       gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "polygon", style: { color: c, fill: true, fillColor: c } }, doubleClickZoom: false });
     });
@@ -532,23 +532,23 @@ var GPV = (function (gpv) {
       }
 
       switch ($MapTool.filter(".Selected").attr("id")) {
-        case "ucMarkupPanel_optDrawCircle":
-        case "ucMarkupPanel_optDrawPoint":
-        case "ucMarkupPanel_optDrawLine":
-        case "ucMarkupPanel_optDrawPolygon":
+        case "optDrawCircle":
+        case "optDrawPoint":
+        case "optDrawLine":
+        case "optDrawPolygon":
           addMarkup(e);
           return;
 
-        case "ucMarkupPanel_optDrawCoordinates":
-        case "ucMarkupPanel_optDrawLength":
-        case "ucMarkupPanel_optDrawArea":
+        case "optDrawCoordinates":
+        case "optDrawLength":
+        case "optDrawArea":
           addMarkup(e, "measured");
           return;
 
-        case "ucMarkupPanel_optDeleteMarkup": deleteMarkup(e); return;
-        case "ucMarkupPanel_optColorPicker": pickColors(e); return;
-        case "ucMarkupPanel_optPaintBucket": floodColors(e); return;
-        case "ucMarkupPanel_optDrawText": addMarkup(e, "text"); return;
+        case "optDeleteMarkup": deleteMarkup(e); return;
+        case "optColorPicker": pickColors(e); return;
+        case "optPaintBucket": floodColors(e); return;
+        case "optDrawText": addMarkup(e, "text"); return;
       }
     }
 
@@ -642,12 +642,12 @@ var GPV = (function (gpv) {
 
     function shapeDrawing(e) {
       var currentTool = $MapTool.filter(".Selected").attr("id");
-      if (currentTool === 'ucMarkupPanel_optDrawLength' || currentTool === 'ucMarkupPanel_optDrawArea') {
+      if (currentTool === 'optDrawLength' || currentTool === 'optDrawArea') {
         var units = gpv.settings.measureUnits;
         var inFeet = units == "feet" || units == "both";
         var inMeters = units == "meters" || units == "both";
         var convert = 1 / (gpv.settings.measureCrsUnits == "feet" ? 1 : metersPerFoot);
-        var latlngs = currentTool === 'ucMarkupPanel_optDrawLength' ? e.shape.getLatLngs() : e.shape.getLatLngs()[0];
+        var latlngs = currentTool === 'optDrawLength' ? e.shape.getLatLngs() : e.shape.getLatLngs()[0];
         var points = $.map(latlngs, function (latlng) {
           return measureCrs.project(latlng);
         });
@@ -657,7 +657,7 @@ var GPV = (function (gpv) {
         }
         var value = [];
         var i, j;
-        if (currentTool === 'ucMarkupPanel_optDrawLength') {
+        if (currentTool === 'optDrawLength') {
           var length = getLength(points);
           if (length > 0) {
             length *= convert;
