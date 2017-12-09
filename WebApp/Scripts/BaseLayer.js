@@ -13,16 +13,20 @@
 //  limitations under the License.
 
 var GPV = (function (gpv) {
-
   $(function () {
+    var previousChecked;
     var $container = $(".LegendScroll");
     var $layerContainer = $("#pnlLayerScroll");
     var $tileContainer = $("#pnlBaseMapScroll");
     $tileContainer.find(".LegendCheck").on("click", function () {
+      if (previousChecked != null) {
+        gpv.viewer.toggleTileGroup(previousChecked, false);
+      }
       var $this = $(this);
       var isChecked = $this.is(":checked");
       gpv.viewer.toggleTileGroup($this.attr("data-tilegroup"), isChecked);
       gpv.appState.VisibleTiles[gpv.appState.MapTab] = getVisibleTiles(gpv.appState.MapTab);
+      previousChecked = $this.attr("data-tilegroup");
     });
     // =====  public functions  =====
 
@@ -45,6 +49,9 @@ var GPV = (function (gpv) {
         if (tileGroup) {
           tileGroupIds.push(tileGroup);
         }
+        if (tileGroup == 'Imagery') {
+          $(this).prop("checked", "checked");
+        }
       });
       return tileGroupIds;
     }
@@ -53,6 +60,10 @@ var GPV = (function (gpv) {
       getVisibleLayers: getVisibleLayers,
       getVisibleTiles: getVisibleTiles
     };
+   // alert(document.getElementsByName('ucBaseMapPanel$'));
+    //document.getElementsByName('ucBaseMapPanel$').checked = true;
+    //$('input["data-tilegroup=Imagery"]').props("checked", "checked");
+   // $tileContainer.filter('[value=ucBaseMapPanel$ctl04]').attr('checked', true);
   });
 
   return gpv;

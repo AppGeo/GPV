@@ -30,7 +30,7 @@ var GPV = (function (gpv) {
     var extentChangedHandlers = [];
     var mapRefreshedHandlers = [];
     var panelAnimationTime = 0;
-
+    
     // =====  controls required prior to map control creation  =====
 
     var $pnlDataDisplay = $("#pnlDataDisplay");
@@ -341,7 +341,7 @@ var GPV = (function (gpv) {
     var $MapTool = $(".MapTool");
   
 
-    $("#ucMarkupPanel_optPan").on("click", function () {
+    $("#optPan").on("click", function () {
       gpv.selectTool($(this), map, { cursor: '', drawing: { mode: 'off' } });
     });
 
@@ -359,21 +359,23 @@ var GPV = (function (gpv) {
     // =====  private functions  =====
 
     function createTileLayers() {
-      Object.keys(gpv.configuration.mapTab).forEach(function (m) {
+      Object.keys(gpv.configuration.mapTab).forEach(function (m) {        
         tileLayers[m] = {};
         gpv.configuration.mapTab[m].tileGroup.forEach(function (tg) {
           var z = -1;
           tileLayers[m][tg.group.id] = tg.group.tileLayer.map(function (tl) {
-            z += 1;
+            z += 1;            
             return L.tileLayer(tl.url, {
               zIndex: tl.overlay ? 200 + z : z,
               attribution: tl.attribution,
               opacity: tg.opacity,
               maxZoom: tl.maxZoom || map.options.maxZoom
             });
+
           });
+          
         });
-      });
+      });      
     }
 
     function drawTileLayers() {
@@ -505,7 +507,7 @@ var GPV = (function (gpv) {
         $("#selectedTool").html($("#optSelect").html());
       }
       else if (name == "Markup") {     // When Draw panel open , Draw tool selected in pnlMapTools Dropdown 
-        $("#ucMarkupPanel_optDrawLine").trigger("click");
+        $("#optDrawLine").trigger("click");
         $("#optMarkupTool").addClass("Selected");
         $("#selectedTool").html($("#optMarkupTool").html());
       }
@@ -720,8 +722,15 @@ var GPV = (function (gpv) {
           }
         });
 
-      }
-     
+      } 
+      tileLayers[appState.MapTab][groupId].forEach(function (tl) {
+        if (visible) {         
+           tl.addTo(map);
+        }
+        else {
+          map.removeLayer(tl);
+        }
+      });
     }
 
     function triggerMapTabChanged() {
@@ -861,10 +870,11 @@ var GPV = (function (gpv) {
     //need to add title attribute due to bootstrap overwriting title with popover
     $("#cmdLocation").attr("title", "Current Location");
     gpv.loadComplete();
+    
     createTileLayers();
     drawTileLayers();
     triggerMapTabChanged();
-
+    SetDefaultTile();
     /*$('input').on('change', function () {
       var dataTile = $(this).attr('data-tilegroup');
       var isChecked = $(this).is(':checked')
@@ -977,7 +987,14 @@ var GPV = (function (gpv) {
       if (!flag) {
         removeHelpPopup();
       }
+     
     });
+    //Set Imagery as default baselayer selected Item
+    function SetDefaultTile() {
+      $($("#pnlBaseMapScroll").find('input[data-tilegroup="Imagery"]')[0]).trigger('click');
+      toggleTileGroup('Imagery', true);
+    }
+    
   });
   return gpv;
 })(GPV || {});

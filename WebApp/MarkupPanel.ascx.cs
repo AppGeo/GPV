@@ -38,8 +38,6 @@ public partial class MarkupPanel : System.Web.UI.UserControl
         cmdNewMarkup.Attributes["class"] = "CommandLink";
       }
     }
-    
-
   }
 
   private void LoadMarkupCategories(Configuration.ApplicationRow application, AppState appState, OleDbConnection connection)
@@ -80,7 +78,7 @@ public partial class MarkupPanel : System.Web.UI.UserControl
 
   private bool SetDefaultTool(string name)
   {
-    HtmlControl defaultTool = Page.FindControl("ucMarkupPanel_opt" + name, false) as HtmlControl;
+    HtmlControl defaultTool = Page.FindControl("opt" + name, false) as HtmlControl;
     bool found = defaultTool != null;
 
     if (found)

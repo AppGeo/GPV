@@ -92,6 +92,7 @@ public partial class BaseMap : System.Web.UI.UserControl
 			name.Attributes["class"]="LegendName";
 			name.InnerText="None";
     }
+
   }
 
   protected void pnlBaseMaps_onchange(object sender, EventArgs e)

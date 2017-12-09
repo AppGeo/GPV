@@ -50,7 +50,6 @@ limitations under the License.
             <li id="optDrawCircle" runat="server" class=" MapTool"><a href="#"><span class="imgflag draw-circle"></span>Draw Circle</a></li>
             <li id="optDrawText" runat="server" class=" MapTool "><a href="#"><span class="imgflag draw-text"></span>Draw Text</a></li>
             <li id="optDrawCoordinates" runat="server" class=" MapTool"><a href="#"><span class="imgflag draw-coordinates"></span>Draw Coordinates</a></li>
-          
              <li id="optDeleteMarkup" runat="server" class=" MapTool "><a href="#"><span class="imgflag delete-markup"></span>Delete Markup</a></li>
             <li id="optColorPicker" runat="server" class=" MapTool MarkupTool "><a href="#"><span class="imgflag color-picker"></span>Pick Color</a></li>
             <li id="optPaintBucket" runat="server" class="MapTool MarkupTool "><a href="#"><span class="imgflag paint-bucket"></span>Fill With Color</a></li>
