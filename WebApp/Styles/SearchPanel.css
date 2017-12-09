@@ -167,7 +167,9 @@
     padding: 5px 8px;
     font-size: 13px;
     height: 30px;
+    color: #333;
 }
+
 #pnlSearchScroll .SearchInputField .NumberRange{
     width: calc(100% / 2 - 70px);
     display: inline-block;  
@@ -219,7 +221,7 @@
     margin-top: 5px;
 }
 #pnlSearchGrid{
-    overflow: auto;
+    overflow: visible;
     background-color: transparent;
     width: 95%;
     border: none;

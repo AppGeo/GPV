@@ -104,17 +104,32 @@ public partial class Viewer : CustomStyledPage
     {
       AddMetaTag("keywords", application.MetaKeywords);
     }
-    string tool = launchParams.ContainsKey("tool") ? launchParams["tool"] : (!application.IsDefaultToolNull() ? application.DefaultTool : null);
-    if (!String.IsNullOrEmpty(tool))
-    {
-      HtmlControl defaultTool = Page.FindControl("opt" + tool, false) as HtmlControl;
-      defaultTool.Attributes["class"] += " Selected";
-    }
-    else
-    {
-      HtmlControl defaultTool = Page.FindControl("optIdentify", false) as HtmlControl;
-      defaultTool.Attributes["class"] += " Selected";
-    }
+		//string tool=launchParams.ContainsKey("tool")?launchParams["tool"]:(!application.IsDefaultToolNull()?application.DefaultTool:null);
+
+		//if(!String.IsNullOrEmpty(tool))
+		//{
+		//	HtmlControl defaultTool=Page.FindControl("opt"+tool, false) as HtmlControl;
+
+		//	if(defaultTool!=null)
+		//	{
+		//		defaultTool.Attributes["class"]+=" Selected";
+		//	}
+		//}
+
+		string tool=launchParams.ContainsKey("tool")?launchParams["tool"]:(!application.IsDefaultToolNull()?application.DefaultTool:null);
+		if(!String.IsNullOrEmpty(tool))
+		{
+			HtmlControl defaultTool=Page.FindControl(("opt"+tool), false) as HtmlControl;
+			
+			if(defaultTool!=null)
+			{
+				defaultTool.Attributes["class"]+=" Selected ";
+			}
+		}
+		else						{
+			HtmlControl defaultTool=Page.FindControl("optIdentify", false) as HtmlControl;
+			defaultTool.Attributes["class"]+=" Selected ";
+		}
 
     Title = application.DisplayName;
     SetHelpLink();
@@ -146,14 +161,6 @@ public partial class Viewer : CustomStyledPage
       if (_appState.ActiveFunctionTab == FunctionTab.Selection)
       {
         pnlSelection.Style["display"] = "block";
-      }
-    }
-    if ((_appState.FunctionTabs & FunctionTab.Details) == FunctionTab.Details)
-    {
-      tabMobDetails.Style["display"] = "block";
-      if (_appState.ActiveFunctionTab == FunctionTab.Details)
-      {
-        pnlDetails.Style["display"] = "block";
       }
     }
     if ((_appState.FunctionTabs & FunctionTab.Legend) == FunctionTab.Legend)
@@ -192,6 +199,7 @@ public partial class Viewer : CustomStyledPage
       }
     }
     ShowLevelSelector(application);
+	
     CreateAppStateScript(application);
     CreateActiveSelectionStyle();
     spnVersion.InnerText = Version.ToString();

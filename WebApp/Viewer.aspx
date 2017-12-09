@@ -35,7 +35,7 @@ limitations under the License.
   <script type="text/javascript" src="Scripts/WebFonts.js"></script>
 </head>
 <body>
-  Test content
+
   <div id="pnlBody" class="container-fluid">
     <div id="pnlHeader" class="Panel">
       <header class="main">
@@ -129,7 +129,7 @@ limitations under the License.
         </div>
         <div class="">
           <div id="pnlFunction" runat="server" class="left_details">
-            <%-- Fuction tab name with < to click to return to main menu --%>
+            <%-- Function tab name with  click to return to main menu --%>
             <div id="pnlSearch" runat="server" class="FunctionPanel Panel" style="display: none">
               <uc1:SearchPanel ID="ucSearchPanel" runat="server" />
             </div>
@@ -161,7 +161,7 @@ limitations under the License.
               <div class="layerImagePanel baseMapImage">
                 <label style="width: 100%; height: 100%;">
                   <input id="pnlBaseMap" style="display: none;" type="checkbox" />
-                  <img class="layerImage" src="Images/dropdownMap-icon.jpg" title="Esri Street Map" />
+                  <img class="layerImage" src="Images/dropdownMap-icon.jpg" title="Overlays and Basemaps" />
                 </label>
               </div>
               <div id="pnlBaseLayer" style="display: none; margin-top: 13px">
@@ -176,12 +176,13 @@ limitations under the License.
                     <span class="txt glyphicon">Identify</span></span>
                 </button>
                 <ul id="selectMapTools" class="dropdown-menu dropdown" aria-labelledby="btnToolMenu">
-                  <li id="optIdentify" runat="server" class="Button MapTool "><a href="#">
+                  <li id="optIdentify" runat="server" class="Button MapTool"><a href="#">
                     <img class="flag " src="Images/info-icon.png" alt="" />
                     <span class="txt glyphicon">Identify</span></a></li>
                   <li id="optSelect" runat="server" class="Button MapTool"><a href="#">
                     <img class="flag " src="Images/select-icon.png" alt="" />
-                    <span class="txt glyphicon">Select</span></a></li>
+                    <span class="txt glyphicon">Select</span></a>
+                  </li>
                   <li id="optMarkupTool" runat="server" class="Button MapTool"><a href="#">
                     <img class="flag " src="Images/draw-icon.png" alt="" />
                     <span class="txt glyphicon">Draw</span></a></li>

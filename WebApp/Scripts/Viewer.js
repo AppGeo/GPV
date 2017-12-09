@@ -74,9 +74,7 @@ var GPV = (function (gpv) {
     });
 
     map.on("click", identify);
-    $(document).ready(function () {
-      $("#optIdentify").trigger("click");
-    });
+    
     var shingleLayer = L.shingleLayer({
       urlBuilder: refreshMap,
       zIndex: 100,
@@ -257,13 +255,7 @@ var GPV = (function (gpv) {
       }
     });
 
-    function OpenSelectionTab(name) {
-      hideFunctionMenu(function () { showFunctionPanel(name); });
-      $.each(functionTabChangedHandlers, function () {
-        this(name);
-      });
-    }
-
+  // optSelect click event
     $("#optSelect").on("click", function () {
       gpv.selectTool($(this), map, { cursor: 'default', dragging: false, boxZoom: false, drawing: { mode: 'rectangle', style: { color: '#c0c0c0', fill: true, fillColor: '#e0e0e0' } } });
       HidePanel();
@@ -274,7 +266,54 @@ var GPV = (function (gpv) {
         this("Selection");
       });
     });
+    //If optSelect has Select Class
+    var $optSelect = $('#optSelect');
+  if( $optSelect.hasClass('Selected'))
+   {
+     gpv.selectTool($(this), map, { cursor: 'default', dragging: false, boxZoom: false, drawing: { mode: 'rectangle', style: { color: '#c0c0c0', fill: true, fillColor: '#e0e0e0' } } });
+     HidePanel();
+     $(".MenuItem").removeClass("active");
+     $("#tabSelection").addClass("active");
+     showFunctionPanel("Selection");   // open selection panel when Select selected in Maptool
+     $.each(functionTabChangedHandlers, function () {
+       this("Selection");
+     });
+   };
 
+    //If optMarkupTool has Select Class
+   var $optMarkupTool = $("#optMarkupTool");
+   if($optMarkupTool.hasClass('Selected'))
+   {
+     $(".MenuItem").removeClass("active");
+     $("#tabMarkup").addClass("active");
+
+     HidePanel();
+     showFunctionPanel("Markup");
+     $.each(functionTabChangedHandlers, function () {
+       this("Markup");
+     });
+   }
+  //optMarkupTool Click event
+   var $optMarkupTool = $("#optMarkupTool").on("click", function () {
+     $(".MenuItem").removeClass("active");
+     $("#tabMarkup").addClass("active");
+
+     HidePanel();
+     showFunctionPanel("Markup");
+     $.each(functionTabChangedHandlers, function () {
+       this("Markup");
+     });
+   });
+    // if optIdentify Has Select Class
+   var $optIdentify = $("#optIdentify");
+  if( $optIdentify.hasClass("Selected"))
+   {
+     gpv.selectTool($(this), map, { cursor: 'default', drawing: { mode: 'off' } });
+   }
+    // optIdentify Click event
+   $optIdentify.on("click", function () {
+     gpv.selectTool($(this), map, { cursor: 'default', drawing: { mode: 'off' } });
+   });
     $("#selectMapTheme li").click(function () {
       $("#ucLegendPanel_selectedTheme").html($(this).html());
       var mapTab = $(this).attr("data-maptab");
@@ -300,14 +339,7 @@ var GPV = (function (gpv) {
 
     // ==== cusror type selection when Identify select in MapTool ====
     var $MapTool = $(".MapTool");
-    var $optIdentify = $("#optIdentify");
-    $optIdentify.hasClass("Selected")
-    {
-      gpv.selectTool($(this), map, { cursor: 'default', drawing: { mode: 'off' } });
-    }
-    $optIdentify.on("click", function () {
-      gpv.selectTool($(this), map, { cursor: 'default', drawing: { mode: 'off' } });
-    });
+  
 
     $("#ucMarkupPanel_optPan").on("click", function () {
       gpv.selectTool($(this), map, { cursor: '', drawing: { mode: 'off' } });
@@ -659,16 +691,6 @@ var GPV = (function (gpv) {
       return map.getProjectedBounds().toArray();
     }
 
-    var $optMarkupTool = $("#optMarkupTool").on("click", function () {
-      $(".MenuItem").removeClass("active");
-      $("#tabMarkup").addClass("active");
-
-      HidePanel();
-      showFunctionPanel("Markup");
-      $.each(functionTabChangedHandlers, function () {
-        this("Markup");
-      });
-    });
 
     function showLevel() {
       var $li = $("#selectMapLevel li[data-level=\"" + appState.Level + "\"]");
@@ -685,14 +707,21 @@ var GPV = (function (gpv) {
     }
 
     function toggleTileGroup(groupId, visible) {
-      tileLayers[appState.MapTab][groupId].forEach(function (tl) {
-        if (visible) {
-          tl.addTo(map);
-        }
-        else {
-          map.removeLayer(tl);
-        }
-      });
+      if (groupId === 'None') {
+        map.removeLayer(tl);
+      } else {
+        tileLayers[appState.MapTab][groupId].forEach(function (tl) {
+          if (visible) {
+            map.removeLayer(tl);
+            tl.addTo(map);
+          }
+          else {
+            map.removeLayer(tl);
+          }
+        });
+
+      }
+     
     }
 
     function triggerMapTabChanged() {
@@ -822,7 +851,6 @@ var GPV = (function (gpv) {
       setExtent: setExtent,
       switchToPanel: switchToPanel,
       toggleTileGroup: toggleTileGroup,
-      OpenSelectionTab: OpenSelectionTab,
       zoomToActive: zoomToActive
     };
 

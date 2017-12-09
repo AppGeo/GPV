@@ -56,6 +56,8 @@ public partial class BaseMap : System.Web.UI.UserControl
       name.Attributes["class"] = "LegendName";
       name.InnerText = tileGroupRow.DisplayName;
     }
+
+
   }
 
   public void Initialize(Configuration config, AppState appState, Configuration.ApplicationRow application)
@@ -64,6 +66,31 @@ public partial class BaseMap : System.Web.UI.UserControl
     {
       Configuration.MapTabRow mapTabRow = appMapTabRow.MapTabRow;
       AddTiles(mapTabRow, appState);
+			HtmlGenericControl parentLegend=new HtmlGenericControl("div");
+			pnlBaseMapScroll.Controls.Add(parentLegend);
+			parentLegend.Attributes["data-maptab"]=mapTabRow.MapTabID;
+			parentLegend.Attributes["class"]="LegendTop";
+			parentLegend.Style["display"]=mapTabRow.MapTabID==appState.MapTab?"block":"none";
+			HtmlGenericControl legendEntry=new HtmlGenericControl("div");
+			parentLegend.Controls.Add(legendEntry);
+			legendEntry.Attributes["class"]="LegendEntry";
+			HtmlGenericControl legendHeader=new HtmlGenericControl("div");
+			legendEntry.Controls.Add(legendHeader);
+			legendHeader.Attributes["class"]="LegendHeader";
+			HtmlGenericControl visibility=new HtmlGenericControl("span");
+			legendHeader.Controls.Add(visibility);
+			visibility.Attributes["class"]="LegendVisibility";
+			// HtmlInputCheckBox radio = new HtmlInputCheckBox();
+
+			HtmlInputRadioButton radio=new HtmlInputRadioButton();
+			visibility.Controls.Add(radio);
+			radio.Checked=false;
+			radio.Attributes["class"]="LegendCheck";
+			radio.Attributes["data-tilegroup"]="None";
+			HtmlGenericControl name=new HtmlGenericControl("span");
+			legendHeader.Controls.Add(name);
+			name.Attributes["class"]="LegendName";
+			name.InnerText="None";
     }
   }
 

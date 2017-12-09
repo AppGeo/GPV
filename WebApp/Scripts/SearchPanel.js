@@ -149,6 +149,7 @@ var GPV = (function (gpv) {
         $("#pnlSearchScroll").find("select").prop('selectedIndex', 0);
         $cmdSearch.toggleClass("Disabled");
         $cmdReset.toggleClass("Disabled");
+        $labSearchCount.text("None Found");
         emptyResultGrid();
       }
     }

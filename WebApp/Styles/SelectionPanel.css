@@ -19,7 +19,9 @@
 top: 40px;
 min-height: 212px;*/
 }
-
+#pnlQuery #mCSB_2 table tr{
+	cursor: default;
+}
 #selectionDivider {
 	left: 8px;
 	right: 8px;
@@ -406,7 +408,15 @@ select::-ms-expand {
 	outline: none;
 	border-radius: 3px;
 }
-
+.customDrawTools dl ul li.toolTitle{
+    padding: 4px 0 4px 12px;
+    color: #040404;
+    font-size: 14px;
+    font-weight: 500;
+    /* border-bottom: 1px solid #e6e6e6; */
+    margin-bottom: 5px;
+    background-color: #fbebbe;
+}
 /* ===========================DrowCategory Custom DropDown============================= */
 
 .customCategory {

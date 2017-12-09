@@ -30,7 +30,9 @@
 }
 
 #chkMarkupLock{
-  margin-left:10px;
+    margin-right: 3px;
+    position: relative;
+    top: 2px;
 }
 
 label#labMarkupLock {
@@ -309,7 +311,7 @@ New Style for Markup Panel
     background-color: #cacac9;
     color: #000;
 }
-#tblMarkupTitle{
+#tboMarkupUser{
    /* background-color: #cacac9;
     color: #000;*/    
 }
@@ -333,4 +335,19 @@ New Style for Markup Panel
 li.MapTool span:not(.glyphicon), #selectedTool span:not(.glyphicon), #selectedMarkupTool span:not(.glyphicon){
     width: 26px;
 }
+#mCSB_6_container{
+  height: 100%;
+}
+/*.dataTable tbody tr td:first-child{
+  text-align: right;
+  padding-right: 7px; 
+}
+.dataTable tbody tr td:nth-of-type(2){
+  text-align: left;
+  padding-left: 7px;
+}
+.dataTable tbody tr td:nth-of-type(3){
+  text-align: right;
+  padding-right: 7px;
+}*/
 /* ends here */

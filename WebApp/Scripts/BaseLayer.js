@@ -39,6 +39,7 @@ var GPV = (function (gpv) {
 
     function getVisibleTiles(mapTabID) {
       var tileGroupIds = [];
+
       $tileContainer.find(".LegendTop").filter('[data-maptab="' + mapTabID + '"]').find(".LegendCheck:checked").each(function (i, e) {
         var tileGroup = $(this).attr("data-tilegroup");
         if (tileGroup) {

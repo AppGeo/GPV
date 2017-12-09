@@ -1,4 +1,4 @@
-﻿﻿ /*  Copyright 2016 Applied Geographics, Inc.
+﻿ /*  Copyright 2016 Applied Geographics, Inc.
 *
 *  Licensed under the Apache License, Version 2.0 (the "License");
 *  you may not use this file except in compliance with the License.
@@ -175,6 +175,7 @@ header.main .logo{
     font-size: 23px;
     background: #367fa9;
     width: 162px;
+    display: none;
 }
 /* header section ends here */
 
@@ -358,6 +359,7 @@ header.main .logo{
     top: -1px;
     left: -355px;
     background: rgba(23, 41, 54, 0.9);
+
     height: calc(100vh - 70px);
     border: 1px solid #526870;
     opacity:0;
@@ -554,6 +556,13 @@ label{
     border: 1px solid #526870;
     z-index:11;
 }
+.RowSetHeader{
+    background-color: #444f56;
+    width: calc(100% - 14px)!important;
+    padding: 6px 0 7px!important;
+    color: #f3f7d9;
+    margin-bottom: 7px;
+}
 .right_details .dtlPara{
     position: relative;
     top: -5px;
@@ -601,7 +610,7 @@ label{
 }
 
 #pnlData{
-    background-color: #182a36;
+    /*background-color: red;*/
     /*border: 1px solid #526870;*/
     /*height: 92.5%;*/
     height:calc(100vh - 117px);
@@ -630,7 +639,7 @@ label{
     border-radius: 3px;
     height: 30px;
 }
-.dropdown dt a span {cursor:pointer; display:block; padding:5px;font-weight: normal;}
+.dropdown dt a span {cursor:default; display:block; padding:5px;font-weight: normal;}
 .dropdown dd ul { background:#ffffff none repeat scroll 0 0; border:1px solid #ddf0e3; color:#C5C0B0; display:none; left:0px; padding:5px 0px; position:absolute; top:2px; width:100%; min-width:170px; list-style:none;z-index: 99;}
 .dropdown span.value { display:none;}
 .dropdown dd ul li a { padding:5px; display:block;}
@@ -689,6 +698,7 @@ label{
 }
 .selectCol .dropdown img.flag {
     margin-left: 5px;
+    cursor: default;
 }
 .selectCol .dropdown span.txt {
    /* padding-left: 3px;*/
@@ -713,6 +723,7 @@ label{
 .mapNavigation .selectCol .identify #selectedTool span{
     background-color: #172936;
     color: #fff;
+    cursor: default;
 }
 .selectCol .dropdown a, .selectCol .dropdown a:visited {
     color: #000;

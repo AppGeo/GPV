@@ -31,30 +31,14 @@ public partial class MarkupPanel : System.Web.UI.UserControl
 
       if (AppAuthentication.Mode != AuthenticationMode.None)
       {
-        tblMarkupUser.Attributes["value"] = AppUser.GetDisplayName(connection);
-        //tblMarkupUser.Attributes["disabled"] = "disabled";
-        // chkMarkupLock.Style["visibility"] = "visible";
+        tboMarkupUser.Attributes["value"] = AppUser.GetDisplayName(connection);
+        tboMarkupUser.Attributes["disabled"] = "disabled";
+				chkMarkupLock.Style["visibility"] = "visible";
         labMarkupLock.Style["visibility"] = "visible";
         cmdNewMarkup.Attributes["class"] = "CommandLink";
       }
     }
-    string tool = launchParams.ContainsKey("tool") ? launchParams["tool"] : (!application.IsDefaultToolNull() ? application.DefaultTool : null);
-
-    if (!String.IsNullOrEmpty(tool))
-    {
-      HtmlControl defaultTool = Page.FindControl("ucMarkupPanel_opt" + tool, false) as HtmlControl;
-
-      //if (defaultTool != null)
-      //{
-      defaultTool.Attributes["class"] += " Selected";
-      //}
-    }
-    else
-    {
-      HtmlControl defaultTool = Page.FindControl("optIdentify", false) as HtmlControl;
-
-      //  defaultTool.Attributes["class"] += " Selected";
-    }
+    
 
   }
 

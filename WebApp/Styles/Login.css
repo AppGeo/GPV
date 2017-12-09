@@ -33,9 +33,11 @@ div
 
 .LoginButton
 {
-  width: 60px;
-  font-weight: bold;
-  margin: 20px;
+    width: 60px;
+    font-weight: 400;
+    margin: 20px;
+    font-family: 'Open Sans',sans-serif;
+    font-size: 14px;
 }
 
 .Error
@@ -47,4 +49,9 @@ div
 {
   top: auto;
   bottom: 0px;
+}
+
+#Login1 .Label label{
+  font-family: 'Open Sans',sans-serif;
+  font-size: 14px;
 }
