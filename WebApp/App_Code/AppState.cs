@@ -33,7 +33,7 @@ public class AppState
   private const string Key = "AppState";
 
   private const char VersionMarker = '\u0003';
-  private const string CurrentVersion = "5.0";
+  private const string CurrentVersion = "5.1";
 
   public static AppState FromJson(string json)
   {
@@ -312,6 +312,32 @@ public class AppState
         break;
 
       case "5.0":
+        appState.Application = (string)values.Dequeue();
+        appState.MapTab = (string)values.Dequeue();
+        appState.Search = (string)values.Dequeue();
+        appState.SearchCriteria = FromJson<Dictionary<String, Object>>((string)values.Dequeue());
+        appState.Action = (Action)(Convert.ToInt32((string)values.Dequeue()));
+        appState.TargetLayer = (string)values.Dequeue();
+        appState.TargetIds = StringCollection.FromString((string)values.Dequeue());
+        appState.ActiveMapId = (string)values.Dequeue();
+        appState.ActiveDataId = (string)values.Dequeue();
+        appState.Proximity = (string)values.Dequeue();
+        appState.SelectionLayer = (string)values.Dequeue();
+        appState.SelectionIds = StringCollection.FromString((string)values.Dequeue());
+        appState.Query = (string)values.Dequeue();
+        appState.DataTab = (string)values.Dequeue();
+        appState.MarkupCategory = (string)values.Dequeue();
+        appState.MarkupGroups = StringCollection.FromString((string)values.Dequeue());
+        appState.Markup = FromJson<List<Markup>>((string)values.Dequeue());
+        appState.FunctionTabs = (FunctionTab)(Convert.ToInt32((string)values.Dequeue()));
+        appState.ActiveFunctionTab = (FunctionTab)(Convert.ToInt32((string)values.Dequeue()));
+        appState.Extent = EnvelopeExtensions.FromDelimitedString((string)values.Dequeue(), Separator2);
+        appState.VisibleLayers = LayersFromString((string)values.Dequeue());
+        appState.VisibleTiles = LayersFromString((string)values.Dequeue());
+        appState.Level = (string)values.Dequeue();
+        break;
+
+      case "5.1":
         appState.Application = (string)values.Dequeue();
         appState.MapTab = (string)values.Dequeue();
         appState.Search = (string)values.Dequeue();
