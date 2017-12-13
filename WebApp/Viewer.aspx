@@ -156,7 +156,7 @@ limitations under the License.
       </div>
       <div id="pnlMapSizer" runat="server" class="Panel">
         <div id="pnlMap" class="MainPanel Panel">
-          <div id="pnlMapMenus" class="MapMenu">
+          <div id="pnlMapMenus" runat="server" class="MapMenu">
             <div id="pnlBasemapMenu" class="MapMenu">
               <div class="layerImagePanel baseMapImage">
                 <label style="width: 100%; height: 100%;">

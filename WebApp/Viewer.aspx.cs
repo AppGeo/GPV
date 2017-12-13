@@ -140,10 +140,11 @@ public partial class Viewer : CustomStyledPage
     ucSharePanel.Initialize(_config, application);
     if (_appState.ActiveFunctionTab != FunctionTab.None)
     {
-      pnlFunctionTabs.Style["left"] = "-400px";
-      pnlFunctionTabs.Style["opacity"] = "0";
-      pnlFunction.Style["left"] = "0px";
+      pnlFunctionTabs.Style["left"] = "0";
+      pnlFunctionTabs.Style["opacity"] = "1";
+      pnlFunction.Style["left"] = "160px";
       pnlFunction.Style["opacity"] = "1";
+      pnlMapMenus.Attributes["class"]= "pnlMapMenus_option";
     }
     if ((_appState.FunctionTabs & FunctionTab.Search) == FunctionTab.Search)
     {

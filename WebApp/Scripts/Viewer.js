@@ -489,6 +489,7 @@ var GPV = (function (gpv) {
     var pnlFuctionLeft, pnlMapSizerLaft, pnlFunctionTabsWidth, pnlFunctionWidth;
     // ==== fuction for Show Panel ====
     function showFunctionPanel(name) {
+      
       if ($(window).width() < 700) {
         if ($("#btnHamburgerClose").hasClass("hidden")) {
           $("#btnHamburgerClose").removeClass("hidden");

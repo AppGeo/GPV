@@ -17,12 +17,12 @@ var GPV = (function (gpv) {
     var $container = $(".LegendScroll");
     var $layerContainer = $("#pnlLayerScroll");
     var $tileContainer = $("#pnlTileScroll");
-
+   
     // =====  control events  =====
 
     $layerContainer.find(".LegendExpander").on("click", function (e) {
       var $this = $(this);
-
+      
       if (!$this.hasClass("Empty")) {
         var expanded = $this.hasClass("Expanded");
         $this.removeClass(expanded ? "Expanded" : "Collapsed").addClass(!expanded ? "Expanded" : "Collapsed");
