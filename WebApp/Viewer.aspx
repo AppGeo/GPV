@@ -70,52 +70,47 @@ limitations under the License.
           <div class="leftLinks">
             <div id="pnlFunctionTabs" runat="server" class="TabPanel ">
               <ul>
-                <li id="tabSearch" runat="server" class="MenuItem Normal ">
+                <li id="tabSearch" runat="server" class="MenuItem Normal " style="display: none">
                   <a href="#">
-                    <span class="linkIcon">
-                      <img src="Images/search_icon.png"></span>
+                    <span class="linkIcon searchICN">
+                      &nbsp;</span>
                     <span class="linkTxt ">Search</span>
                   </a>
                 </li>
-                <li id="tabSelection" runat="server" class="MenuItem Normal">
+                <li id="tabSelection" runat="server" class="MenuItem Normal" style="display: none">
                   <a>
-                    <span class="linkIcon" title="Selection">
-                      <img src="Images/selection_icon.png"></span>
+                    <span class="linkIcon selectionICN" title="Selection">&nbsp;</span>
                     <span class="linkTxt ">Selection</span>
                   </a>
                 </li>
-                <li id="tabMobDetails" runat="server" class="MenuItem Normal">
+                <li id="tabMobDetails" runat="server" class="MenuItem Normal" >
                   <a>
-                    <span class="linkIcon" title="Selection">
+                    <span class="linkIcon detailsICN" title="Selection">
                       <img src="Images/details-icon.png"></span>
                     <span class="linkTxt ">Details</span>
                   </a>
                 </li>
-                <li id="tabLegend" runat="server" class="MenuItem Normal">
+                <li id="tabLegend" runat="server" class="MenuItem Normal" style="display: none">
                   <a href="#">
-                    <span class="linkIcon">
-                      <img src="Images/legend-icon.png"></span>
+                    <span class="linkIcon mapsICN">&nbsp;</span>
                     <span class="linkTxt ">Maps</span>
                   </a>
                 </li>
-                <li id="tabLocation" runat="server" class="MenuItem Normal">
+                <li id="tabLocation" runat="server" class="MenuItem Normal" style="display: none">
                   <a href="#">
-                    <span class="linkIcon">
-                      <img src="Images/loc-icon.png"></span>
+                    <span class="linkIcon locationICN">&nbsp;</span>
                     <span class="linkTxt ">Location</span>
                   </a>
                 </li>
-                <li id="tabMarkup" runat="server" class="MenuItem Normal">
+                <li id="tabMarkup" runat="server" class="MenuItem Normal" style="display: none">
                   <a href="#">
-                    <span class="linkIcon">
-                      <img src="Images/markup-icon.png"></span>
+                    <span class="linkIcon markupICN">&nbsp;</span>
                     <span class="linkTxt ">Draw</span>
                   </a>
                 </li>
-                <li id="tabShare" runat="server" class="MenuItem Normal">
+                <li id="tabShare" runat="server" class="MenuItem Normal" style="display: none">
                   <a href="#">
-                    <span class="linkIcon">
-                      <img src="Images/share_icon.png"></span>
+                    <span class="linkIcon shareICN">&nbsp;</span>
                     <span class="linkTxt ">Share</span>
                   </a>
                 </li>
@@ -156,7 +151,7 @@ limitations under the License.
       </div>
       <div id="pnlMapSizer" runat="server" class="Panel">
         <div id="pnlMap" class="MainPanel Panel">
-          <div id="pnlMapMenus" class="MapMenu">
+          <div id="pnlMapMenus" runat="server" class="MapMenu">
             <div id="pnlBasemapMenu" class="MapMenu">
               <div class="layerImagePanel baseMapImage">
                 <label style="width: 100%; height: 100%;">

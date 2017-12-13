@@ -43,20 +43,20 @@ limitations under the License.
         <dt id="btnMarkupToolMenu"><a href="#"><span id="selectedMarkupTool"><span class="imgflag draw-line"></span>Draw Line</span></a></dt>
         <dd>
           <ul id="selectMarkupTools">
-            <li id="optDrawTitle" runat="server" class=" toolTitle">Draw Tools - </li>
-            <li id="optDrawPoint" runat="server" class=" MapTool"><a href="#"><span class="imgflag draw-point"></span>Draw Point</a></li>
-            <li id="optDrawLine" runat="server" class=" MapTool"><a href="#"><span class="imgflag draw-line"></span>Draw Line</a></li>
-            <li id="optDrawPolygon" runat="server" class=" MapTool "><a href="#"><span class="imgflag draw-polygon"></span>Draw Polygon</a></li>
-            <li id="optDrawCircle" runat="server" class=" MapTool"><a href="#"><span class="imgflag draw-circle"></span>Draw Circle</a></li>
-            <li id="optDrawText" runat="server" class=" MapTool "><a href="#"><span class="imgflag draw-text"></span>Draw Text</a></li>
-            <li id="optDrawCoordinates" runat="server" class=" MapTool"><a href="#"><span class="imgflag draw-coordinates"></span>Draw Coordinates</a></li>
-             <li id="optDeleteMarkup" runat="server" class=" MapTool "><a href="#"><span class="imgflag delete-markup"></span>Delete Markup</a></li>
-            <li id="optColorPicker" runat="server" class=" MapTool MarkupTool "><a href="#"><span class="imgflag color-picker"></span>Pick Color</a></li>
-            <li id="optPaintBucket" runat="server" class="MapTool MarkupTool "><a href="#"><span class="imgflag paint-bucket"></span>Fill With Color</a></li>
-       <li id="optMeasureTitle" runat="server" class=" toolTitle">Measure Tools - </li>
+            <li id="optDrawTitle" runat="server" clientIDMode="static" class=" toolTitle">Draw Tools - </li>
+            <li id="optDrawPoint" runat="server" clientIDMode="static" class=" MapTool"><a href="#"><span class="imgflag draw-point"></span>Draw Point</a></li>
+            <li id="optDrawLine" runat="server" clientIDMode="static" class=" MapTool"><a href="#"><span class="imgflag draw-line"></span>Draw Line</a></li>
+            <li id="optDrawPolygon" runat="server" clientIDMode="static" class=" MapTool "><a href="#"><span class="imgflag draw-polygon"></span>Draw Polygon</a></li>
+            <li id="optDrawCircle" runat="server" clientIDMode="static" class=" MapTool"><a href="#"><span class="imgflag draw-circle"></span>Draw Circle</a></li>
+            <li id="optDrawText" runat="server" clientIDMode="static" class=" MapTool "><a href="#"><span class="imgflag draw-text"></span>Draw Text</a></li>
+            <li id="optDrawCoordinates" runat="server" clientIDMode="static" class=" MapTool"><a href="#"><span class="imgflag draw-coordinates"></span>Draw Coordinates</a></li>
+             <li id="optDeleteMarkup" runat="server" clientIDMode="static" class=" MapTool "><a href="#"><span class="imgflag delete-markup"></span>Delete Markup</a></li>
+            <li id="optColorPicker" runat="server" clientIDMode="static" class=" MapTool MarkupTool "><a href="#"><span class="imgflag color-picker"></span>Pick Color</a></li>
+            <li id="optPaintBucket" runat="server" clientIDMode="static" class="MapTool MarkupTool "><a href="#"><span class="imgflag paint-bucket"></span>Fill With Color</a></li>
+       <li id="optMeasureTitle" runat="server" clientIDMode="static" class=" toolTitle">Measure Tools - </li>
               <%--  Measure Tool Start--%>
-            <li id="optDrawLength" runat="server" class=" MapTool"><a href="#"><span class="imgflag draw-length"></span> Draw Measured Length</a></li>
-            <li id="optDrawArea" runat="server" class=" MapTool"><a href="#"><span class="imgflag draw-area"></span> Draw Measured Area</a></li>
+            <li id="optDrawLength" runat="server" clientIDMode="static" class=" MapTool"><a href="#"><span class="imgflag draw-length"></span> Draw Measured Length</a></li>
+            <li id="optDrawArea" runat="server" clientIDMode="static" class=" MapTool"><a href="#"><span class="imgflag draw-area"></span> Draw Measured Area</a></li>
            <%--  Measure Tool End--%>
              </ul>
         </dd>

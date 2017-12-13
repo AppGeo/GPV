@@ -16,15 +16,6 @@
 
 /* =====  CSS reset  ===== */
 
-.LegendScroll {
-    top: -32px;
-    /* bottom: 0; */
-    /* left: 10px; */
-    /* right: 10px; */
-    padding-left: 10px;
- 
-    overflow: auto;
-}
 html
 {
 	color: #000;
@@ -141,8 +132,7 @@ a:hover, .CommandLink:hover
 
 input.Button
 {
-    /*
-  font-weight: bold;
+  /*font-weight: bold;
   padding: 1px 6px 1px 6px;*/
 }
 
@@ -152,8 +142,4 @@ input.Button
   min-height: 526px;
 }
 
-/*@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
-  body, div, span, td, th, input, select {
-    font-size: 1.03em;
-  }
-}*/
+

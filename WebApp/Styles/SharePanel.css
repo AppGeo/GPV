@@ -162,8 +162,207 @@ Date 14-09-2017
 #cmdSaveMap{
     min-width: 70px;
 }
-
 #pnlPrintInputs .printInput{
   float: left
 }
+
+/* ===========================SharePrint Custom DropDown============================= */
+
+.customPrint {
+  position: relative;
+  /*Don't really need this just for demo styling*/
+  float: left;
+  min-width: calc(100% / 2 - 8px);
+}
+
+.customPrint:after {
+  content: url('../Images/arrow.png'); /*\f078*/
+  /* font: normal normal normal 17px/1 FontAwesome;*/
+  color: #b7b7b7;
+  right: 11px;
+  top: 0px;
+  height: 29px;
+  padding: 5px 0px 0px 8px;
+  border-left: 1px solid #b7b7b7;
+  position: absolute;
+  pointer-events: none;
+  background-color: #fff;
+}
+
+/* IE11 hide native button (thanks Matt!) */
+select::-ms-expand {
+  display: none;
+}
+
+.customPrint select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Add some styling */
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: 29px;
+  float: right;
+  margin: 0px;
+  padding: 0px 40px 0 5px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: #333;
+  background-color: #ffffff;
+  background-image: none;
+  border: none;
+  -ms-word-break: normal;
+  word-break: normal;
+  outline: none;
+}
+
+
+/* ===========================ShareGoto Custom DropDown============================= */
+
+.customGoto {
+  position: relative;
+  /*Don't really need this just for demo styling*/
+  float: left;
+  min-width: calc(100% / 2 - 8px);
+}
+
+.customGoto:after {
+  content: url('../Images/arrow.png'); /*\f078*/
+  /* font: normal normal normal 17px/1 FontAwesome;*/
+  color: #b7b7b7;
+  right: 11px;
+  top: 0px;
+  height: 29px;
+  padding: 5px 0px 0px 8px;
+  border-left: 1px solid #b7b7b7;
+  position: absolute;
+  pointer-events: none;
+  background-color: #fff;
+}
+
+/* IE11 hide native button (thanks Matt!) */
+select::-ms-expand {
+  display: none;
+}
+
+.customGoto select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Add some styling */
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: 29px;
+  float: right;
+  margin: 0px;
+  padding: 0px 40px 0 5px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: #333;
+  background-color: #ffffff;
+  background-image: none;
+  border: none;
+  -ms-word-break: normal;
+  word-break: normal;
+  outline: none;
+}
+
+/* ===========================ShareExport Custom DropDown============================= */
+
+.customExport {
+  position: relative;
+  /*Don't really need this just for demo styling*/
+  float: left;
+  /*min-width: calc(100% / 2 - 8px);*/
+}
+
+.customExport:after {
+  content: url('../Images/arrow.png'); /*\f078*/
+  /* font: normal normal normal 17px/1 FontAwesome;*/
+  color: #b7b7b7;
+  right: 11px;
+  top: 0px;
+  height: 29px;
+  padding: 5px 0px 0px 8px;
+  border-left: 1px solid #b7b7b7;
+  position: absolute;
+  pointer-events: none;
+  background-color: #fff;
+}
+
+/* IE11 hide native button (thanks Matt!) */
+select::-ms-expand {
+  display: none;
+}
+
+.customExport select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Add some styling */
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: 29px;
+  float: right;
+  margin: 0px;
+  padding: 0px 40px 0 5px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: #333;
+  background-color: #ffffff;
+  background-image: none;
+  border: none;
+  -ms-word-break: normal;
+  word-break: normal;
+  outline: none;
+}
+
+.printInput input {
+  margin-bottom: 12px;
+  display: inline-block;
+  width: calc(100% - 47px) !important; /* no need important*/
+  float: right;
+  border: none;
+  border-radius: 3px;
+  padding: 5px 8px;
+  font-size: 13px;
+  height: 30px;
+}
+
+.printInput label {
+  margin-bottom: 15px;
+  display: inline-block;
+  width: 47px !important; /* no need important*/
+  float: left;
+  font-weight: unset;
+}
+
+.btnPrint {
+  background-image: url(../Images/print-icon-black.png);
+  background-repeat: no-repeat;
+  background-position: 8px center !important; /* no need important*/
+  padding-left: 12px !important; /* no need important*/
+}
+
+.LocPrint {
+  background-image: url(../Images/loc-icon-black.png);
+  background-repeat: no-repeat;
+  background-repeat: no-repeat;
+  background-position: 8px center !important; /* no need important*/
+  padding-left: 8px !important; /* no need important*/
+}
+
+.exprtPrint {
+  background-image: url(../Images/export-icon-black.png);
+  background-repeat: no-repeat;
+  background-repeat: no-repeat;
+  background-position: 8px center !important; /* no need important*/
+  padding-left: 18px !important; /* no need important*/
+}
+
+
+
 /* share panel ends */

@@ -120,10 +120,10 @@ a.VersionText {
 
     /* background and text colors of tabs as you mouse over them */
 
-    .Tab.Normal:hover, a.Tab.Normal:hover {
+.Tab.Normal:hover, a.Tab.Normal:hover {
         background-color: #F5F7EB;
         color: #808080;
-    }
+}
 
 /* text color of selected tabs */
 
@@ -167,6 +167,11 @@ a.VersionText {
 .DataList .RowSetHeader {
   /*  background-color: #FFE0B2;
     color: Black;*/
+    background-color: #444f56;
+    width: calc(100% - 14px)!important;
+    padding: 6px 0 7px 6px!important;
+    color: #f3f7d9;
+    margin-bottom: 7px;
 }
 
 /* background and text color of subheaders in data panel */
@@ -181,7 +186,7 @@ a.VersionText {
     color: #f3f7d9;
     margin: 10px 0 4px;
     border-bottom: 1px solid #3c4c58;
-    width: 90%!important;
+    width: calc(100% - 14px)!important;
 }
 
 /* background and border colors of the map theme, level and tool dropdown buttons */
@@ -195,17 +200,17 @@ a.VersionText {
 
     /* background and border colors of the map theme, level and tool dropdown buttons when hovering */
 
-    .MapMenu > .dropdown-toggle:hover, .MapMenu.open > .dropdown-toggle {
+.MapMenu > .dropdown-toggle:hover, .MapMenu.open > .dropdown-toggle {
         background-color: #ffffff;
         border-color: #adadad;
         
-    }
+}
 
     /* text color of the map theme, level and tool dropdown buttons */
 
-    .MapMenu > .dropdown-toggle > span:first-child {
+.MapMenu > .dropdown-toggle > span:first-child {
         color: Black;
-    }
+}
 
 /* colors of the map theme, level and tool dropdown buttons when hovering */
 

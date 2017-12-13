@@ -46,16 +46,6 @@
   margin-right: 2px;
 }
 
-#pnlSearchGrid
-{
-  top: 286px;
-  bottom: 37px;
-  border-top: solid 1px #C9C9C9;
-  border-bottom: solid 1px #C9C9C9;
-  background-color: #f4f7f7;
-  overflow: auto;
-}
-
 #grdSearch {
   width: 98%;
 }
@@ -177,6 +167,10 @@
 .SearchInputField{
     margin: 15px 0 0;
 }
+#pnlSearchScroll .SearchInputField .DateRange{
+    width: calc(100% / 2 - 70px);
+    display: inline-block;    
+}
 #pnlSearchScroll .Search .SearchInputField:nth-of-type(4), #pnlSearchScroll .Search .SearchInputField:nth-of-type(5){
     position: relative;
     float: left;
@@ -221,17 +215,26 @@
     margin-top: 5px;
 }
 #pnlSearchGrid{
-    overflow: visible;
+    top: 286px;
+    bottom: 37px;
+    border-top: solid 1px #C9C9C9;
+    border-bottom: solid 1px #C9C9C9;
+    background-color: #f4f7f7;
+    overflow: auto;
+
     background-color: transparent;
     width: 95%;
     border: none;
+    overflow-x: scroll;
+    height: 230px;
+    overflow-y: auto;
 }
 #pnlSearchFields div.frm_box:first-child{
     padding-top: 2px;
     padding-bottom: 6px;
 }
 #mCSB_1_container{
-    overflow-x: auto;  
+    overflow-x: hidden;  
 }
 #pnlSearchFields .mCSB_container{
     padding-right: 4px;
@@ -282,4 +285,58 @@
     min-height: auto;
 }
 /* ends here */
+
+/* ===============================Search Custom DropDown=========================== */
+
+.customSearch {
+  position: relative;
+  /*Don't really need this just for demo styling*/
+  float: left;
+  min-width: calc(100% / 2 - 8px);
+}
+
+.customSearch:after {
+  content: url('../Images/arrow.png'); /*\f078*/
+  font: normal normal normal 17px/1 FontAwesome;
+  color: #b7b7b7;
+  right: 11px;
+  top: 0px;
+  height: 29px;
+  padding: 5px 0px 0px 8px;
+  border-left: 1px solid #b7b7b7;
+  position: absolute;
+  pointer-events: none;
+  background-color: #fff;
+}
+
+/* IE11 hide native button (thanks Matt!) */
+select::-ms-expand {
+  display: none;
+}
+
+.customSearch select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Add some styling */
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: 29px;
+  float: right;
+  margin: 0px;
+  padding: 0px 40px 0px 5px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: #333;
+  background-color: #ffffff;
+  background-image: none;
+  border: none;
+  -ms-word-break: normal;
+  word-break: normal;
+  outline: none;
+}
+
+
+
 

@@ -18,8 +18,6 @@ body
   overflow: hidden;
 }
 
-
-
 div.Button, div.Button.Disabled:hover
 {
   position: absolute;
@@ -39,6 +37,7 @@ div.Button, div.Button.Disabled:hover
 .Button span{
   color: #7B7B7B;
 }
+
 .Selected span{
   color: #000000;
 }
@@ -525,3 +524,71 @@ option .toolsTxt{
     position: relative;
     top: 2px;
 }
+
+/* Right details panel */
+.right_details{
+     float: left;
+    width: 285px;
+    right:-355px;
+    display:none;
+    left:auto;
+    position: absolute;
+    top: 0px;
+    background: rgba(23, 41, 54, 0.9);
+    height: calc(100vh - 70px);
+    /*overflow:auto;*/
+    border: 1px solid #526870;
+    z-index:11;
+}
+
+.right_details .dtlPara{
+    position: relative;
+    top: -5px;
+}
+.right_details .topHead{
+    background-color: #172936;
+}
+.right_details .dtlPara{
+    position: relative;
+    top: -5px;
+}
+/* ends here */
+
+/* responsive panel details */
+#pnlDetails #pnlData{
+    height: calc(100vh - 127px);
+}
+#MobDetailContent{
+    height: calc(100vh - 194px);
+}
+
+#MobDetailContent .mCSB_scrollTools .mCSB_draggerContainer{
+    top: -3px;
+}
+#MobDetailContent .mCSB_scrollTools {
+    right: 3px;
+}
+.printRght_icon{
+    width: 18px;
+    height: 17px;
+    background-image: url(../Images/print-icon.png);
+    background-repeat: no-repeat;
+    display: inline-block;
+    /*margin-top: 5px;*/
+    margin-right: 14px;
+}
+#tabMobDetails{
+    display: none!important;
+}
+
+#pnlData{
+    /*background-color: red;*/
+    /*border: 1px solid #526870;*/
+    /*height: 92.5%;*/
+    height:calc(100vh - 117px);
+}
+#pnlData .frm_box{
+    padding: 10px 0px;
+}
+
+/* ends here */

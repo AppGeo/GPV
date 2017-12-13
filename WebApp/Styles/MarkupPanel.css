@@ -279,7 +279,7 @@ New Style for Markup Panel
     padding-bottom: 6px;
 }
 #pnlMarkup #sample{
-    padding-top: 6px;
+    padding-top: 0px;
     margin-bottom: 8px;
 }
 #chkTextGlow{
@@ -336,8 +336,122 @@ li.MapTool span:not(.glyphicon), #selectedTool span:not(.glyphicon), #selectedMa
     width: 26px;
 }
 #mCSB_6_container{
-  height: 100%;
+  height: auto;
 }
+
+/* ===========================DrowTools Custom DropDown============================= */
+
+.customDrawTools {
+  position: relative;
+  /*Don't really need this just for demo styling*/
+  float: left;
+  min-width: calc(100% / 2 - 8px);
+}
+
+.customDrawTools:after {
+  content: url(../Images/arrow.png);
+  /* font: normal normal normal 17px/1 FontAwesome;*/
+  color: #b7b7b7;
+  right: 11px;
+  top: 0;
+  height: 30px;
+  padding: 5px 0 0 8px;
+  border-left: 1px solid #b7b7b7;
+  position: absolute;
+  pointer-events: none;
+  background-color: #fff;
+}
+
+/* IE11 hide native button (thanks Matt!) */
+select::-ms-expand {
+  display: none;
+}
+
+.customDrawTools dl {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Add some styling */
+  display: block;
+  width: 99%;
+  max-width: 320px;
+  height: 30px;
+  float: right;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.75;
+  color: #333;
+  background-color: #fff;
+  background-image: none;
+  border: none;
+  -ms-word-break: normal;
+  word-break: normal;
+  outline: none;
+  border-radius: 3px;
+}
+.customDrawTools dl ul li.toolTitle{
+    padding: 4px 0 4px 12px;
+    color: #040404;
+    font-size: 14px;
+    font-weight: 500;
+    /* border-bottom: 1px solid #e6e6e6; */
+    margin-bottom: 5px;
+    background-color: #fbebbe;
+}
+
+
+/* ===========================DrowCategory Custom DropDown============================= */
+
+.customCategory {
+  position: relative;
+  /*Don't really need this just for demo styling*/
+  float: left;
+  min-width: calc(100% / 2 - 8px);
+}
+
+.customCategory:after {
+  content: url('../Images/arrow.png'); /*\f078*/
+  /* font: normal normal normal 17px/1 FontAwesome;*/
+  color: #b7b7b7;
+  right: 11px;
+  top: 0px;
+  height: 29px;
+  padding: 5px 0px 0px 8px;
+  border-left: 1px solid #b7b7b7;
+  position: absolute;
+  pointer-events: none;
+  background-color: #fff;
+}
+
+/* IE11 hide native button (thanks Matt!) */
+select::-ms-expand {
+  display: none;
+}
+
+.customCategory select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Add some styling */
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: 29px;
+  float: right;
+  margin: 0px;
+  padding: 0px 40px 0 5px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: #333;
+  background-color: #ffffff;
+  background-image: none;
+  border: none;
+  -ms-word-break: normal;
+  word-break: normal;
+  outline: none;
+}
+
+
 /*.dataTable tbody tr td:first-child{
   text-align: right;
   padding-right: 7px; 

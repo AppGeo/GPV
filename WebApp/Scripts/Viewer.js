@@ -127,6 +127,14 @@ var GPV = (function (gpv) {
     gpv.markupPanel.setMap(map);
     gpv.sharePanel.setMap(map);
 
+    //On Init set DefaultFunction Tab
+    if (appState.ActiveFunctionTab != 0){
+      $('#mapMain .leaflet-control-container .leaflet-top').addClass('pnlMapMenus_option');
+      $('.leaflet-control').css('margin-left', '3px')
+     
+    }
+    
+
     // =====  control events  =====
 
     $(window).on("resize", function () {
@@ -195,6 +203,8 @@ var GPV = (function (gpv) {
       trigger: 'manual'
     });
 
+    
+
     //  ==== fort detail panel display ( in large device) ====
     $("#cmdShowDetails").on("click", function () {
       var myw = $pnlDataDisplay.css("right").substring(0, 1);
@@ -254,7 +264,12 @@ var GPV = (function (gpv) {
         }
       }
     });
-
+    //When DefaultFunction tab is given
+    if ('<%=this._appState.ActiveFunctionTab%>' != '<%=this.FunctionTab.None%>') {
+      $("#mapMain .leaflet-left").addClass("pnlMapMenus_option");
+      var fName = "<%=_appState.ActiveFunctionTab %>" ;
+     
+    }
   // optSelect click event
     $("#optSelect").on("click", function () {
       gpv.selectTool($(this), map, { cursor: 'default', dragging: false, boxZoom: false, drawing: { mode: 'rectangle', style: { color: '#c0c0c0', fill: true, fillColor: '#e0e0e0' } } });

@@ -42,7 +42,7 @@ limitations under the License.
   </div>
   <div id="pnlSearchGrid" class="frm_box horizontalScroll">
     <table id="grdSearch" class="DataGrid dataTable"></table>
-  </div>
+      </div>
 </div>
 <div id="pnlSearchCommand" class="searchCommand Panel septr">
   <div id="labSearchCount">None found</div>
