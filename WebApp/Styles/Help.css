@@ -158,7 +158,7 @@ td {
   color: #DB4437;
 }
 
-.search, .selection, .legend, .location, .markup, .share {
+.search, .selection, .legend, .location, .markup, .share, .pantool {
   display: none;
 }
 
