@@ -127,6 +127,14 @@ var GPV = (function (gpv) {
     gpv.markupPanel.setMap(map);
     gpv.sharePanel.setMap(map);
 
+    //On Init set DefaultFunction Tab
+    if (appState.ActiveFunctionTab != 0){
+      $('#mapMain .leaflet-control-container .leaflet-top').addClass('pnlMapMenus_option');
+      $('.leaflet-control').css('margin-left', '3px')
+     
+    }
+    
+
     // =====  control events  =====
 
     $(window).on("resize", function () {
@@ -194,6 +202,8 @@ var GPV = (function (gpv) {
       placement: 'right',
       trigger: 'manual'
     });
+
+    
 
     //  ==== fort detail panel display ( in large device) ====
     $("#cmdShowDetails").on("click", function () {
@@ -489,7 +499,6 @@ var GPV = (function (gpv) {
     var pnlFuctionLeft, pnlMapSizerLaft, pnlFunctionTabsWidth, pnlFunctionWidth;
     // ==== fuction for Show Panel ====
     function showFunctionPanel(name) {
-      
       if ($(window).width() < 700) {
         if ($("#btnHamburgerClose").hasClass("hidden")) {
           $("#btnHamburgerClose").removeClass("hidden");

@@ -188,7 +188,7 @@ padding: 0 10px;*/
 }
 
 .MapMenu > .dropdown-menu li {
-  cursor: pointer;
+  cursor: default;
   display: inline-block;
   height: 28px;
   padding: 4px 8px;
@@ -392,4 +392,71 @@ input.MarkupText {
   top: -21px;
   border: solid 1px rgba(128, 128, 128, 0.5);
   background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Styles dragged from leaflet.css */
+.leaflet-top,
+ .leaflet-bottom { 
+  float:right;
+}
+.leaflet-top {
+  top: 40px;
+  margin-top:6px;
+  float:right;
+}
+.leaflet-right{
+  margin:5% 0.0% 5px 0;
+}
+
+
+/* =============================Map Custom DropDown=========================== */
+
+.customMaps {
+  position: relative;
+  /*Don't really need this just for demo styling*/
+  float: left;
+  min-width: calc(100% / 2 - 8px);
+}
+
+.customMaps:after {
+  content: url('../Images/arrow.png'); /*\f078*/
+  font: normal normal normal 17px/1 FontAwesome;
+  color: #b7b7b7;
+  right: 11px;
+  top: 0px;
+  height: 29px;
+  padding: 5px 0px 0px 8px;
+  border-left: 1px solid #b7b7b7;
+  position: absolute;
+  pointer-events: none;
+  background-color: #fff;
+}
+
+/* IE11 hide native button (thanks Matt!) */
+select::-ms-expand {
+  display: none;
+}
+
+.customMaps button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Add some styling */
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: 29px;
+  float: right;
+  margin: 0px;
+  padding: 0px 40px 0px 5px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: #333;
+  background-color: #ffffff;
+  background-image: none;
+  border: none;
+  -ms-word-break: normal;
+  word-break: normal;
+  text-align: left;
+  outline: none;
 }

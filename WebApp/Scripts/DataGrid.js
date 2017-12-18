@@ -102,7 +102,7 @@
         }
 
         var align = right ? " align='right'" : "";
-        return "<td unselectable='on'>" + htmlEncode(v) + "</td>";
+        return "<td" + align + " unselectable='on'>" + htmlEncode(v) + "</td>";
       }).join("");
     }
 

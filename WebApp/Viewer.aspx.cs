@@ -140,63 +140,79 @@ public partial class Viewer : CustomStyledPage
     ucSharePanel.Initialize(_config, application);
     if (_appState.ActiveFunctionTab != FunctionTab.None)
     {
-      pnlFunctionTabs.Style["left"] = "0";
+      pnlFunctionTabs.Style["left"] = "0px";
       pnlFunctionTabs.Style["opacity"] = "1";
-      pnlFunction.Style["left"] = "160px";
+      pnlFunction.Style["left"] = "161px";
       pnlFunction.Style["opacity"] = "1";
-      pnlMapMenus.Attributes["class"]= "pnlMapMenus_option";
+			pnlMapMenus.Attributes["class"]="pnlMapMenus_option";
+			logo.Attributes["class"]="pnlMapMenus_option";
+			
+
     }
     if ((_appState.FunctionTabs & FunctionTab.Search) == FunctionTab.Search)
     {
       tabSearch.Style["display"] = "block";
+		
       ucSearchPanel.Initialize(application);
       if (_appState.ActiveFunctionTab == FunctionTab.Search)
       {
         pnlSearch.Style["display"] = "block";
+				tabSearch.Attributes["class"] +=" active";
+				
       }
     }
     if ((_appState.FunctionTabs & FunctionTab.Selection) == FunctionTab.Selection)
     {
       tabSelection.Style["display"] = "block";
+	
       ucSelectionPanel.Initialize(launchParams);
       if (_appState.ActiveFunctionTab == FunctionTab.Selection)
       {
-        pnlSelection.Style["display"] = "block";
+        pnlSelection.Style["display"] += "block";
+				tabSelection.Attributes["class"]+=" active";
       }
     }
     if ((_appState.FunctionTabs & FunctionTab.Legend) == FunctionTab.Legend)
     {
       tabLegend.Style["display"] = "block";
+			
       if (_appState.ActiveFunctionTab == FunctionTab.Legend)
       {
-        pnlLegend.Style["display"] = "block"; 
+        pnlLegend.Style["display"] = "block";
+				tabLegend.Attributes["class"]+=" active";
       }
     }
     if ((_appState.FunctionTabs & FunctionTab.Location) == FunctionTab.Location)
     {
       tabLocation.Style["display"] = "block";
+
       ucLocationPanel.Initialize(_config, _appState, application);
       if (_appState.ActiveFunctionTab == FunctionTab.Location)
       {
         pnlLocation.Style["display"] = "block";
+				tabLocation.Attributes["class"]+=" active";
       }
     }
     if ((_appState.FunctionTabs & FunctionTab.Markup) == FunctionTab.Markup)
     {
       tabMarkup.Style["display"] = "block";
+			
       ucMarkupPanel.Initialize(_config, _appState, application, launchParams);
       if (_appState.ActiveFunctionTab == FunctionTab.Markup)
       {
         pnlMarkup.Style["display"] = "block";
+				tabMarkup.Attributes["class"]+=" active";
       }
     }
     if ((_appState.FunctionTabs & FunctionTab.Share) == FunctionTab.Share)
     {
       tabShare.Style["display"] = "block";
+		
 
       if (_appState.ActiveFunctionTab == FunctionTab.Share)
       {
         pnlShare.Style["display"] = "block";
+				tabShare.Attributes["class"]+=" active";
       }
     }
     ShowLevelSelector(application);

@@ -112,5 +112,59 @@ Date 13-09-2017
 #mCSB_5_container{
     margin-right: 0px !important;
 }
+
+/* ============================= Custom DropDown=========================== */
+.customLocation {
+  position: relative;
+  /*Don't really need this just for demo styling*/
+  float: none !important;
+  min-width: calc(100%/2 - 8px);
+  width: auto !important;
+}
+
+.customLocation:after {
+  content: url('../Images/arrow.png'); /*\f078*/
+  font: normal normal normal 17px/1 FontAwesome;
+  color: #b7b7b7;
+  right: 11px;
+  top: 0px;
+  height: 29px;
+  padding: 5px 0px 0px 8px;
+  border-left: 1px solid #b7b7b7;
+  position: absolute;
+  pointer-events: none;
+  background-color: #fff;
+  margin: 10px;
+}
+
+/* IE11 hide native button (thanks Matt!) */
+select::-ms-expand {
+  display: none;
+}
+
+.customLocation select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Add some styling */
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: 29px;
+  float: right;
+  margin: 0px;
+  padding: 0px 40px 0px 5px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: #333;
+  background-color: #ffffff;
+  background-image: none;
+  border: none;
+  -ms-word-break: normal;
+  word-break: normal;
+  text-align: left;
+  outline: none;
+}
+
 /* ends here */
 
