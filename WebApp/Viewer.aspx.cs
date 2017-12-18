@@ -104,31 +104,41 @@ public partial class Viewer : CustomStyledPage
     {
       AddMetaTag("keywords", application.MetaKeywords);
     }
-		//string tool=launchParams.ContainsKey("tool")?launchParams["tool"]:(!application.IsDefaultToolNull()?application.DefaultTool:null);
 
-		//if(!String.IsNullOrEmpty(tool))
-		//{
-		//	HtmlControl defaultTool=Page.FindControl("opt"+tool, false) as HtmlControl;
-
-		//	if(defaultTool!=null)
-		//	{
-		//		defaultTool.Attributes["class"]+=" Selected";
-		//	}
-		//}
-
+		// Default tool for Viewer and Markup 
 		string tool=launchParams.ContainsKey("tool")?launchParams["tool"]:(!application.IsDefaultToolNull()?application.DefaultTool:null);
 		if(!String.IsNullOrEmpty(tool))
 		{
-			HtmlControl defaultTool=Page.FindControl(("opt"+tool), false) as HtmlControl;
 			
-			if(defaultTool!=null)
+			if(tool=="identify"||tool=="select")
 			{
-				defaultTool.Attributes["class"]+=" Selected ";
+				HtmlControl defaultTool=Page.FindControl(("opt"+tool), false) as HtmlControl;
+				if(defaultTool!=null)
+				{
+					defaultTool.Attributes["class"]+=" Selected ";
+
+				}
+				HtmlControl MarkupDefaultTool=Page.FindControl(("optDrawLine"), false) as HtmlControl;
+				MarkupDefaultTool.Attributes["class"]+=" Selected ";
+			}
+			else
+			{
+				HtmlControl defaultTool=Page.FindControl(("optMarkupTool"), false) as HtmlControl;
+				if(defaultTool!=null)
+				{
+					defaultTool.Attributes["class"]+=" Selected ";
+					HtmlControl MarkupDefaultTool=Page.FindControl(("opt"+tool), false) as HtmlControl;
+					MarkupDefaultTool.Attributes["class"]+=" Selected ";
+
+				}
 			}
 		}
-		else						{
-			HtmlControl defaultTool=Page.FindControl("optIdentify", false) as HtmlControl;
-			defaultTool.Attributes["class"]+=" Selected ";
+		else  // If User not set any Default tool then Default tool
+		{
+			HtmlControl defaultTool=Page.FindControl(("optIdentify"), false) as HtmlControl;
+			optIdentify.Attributes["class"]+=" Selected ";
+			HtmlControl MarkupDefaultTool=Page.FindControl(("optDrawLine"), false) as HtmlControl;
+			MarkupDefaultTool.Attributes["class"]+=" Selected ";
 		}
 
     Title = application.DisplayName;
@@ -138,15 +148,28 @@ public partial class Viewer : CustomStyledPage
     ucLegendPanel.Initialize(_config, _appState, application);
     ucBaseMapPanel.Initialize(_config, _appState, application);
     ucSharePanel.Initialize(_config, application);
-    if (_appState.ActiveFunctionTab != FunctionTab.None)
+    if (_appState.ActiveFunctionTab != FunctionTab.None)		// If any Default Function tab
     {
-      pnlFunctionTabs.Style["left"] = "0px";
-      pnlFunctionTabs.Style["opacity"] = "1";
-      pnlFunction.Style["left"] = "161px";
-      pnlFunction.Style["opacity"] = "1";
-			pnlMapMenus.Attributes["class"]="pnlMapMenus_option";
-			logo.Attributes["class"]="pnlMapMenus_option";
-			
+			HtmlControl defaultToolSelect=Page.FindControl("optSelect", false) as HtmlControl;
+			HtmlControl defaultToolDraw=Page.FindControl("optMarkupTool", false) as HtmlControl;
+			HtmlControl defaultToolIdentify=Page.FindControl("optIdentify", false) as HtmlControl;
+			defaultToolSelect.Attributes.Remove("Selected");
+			defaultToolDraw.Attributes.Remove("Selected");
+			defaultToolIdentify.Attributes.Remove("Selected");
+			if(_appState.ActiveFunctionTab==FunctionTab.Selection)
+			{
+				HtmlControl defaultTool=Page.FindControl("optSelect", false) as HtmlControl;
+				defaultToolSelect.Attributes["class"]+=" Selected ";
+			}
+			else if(_appState.ActiveFunctionTab==FunctionTab.Markup)
+			{
+				HtmlControl defaultTool=Page.FindControl("optMarkupTool", false) as HtmlControl;
+				defaultToolDraw.Attributes["class"]+=" Selected ";
+			}
+			else {
+				HtmlControl defaultTool=Page.FindControl("optIdentify", false) as HtmlControl;
+				defaultToolIdentify.Attributes["class"]+=" Selected ";
+			}
 
     }
     if ((_appState.FunctionTabs & FunctionTab.Search) == FunctionTab.Search)

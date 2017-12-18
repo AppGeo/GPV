@@ -181,6 +181,8 @@ var GPV = (function (gpv) {
       $("#pnlMarkupGrid").removeClass("tabMrkp");
     });
 
+  
+
     // ==== this is for markup tool functionallity
     $("#optColorPicker,#optPaintBucket").on("click", function () {
       gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "point" } });
@@ -230,12 +232,13 @@ var GPV = (function (gpv) {
       gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "polyline", style: { color: c, fill: false } }, doubleClickZoom: false });
     }
 
-    $("#optDrawPolygon").on("click", function () {
+ $("#optDrawPolygon").on("click", function () {
       var c = getMarkupColor();
       gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "polygon", style: { color: c, fill: true, fillColor: c } }, doubleClickZoom: false });
     });
 
     // =====  private functions  =====
+
 
     function addMarkup(e, option) {
       if (!isValid(e.shape)) {

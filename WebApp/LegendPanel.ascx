@@ -23,7 +23,7 @@ limitations under the License.
       <span class="topLftTxt ">
         <span class="topTxt">Maps</span>
         <a class ="helpIcon" type ="maps">
-          <img src="Images/faq-icon.png"></a>
+          </a>
       </span>
       <span class="rightCol">
         <a class="prev_arrw FunctionExit" aria-hidden="true"></a>

@@ -24,7 +24,7 @@ limitations under the License.
       <span class="topLftTxt ">
         <span class="topTxt">Selection</span>
         <a class ="helpIcon" type ="selection">
-          <img src="Images/faq-icon.png"></a>
+         </a>
       </span>
       <span class="rightCol">
         <a class="prev_arrw FunctionExit" aria-hidden="true"></a>
@@ -68,8 +68,8 @@ limitations under the License.
     </div>
     <div id="pnlQueryCommand topMargin" class="frm_row ">
       <span id="labSelectionCount" class="floatLeft">None selected</span>
-      <button id="cmdMailingLabels" class="Disabled btn frmBtn mailingLblBtn" title="Mailing Labels">Mailing Labels</button>
-      <button id="cmdExportData" class="Disabled btn frmBtn spreadsheetBtn" title="Spreadsheet">Spreadsheet</button>
+      <button id="cmdMailingLabels" class="Disabled btn frmBtn mailingLblBtn" title="Mailing Labels"><span class="lbl"></span><span class="txt">Mailing Labels</span></button>
+      <button id="cmdExportData" class="Disabled btn frmBtn spreadsheetBtn" title="Spreadsheet"><span class="lbl"></span><span class="txt">Spreadsheet</span></button>
     </div>
   </div>
 </div>

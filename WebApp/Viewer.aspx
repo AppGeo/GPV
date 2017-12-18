@@ -46,8 +46,8 @@ limitations under the License.
           <div class="rightCol">
             <ul class="rightLinks">
               <span id="cmdShowDetails" class="glyphicon glyphicon-option-vertical" title="Show/hide details panel" style="font-size: 22px;"></span>
-              <a id="cmdHelp" runat="server" class="CommandLink" title="Show the help pages" href="Help.aspx" target="help"><span class="helpTxt ">Help</span></a>
-              <span id="cmdEmail" title="Get a link to this map for emailing"><span class="fa fa-link"></span>Get Link</span>
+              <a id="cmdHelp" runat="server" class="CommandLink" title="Show the help pages" href="Help.aspx" target="help"><span class="helpTxt "> <span class="lbl"></span><span class="txt">Help</span></span></a>
+              <span id="cmdEmail" title="Get a link to this map for emailing"><span class="lbl"></span><span class="txt">Get Link</span></span>
               <div id="pnlEmail" class="input-group">
                 <textarea id="lnkEmail" readonly="readonly" class="form-control custom-control" rows="3"></textarea>
                 <span id="cmdEmailClose" class="input-group-addon btn">x</span>
@@ -85,8 +85,7 @@ limitations under the License.
                 </li>
                 <li id="tabMobDetails" runat="server" class="MenuItem Normal" >
                   <a>
-                    <span class="linkIcon detailsICN" title="Selection">
-                      <img src="Images/details-icon.png"></span>
+                    <span class="linkIcon detailsICN" title="Selection">&nbsp;</span>
                     <span class="linkTxt ">Details</span>
                   </a>
                 </li>
@@ -156,7 +155,7 @@ limitations under the License.
               <div class="layerImagePanel baseMapImage">
                 <label style="width: 100%; height: 100%;">
                   <input id="pnlBaseMap" style="display: none;" type="checkbox" />
-                  <img class="layerImage" src="Images/dropdownMap-icon.jpg" title="Overlays and Basemaps" />
+                  <span class="layerImage" title="Overlays and Basemaps"></span>
                 </label>
               </div>
               <div id="pnlBaseLayer" style="display: none; margin-top: 13px">
@@ -166,27 +165,29 @@ limitations under the License.
             <div id="pnlMapTools" class="MapMenu mapNavigation ">
               <div class="selectCol">
                 <button class=" dropdown identify" type="button" id="btnToolMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Tool">
-                  <span id="selectedTool">
-                    <img class="flag " src="Images/info-icon.png" alt="" />
+                    <span class="rightArrw"></span>
+                    <span id="selectedTool">
+                    <span class="flag mapToolId"></span>                    
                     <span class="txt glyphicon">Identify</span></span>
                 </button>
                 <ul id="selectMapTools" class="dropdown-menu dropdown" aria-labelledby="btnToolMenu">
                   <li id="optIdentify" runat="server" class="Button MapTool"><a href="#">
-                    <img class="flag " src="Images/info-icon.png" alt="" />
+                    <span class="flag mapToolId"></span>
                     <span class="txt glyphicon">Identify</span></a></li>
                   <li id="optSelect" runat="server" class="Button MapTool"><a href="#">
-                    <img class="flag " src="Images/select-icon.png" alt="" />
+                <span class="flag mapToolSelect"></span>
                     <span class="txt glyphicon">Select</span></a>
                   </li>
                   <li id="optMarkupTool" runat="server" class="Button MapTool"><a href="#">
-                    <img class="flag " src="Images/draw-icon.png" alt="" />
+                                        <span class="flag mapToolDraw"></span>
                     <span class="txt glyphicon">Draw</span></a></li>
                 </ul>
               </div>
             </div>
             <div id="pnlMapLevels" runat="server" class="MapMenu" style="display: none">
               <button class="frmSelect dropdown-toggle" type="button" id="btnMapLevel" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Level">
-                <span id="selectedLevel" runat="server"></span>
+               <span class="rightArrw" ></span>
+                 <span id="selectedLevel" runat="server"></span>
               </button>
               <ul id="selectMapLevel" class="dropdown-menu " aria-labelledby="btnMapLevel">
                 <asp:PlaceHolder ID="phlMapLevel" runat="server"></asp:PlaceHolder>

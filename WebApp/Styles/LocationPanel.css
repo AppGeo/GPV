@@ -123,18 +123,21 @@ Date 13-09-2017
 }
 
 .customLocation:after {
-  content: url('../Images/arrow.png'); /*\f078*/
+    content: " ";
   font: normal normal normal 17px/1 FontAwesome;
   color: #b7b7b7;
   right: 11px;
-  top: 0px;
+  top: 0;
   height: 29px;
-  padding: 5px 0px 0px 8px;
+  padding: 5px 0 0 8px;
   border-left: 1px solid #b7b7b7;
   position: absolute;
   pointer-events: none;
   background-color: #fff;
   margin: 10px;
+  width: 21px;
+  background-image: url(../Images/UI/all-icons.png);
+  background-position: -184px -92px;
 }
 
 /* IE11 hide native button (thanks Matt!) */

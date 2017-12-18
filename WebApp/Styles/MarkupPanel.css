@@ -152,15 +152,15 @@ label#labMarkupLock {
     position: relative;
 }*/
 .btnSquare{
-    width: 20px;
-    height: 16px;
-    background: #0099cc;
-    display: inline-block;
-    margin-right: 5px;
-    position: absolute;
-    left: 7px;
-    position: absolute !important;
-    top: 5px !important;
+  width: 20px;
+  height: 16px;
+  background: #0099cc;
+  display: inline-block;
+  margin-right: 5px;
+  position: absolute;
+  left: 7px;
+  position: absolute !important;
+  top: 5px !important;
 }
 .btnSquare.grey{
     background: #cccccc !important;
@@ -332,11 +332,133 @@ New Style for Markup Panel
     padding-right: 0;
     width: 95%;
 }
+li.MapTool span:not(.glyphicon), #selectedTool span:not(.glyphicon), #selectedMarkupTool span:not(.glyphicon) {
+  background-image: url(../Images/UI/all-icons.png);
+  /*background-image: url(../Images/UI/Icons.png);*/
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  vertical-align: middle;
+}
+
+.pan {
+  background-position: -768px 0px; /* Select.gif */
+}
+
+.select {
+  background-position: -816px 0px; /* Select.gif */
+}
+
+#optSelect.Disabled {
+  background-position: -840px 0px; /* SelectDisable.gif */
+}
+
+.draw-point {
+  background-position: -44px -140px; /* DrawPoint.gif */
+}
+
+.MapTooldraw-point {
+  background: url(../Images/draw-icon.png);
+}
+
+.MapToolselect {
+  background: url(../Images/select-icon.png);
+}
+
+.MapToolinfo-sign {
+  background: url(../Images/info-icon.png);
+}
+
+#optDrawPoint.Disabled {
+  background-position: -456px 0px; /* DrawPointDisable.gif */
+}
+
+.draw-line {
+  background-position: -8px -140px; /* DrawLine.gif */
+}
+
+#optDrawLine.Disabled {
+  background-position: -408px 0px; /* DrawLineDisable.gif */
+}
+
+.draw-polygon {
+  background-position: -78px -140px; /* DrawPolygon.gif */
+}
+
+#optDrawPolygon.Disabled {
+  background-position: -504px 0px; /* DrawPolygonDisable.gif */
+}
+
+.draw-circle {
+  background-position: -114px -140px; /* DrawCircle.gif */
+}
+
+#optDrawCircle.Disabled {
+  background-position: -264px 0px; /* DrawCircleDisable.gif */
+}
+
+.draw-coordinates {
+  background-position: -187px -140px; /* DrawCoordinates.gif */
+}
+
+#optDrawCoordinates.Disabled {
+  background-position: -312px 0px; /* DrawCoordinatesDisable.gif */
+}
+
+.draw-length {
+  background-position: -341px -139px; /* DrawLength.gif */
+}
+
+#optDrawLength.Disabled {
+  background-position: -360px 0px; /* DrawLengthDisable.gif */
+}
+
+.draw-area {
+  background-position: -378px -139px; /* DrawArea.gif */
+}
+
+#optDrawArea.Disabled {
+  background-position: -216px 0px; /* DrawAreaDisable.gif */
+}
+
+.delete-markup {
+  background-position: -225px -140px; /* Delete.gif */
+}
+
+#optDeleteMarkup.Disabled {
+  background-position: -168px 0px; /* DeleteDisable.gif */
+}
+
+.color-picker {
+  background-position: -260px -140px; /* ColorPicker.gif */
+}
+
+#optColorPicker.Disabled {
+  background-position: -96px 0px; /* ColorPickerDisable.gif */
+}
+
+.paint-bucket {
+  background-position: -302px -140px; /* PaintBucket.gif */
+}
+
+#optPaintBucket.Disabled {
+  background-position: -744px 0px; /* PaintBucketDisable.gif */
+}
+
+.draw-text {
+  background-position: -149px -140px; /* DrawText.gif */
+}
+
+#optDrawText.Disabled {
+  background-position: -552px 0px; /* DrawTextDisable.gif */
+}
+
 li.MapTool span:not(.glyphicon), #selectedTool span:not(.glyphicon), #selectedMarkupTool span:not(.glyphicon){
     width: 26px;
 }
 #mCSB_6_container{
   height: auto;
+ min-height:500px;
 }
 
 /* ===========================DrowTools Custom DropDown============================= */
@@ -349,8 +471,8 @@ li.MapTool span:not(.glyphicon), #selectedTool span:not(.glyphicon), #selectedMa
 }
 
 .customDrawTools:after {
-  content: url(../Images/arrow.png);
-  /* font: normal normal normal 17px/1 FontAwesome;*/
+  content: " ";
+  font: normal normal normal 17px/1 FontAwesome;
   color: #b7b7b7;
   right: 11px;
   top: 0;
@@ -360,6 +482,9 @@ li.MapTool span:not(.glyphicon), #selectedTool span:not(.glyphicon), #selectedMa
   position: absolute;
   pointer-events: none;
   background-color: #fff;
+  width: 21px;
+  background-image: url(../Images/UI/all-icons.png);
+  background-position: -184px -92px;
 }
 
 /* IE11 hide native button (thanks Matt!) */
@@ -390,13 +515,13 @@ select::-ms-expand {
   border-radius: 3px;
 }
 .customDrawTools dl ul li.toolTitle{
-    padding: 4px 0 4px 12px;
-    color: #040404;
-    font-size: 14px;
-    font-weight: 500;
-    /* border-bottom: 1px solid #e6e6e6; */
-    margin-bottom: 5px;
-    background-color: #fbebbe;
+  padding: 4px 0 4px 12px;
+  color: #040404;
+  font-size: 14px;
+  font-weight: 500;
+  /* border-bottom: 1px solid #e6e6e6; */
+  margin-bottom: 5px;
+  background-color: #fbebbe;
 }
 
 

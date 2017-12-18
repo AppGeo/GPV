@@ -22,7 +22,7 @@ limitations under the License.
       <span class="topLftTxt ">
         <span class="topTxt">Details</span>
         <a href="#">
-          <img src="Images/faq-icon.png"></a>
+        </a>
       </span>
       <span class="rightCol">
         <a class="prev_arrw FunctionExit" aria-hidden="true"></a>
@@ -32,7 +32,7 @@ limitations under the License.
 </div>
 <div class="frm_box">
   <div id="pnlData" class="frm_box">
-    <div class="frm_row noTopMargin">
+    <div class="frm_row noTopMargin customDetails">
       <select id="ddlMobDataTheme" class="frmSelect" title="Data category"></select>
       <span class="dtlPrint"><a id="cmdMobDataPrint" href="#" class="printRght_icon"></a></span>
     </div>
