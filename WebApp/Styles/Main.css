@@ -298,6 +298,10 @@ header.main .logo{
 .shareICN{
     background-position: -148px -96px;
 }
+.detailsICN{
+    background-position: -148px -8px;
+    height: 23px;
+}
 
 
 /* Ends there */
@@ -306,19 +310,21 @@ header.main .logo{
     display: inline-block;
 }
 .topSection .hamburger{
-    background-image: url(../Images/hamburger-icon.png);
-    background-repeat: no-repeat;
+    background-image: url(../Images/UI/all-icons.png);
+    /* background-repeat: no-repeat; */
     width: 29px;
     height: 18px;
     display: inline-block;
+    background-position: -256px -11px;
 }
 .topSection .hamburger:hover{
-    background-image: url(../Images/hamburger-icon_over.png);
+    background-position: -298px -11px;    
 }
 .hamburgerClose{
-    background-image: url(../Images/close-btn.png);
-    background-size: 65%;
-    background-position: 75% center;
+    /*background-image: url(../Images/close-btn.png);*/
+    background-image: url(../Images/UI/all-icons.png);
+    /*background-size: 65%;*/
+    background-position: -5px -55px;
     height: 18px;
     width: 29px;
     display: inline-block;
@@ -336,6 +342,12 @@ header.main .logo{
 }
 .helpIcon{
     position: relative;
+    width: 18px;
+    height: 18px;
+    background-image: url(../Images/UI/all-icons.png);
+    display: inline-block;
+    background-position: -224px -11px;
+    top: 3px;
 }
 .dtlInfoPopup{
     background-color: #fff;
@@ -372,14 +384,15 @@ header.main .logo{
 .dtlInfoPopup .helpClose{
     width: 10px;
     height: 10px;
-    background-image: url(../images/helpClose.png);
-    background-repeat: no-repeat;
+    background-image: url(../images/UI/all-icons.png);
     position: absolute;
     right: 13px;
     top: 12px;
+    background-position: -84px -58px;
+
 }
 .dtlInfoPopup .helpClose:hover{
-    background-image: url(../images/helpClose-over.png);
+    background-position: -119px -58px;    
 }
 /* left nav panel ends here */
 
@@ -415,22 +428,23 @@ header.main .logo{
 .topHead .prev_arrw{
     width: 10px;
     height: 17px;
-    background-image: url(../Images/prev_arrw.png);
-    background-repeat: no-repeat;
+    background-image: url(../Images/UI/all-icons.png);
     display: inline-block;
+    background-position: 105px -54px;
 }
 .topHead .nxt_arrw{
     width: 10px;
     height: 17px;
-    background-image: url(../Images/nxt_arrw.png);
-    background-repeat: no-repeat;
+    background-image: url(../Images/UI/all-icons.png);
+    /*background-repeat: no-repeat;*/
+    background-position: -345px -54px;
     display: inline-block;
 }
 .topHead .nxt_arrw:hover{
-    background-image: url(../Images/nxt_arrw_over.png);
+    background-position: -383px -54px;    
 }
 .topHead .prev_arrw:hover{
-    background-image: url(../Images/prev_arrw_over.png);
+    background-position: 67px -54px;    
 }
 .frm_box{
     width: 100%;
@@ -609,8 +623,9 @@ label{
 .dropdown dd ul li a { padding:5px; display:block;cursor: default;}
 .dropdown dd ul li a:hover { background-color:#1e90ff; color: #fff;}/*ddf0e3*/
 
-.dropdown img.flag { border:none; vertical-align:middle; margin-left:10px; 
+.dropdown .flag { border:none; vertical-align:middle; margin-left:10px; 
                     position: relative; top: -1px;}
+
 .dropdown .imgflag { border:none; vertical-align:middle; margin-left:10px; 
                     position: relative; top: -1px;}
 
@@ -643,12 +658,39 @@ label{
     height:26px;
 }
 .mapNavigation button {
-    background:#ffffff url("../Images/index.png") no-repeat scroll right center;
+    /*background:#ffffff url("../Images/index.png") no-repeat scroll right center;*/
+/*    background-image: url(../Images/UI/all-icons.png);
+    background-position:0 0; 
+    background-repeat: no-repeat;*/
     display:block;
     padding-right:20px;
     border:none; width:100%;
     border-radius: 3px;
     height: 30px;
+}
+/*.dropdown:after{
+    background-image: url(../Images/UI/all-icons.png);
+    background-position:0 0; 
+    background-repeat: no-repeat;
+    width: 12px;
+    height: 10px;
+    position: absolute;
+    top: 2px;
+    left: 3px;
+}*/
+.dropdown .rightArrw{
+    display: inline-block;
+    width: 12px;
+    height: 10px;
+    background-image: url(../Images/UI/all-icons.png);
+    position: absolute;
+    top: 9px;
+    right: 0;
+    background-position: -10px 10px;
+    background-position: -344px -101px;
+    z-index: 9999999999;
+    background-repeat: no-repeat;
+    margin-right: 5px;
 }
 .mapNavigation ul{
     background-color: #172936;
@@ -663,9 +705,52 @@ label{
 .mapNavigation  ul li a:hover{
     background-color: #2c4d65;
 }
-.selectCol .dropdown img.flag {
+.selectCol .dropdown .flag {
     margin-left: 5px;
     cursor: default;
+    background-image: url(../Images/UI/all-icons.png);
+    width: 16px;
+    height: 16px;
+}
+.selectCol .dropdown .mapToolId{
+    background-position: -226px -99px;
+    width: 15px;
+    height: 15px;
+}
+.selectCol .dropdown .mapToolSelect{
+    background-position: -263px -98px;
+}
+.selectCol .dropdown .mapToolDraw{
+    background-position: -306px -98px;
+}
+.mapNavigation .selectCol .identify #selectedTool a{
+    display: inline-block;
+    width: 100%;
+    float: left;
+    text-align: left;
+}
+.mapNavigation .selectCol .identify #selectedTool .flag{
+    background-image: url(../Images/UI/all-icons.png);
+    background-repeat: no-repeat;
+    width: 16px;
+    height: 16px;
+}
+.mapNavigation .selectCol .identify #selectedTool .mapToolId{
+    background-position: -226px -99px;
+}
+.mapNavigation .selectCol .identify #selectedTool .mapToolSelect{
+    background-position: -263px -98px;    
+}
+.mapNavigation .selectCol .identify #selectedTool .mapToolDraw{
+    background-position: -306px -98px;   
+}
+#selectedTool .txt{ 
+    position: relative;
+    top: 0px;
+}
+#selectedTool .flag{
+    position: relative;
+    top: -2px;   
 }
 .selectCol .dropdown span.txt {
    /* padding-left: 3px;*/
@@ -768,9 +853,10 @@ label{
 }
 .layerImage{
     width: 26px; 
+    height: 25px;
     margin-top: 0px; 
     position: absolute; 
-    cursor: pointer; 
+    cursor: pointer;
     top: 0; 
     left: 0; 
     right: 0; 
@@ -780,6 +866,8 @@ label{
     transition: .4s;
     -webkit-box-shadow: 0 1px 5px rgba(0,0,0,.65);
     box-shadow: 0 1px 5px rgba(0,0,0,.65);
+    background-image: url(../Images/UI/all-icons.png);
+    background-position: -187px -7px;
 }
 .btn-secondary.active, .btn-secondary:active, .show>.btn-secondary.dropdown-toggle {
     background-color: #727b84;
@@ -797,13 +885,27 @@ label{
     padding: 8px;
 }
 button.dropdown-toggle{
-    background: #ffffff url('../Images/index.png') no-repeat scroll right center;
+   /* background: #ffffff url('../Images/index.png') no-repeat scroll right center;*/
+    background-color: #fff;
     display: block;
-    padding-right: 20px;
+    padding-right: 28px;
     border: none;
     width: 100%;
     border-radius: 3px;
     height: 26px;
+}
+#pnlMapLevels .dropdown-toggle .rightArrw{
+    display: inline-block;
+    width: 11px;
+    height: 8px;
+    background-image: url(../Images/UI/all-icons.png);
+    position: absolute;
+    top: 9px;
+    right: 0;
+    background-position: -382px -101px;
+    z-index: 9999999999;
+    background-repeat: no-repeat;
+    margin-right: 5px;
 }
 /* ends here */
 

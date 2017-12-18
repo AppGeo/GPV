@@ -13,182 +13,226 @@
 *  limitations under the License.
 */
 
-#pnlQuery #mCSB_2 table tr{
-	cursor: default;
+#pnlQuery #mCSB_2 table tr {
+  cursor: default;
 }
+
 #selectionDivider {
-	left: 8px;
-	right: 8px;
-	top: 290px;
-	bottom: auto;
-	height: 8px;
-	cursor: n-resize;
-	z-index: 3;
+  left: 8px;
+  right: 8px;
+  top: 290px;
+  bottom: auto;
+  height: 8px;
+  cursor: n-resize;
+  z-index: 3;
 }
 
 #pnlDataSizer {
-	top: 298px;
-	min-height: 212px;
+  top: 298px;
+  min-height: 212px;
 }
 
 #ddlQuery {
-	width: 99%;
-	margin: 2px;
+  width: 99%;
+  margin: 2px;
 }
 
 #pnlSelectTools {
-	top: auto;
-	font-size: 13px;
+  top: auto;
+  font-size: 13px;
 }
 
 #pnlQueryGrid {
-	height: auto;
+  height: auto;
 }
 
 #pnlQueryCommand {
-	top: auto;
-	bottom: 0px;
-	height: 41px;
+  top: auto;
+  bottom: 0px;
+  height: 41px;
 }
 
 #cmdMailingLabels, #cmdExportData {
-	position: relative;
-	top: 3px;
-	float: right;
+  position: relative;
+  top: 3px;
+  float: right;
 }
 
 #cmdExportData {
-	margin-right: 5px;
+  margin-right: 5px;
 }
 
-#cmdMailingLabels.Disabled, #cmdExportData.Disabled {
-	display: none;
-}
+  #cmdMailingLabels.Disabled, #cmdExportData.Disabled {
+    display: none;
+  }
 
 /* ===========================SelectCustom DropDown============================= */
 
 .customSelect {
-	position: relative;
-	/*Don't really need this just for demo styling*/
-	float: left;
-	min-width: calc(100% / 2 - 8px);
+  position: relative;
+  /*Don't really need this just for demo styling*/
+  float: left;
+  min-width: calc(100% / 2 - 8px);
 }
 
-.customSelect:after {
-	content: url('../Images/arrow.png'); /*\f078*/
-	/* font: normal normal normal 17px/1 FontAwesome;*/
-	color: #b7b7b7;
-	right: 11px;
-	top: 0px;
-	height: 29px;
-	padding: 5px 0px 0px 8px;
-	border-left: 1px solid #b7b7b7;
-	position: absolute;
-	pointer-events: none;
-	background-color: #fff;
-}
+  .customSelect:after {
+    content: " ";
+    font: normal normal normal 17px/1 FontAwesome;
+    color: #b7b7b7;
+    right: 11px;
+    top: 0;
+    height: 29px;
+    padding: 5px 0 0 8px;
+    border-left: 1px solid #b7b7b7;
+    position: absolute;
+    pointer-events: none;
+    background-color: #fff;
+    width: 21px;
+    background-image: url(../Images/UI/all-icons.png);
+    background-position: -184px -92px;
+  }
 
 /* IE11 hide native button (thanks Matt!) */
 select::-ms-expand {
-	display: none;
+  display: none;
 }
 
 .customSelect select {
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	appearance: none;
-	/* Add some styling */
-	display: block;
-	width: 100%;
-	max-width: 320px;
-	height: 29px;
-	float: right;
-	margin: 0px;
-	padding: 0px 40px 0 5px;
-	font-size: 13px;
-	line-height: 1.75;
-	color: #333;
-	background-color: #ffffff;
-	background-image: none;
-	border: none;
-	-ms-word-break: normal;
-	word-break: normal;
-	outline: none;
-	text-overflow: ellipsis;
-	overflow: hidden;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Add some styling */
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: 29px;
+  float: right;
+  margin: 0px;
+  padding: 0px 40px 0 5px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: #333;
+  background-color: #ffffff;
+  background-image: none;
+  border: none;
+  -ms-word-break: normal;
+  word-break: normal;
+  outline: none;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 /* Ends here */
 
-#ddlQuery {	width: 100%;
-	margin: 0px;
+#ddlQuery {
+  width: 100%;
+  margin: 0px;
 }
 
 #labSelectionCount {
-	max-width: 60px;
-	display: inline-block;
-	position: relative;
-	top: -2px;
+  max-width: 60px;
+  display: inline-block;
+  position: relative;
+  top: -2px;
 }
 
-.frm_row .arrwAhead{
-		position: relative;
-}       
-.frm_row .arrwAhead .arrw{
-	width: 7px;
-	height: 9px;
-	background-image: url(../Images/left-arrw.png);
-	background-repeat: no-repeat;
-	position: absolute;
-	right: -12px;
-	top: 10px;
+.frm_row .arrwAhead {
+  position: relative;
 }
-.data_box{
-	width: 100%;
-	float: left;
+
+  .frm_row .arrwAhead .arrw {
+    width: 7px;
+    height: 9px;
+    background-image: url(../Images/UI/all-icons.png);
+    position: absolute;
+    right: -12px;
+    top: 10px;
+    background-position: -153px -59px;
+  }
+
+.data_box {
+  width: 100%;
+  float: left;
 }
-.spreadsheetBtn{
-	background-image: url(../Images/spreadsheet-icon.png);
-	background-repeat: no-repeat;
-	padding-left: 22px;
-	background-position: 5px 8px;
-}       
-.mailingLblBtn{     
-	background-image: url(../Images/maillingLbl-icon.png);
-	background-repeat: no-repeat;
-	padding-left: 19px;
-	background-position: 5px 8px;
+
+.spreadsheetBtn {
+  /*background-image: url(../Images/spreadsheet-icon.png);
+	background-repeat: no-repeat;*/
+  padding-left: 5px;
+  background-position: 5px 8px;
 }
+
+.spreadsheetBtn .lbl {
+  width: 14px;
+  height: 10px;
+  display: inline-block;
+  background-image: url(../Images/UI/all-icons.png);
+  background-position: -82px -101px;
+  background-repeat: no-repeat;
+  margin-right: 3px;
+}
+
+.spreadsheetBtn .text {
+  display: inline-block;
+}
+
+.mailingLblBtn {
+  /*	background-image: url(../Images/maillingLbl-icon.png);
+	background-repeat: no-repeat;*/
+  padding-left: 5px;
+  background-position: 5px 8px;
+}
+
+.mailingLblBtn .lbl {
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  background-image: url(../Images/UI/all-icons.png);
+  background-position: -266px -59px;
+  background-repeat: no-repeat;
+  margin-right: 3px;
+}
+
+.mailingLblBtn .text {
+  display: inline-block;
+}
+
 #pnlSelection .data_box {
-	height: calc(100vh - 420px);
-	overflow-y: auto;
-}
-#pnlQuery div.frm_box:nth-of-type(2){
-	margin-top: 3px;
-	padding-top: 0;
-	padding-bottom: 11px;
-}
-.markup .data_box {
-	/*height: calc(100vh - 334px);*/
-	height: initial;
+  height: calc(100vh - 420px);
+  overflow-y: auto;
 }
 
-#pnlQuery .upperSelection{
-	float: left;
-	width: 100%;
-	/* height: 35px; */
-	padding: 10px 15px;
-	font-size: 15px;
+#pnlQuery div.frm_box:nth-of-type(2) {
+  margin-top: 3px;
+  padding-top: 0;
+  padding-bottom: 11px;
 }
-#grdQuery{
-	width:95%;
-	margin-right : 10px;
+
+.markup .data_box {
+  /*height: calc(100vh - 334px);*/
+  height: initial;
 }
-#pnlSelection .frm_row{
-	margin-top: 15px;
+
+#pnlQuery .upperSelection {
+  float: left;
+  width: 100%;
+  /* height: 35px; */
+  padding: 10px 15px;
+  font-size: 15px;
 }
-#pnlSelection .frm_box{
-	margin-top: 10px;
+
+#grdQuery {
+  width: 95%;
+  margin-right: 10px;
 }
-#pnlSelectTools{
-	margin-top: 5px!important;
+
+#pnlSelection .frm_row {
+  margin-top: 15px;
+}
+
+#pnlSelection .frm_box {
+  margin-top: 10px;
+}
+
+#pnlSelectTools {
+  margin-top: 5px !important;
 }

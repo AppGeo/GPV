@@ -30,7 +30,7 @@ var GPV = (function (gpv) {
     var extentChangedHandlers = [];
     var mapRefreshedHandlers = [];
     var panelAnimationTime = 0;
-
+    console.log("appState", appState);
     // =====  controls required prior to map control creation  =====
 
     var $pnlDataDisplay = $("#pnlDataDisplay");
@@ -128,9 +128,25 @@ var GPV = (function (gpv) {
     gpv.sharePanel.setMap(map);
 
     //On Init set DefaultFunction Tab
-    if (appState.ActiveFunctionTab != 0){
-      $('#mapMain .leaflet-control-container .leaflet-top').addClass('pnlMapMenus_option');
-      $('.leaflet-control').css('margin-left', '3px')
+    if (appState.ActiveFunctionTab != 0) {
+    
+      
+      if ($(window).width() < 700) {
+        $("#pnlFunctionTabs").animate({ left: 0, opacity: "1.0" }, 600);
+        $("#pnlFunction").animate({ left: "50px", opacity: "1.0" }, 600);
+        $("#pnlFunction").css("display", "block");
+        $("#btnHamburger").addClass("hidden");
+        $("#btnHamburgerClose").removeClass("hidden");
+      }
+      else {
+        $("#pnlFunctionTabs").animate({ left: 0, opacity: "1.0" }, 600);
+        $("#pnlFunction").animate({ left: "161px", opacity: "1.0" }, 600);
+        $('.leaflet-control').css('margin-left', '3px');
+        $("#pnlMapMenus").addClass("pnlMapMenus_option");
+        $("#logo").addClass("pnlMapMenus_option");
+        $('#mapMain .leaflet-control-container .leaflet-top').addClass('pnlMapMenus_option');
+      
+      }
      
     }
     
@@ -316,6 +332,7 @@ var GPV = (function (gpv) {
     var $optIdentify = $("#optIdentify");
     if ($optIdentify.hasClass("Selected")) {
       gpv.selectTool($(this), map, { cursor: 'default', drawing: { mode: 'off' } });
+      $optIdentify.addClass("Selected");
     }
     // optIdentify Click event
     $optIdentify.on("click", function () {
@@ -474,7 +491,10 @@ var GPV = (function (gpv) {
         }
         pnlFunctionTabsWidth = $("#pnlFunctionTabs").width();
         if (($("#pnlFunction").css("opacity")) == "0")
-        { pnlFunctionWidth = 0; }
+        {
+          pnlFunctionWidth = 0;
+          $("#pnlFunction").css("display", "none");
+        }
         else
         { pnlFunctionWidth = $("#pnlFunction").width(); }
         $("#pnlFunction").animate({ left: pnlFunctionTabsWidth, opacity: $("#pnlFunction").css("opacity") }, panelAnimationTime, function () {
@@ -495,8 +515,9 @@ var GPV = (function (gpv) {
     function showFunctionMenu() {
       $(".share").hide();
       $(".FunctionExit").removeClass("FunctionExitOpen");
+
     }
-    var pnlFuctionLeft, pnlMapSizerLaft, pnlFunctionTabsWidth, pnlFunctionWidth;
+    //var pnlFuctionLeft, pnlMapSizerLaft, pnlFunctionTabsWidth, pnlFunctionWidth;
     // ==== fuction for Show Panel ====
     function showFunctionPanel(name) {
       if ($(window).width() < 700) {
@@ -514,9 +535,16 @@ var GPV = (function (gpv) {
         $("#selectedTool").html($("#optSelect").html());
       }
       else if (name == "Markup") {     // When Draw panel open , Draw tool selected in pnlMapTools Dropdown 
-        $("#optDrawLine").trigger("click");
+       
         $("#optMarkupTool").addClass("Selected");
         $("#selectedTool").html($("#optMarkupTool").html());
+        if (!$("#selectMarkupTools").hasClass("Selected"))
+        {
+          $("#optDrawLine").addClass(" Selected ");
+        }
+        $('#selectMarkupTools .Selected').trigger('click');
+        $("#selectedMarkupTool").html($("#selectMarkupTools .Selected").html());
+        
       }
       else {    // When Share ,Search , Map ,Location  panel open , Identify tool selected in pnlMapTools Dropdown 
         $("#optIdentify").addClass("Selected");
@@ -562,6 +590,7 @@ var GPV = (function (gpv) {
           map.invalidateSize();
           shingleLayer.redraw();
           if ($(window).width() > 700) { // for large device
+            $(".MenuItem").removeClass("active");
             $("#pnlMapMenus").removeClass("pnlMapMenus_option");
             $("#mapMain .leaflet-left").removeClass("pnlMapMenus_option");
             $(".leaflet-left .leaflet-control").css("margin-left", "10px");
@@ -629,6 +658,8 @@ var GPV = (function (gpv) {
               $pnlDataDisplay.show();
               $pnlDataDisplay.find("#spnDataTheme").text("Identify");
               $pnlDataDisplay.find("#ddlDataTheme").hide();
+              $("#pnlData .customDetails").removeClass("customDetails");
+              $("#pnlDataDisplay .customDetails").css("display", "none");
               $("#ddlMobDataTheme").hide();
               if ($("#tabMobDetails").css("display") != "none") {   // for small device trigger tabMobDetails click for showing Detail panel
                 $("#tabMobDetails").trigger("click");
@@ -910,12 +941,13 @@ var GPV = (function (gpv) {
 
     // ==== for custom scrollbar theme ====
     $('.customScroll').mCustomScrollbar({
-      theme: "3d-thick"
+      theme: "3d-thick",
+      //axis: "xy"
     })
-    //$('.horizontalScroll').mCustomScrollbar({
-    //  theme: "3d-thick",
-    //  axis: "x"
-    //})
+    $('.horizontalScroll').mCustomScrollbar({
+     theme: "3d-thick",
+      axis: "xy"
+    })
 
     // ==== Help popUp ====
     var showHelpPopup = function (type, ele) {

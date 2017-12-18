@@ -210,125 +210,7 @@ li.MapTool.Disabled {
   padding: 3px 10px;
 }
 
-li.MapTool span:not(.glyphicon), #selectedTool span:not(.glyphicon), #selectedMarkupTool span:not(.glyphicon) {
-  background-image: url(../Images/UI/Icons.png);
-  display: inline-block;
-  height: 20px;
-  width: 20px;
-  vertical-align: middle;
-}
 
-.pan {
-  background-position: -768px 0px; /* Select.gif */
-}
-
-.select {
-  background-position: -816px 0px; /* Select.gif */
-}
-
-#optSelect.Disabled {
-  background-position: -840px 0px; /* SelectDisable.gif */
-}
-
-.draw-point {
-  background-position: -432px 0px; /* DrawPoint.gif */
-}
-
-.MapTooldraw-point {
-  background: url(../Images/draw-icon.png);
-}
-
-.MapToolselect {
-  background: url(../Images/select-icon.png);
-}
-
-.MapToolinfo-sign {
-  background: url(../Images/info-icon.png);
-}
-
-#optDrawPoint.Disabled {
-  background-position: -456px 0px; /* DrawPointDisable.gif */
-}
-
-.draw-line {
-  background-position: -384px 0px; /* DrawLine.gif */
-}
-
-#optDrawLine.Disabled {
-  background-position: -408px 0px; /* DrawLineDisable.gif */
-}
-
-.draw-polygon {
-  background-position: -480px 0px; /* DrawPolygon.gif */
-}
-
-#optDrawPolygon.Disabled {
-  background-position: -504px 0px; /* DrawPolygonDisable.gif */
-}
-
-.draw-circle {
-  background-position: -240px 0px; /* DrawCircle.gif */
-}
-
-#optDrawCircle.Disabled {
-  background-position: -264px 0px; /* DrawCircleDisable.gif */
-}
-
-.draw-coordinates {
-  background-position: -288px 0px; /* DrawCoordinates.gif */
-}
-
-#optDrawCoordinates.Disabled {
-  background-position: -312px 0px; /* DrawCoordinatesDisable.gif */
-}
-
-.draw-length {
-  background-position: -336px 0px; /* DrawLength.gif */
-}
-
-#optDrawLength.Disabled {
-  background-position: -360px 0px; /* DrawLengthDisable.gif */
-}
-
-.draw-area {
-  background-position: -192px 0px; /* DrawArea.gif */
-}
-
-#optDrawArea.Disabled {
-  background-position: -216px 0px; /* DrawAreaDisable.gif */
-}
-
-.delete-markup {
-  background-position: -144px 0px; /* Delete.gif */
-}
-
-#optDeleteMarkup.Disabled {
-  background-position: -168px 0px; /* DeleteDisable.gif */
-}
-
-.color-picker {
-  background-position: -72px 0px; /* ColorPicker.gif */
-}
-
-#optColorPicker.Disabled {
-  background-position: -96px 0px; /* ColorPickerDisable.gif */
-}
-
-.paint-bucket {
-  background-position: -720px 0px; /* PaintBucket.gif */
-}
-
-#optPaintBucket.Disabled {
-  background-position: -744px 0px; /* PaintBucketDisable.gif */
-}
-
-.draw-text {
-  background-position: -528px 0px; /* DrawText.gif */
-}
-
-#optDrawText.Disabled {
-  background-position: -552px 0px; /* DrawTextDisable.gif */
-}
 
 #mapMain {
   left: 0px;
@@ -419,17 +301,20 @@ input.MarkupText {
 }
 
 .customMaps:after {
-  content: url('../Images/arrow.png'); /*\f078*/
-  font: normal normal normal 17px/1 FontAwesome;
-  color: #b7b7b7;
-  right: 11px;
-  top: 0px;
-  height: 29px;
-  padding: 5px 0px 0px 8px;
-  border-left: 1px solid #b7b7b7;
-  position: absolute;
-  pointer-events: none;
-  background-color: #fff;
+    content: " ";
+    font: normal normal normal 17px/1 FontAwesome;
+    color: #b7b7b7;
+    right: 11px;
+    top: 0;
+    height: 29px;
+    padding: 5px 0 0 8px;
+    border-left: 1px solid #b7b7b7;
+    position: absolute;
+    pointer-events: none;
+    background-color: #fff;
+    width: 21px;
+    background-image: url(../Images/UI/all-icons.png);
+    background-position: -184px -92px;
 }
 
 /* IE11 hide native button (thanks Matt!) */

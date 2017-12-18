@@ -32,6 +32,8 @@ var GPV = (function (gpv) {
 
     $(".Number,.NumberRange").numericInput();
     $(".Date,.DateRange").dateInput().datepicker({ showAnim: "slideDown", changeMonth: true, changeYear: true });
+    $(".SearchInputField:has(select)").addClass('customSearch');
+
 
     var $grdSearch = $("#grdSearch").dataGrid({
       multiSelect: true,

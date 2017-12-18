@@ -524,6 +524,15 @@ var GPV = (function (gpv) {
 
             if (!hasRows) {
               $("#cmdMailingLabels,#cmdExportData").addClass("Disabled");
+              // clear detail tab data if exists
+              $("#pnlDataList").empty().append('<div class="DataList">' +
+              '<p class="dtlPara" style="text-align: center; margin-top: 10px; color: #898989;">' +
+              'No Results</p></div>');
+              $("#pnlMobDataList").empty().append('<div class="DataList">' +
+              '<p class="dtlPara" style="text-align: center; margin-top: 10px; color: #898989;">' +
+              'No Results</p></div>');
+
+
             }
             else {
               if ($("#pnlSelection").css("display") === "none") {
