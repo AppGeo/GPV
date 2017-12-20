@@ -15,9 +15,9 @@ limitations under the License.
 <%@ Register TagPrefix="gpv" Assembly="App_Code" Namespace="GPV" %>
 
 
-<div class="topHead">
+<div class="topHead FunctionHeader">
   <div class="inner">
-    <div class="FunctionHeader">
+    <div class="">
       <span class="topLftTxt ">
         <span class="topTxt">Search</span>
         <a class = "helpIcon" type = "search">

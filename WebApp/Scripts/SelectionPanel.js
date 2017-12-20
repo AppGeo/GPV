@@ -265,13 +265,7 @@ var GPV = (function (gpv) {
             $pnlDataDisplay.find("#spnDataTheme").text("Data Set");
             $pnlDataDisplay.find("#ddlDataTheme").show();
             // this is for Detail panel display when device is mobile or other
-            if ($("#tabMobDetails").css("display") != "none") {
-              $("#ddlMobDataTheme").show();
-              $("#tabMobDetails").trigger("click");
-              $(".MenuItem").removeClass("active");
-              $("#tabMobDetails").addClass("active");
-            }
-            else {
+            if ($(window).width() > 700) {
               if ($pnlDataDisplay.css("right").substring(0, 1) === "-") {
                 $pnlDataDisplay.animate({ right: 0, opacity: "1.0" }, 600, function () {
                   $(".DataExit").addClass("DataExitOpen");
@@ -279,8 +273,16 @@ var GPV = (function (gpv) {
                 $("#pnlOverview").animate({ right: 290 }, 600);   // shifting his place when detail panel display in device ( not mobile )
                 $("div.leaflet-control-attribution.leaflet-control").animate({ right: 322 }, 600);    // shifting his place when detail panel display in device ( not mobile )
               }
+
             }
-          },
+            else {
+              $("#ddlMobDataTheme").show();
+              $("#tabMobDetails").trigger("click");
+              $(".MenuItem").removeClass("active");
+              $("#tabMobDetails").addClass("active");
+            }
+          }
+           ,
           error: function (xhr, status, message) {
             alert(message);
           }

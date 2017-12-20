@@ -77,6 +77,7 @@ var GPV = (function (gpv) {
     }
 
     function fillSearches() {
+
       var changed = gpv.loadOptions($ddlSearch, config.mapTab[appState.MapTab].search);
 
       if (changed) {

@@ -61,7 +61,7 @@ limitations under the License.
       <div id="pnlFunctionSidebar" runat="server" class="Panel leftNav_panel ">
         <div class="inner">
           <div class="topSection">
-            <div class="leftCol">
+            <div class="leftCol" id="cmdMenu">
               <a id="btnHamburger" class="hamburger" href="#"></a>
               <a id="btnHamburgerClose" class="hamburgerClose hidden " href="#"></a>
             </div>
@@ -69,7 +69,7 @@ limitations under the License.
           </div>
           <div class="leftLinks">
             <div id="pnlFunctionTabs" runat="server" class="TabPanel ">
-              <ul>
+              <ul class="Menu">
                 <li id="tabSearch" runat="server" class="MenuItem Normal " style="display: none">
                   <a href="#">
                     <span class="linkIcon searchICN">
@@ -185,7 +185,7 @@ limitations under the License.
               </div>
             </div>
             <div id="pnlMapLevels" runat="server" class="MapMenu" style="display: none">
-              <button class="frmSelect dropdown-toggle" type="button" id="btnMapLevel" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Level">
+              <button class="frmSelect dropdown-toggle" type="button" id="btnMapLevel" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Class">
                <span class="rightArrw" ></span>
                  <span id="selectedLevel" runat="server"></span>
               </button>

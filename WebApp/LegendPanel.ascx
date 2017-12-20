@@ -17,7 +17,7 @@ limitations under the License.
 <%@ Control Language="C#" AutoEventWireup="true" CodeFile="LegendPanel.ascx.cs" Inherits="LegendPanel" %>
 <%@ Register TagPrefix="gpv" Assembly="App_Code" Namespace="GPV" %>
 
-<div class="topHead">
+<div class="topHead FunctionHeader">
   <div class="inner">
     <div class="FunctionHeader">
       <span class="topLftTxt ">

@@ -14,10 +14,10 @@ div
   bottom: 0px;
 }
 
-#pnlHeader
+/*#pnlHeader
 {
   bottom: auto;
-}
+}*/
 
 #pnlContent
 {
@@ -45,11 +45,11 @@ div
   color: #800000;
 }
 
-#pnlFooter
+/*#pnlFooter
 {
   top: auto;
   bottom: 0px;
-}
+}*/
 
 #Login1 .Label label{
   font-family: 'Open Sans',sans-serif;

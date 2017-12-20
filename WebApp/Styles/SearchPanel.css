@@ -256,6 +256,12 @@
   padding-right: 4px;
 }
 
+#pnlSearchFields .mCSB_container_wrapper{
+  margin-right: 18px;
+  margin-bottom: 30px;
+  padding-right: 20px;
+}
+
 #mCSB_1_scrollbar_vertical {
   margin-right: 3px;
 }

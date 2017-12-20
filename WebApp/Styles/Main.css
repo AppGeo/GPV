@@ -110,10 +110,8 @@ img {
 
 /* header panel styles */
 header.main{
-    background-color: #3c8dbc;
     width: 100%;
     float: left;
-    min-height: 50px;
 }
 header.main .inner{
      width: 100%;
@@ -205,7 +203,6 @@ header.main .logo{
 .leftNav_panel .inner{
     width: 100%;
     float: left;
-    background-color: #172936;
     height: 100%;
 }
 .leftNav_panel ul{
@@ -256,7 +253,7 @@ header.main .logo{
     display: inline-block;
     padding: 12px 10px 12px 6px;
     /*font-family: 'OpenSans-Regular', sans-serif;*/
-    font-size: 13px;
+    /*font-size: 13px;*/
     color: #ffffff;
 }
 .leftNav_panel .leftLinks ul li a:hover{
@@ -376,6 +373,8 @@ header.main .logo{
 .dtlInfoPopup .content{
     font-size: 12px;
     margin-top: 5px;
+    max-height: 440px;
+    overflow-y: auto;
 }
 .dtlInfoPopup .title{
     font-weight: bold;
@@ -394,6 +393,9 @@ header.main .logo{
 .dtlInfoPopup .helpClose:hover{
     background-position: -119px -58px;    
 }
+.dtlInfoPopup .mCSB_inside>.mCSB_container{
+    padding-right: 20px;
+}
 /* left nav panel ends here */
 
 
@@ -404,8 +406,7 @@ header.main .logo{
     position: absolute;
     top: -1px;
     left: -355px;
-    background: rgba(23, 41, 54, 0.9);
-
+    /*background: rgba(23, 41, 54, 0.9);*/
     height: calc(100vh - 70px);
     border: 1px solid #526870;
     opacity:0;
@@ -419,7 +420,7 @@ header.main .logo{
     border-bottom: 1px solid #526870;
     box-sizing: content-box;
 }
-.topHead .inner{
+.topHead .headInner{
     width: 100%;
     float: left;
     padding: 13px 15px 8px;
@@ -431,6 +432,7 @@ header.main .logo{
     background-image: url(../Images/UI/all-icons.png);
     display: inline-block;
     background-position: 105px -54px;
+    transform: rotate(-180deg);
 }
 .topHead .nxt_arrw{
     width: 10px;
@@ -652,7 +654,7 @@ label{
     float: left;
     margin-left: 15px;
 }
-    .mapNavigation .selectCol button{
+.mapNavigation .selectCol button{
     background-color: #172936;
     color: #fff;
     height:26px;

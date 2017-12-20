@@ -16,9 +16,9 @@ limitations under the License.
 
 <%@ Control Language="C#" AutoEventWireup="true" CodeFile="LocationPanel.ascx.cs" Inherits="LocationPanel" %>
 <%@ Register TagPrefix="gpv" Assembly="App_Code" Namespace="GPV" %>
-<div class="topHead">
+<div class="topHead FunctionHeader">
   <div class="inner">
-    <div class="FunctionHeader">
+    <div class="">
       <span class="topLftTxt ">
         <span class="topTxt">Location    </span>
         <a class ="helpIcon" type ="location">

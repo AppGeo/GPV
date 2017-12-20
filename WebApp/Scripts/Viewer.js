@@ -654,19 +654,14 @@ var GPV = (function (gpv) {
                 'No Results</p></div>');
               }
 
-              var $pnlDataDisplay = $("#pnlDataDisplay");
-              $pnlDataDisplay.show();
-              $pnlDataDisplay.find("#spnDataTheme").text("Identify");
-              $pnlDataDisplay.find("#ddlDataTheme").hide();
-              $("#pnlData .customDetails").removeClass("customDetails");
-              $("#pnlDataDisplay .customDetails").css("display", "none");
-              $("#ddlMobDataTheme").hide();
-              if ($("#tabMobDetails").css("display") != "none") {   // for small device trigger tabMobDetails click for showing Detail panel
-                $("#tabMobDetails").trigger("click");
-                $(".MenuItem").removeClass("active");
-                $("#tabMobDetails").addClass("active");
-              }
-              else {
+              if ($(window).width() > 700){
+                var $pnlDataDisplay = $("#pnlDataDisplay");
+                $pnlDataDisplay.show();
+                $pnlDataDisplay.find("#spnDataTheme").text("Identify");
+                $pnlDataDisplay.find("#ddlDataTheme").hide();
+                $("#pnlData .customDetails").removeClass("customDetails");
+                $("#pnlDataDisplay .customDetails").css("display", "none");
+                $("#ddlMobDataTheme").hide();
                 if ($pnlDataDisplay.css("right").substring(0, 1) === "-") {   // for large device showing Detail panel
                   $pnlDataDisplay.animate({ right: 0, opacity: "1.0" }, 600, function () {
                     $(".DataExit").addClass("DataExitOpen");
@@ -676,6 +671,11 @@ var GPV = (function (gpv) {
 
                 }
               }
+              else {
+                $("#tabMobDetails").trigger("click");
+                $(".MenuItem").removeClass("active");
+                $("#tabMobDetails").addClass("active");
+              }    
             },
             error: function (xhr, status, message) {
               alert(message);
@@ -1006,13 +1006,13 @@ var GPV = (function (gpv) {
         }
       }
 
-      var infoBox = '<div class = "dtlInfoPopup">' +
+      var infoBox = '<div class = "dtlInfoPopup ">' +
                     '<div class="arrw"></div>' +
                     '<div class ="title">' +
                      helpTxtObj[type].title +
                     '</div>' +
                     '<div class="helpClose"></div>' +
-                    '<div class = "content">' +
+                    '<div class = "content customScroll ">' +
                     helpTxtObj[type].desc +
                     '</div>' +
                     '</div>';
@@ -1029,6 +1029,10 @@ var GPV = (function (gpv) {
         var ele = event.target.closest('a');
         var type = $(ele).attr('type');
         showHelpPopup(type, ele);
+        $('.customScroll').mCustomScrollbar({
+          theme: "3d-thick",
+          //axis: "xy"
+        })
       }
     });
 

@@ -109,7 +109,8 @@ div.Button.Selected, div.Button.Selected:hover
 
 #pnlHeader
 {
-  bottom: auto;
+  float: left;
+  width: 100%;
 }
 
 #pnlEmail
@@ -144,17 +145,17 @@ div.Button.Selected, div.Button.Selected:hover
   cursor: pointer;
 }
 
-#cmdMenu {
+/*#cmdMenu {
   float: left;
   margin: 8px;
-}
+}*/
 
 #pnlFunctionSidebar {
   left: -1px;
   z-index: 2;
 }
 
-.FunctionLabel, .Title, .DataLabel{
+.Title, .DataLabel{
   font-size: 20px;
   margin-top: 8px;
   display: inline-block;
@@ -171,7 +172,7 @@ div.Button.Selected, div.Button.Selected:hover
 
 .Menu
 {
-  margin-top: 20px;
+  /*margin-top: 20px;*/
 }
 
 .MenuItem
@@ -216,6 +217,8 @@ div.Button.Selected, div.Button.Selected:hover
 {
   top: auto;
   bottom: 0px;
+  float: left;
+  width: 100%;
 }
 
 @media screen and (max-width: 600px)
@@ -248,7 +251,6 @@ div.Button.Selected, div.Button.Selected:hover
 
 
 /*Change base layer style*/
-
 .DropdownMainPanel{
     top:39px;
 }
@@ -266,13 +268,17 @@ div.Button.Selected, div.Button.Selected:hover
     -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
     box-shadow: 0 6px 12px rgba(0,0,0,.175);
 }
-
 .layerImagePanel{
     position: relative; 
     display: inline-block; 
     width: 26px; 
     height: 26px;
 }
+.pnlMapMenus_option {   
+   margin-left:345px !important;   
+}
+/* ends here */
+
 
 /*Hover style for right link buttons*/ 
 #cmdHelp span, #cmdShowDetails {
@@ -380,6 +386,8 @@ option .toolsTxt{
     top: 2px;
 }
 
+
+
 /* Right details panel */
 .right_details{
      float: left;
@@ -400,9 +408,9 @@ option .toolsTxt{
     position: relative;
     top: -5px;
 }
-.right_details .topHead{
+/*.right_details .topHead{
     background-color: #172936;
-}
+}*/
 .right_details .dtlPara{
     position: relative;
     top: -5px;

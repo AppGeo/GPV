@@ -20,7 +20,7 @@
 
 @media only screen and (max-width: 850px) {
   #tabMobDetails {
-    display: list-item !important;
+    /*display: list-item !important;*/
   }
 
   #pnlDataDisplay {
@@ -86,7 +86,7 @@ padding: 0;*/
   }
 
   #pnlDetails .mCustomScrollBox {
-    border: 1px solid #526870;
+   /* border: 1px solid #526870;*/
     border-radius: 3px;
   }
 
@@ -165,11 +165,18 @@ padding: 0;*/
   }
 
   .dataTable {
-    border: none;
+    /*border: none;*/
   }
+  #pnlData .dtlPara{
+    position: relative;
+    top: -5px;
+  } 
 
   .leaflet-left .leaflet-control-scale {
     top: -20px;
+  }
+  .dtlInfoPopup .content {
+    max-height: 350px;
   }
 }
 
@@ -494,7 +501,7 @@ padding-left: 19px;
   }
 
   #mCSB_5_container {
-    overflow-x: scroll;
+    overflow-x: auto;
   }
 
   .markup .tabMrkp {

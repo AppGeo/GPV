@@ -17,7 +17,7 @@ limitations under the License.
 <%@ Control Language="C#" AutoEventWireup="true" CodeFile="SharePanel.ascx.cs" Inherits="SharePanel" %>
 <%@ Register TagPrefix="gpv" Assembly="App_Code" Namespace="GPV" %>
 
-<div class="topHead">
+<div class="topHead FunctionHeader">
   <div class="inner">
     <div class="FunctionHeader">
       <span class="topLftTxt ">
@@ -45,7 +45,7 @@ limitations under the License.
   </div>
   <div id="pnlPrint" class="share">
     <div class="share_box">
-      <span class="seg_title">Create a Printable PDF Map</span>
+      <span class="FunctionLabel">Create a Printable PDF Map</span>
       <form id="frmPrint" method="post" action="PrintableMap.ashx" target="print">
         <div class="frm_row">
           <div class="frmLabel">
@@ -98,7 +98,7 @@ limitations under the License.
   </div>
   <div id="pnlExport" class="share">
     <div class="share_box">
-      <span class="seg_title">See Area in Another Map</span>
+      <span class="FunctionLabel">See Area in Another Map</span>
       <div class="frm_row">
         <div class="twoCol customGoto">
           <gpv:Select ID="ddlExternalMap" runat="server" CssClass="frmSelect"></gpv:Select>
@@ -111,7 +111,7 @@ limitations under the License.
   </div>
   <div id="pnlDownload" class="share">
     <div class="share_box">
-      <span class="seg_title">Export the Map</span>
+      <span class="FunctionLabel">Export the Map</span>
       <div class="frm_row">
         <div class="threeCol">
           <span>Save as</span>
