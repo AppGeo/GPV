@@ -14,9 +14,9 @@ limitations under the License.
 <%@ Control Language="C#" AutoEventWireup="true" CodeFile="MarkupPanel.ascx.cs" Inherits="MarkupPanel" %>
 <%@ Register TagPrefix="gpv" Assembly="App_Code" Namespace="GPV" %>
 
-<div class="topHead">
+<div class="topHead FunctionHeader">
   <div class="inner">
-    <div class="FunctionHeader">
+    <div class="">
       <span class="topLftTxt ">
         <span class="topTxt">Draw</span>
         <a class ="helpIcon" type ="draw">

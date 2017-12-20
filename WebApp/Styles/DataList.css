@@ -30,14 +30,18 @@
 
 .DataList .RowSetHeader
 {
-  font-weight: bold;
-  font-size: 13px;
-  padding: 6px 0 7px;
+  /*padding: 6px 0 7px;*/
+  width: calc(100% - 14px);
+  padding: 7px 0 4px 6px;
+  margin-bottom: 7px;
 }
 
 .DataList .RowSetSubheader{
-  font-weight: 400;
-  padding: 2px 0px 2px 6px;
+  /*padding: 2px 0px 2px 6px;*/
+  margin: 10px 0 4px;
+  padding: 7px 0 8px 12px;
+  border-bottom: 1px solid #3c4c58;
+  width: calc(100% - 14px)!important;
 }
 
 .DataList .ValueSet

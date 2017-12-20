@@ -1,4 +1,4 @@
-﻿﻿/*  Copyright 2016 Applied Geographics, Inc.
+﻿/*  Copyright 2016 Applied Geographics, Inc.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -37,8 +37,11 @@
 
 /* height of the header */
 
-#pnlHeader {
-    height: 42px;
+
+#pnlHeader header.main{
+    height: auto;
+    min-height: 50px;
+    background-color: #3c8dbc;
 }
 
 /* top and bottom of the main content area (map and function panels); */
@@ -75,14 +78,11 @@
 
 #pnlHeader, #pnlFooter {
     background-color: #172936;
-    width: 100%;
-    float: left;
-  /*  min-height: 50px;*/
 }
 
 /* default color of the hamburger menu icon and the help question icon */
 
-#cmdMenu span, #cmdHelp span, #cmdEmail i {
+#cmdMenu a, #cmdHelp span, #cmdEmail i {
     color: #fff; 
 }
 
@@ -159,7 +159,7 @@ a.VersionText {
  * this is for the alternating rows for data in the search and selection function panels */
 
 .DataGridRowAlternate {
-    /*  background-color: #E0F2F1;*/
+    background-color: transparent;
 }
 
 /* background and text color of headers in right data panel */
@@ -167,11 +167,10 @@ a.VersionText {
 .DataList .RowSetHeader {
   /*  background-color: #FFE0B2;
     color: Black;*/
+    font-weight: bold;
+    font-size: 13px;
     background-color: #444f56;
-    width: calc(100% - 14px)!important;
-    padding: 6px 0 7px 6px!important;
     color: #f3f7d9;
-    margin-bottom: 7px;
 }
 
 /* background and text color of subheaders in data panel */
@@ -182,67 +181,39 @@ a.VersionText {
     /*background-color: #3b4954; */
     text-align: left;
     font-size: 14px;
-    padding: 7px 0 8px 12px;
+    font-weight: 400;
     color: #f3f7d9;
-    margin: 10px 0 4px;
-    border-bottom: 1px solid #3c4c58;
-    width: calc(100% - 14px)!important;
 }
-
-/* background and border colors of the map theme, level and tool dropdown buttons */
-
-.MapMenu > .dropdown-toggle {
-    text-align: left;
-        padding-left: 8px;
-    /*  background-color: White;
-  border-color: #cccccc;*/
-}
-
-    /* background and border colors of the map theme, level and tool dropdown buttons when hovering */
-
-.MapMenu > .dropdown-toggle:hover, .MapMenu.open > .dropdown-toggle {
-        background-color: #ffffff;
-        border-color: #adadad;
-        
-}
-
-    /* text color of the map theme, level and tool dropdown buttons */
-
-.MapMenu > .dropdown-toggle > span:first-child {
-        color: Black;
-}
-
-/* colors of the map theme, level and tool dropdown buttons when hovering */
 
 /* color for function menu left boarder */
 
-.Menu {
-    /* border-left: solid 4px #B2DFDB;*/
+.Menu 
+{
+    border-left: none;
 }
 
-/* text color for function panel menu items */
+/* link text color for left menu items */
 
-.MenuItem {
-    /*color: #00796B;*/
+.MenuItem a .linkTxt{
+    color: #fff;
 }
 
 /* function panel background color and right border color; should match the .FunctionHeader background color below */
 
-#pnlFunctionSidebar {
-    /*
-  background-color: #FFFFFF;
-  border-right: solid 1px #009688;
-        */
+#pnlFunctionSidebar .inner {
+  background-color: #172936;
+  border-right: none;
+}
+#pnlFunction{
+  background: rgba(23,41,54,.9);
 }
 
 /* function panel background color, text color and left border  */
 
-.FunctionHeader {
-    color: #FFFFFF;
-    /*
-  background-color: #009688;
-  border-left: #B2DFDB solid 6px;
-        */
+.FunctionHeader .inner{
+  background-color: #172936;
+  color: #FFFFFF;
+  border-left: none;
 }
 
 /* sets the color of the < and > icons used to close the function and data panels 
@@ -255,21 +226,28 @@ a.VersionText {
 /* data panel header background color and text color  */
 
 .DataHeader {
-  /*  background-color: #FFB74D;
-    color: #FFFFFF;*/
+    background-color: #172936;
+}
+.DataHeader .topLftTxt{
+    color: #FFFFFF;
 }
 
 /* font for function panel menu items and headers on the function and data panels */
 
-.MenuItem, .FunctionHeader, .DataHeader {
-    /*font-family: Open Sans, Arial, sans-serif;
-  font-size: 24px;*/
+.MenuItem a{
+    font-family: Open Sans, sans-serif;
+    font-size: 13px;
+}
+.FunctionHeader .topLftTxt, .DataHeader .topLftTxt{
+    font-size: 15px;
+   font-family: Open Sans, sans-serif;
 }
 
 /* color of the labels used for various options in the Share panel */
 
 .FunctionLabel {
-    /*color: #00796B;*/
+    color: #fff;
+    font-size: 15px;
 }
 
 /* sets the color in the map tool menu for when hovering over an active map tool item */
@@ -287,17 +265,16 @@ li.MapTool:hover, #selectMapTheme li:hover, #selectMapLevel li:hover {
 
 /* color of the overview map locator box that shows current extent */
 
-#locatorBox {
-    border: solid 2px #FF0000;
+#locatorBox 
+{
+ border: solid 2px #FF0000;
 }
 
 #pnlSearchGrid, #pnlQueryGrid {
     color: #f4f7f7;
 }
 
-.pnlMapMenus_option {   
-   margin-left:345px !important;   
-}
+
 /* =================================== */
 /*   Custom header and footer styles   */
 /* =================================== */
