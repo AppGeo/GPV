@@ -697,12 +697,16 @@ position: relative;*/
   }
 
   #pnlSearchScroll .SearchInputField .Input {
-    width: 100%;
+    width: 98%;
   }
 
   #pnlSearchScroll .SearchInputField .NumberRange {
     width: calc(100%/2 - 10px);
   }
+
+#pnlSearchScroll .SearchInputField .DateRange{
+    width: calc(100%/2 - 10px);  
+}
 
   .SearchInputField {
     margin: 10px 0 0;
@@ -737,6 +741,12 @@ position: relative;*/
   }
   .customDetails:after {                    
     right: 39px;
+  }
+  .customSearch:after {
+    top: 26px;
+  }
+  #pnlSearchInputField>.customSearch:after{
+    top:0;
   }
   .customDetails select {
     padding: 0 30px 0 5px;
