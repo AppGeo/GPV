@@ -15,9 +15,8 @@ limitations under the License.
 <%@ Register TagPrefix="gpv" Assembly="App_Code" Namespace="GPV" %>
 
 
-<div class="topHead FunctionHeader">
+<div class="topHead FunctionHeader"> <%--FunctionHeader class for changing Header Background Color and Font color--%>
   <div class="inner">
-    <div class="">
       <span class="topLftTxt ">
         <span class="topTxt">Search</span>
         <a class = "helpIcon" type = "search">
@@ -28,7 +27,6 @@ limitations under the License.
       </span>
     </div>
   </div>
-</div>
 <div id="pnlSearchFields" class="customScroll ">
   <div id="pnlSearchInputField" class="frm_box">
     <div class="frm_row noTopMargin customSearch">

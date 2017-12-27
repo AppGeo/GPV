@@ -15,17 +15,15 @@ limitations under the License.
 <%@ Register TagPrefix="gpv" Assembly="App_Code" Namespace="GPV" %>
 
 <div class="topHead FunctionHeader">
+  <%--FunctionHeader class for changing Header Background Color and Font color--%>
   <div class="inner">
-    <div class="">
-      <span class="topLftTxt ">
-        <span class="topTxt">Draw</span>
-        <a class ="helpIcon" type ="draw">
-         </a>
-      </span>
-      <span class="rightCol">
-        <a class="prev_arrw FunctionExit" aria-hidden="true"></a>
-      </span>
-    </div>
+    <span class="topLftTxt ">
+      <span class="topTxt">Draw</span>
+      <a class="helpIcon" type="draw"></a>
+    </span>
+    <span class="rightCol">
+      <a class="prev_arrw FunctionExit" aria-hidden="true"></a>
+    </span>
   </div>
 </div>
 <div class="drawCntWrap customScroll">
@@ -43,22 +41,22 @@ limitations under the License.
         <dt id="btnMarkupToolMenu"><a href="#"><span id="selectedMarkupTool"><span class="imgflag draw-line"></span>Draw Line</span></a></dt>
         <dd>
           <ul id="selectMarkupTools">
-            <li id="optDrawTitle" runat="server" clientIDMode="static" class=" toolTitle">Draw Tools - </li>
-            <li id="optDrawPoint" runat="server" clientIDMode="static" class=" MapTool "><a href="#"><span class="imgflag draw-point"></span>Draw Point</a></li>
-            <li id="optDrawLine" runat="server" clientIDMode="static" class=" MapTool "><a href="#"><span class="imgflag draw-line "></span>Draw Line</a></li>
-            <li id="optDrawPolygon" runat="server" clientIDMode="static" class=" MapTool "><a href="#"><span class="imgflag draw-polygon"></span>Draw Polygon</a></li>
-            <li id="optDrawCircle" runat="server" clientIDMode="static" class=" MapTool "><a href="#"><span class="imgflag draw-circle"></span>Draw Circle</a></li>
-            <li id="optDrawText" runat="server" clientIDMode="static" class=" MapTool "><a href="#"><span class="imgflag draw-text"></span>Draw Text</a></li>
-            <li id="optDrawCoordinates" runat="server" clientIDMode="static" class=" MapTool "><a href="#"><span class="imgflag draw-coordinates"></span>Draw Coordinates</a></li>
-             <li id="optDeleteMarkup" runat="server" clientIDMode="static" class=" MapTool "><a href="#"><span class="imgflag delete-markup"></span>Delete Markup</a></li>
-            <li id="optColorPicker" runat="server" clientIDMode="static" class=" MapTool  "><a href="#"><span class="imgflag color-picker"></span>Pick Color</a></li>
-            <li id="optPaintBucket" runat="server" clientIDMode="static" class="MapTool "><a href="#"><span class="imgflag paint-bucket"></span>Fill With Color</a></li>
-       <li id="optMeasureTitle" runat="server" clientIDMode="static" class=" toolTitle">Measure Tools - </li>
-              <%--  Measure Tool Start--%>
-            <li id="optDrawLength" runat="server" clientIDMode="static" class=" MapTool "><a href="#"><span class="imgflag draw-length"></span> Draw Measured Length</a></li>
-            <li id="optDrawArea" runat="server" clientIDMode="static" class=" MapTool "><a href="#"><span class="imgflag draw-area"></span> Draw Measured Area</a></li>
-           <%--  Measure Tool End--%>
-             </ul>
+            <li id="optDrawTitle" runat="server" clientidmode="static" class=" toolTitle">Draw Tools - </li>
+            <li id="optDrawPoint" runat="server" clientidmode="static" class=" MapTool "><a href="#"><span class="imgflag draw-point"></span>Draw Point</a></li>
+            <li id="optDrawLine" runat="server" clientidmode="static" class=" MapTool "><a href="#"><span class="imgflag draw-line "></span>Draw Line</a></li>
+            <li id="optDrawPolygon" runat="server" clientidmode="static" class=" MapTool "><a href="#"><span class="imgflag draw-polygon"></span>Draw Polygon</a></li>
+            <li id="optDrawCircle" runat="server" clientidmode="static" class=" MapTool "><a href="#"><span class="imgflag draw-circle"></span>Draw Circle</a></li>
+            <li id="optDrawText" runat="server" clientidmode="static" class=" MapTool "><a href="#"><span class="imgflag draw-text"></span>Draw Text</a></li>
+            <li id="optDrawCoordinates" runat="server" clientidmode="static" class=" MapTool "><a href="#"><span class="imgflag draw-coordinates"></span>Draw Coordinates</a></li>
+            <li id="optDeleteMarkup" runat="server" clientidmode="static" class=" MapTool "><a href="#"><span class="imgflag delete-markup"></span>Delete Markup</a></li>
+            <li id="optColorPicker" runat="server" clientidmode="static" class=" MapTool  "><a href="#"><span class="imgflag color-picker"></span>Pick Color</a></li>
+            <li id="optPaintBucket" runat="server" clientidmode="static" class="MapTool "><a href="#"><span class="imgflag paint-bucket"></span>Fill With Color</a></li>
+            <li id="optMeasureTitle" runat="server" clientidmode="static" class=" toolTitle">Measure Tools - </li>
+            <%--  Measure Tool Start--%>
+            <li id="optDrawLength" runat="server" clientidmode="static" class=" MapTool "><a href="#"><span class="imgflag draw-length"></span>Draw Measured Length</a></li>
+            <li id="optDrawArea" runat="server" clientidmode="static" class=" MapTool "><a href="#"><span class="imgflag draw-area"></span>Draw Measured Area</a></li>
+            <%--  Measure Tool End--%>
+          </ul>
         </dd>
       </dl>
       <button id="btnMarkupColor" class="btn frmBtn rightMargin btnLarge" title="Color of new markup">
@@ -109,7 +107,7 @@ limitations under the License.
       <div class="frm_row">
         <div class="frmLabel">
           <span class="checkBoxWrap">
-           <gpv:Input type="checkbox" ID="chkMarkupLock" CssClass="frmCheckbox" runat="server" disabled="disabled" Style="visibility: hidden" />
+            <gpv:Input type="checkbox" ID="chkMarkupLock" CssClass="frmCheckbox" runat="server" disabled="disabled" Style="visibility: hidden" />
             <gpv:Label ID="labMarkupLock" runat="server" for="chkMarkupLock" Style="visibility: hidden" title="Keep others from editing"><span class="">Title</span></gpv:Label>
           </span>
         </div>

@@ -306,9 +306,6 @@ public partial class LegendPanel : System.Web.UI.UserControl
     {
       Configuration.MapTabRow mapTabRow = appMapTabRow.MapTabRow;
       AddLayers(mapTabRow, appState);
-
-      // Removing this from viwer page
-      //AddTiles(mapTabRow, appState);
     }
   }
 
