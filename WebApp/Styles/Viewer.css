@@ -150,10 +150,10 @@ div.Button.Selected, div.Button.Selected:hover
   margin: 8px;
 }*/
 
-#pnlFunctionSidebar {
+/*#pnlFunctionSidebar {
   left: -1px;
   z-index: 2;
-}
+}*/
 
 .Title, .DataLabel{
   font-size: 20px;

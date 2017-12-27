@@ -38,8 +38,7 @@
 /* height of the header */
 
 
-#pnlHeader header.main{
-    height: auto;
+#pnlHeader{
     min-height: 50px;
     background-color: #3c8dbc;
 }
@@ -76,14 +75,17 @@
 
 /* default background color of the header and footer */
 
-#pnlHeader, #pnlFooter {
+#pnlHeader{
+    background-color: #3c8dbc;
+}
+#pnlFooter {
     background-color: #172936;
 }
 
 /* default color of the hamburger menu icon and the help question icon */
 
-#cmdMenu a, #cmdHelp span, #cmdEmail i {
-    color: #fff; 
+#cmdMenu span, #cmdHelp span, #cmdEmail i{
+    color: #009688;
 }
 
 /* default color of the details panel three dot icon */
@@ -165,10 +167,6 @@ a.VersionText {
 /* background and text color of headers in right data panel */
 
 .DataList .RowSetHeader {
-  /*  background-color: #FFE0B2;
-    color: Black;*/
-    font-weight: bold;
-    font-size: 13px;
     background-color: #444f56;
     color: #f3f7d9;
 }
@@ -176,12 +174,7 @@ a.VersionText {
 /* background and text color of subheaders in data panel */
 
 .DataList .RowSetSubheader {
-   /* background-color: #F0F0F0;
-    color: Black;*/
-    /*background-color: #3b4954; */
-    text-align: left;
-    font-size: 14px;
-    font-weight: 400;
+    background-color: transparent;
     color: #f3f7d9;
 }
 
@@ -194,23 +187,42 @@ a.VersionText {
 
 /* link text color for left menu items */
 
-.MenuItem a .linkTxt{
+.MenuItem {
     color: #fff;
+}
+
+/* text color for help page menu item */
+#listContents .MenuItem {
+    color: #212121;
+}
+
+/* left border of Menu */
+#pnlTableofContents .Menu{
+    border-left: solid 4px #3c8dbc;
+}
+
+/* left border of Menu */
+#pnlHelpContent .MenuItem {
+    font-size: 24px;
+    color: #212121;
 }
 
 /* function panel background color and right border color; should match the .FunctionHeader background color below */
 
-#pnlFunctionSidebar .inner {
+#pnlFunctionSidebar {
   background-color: #172936;
   border-right: none;
 }
+
+/* for change of the color of SidePanel  */
+
 #pnlFunction{
   background: rgba(23,41,54,.9);
 }
 
 /* function panel background color, text color and left border  */
 
-.FunctionHeader .inner{
+.FunctionHeader{
   background-color: #172936;
   color: #FFFFFF;
   border-left: none;
@@ -227,18 +239,16 @@ a.VersionText {
 
 .DataHeader {
     background-color: #172936;
-}
-.DataHeader .topLftTxt{
-    color: #FFFFFF;
+    color: red;
 }
 
 /* font for function panel menu items and headers on the function and data panels */
 
-.MenuItem a{
+.MenuItem{
     font-family: Open Sans, sans-serif;
     font-size: 13px;
 }
-.FunctionHeader .topLftTxt, .DataHeader .topLftTxt{
+.FunctionHeader, .DataHeader{
     font-size: 15px;
    font-family: Open Sans, sans-serif;
 }

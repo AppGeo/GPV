@@ -58,57 +58,57 @@ limitations under the License.
       </header>
     </div>
     <div id="pnlContent" runat="server" class="Panel">
-      <div id="pnlFunctionSidebar" runat="server" class="Panel leftNav_panel ">
-        <div class="inner">
+      <div  runat="server" class="Panel leftNav_panel ">
+        <div id="pnlFunctionSidebar" class="inner">
           <div class="topSection">
             <div class="leftCol" id="cmdMenu">
-              <a id="btnHamburger" class="hamburger" href="#"></a>
-              <a id="btnHamburgerClose" class="hamburgerClose hidden " href="#"></a>
+              <span id="btnHamburger" class="hamburger" ></span>
+              <span id="btnHamburgerClose" class="hamburgerClose hidden " ></span>
             </div>
             <div class="rightCol"><a class="pinIco" href="#"></a></div>
           </div>
           <div class="leftLinks">
             <div id="pnlFunctionTabs" runat="server" class="TabPanel ">
               <ul class="Menu">
-                <li id="tabSearch" runat="server" class="MenuItem Normal " style="display: none">
-                  <a href="#">
+                <li id="tabSearch" runat="server" style="display: none">
+                  <a href="#" class="MenuItem Normal " >
                     <span class="linkIcon searchICN">
                       &nbsp;</span>
                     <span class="linkTxt ">Search</span>
                   </a>
                 </li>
-                <li id="tabSelection" runat="server" class="MenuItem Normal" style="display: none">
-                  <a>
+                <li id="tabSelection" runat="server"  style="display: none">
+                  <a class="MenuItem Normal " >
                     <span class="linkIcon selectionICN" title="Selection">&nbsp;</span>
                     <span class="linkTxt ">Selection</span>
                   </a>
                 </li>
-                <li id="tabMobDetails" runat="server" class="MenuItem Normal" >
-                  <a>
+                <li id="tabMobDetails" runat="server"  >
+                  <a class="MenuItem Normal " >
                     <span class="linkIcon detailsICN" title="Selection">&nbsp;</span>
                     <span class="linkTxt ">Details</span>
                   </a>
                 </li>
-                <li id="tabLegend" runat="server" class="MenuItem Normal" style="display: none">
-                  <a href="#">
+                <li id="tabLegend" runat="server"  style="display: none">
+                  <a href="#" class="MenuItem Normal " >
                     <span class="linkIcon mapsICN">&nbsp;</span>
                     <span class="linkTxt ">Maps</span>
                   </a>
                 </li>
-                <li id="tabLocation" runat="server" class="MenuItem Normal" style="display: none">
-                  <a href="#">
+                <li id="tabLocation" runat="server" style="display: none">
+                  <a href="#" class="MenuItem Normal" >
                     <span class="linkIcon locationICN">&nbsp;</span>
                     <span class="linkTxt ">Location</span>
                   </a>
                 </li>
-                <li id="tabMarkup" runat="server" class="MenuItem Normal" style="display: none">
-                  <a href="#">
+                <li id="tabMarkup" runat="server" style="display: none">
+                  <a href="#"  class="MenuItem Normal" >
                     <span class="linkIcon markupICN">&nbsp;</span>
                     <span class="linkTxt ">Draw</span>
                   </a>
                 </li>
-                <li id="tabShare" runat="server" class="MenuItem Normal" style="display: none">
-                  <a href="#">
+                <li id="tabShare" runat="server" style="display: none">
+                  <a href="#" class="MenuItem Normal " >
                     <span class="linkIcon shareICN">&nbsp;</span>
                     <span class="linkTxt ">Share</span>
                   </a>

@@ -285,7 +285,7 @@ var GPV = (function (gpv) {
     $("#optSelect").on("click", function () {
       gpv.selectTool($(this), map, { cursor: 'default', dragging: false, boxZoom: false, drawing: { mode: 'rectangle', style: { color: '#c0c0c0', fill: true, fillColor: '#e0e0e0' } } });
       HidePanel();
-      $(".MenuItem").removeClass("active");
+      $(".Menu li").removeClass("active");
       $("#tabSelection").addClass("active");
       showFunctionPanel("Selection");   // open selection panel when Select selected in Maptool
       $.each(functionTabChangedHandlers, function () {
@@ -297,7 +297,7 @@ var GPV = (function (gpv) {
     if ($optSelect.hasClass('Selected')) {
       gpv.selectTool($(this), map, { cursor: 'default', dragging: false, boxZoom: false, drawing: { mode: 'rectangle', style: { color: '#c0c0c0', fill: true, fillColor: '#e0e0e0' } } });
       HidePanel();
-      $(".MenuItem").removeClass("active");
+      $(".Menu li").removeClass("active");
       $("#tabSelection").addClass("active");
       showFunctionPanel("Selection");   // open selection panel when Select selected in Maptool
       $.each(functionTabChangedHandlers, function () {
@@ -308,7 +308,7 @@ var GPV = (function (gpv) {
     //If optMarkupTool has Select Class
     var $optMarkupTool = $("#optMarkupTool");
     if ($optMarkupTool.hasClass('Selected')) {
-      $(".MenuItem").removeClass("active");
+      $(".Menu li").removeClass("active");
       $("#tabMarkup").addClass("active");
 
       HidePanel();
@@ -319,7 +319,7 @@ var GPV = (function (gpv) {
     }
     //optMarkupTool Click event
     var $optMarkupTool = $("#optMarkupTool").on("click", function () {
-      $(".MenuItem").removeClass("active");
+      $(".Menu li").removeClass("active");
       $("#tabMarkup").addClass("active");
 
       HidePanel();
@@ -423,21 +423,23 @@ var GPV = (function (gpv) {
     }
 
     // ==== for open any Panel ====
-    $(".MenuItem").on("click", function () {
+    $(".Menu li").on("click", function () {
       var name = $(this).text();
       var trimName = $.trim(name);
+     $("#pnlFunction").css("display", "block");
+      
       if (trimName == "Draw") {
         trimName = "Markup";
       }
       if (trimName == "Maps") {
         trimName = "Legend";
       }
-      $(".MenuItem").removeClass("active");
+      $(".Menu li ").removeClass("active");
       $("#tab" + trimName).addClass("active");
       $(".share").hide();
-      hideFunctionMenu(function () {
+      //hideFunctionMenu(function () {
         showFunctionPanel(trimName);
-      });
+     // });
 
       $.each(functionTabChangedHandlers, function () {
         this(trimName);
@@ -447,7 +449,7 @@ var GPV = (function (gpv) {
     // ==== for closing any panel
     $(".FunctionHeader").on("click", function () {
       if ($(window).width() < 700) {
-        $(".MenuItem").removeClass("active");
+        $(".Menu li ").removeClass("active");
         $("#btnHamburger").removeClass("hidden");
         $("#btnHamburgerClose").addClass("hidden");
       }
@@ -475,7 +477,7 @@ var GPV = (function (gpv) {
 
       });
       $("#btnHamburgerClose").on("click", function () {   // for small device close panel
-        $(".MenuItem").removeClass("active");
+        $(".Menu li").removeClass("active");
         $("#btnHamburger").removeClass("hidden");
         $("#btnHamburgerClose").addClass("hidden");
         hideFunctionPanel(showFunctionMenu);
@@ -553,8 +555,9 @@ var GPV = (function (gpv) {
       pnlFunctionTabsWidth = $("#pnlFunctionTabs").width();
       pnlFunctionWidth = $("#pnlFunction").width();
       $(".FunctionExit").addClass("FunctionExitOpen");
-      $("#pnlFunction").css("display", "block");
-      $("#pnlFunction").animate({ left: pnlFunctionTabsWidth, opacity: "1.0" }, 800);
+      $("#pnlFunction").animate({ left: pnlFunctionTabsWidth, opacity: "1.0" }, 400 , function () {
+        $("#pnlFunction").css("display", "block");
+      });
       $("#pnlMapSizer").animate({ left: pnlFunctionTabsWidth }, {
         progress: function () {
           map.invalidateSize();
@@ -590,7 +593,7 @@ var GPV = (function (gpv) {
           map.invalidateSize();
           shingleLayer.redraw();
           if ($(window).width() > 700) { // for large device
-            $(".MenuItem").removeClass("active");
+            $(".Menu li").removeClass("active");
             $("#pnlMapMenus").removeClass("pnlMapMenus_option");
             $("#mapMain .leaflet-left").removeClass("pnlMapMenus_option");
             $(".leaflet-left .leaflet-control").css("margin-left", "10px");
@@ -673,7 +676,7 @@ var GPV = (function (gpv) {
               }
               else {
                 $("#tabMobDetails").trigger("click");
-                $(".MenuItem").removeClass("active");
+                $(".Menu li").removeClass("active");
                 $("#tabMobDetails").addClass("active");
               }    
             },

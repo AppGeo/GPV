@@ -199,6 +199,8 @@ header.main .logo{
     height: calc(100vh - 70px);
     position: relative;
     /*border-right: 0;*/
+    left: -1px;
+    z-index: 2;
 }
 .leftNav_panel .inner{
     width: 100%;
@@ -313,6 +315,7 @@ header.main .logo{
     height: 18px;
     display: inline-block;
     background-position: -256px -11px;
+    cursor: pointer;
 }
 .topSection .hamburger:hover{
     background-position: -298px -11px;    
@@ -326,6 +329,7 @@ header.main .logo{
     width: 29px;
     display: inline-block;
     background-repeat: no-repeat;
+    cursor: pointer;
 }
 .topSection .pinIco{
     background-image: url(../Images/pin-icon.png);
@@ -397,7 +401,9 @@ header.main .logo{
     padding-right: 20px;
 }
 /* left nav panel ends here */
-
+ .mCSB_inside>.mCSB_container{
+    cursor: default;
+ }
 
 /* left details panel styles */
 .left_details{
@@ -420,7 +426,7 @@ header.main .logo{
     border-bottom: 1px solid #526870;
     box-sizing: content-box;
 }
-.topHead .headInner{
+.topHead .inner{
     width: 100%;
     float: left;
     padding: 13px 15px 8px;

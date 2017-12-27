@@ -36,24 +36,24 @@ limitations under the License.
   <div class="upperSelection">Build a Spatial Query</div>
   <div id="pnlSelectionOptions" class="frm_box">
     <div class="frm_row noTopMargin">
-      <div class="twoCol arrwAhead customSearch">
+      <div class="twoCol arrwAhead customSelect">
         <gpv:Select ID="ddlAction" runat="server" CssClass="Input frmSelect" ToolTip="Action to perform with the Select Features tool to the left" />
         <div class="arrw"></div>
       </div>
-      <div class="twoCol customSearch">
+      <div class="twoCol customSelect">
         <gpv:Select ID="ddlTargetLayer" runat="server" CssClass="Input frmSelect" ToolTip="Target layer containing features of interest" />
       </div>
     </div>
     <div class="frm_row">
-      <div class="twoCol arrwAhead customSearch">
+      <div class="twoCol arrwAhead customSelect">
         <gpv:Select ID="ddlProximity" runat="server" CssClass="Input frmSelect" ToolTip="Proximity of target features to selection features" />
         <div class="arrw"></div>
       </div>
-      <div class="twoCol customSearch">
+      <div class="twoCol customSelect">
         <gpv:Select ID="ddlSelectionLayer" runat="server" CssClass="Input frmSelect" ToolTip="Selection layer with features that will help find target features" />
       </div>
     </div>
-    <div class="frm_row customSearch">
+    <div class="frm_row customSelect">
       <gpv:Select ID="ddlQuery" runat="server" CssClass="Input frmSelect" ToolTip="Filter which lists only those features meeting certain criteria" />
     </div>
   </div>
