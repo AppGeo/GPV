@@ -309,16 +309,17 @@ header.main .logo{
     display: inline-block;
 }
 .topSection .hamburger{
-    background-image: url(../Images/UI/all-icons.png);
-    /* background-repeat: no-repeat; */
+  /*background-image: url(../Images/UI/all-icons.png);
+    display: inline-block;
+    background-position: -256px -11px;*/
+
     width: 29px;
     height: 18px;
-    display: inline-block;
-    background-position: -256px -11px;
     cursor: pointer;
+    font-size: 21px;
 }
 .topSection .hamburger:hover{
-    background-position: -298px -11px;    
+    color: #ffb74d;
 }
 .hamburgerClose{
     /*background-image: url(../Images/close-btn.png);*/
@@ -1229,3 +1230,5 @@ So no need to put in there*/
     padding: 0 15px;
 }
 /* alteration code ends here */
+
+

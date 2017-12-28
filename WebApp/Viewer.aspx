@@ -62,7 +62,7 @@ limitations under the License.
         <div id="pnlFunctionSidebar" class="inner">
           <div class="topSection">
             <div class="leftCol" id="cmdMenu">
-              <span id="btnHamburger" class="hamburger" ></span>
+              <i id="btnHamburger" class="fa fa-bars hamburger" aria-hidden="true"></i>
               <span id="btnHamburgerClose" class="hamburgerClose hidden " ></span>
             </div>
             <div class="rightCol"><a class="pinIco" href="#"></a></div>
@@ -72,14 +72,13 @@ limitations under the License.
               <ul class="Menu">
                 <li id="tabSearch" runat="server" style="display: none">
                   <a href="#" class="MenuItem Normal " >
-                    <span class="linkIcon searchICN">
-                      &nbsp;</span>
+                    <i class="fa fa-search" aria-hidden="true"></i>
                     <span class="linkTxt ">Search</span>
                   </a>
                 </li>
                 <li id="tabSelection" runat="server"  style="display: none">
                   <a class="MenuItem Normal " >
-                    <span class="linkIcon selectionICN" title="Selection">&nbsp;</span>
+                    <i class="fa fa-hand-o-up" aria-hidden="true"></i>
                     <span class="linkTxt ">Selection</span>
                   </a>
                 </li>
@@ -97,7 +96,7 @@ limitations under the License.
                 </li>
                 <li id="tabLocation" runat="server" style="display: none">
                   <a href="#" class="MenuItem Normal" >
-                    <span class="linkIcon locationICN">&nbsp;</span>
+                    <i class="fa fa-map-marker" aria-hidden="true"></i>
                     <span class="linkTxt ">Location</span>
                   </a>
                 </li>
@@ -109,7 +108,7 @@ limitations under the License.
                 </li>
                 <li id="tabShare" runat="server" style="display: none">
                   <a href="#" class="MenuItem Normal " >
-                    <span class="linkIcon shareICN">&nbsp;</span>
+                    <i class="fa fa-share-alt" aria-hidden="true"></i>
                     <span class="linkTxt ">Share</span>
                   </a>
                 </li>

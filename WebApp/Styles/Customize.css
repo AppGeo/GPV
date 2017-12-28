@@ -40,7 +40,6 @@
 
 #pnlHeader{
     min-height: 50px;
-    background-color: #3c8dbc;
 }
 
 /* top and bottom of the main content area (map and function panels); */
@@ -120,7 +119,7 @@ a.VersionText {
     color: #A0A0A0;
 }
 
-    /* background and text colors of tabs as you mouse over them */
+/* background and text colors of tabs as you mouse over them */
 
 .Tab.Normal:hover, a.Tab.Normal:hover {
         background-color: #F5F7EB;
