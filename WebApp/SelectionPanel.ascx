@@ -18,9 +18,8 @@ limitations under the License.
 <%@ Register TagPrefix="gpv" Assembly="App_Code" Namespace="GPV" %>
 
 
-<div class="topHead FunctionHeader">
+<div class="topHead FunctionHeader"> <%--FunctionHeader class for changing Header Background Color and Font color--%>
   <div class="inner">
-    <div class="">
       <span class="topLftTxt ">
         <span class="topTxt">Selection</span>
         <a class ="helpIcon" type ="selection">
@@ -31,7 +30,6 @@ limitations under the License.
       </span>
     </div>
   </div>
-</div>
 <div id="pnlQuery" class="">
   <div class="upperSelection">Build a Spatial Query</div>
   <div id="pnlSelectionOptions" class="frm_box">

@@ -14,7 +14,7 @@
 
 var GPV = (function (gpv) {
   $(function () {
-    var previousChecked;
+    var previousChecked = null;
     var $container = $(".LegendScroll");
     var $layerContainer = $("#pnlLayerScroll");
     var $tileContainer = $("#pnlBaseMapScroll");
@@ -60,10 +60,6 @@ var GPV = (function (gpv) {
       getVisibleLayers: getVisibleLayers,
       getVisibleTiles: getVisibleTiles
     };
-   // alert(document.getElementsByName('ucBaseMapPanel$'));
-    //document.getElementsByName('ucBaseMapPanel$').checked = true;
-    //$('input["data-tilegroup=Imagery"]').props("checked", "checked");
-   // $tileContainer.filter('[value=ucBaseMapPanel$ctl04]').attr('checked', true);
   });
 
   return gpv;

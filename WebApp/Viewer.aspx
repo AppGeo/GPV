@@ -46,7 +46,7 @@ limitations under the License.
           <div class="rightCol">
             <ul class="rightLinks">
               <span id="cmdShowDetails" class="glyphicon glyphicon-option-vertical" title="Show/hide details panel" style="font-size: 22px;"></span>
-              <a id="cmdHelp" runat="server" class="CommandLink" title="Show the help pages" href="Help.aspx" target="help"><span class="helpTxt "> <span class="lbl"></span><span class="txt">Help</span></span></a>
+              <a id="cmdHelp" runat="server" class="CommandLink" title="Show the help pages" href="Help.aspx" target="help"><span class="helpTxt "><span class="lbl"></span><span class="txt">Help</span></span></a>
               <span id="cmdEmail" title="Get a link to this map for emailing"><span class="lbl"></span><span class="txt">Get Link</span></span>
               <div id="pnlEmail" class="input-group">
                 <textarea id="lnkEmail" readonly="readonly" class="form-control custom-control" rows="3"></textarea>
@@ -58,12 +58,12 @@ limitations under the License.
       </header>
     </div>
     <div id="pnlContent" runat="server" class="Panel">
-      <div  runat="server" class="Panel leftNav_panel ">
+      <div runat="server" class="Panel leftNav_panel ">
         <div id="pnlFunctionSidebar" class="inner">
           <div class="topSection">
             <div class="leftCol" id="cmdMenu">
-              <span id="btnHamburger" class="hamburger" ></span>
-              <span id="btnHamburgerClose" class="hamburgerClose hidden " ></span>
+              <span id="btnHamburger" class="hamburger"></span>
+              <span id="btnHamburgerClose" class="hamburgerClose hidden "></span>
             </div>
             <div class="rightCol"><a class="pinIco" href="#"></a></div>
           </div>
@@ -71,44 +71,43 @@ limitations under the License.
             <div id="pnlFunctionTabs" runat="server" class="TabPanel ">
               <ul class="Menu">
                 <li id="tabSearch" runat="server" style="display: none">
-                  <a href="#" class="MenuItem Normal " >
-                    <span class="linkIcon searchICN">
-                      &nbsp;</span>
+                  <a href="#" class="MenuItem Normal ">
+                    <span class="linkIcon searchICN">&nbsp;</span>
                     <span class="linkTxt ">Search</span>
                   </a>
                 </li>
-                <li id="tabSelection" runat="server"  style="display: none">
-                  <a class="MenuItem Normal " >
+                <li id="tabSelection" runat="server" style="display: none">
+                  <a class="MenuItem Normal ">
                     <span class="linkIcon selectionICN" title="Selection">&nbsp;</span>
                     <span class="linkTxt ">Selection</span>
                   </a>
                 </li>
-                <li id="tabMobDetails" runat="server"  >
-                  <a class="MenuItem Normal " >
+                <li id="tabMobDetails" runat="server">
+                  <a class="MenuItem Normal ">
                     <span class="linkIcon detailsICN" title="Selection">&nbsp;</span>
                     <span class="linkTxt ">Details</span>
                   </a>
                 </li>
-                <li id="tabLegend" runat="server"  style="display: none">
-                  <a href="#" class="MenuItem Normal " >
+                <li id="tabLegend" runat="server" style="display: none">
+                  <a href="#" class="MenuItem Normal ">
                     <span class="linkIcon mapsICN">&nbsp;</span>
                     <span class="linkTxt ">Maps</span>
                   </a>
                 </li>
                 <li id="tabLocation" runat="server" style="display: none">
-                  <a href="#" class="MenuItem Normal" >
+                  <a href="#" class="MenuItem Normal">
                     <span class="linkIcon locationICN">&nbsp;</span>
                     <span class="linkTxt ">Location</span>
                   </a>
                 </li>
                 <li id="tabMarkup" runat="server" style="display: none">
-                  <a href="#"  class="MenuItem Normal" >
+                  <a href="#" class="MenuItem Normal">
                     <span class="linkIcon markupICN">&nbsp;</span>
                     <span class="linkTxt ">Draw</span>
                   </a>
                 </li>
                 <li id="tabShare" runat="server" style="display: none">
-                  <a href="#" class="MenuItem Normal " >
+                  <a href="#" class="MenuItem Normal ">
                     <span class="linkIcon shareICN">&nbsp;</span>
                     <span class="linkTxt ">Share</span>
                   </a>
@@ -165,9 +164,9 @@ limitations under the License.
             <div id="pnlMapTools" class="MapMenu mapNavigation ">
               <div class="selectCol">
                 <button class=" dropdown identify" type="button" id="btnToolMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Tool">
-                    <span class="rightArrw"></span>
-                    <span id="selectedTool">
-                    <span class="flag mapToolId"></span>                    
+                  <span class="rightArrw"></span>
+                  <span id="selectedTool">
+                    <span class="flag mapToolId"></span>
                     <span class="txt glyphicon">Identify</span></span>
                 </button>
                 <ul id="selectMapTools" class="dropdown-menu dropdown" aria-labelledby="btnToolMenu">
@@ -175,19 +174,19 @@ limitations under the License.
                     <span class="flag mapToolId"></span>
                     <span class="txt glyphicon">Identify</span></a></li>
                   <li id="optSelect" runat="server" class="Button MapTool"><a href="#">
-                <span class="flag mapToolSelect"></span>
+                    <span class="flag mapToolSelect"></span>
                     <span class="txt glyphicon">Select</span></a>
                   </li>
                   <li id="optMarkupTool" runat="server" class="Button MapTool"><a href="#">
-                                        <span class="flag mapToolDraw"></span>
+                    <span class="flag mapToolDraw"></span>
                     <span class="txt glyphicon">Draw</span></a></li>
                 </ul>
               </div>
             </div>
             <div id="pnlMapLevels" runat="server" class="MapMenu" style="display: none">
               <button class="frmSelect dropdown-toggle" type="button" id="btnMapLevel" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Class">
-               <span class="rightArrw" ></span>
-                 <span id="selectedLevel" runat="server"></span>
+                <span class="rightArrw"></span>
+                <span id="selectedLevel" runat="server"></span>
               </button>
               <ul id="selectMapLevel" class="dropdown-menu " aria-labelledby="btnMapLevel">
                 <asp:PlaceHolder ID="phlMapLevel" runat="server"></asp:PlaceHolder>

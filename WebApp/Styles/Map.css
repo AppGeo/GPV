@@ -158,27 +158,16 @@ div.leaflet-control-attribution.leaflet-control {
   color: #000;
 }
 
-.MapMenu > .dropdown-toggle { /*
-border: none;
-margin-left: 10px;
-box-shadow: 0 1px 5px rgba(0,0,0,.65);
--webkit-box-shadow: 0 1px 5px rgba(0,0,0,.65);
--moz-box-shadow: 0 1px 5px rgba(0,0,0,.65);
-border-radius: 4px;
--webkit-border-radius: 4px;
--moz-border-radius: 4px;
-height: 26px;
-font-size: 13px;
-padding: 0 10px;*/
+.MapMenu > .dropdown-toggle { 
 }
 
-  .MapMenu > .dropdown-toggle > span:first-child {
-    letter-spacing: .5px;
-    margin-right: 5px;
-    vertical-align: middle;
-    position: relative;
-    top: -3px;
-  }
+.MapMenu > .dropdown-toggle > span:first-child {
+  letter-spacing: .5px;
+  margin-right: 5px;
+  vertical-align: middle;
+  position: relative;
+  top: -3px;
+}
 
 .MapMenu > .dropdown-menu {
   left: 0px;
@@ -196,7 +185,6 @@ padding: 0 10px;*/
 }
 
 li.MapTool span {
-  /* vertical-align: middle;*/
 }
 
 li.MapTool.Disabled {
@@ -209,8 +197,6 @@ li.MapTool.Disabled {
   text-transform: uppercase;
   padding: 3px 10px;
 }
-
-
 
 #mapMain {
   left: 0px;
@@ -281,7 +267,7 @@ input.MarkupText {
 
 /* Styles dragged from leaflet.css */
 .leaflet-top,
- .leaflet-bottom { 
+.leaflet-bottom { 
   float:right;
 }
 .leaflet-top {
@@ -298,7 +284,6 @@ input.MarkupText {
 
 .customMaps {
   position: relative;
-  /*Don't really need this just for demo styling*/
   float: left;
   min-width: calc(100% / 2 - 8px);
 }
@@ -329,7 +314,6 @@ select::-ms-expand {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  /* Add some styling */
   display: block;
   width: 100%;
   max-width: 320px;

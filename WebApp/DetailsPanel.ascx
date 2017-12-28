@@ -16,9 +16,8 @@ limitations under the License.
 
 <%@ Control Language="C#" AutoEventWireup="true" CodeFile="DetailsPanel.ascx.cs" Inherits="DetailsPanel" %>
 <%@ Register TagPrefix="gpv" Assembly="App_Code" Namespace="GPV" %>
-<div class="topHead FunctionHeader">
+<div class="topHead FunctionHeader"> <%--FunctionHeader class for changing Header Background Color and Font color--%>
   <div class="inner">
-    <div class="">
       <span class="topLftTxt ">
         <span class="topTxt">Details</span>
         <a href="#">
@@ -27,7 +26,6 @@ limitations under the License.
       <span class="rightCol">
         <a class="prev_arrw FunctionExit" aria-hidden="true"></a>
       </span>
-    </div>
   </div>
 </div>
 <div class="frm_box">

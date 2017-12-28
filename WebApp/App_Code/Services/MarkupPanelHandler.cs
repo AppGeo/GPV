@@ -77,7 +77,7 @@ public class MarkupPanelHandler : WebServiceHandler
 
     int id = Sequences.NextMarkupGroupId;
     string title = "[untitled]";
-    string details = "[enter Details]";
+    string details = "[Enter Details]";
     bool locked = AppAuthentication.Mode != AuthenticationMode.None;
     DateTime now = DateTime.Now;
 
