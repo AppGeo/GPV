@@ -181,7 +181,7 @@ var GPV = (function (gpv) {
       $("#pnlMarkupGrid").removeClass("tabMrkp");
     });
 
-  
+
 
     // ==== this is for markup tool functionallity
     $("#optColorPicker,#optPaintBucket").on("click", function () {
@@ -219,20 +219,17 @@ var GPV = (function (gpv) {
     });
 
     var $optDrawLine = document.getElementById("optDrawLine");
- 
-  
     $("#optDrawLine").on("click", function () {
       var c = getMarkupColor();
       gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "polyline", style: { color: c, fill: false } }, doubleClickZoom: false });
     });
-
 
     function DrawLineOpen() {
       var c = getMarkupColor();
       gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "polyline", style: { color: c, fill: false } }, doubleClickZoom: false });
     }
 
- $("#optDrawPolygon").on("click", function () {
+    $("#optDrawPolygon").on("click", function () {
       var c = getMarkupColor();
       gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "polygon", style: { color: c, fill: true, fillColor: c } }, doubleClickZoom: false });
     });
@@ -610,7 +607,7 @@ var GPV = (function (gpv) {
       var markupTitle = numGroups == 1 ? $grdMarkup.dataGrid("getData", appState.MarkupGroups[0])[2] : "";
       var markupDetails = numGroups == 1 ? $grdMarkup.dataGrid("getData", appState.MarkupGroups[0])[3] : "";
       $tboMarkupTitle.val(markupTitle);
-      $("#tboMarkupDetails").val(markupDetails);
+      $tboMarkupDetails.val(markupDetails);
       enableControls();
       $("#cmdExportMarkup").removeClass("btnControlLock");  // select any row from table , ExportMarkup button enable
       $("#cmdDeleteMarkup").removeClass("btnControlLock");  // select any row from table , DeleteMarkup button enable
@@ -769,7 +766,7 @@ var GPV = (function (gpv) {
       if (appState.MarkupGroups.length == 1) {
         var id = appState.MarkupGroups[0];
         var title = $tboMarkupTitle.val();
-        var details = $('#tboMarkupDetails').val();
+        var details = $tboMarkupDetails.val();
         post({
           data: {
             m: "UpdateMarkupGroupTitleAndDetails",

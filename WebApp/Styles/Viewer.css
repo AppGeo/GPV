@@ -52,12 +52,10 @@ div.Button.Selected, div.Button.Selected:hover
   cursor: default;
 }
 
-
 .DataGrid
 {
   empty-cells: show;
 }
-
 
 .DataGridRow:hover, .DataGridRowAlternate:hover
 {
@@ -145,16 +143,6 @@ div.Button.Selected, div.Button.Selected:hover
   cursor: pointer;
 }
 
-/*#cmdMenu {
-  float: left;
-  margin: 8px;
-}*/
-
-/*#pnlFunctionSidebar {
-  left: -1px;
-  z-index: 2;
-}*/
-
 .Title, .DataLabel{
   font-size: 20px;
   margin-top: 8px;
@@ -168,11 +156,6 @@ div.Button.Selected, div.Button.Selected:hover
 
 #pnlTheme .FunctionLabel, #pnlDataDisplay .FunctionLabel {
   width: 130px;
-}
-
-.Menu
-{
-  /*margin-top: 20px;*/
 }
 
 .MenuItem
@@ -196,7 +179,6 @@ div.Button.Selected, div.Button.Selected:hover
   bottom: 5px;
   height: 15px;
 }
-
 
 .DataLabel {
   margin-left: 10px;
@@ -315,7 +297,6 @@ Date 17-09-2017
 }
 #cmdEmail .txt{
     display: inline-block;
-    /* height: 38px; */
     position: relative;
     top: -4px;
 }
@@ -332,10 +313,8 @@ Date 17-09-2017
     width: auto;
     height: 50px;
     background-repeat: no-repeat;
-    /* background-size: 22%; */
     font-size: 13px;
     line-height: 18px;
-    /* background-position: 20% 50%; */
     margin: 0;
     padding: 14px 10px 14px 10px;
     cursor: pointer;
@@ -352,7 +331,6 @@ Date 17-09-2017
 }
 .helpTxt .txt{
     display: inline-block;
-    /* height: 38px; */
     position: relative;
     top: -4px;
 }
@@ -390,8 +368,6 @@ option .toolsTxt{
     top: 2px;
 }
 
-
-
 /* Right details panel */
 .right_details{
      float: left;
@@ -403,7 +379,6 @@ option .toolsTxt{
     top: 0px;
     background: rgba(23, 41, 54, 0.9);
     height: calc(100vh - 70px);
-    /*overflow:auto;*/
     border: 1px solid #526870;
     z-index:11;
 }
@@ -412,9 +387,7 @@ option .toolsTxt{
     position: relative;
     top: -5px;
 }
-/*.right_details .topHead{
-    background-color: #172936;
-}*/
+
 .right_details .dtlPara{
     position: relative;
     top: -5px;
@@ -448,9 +421,6 @@ option .toolsTxt{
 }
 
 #pnlData{
-    /*background-color: red;*/
-    /*border: 1px solid #526870;*/
-    /*height: 92.5%;*/
     height:calc(100vh - 117px);
 }
 #pnlData .frm_box{
@@ -464,27 +434,26 @@ option .toolsTxt{
 
 .customDetails {
   position: relative;
-  /*Don't really need this just for demo styling*/
   float: left;
   min-width: calc(100% / 2 - 8px);
 }
 
 .customDetails:after {
-    content: " ";
-    font: normal normal normal 17px/1 FontAwesome;
-    color: #b7b7b7;
-    right: 11px;
-    top: 0;
-    height: 29px;
-    padding: 5px 0 0 8px;
-    border-left: 1px solid #b7b7b7;
-    position: absolute;
-    pointer-events: none;
-    background-color: #fff;
-    width: 21px;
-    background-image: url(../Images/UI/all-icons.png);
-    background-position: -184px -92px;
-    display: block;
+  content: " ";
+  font: normal normal normal 17px/1 FontAwesome;
+  color: #b7b7b7;
+  right: 11px;
+  top: 0;
+  height: 29px;
+  padding: 5px 0 0 8px;
+  border-left: 1px solid #b7b7b7;
+  position: absolute;
+  pointer-events: none;
+  background-color: #fff;
+  width: 21px;
+  background-image: url(../Images/UI/all-icons.png);
+  background-position: -184px -92px;
+  display: block;
 }
 
 /* IE11 hide native button (thanks Matt!) */
