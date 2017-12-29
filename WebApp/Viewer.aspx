@@ -35,7 +35,7 @@ limitations under the License.
   <script type="text/javascript" src="Scripts/WebFonts.js"></script>
 </head>
 <body>
-  Test content
+
   <div id="pnlBody" class="container-fluid">
     <div id="pnlHeader" class="Panel">
       <header class="main">
@@ -46,8 +46,11 @@ limitations under the License.
           <div class="rightCol">
             <ul class="rightLinks">
               <span id="cmdShowDetails" class="glyphicon glyphicon-option-vertical" title="Show/hide details panel" style="font-size: 22px;"></span>
-              <a id="cmdHelp" runat="server" class="CommandLink" title="Show the help pages" href="Help.aspx" target="help"><span class="helpTxt ">Help</span></a>
-              <span id="cmdEmail" title="Get a link to this map for emailing"><span class="fa fa-link"></span>Get Link</span>
+              <a id="cmdHelp" runat="server" class="CommandLink" title="Show the help pages" href="Help.aspx" target="help">
+                <span class="helpTxt "><i class="lbl fa fa-question-circle" aria-hidden="true"></i><span class="txt">Help</span></span></a>
+              <span id="cmdEmail" title="Get a link to this map for emailing">
+                <i class="lbl icon icon-link" aria-hidden="true"></i>
+                <span class="txt">Get Link</span></span>
               <div id="pnlEmail" class="input-group">
                 <textarea id="lnkEmail" readonly="readonly" class="form-control custom-control" rows="3"></textarea>
                 <span id="cmdEmailClose" class="input-group-addon btn">x</span>
@@ -58,64 +61,57 @@ limitations under the License.
       </header>
     </div>
     <div id="pnlContent" runat="server" class="Panel">
-      <div id="pnlFunctionSidebar" runat="server" class="Panel leftNav_panel ">
-        <div class="inner">
+      <div runat="server" class="Panel leftNav_panel ">
+        <div id="pnlFunctionSidebar" class="inner">
           <div class="topSection">
-            <div class="leftCol">
-              <a id="btnHamburger" class="hamburger" href="#"></a>
-              <a id="btnHamburgerClose" class="hamburgerClose hidden " href="#"></a>
+            <div class="leftCol" id="cmdMenu">
+              <span id="btnHamburger" class="fa fa-bars hamburger" aria-hidden="true"></span>
+              <i id="btnHamburgerClose" class="fa fa-times hamburgerClose hidden" aria-hidden="true"></i>
             </div>
             <div class="rightCol"><a class="pinIco" href="#"></a></div>
           </div>
           <div class="leftLinks">
             <div id="pnlFunctionTabs" runat="server" class="TabPanel ">
-              <ul>
-                <li id="tabSearch" runat="server" class="MenuItem Normal ">
-                  <a href="#">
-                    <span class="linkIcon">
-                      <img src="Images/search_icon.png"></span>
+              <ul class="Menu">
+                <li id="tabSearch" runat="server" style="display: none">
+                  <a href="#" class="MenuItem Normal " >
+                    <i class="fa fa-search" aria-hidden="true"></i>
                     <span class="linkTxt ">Search</span>
                   </a>
                 </li>
-                <li id="tabSelection" runat="server" class="MenuItem Normal">
-                  <a>
-                    <span class="linkIcon" title="Selection">
-                      <img src="Images/selection_icon.png"></span>
+                <li id="tabSelection" runat="server"  style="display: none">
+                  <a class="MenuItem Normal " >
+                    <i class="fa fa-hand-o-up" aria-hidden="true"></i>
                     <span class="linkTxt ">Selection</span>
                   </a>
                 </li>
-                <li id="tabMobDetails" runat="server" class="MenuItem Normal">
-                  <a>
-                    <span class="linkIcon" title="Selection">
-                      <img src="Images/details-icon.png"></span>
+                <li id="tabMobDetails" runat="server">
+                  <a class="MenuItem Normal ">
+                    <span class="linkIcon detailsICN" title="Selection">&nbsp;</span>
                     <span class="linkTxt ">Details</span>
                   </a>
                 </li>
-                <li id="tabLegend" runat="server" class="MenuItem Normal">
-                  <a href="#">
-                    <span class="linkIcon">
-                      <img src="Images/legend-icon.png"></span>
+                <li id="tabLegend" runat="server" style="display: none">
+                  <a href="#" class="MenuItem Normal ">
+                    <i class="icon icon-maps" aria-hidden="true"></i>
                     <span class="linkTxt ">Maps</span>
                   </a>
                 </li>
-                <li id="tabLocation" runat="server" class="MenuItem Normal">
-                  <a href="#">
-                    <span class="linkIcon">
-                      <img src="Images/loc-icon.png"></span>
+                <li id="tabLocation" runat="server" style="display: none">
+                  <a href="#" class="MenuItem Normal" >
+                    <i class="fa fa-map-marker" aria-hidden="true"></i>
                     <span class="linkTxt ">Location</span>
                   </a>
                 </li>
-                <li id="tabMarkup" runat="server" class="MenuItem Normal">
-                  <a href="#">
-                    <span class="linkIcon">
-                      <img src="Images/markup-icon.png"></span>
+                <li id="tabMarkup" runat="server" style="display: none">
+                  <a href="#" class="MenuItem Normal">
+                     <i class=" icon icon-drow" aria-hidden="true"></i>
                     <span class="linkTxt ">Draw</span>
                   </a>
                 </li>
-                <li id="tabShare" runat="server" class="MenuItem Normal">
-                  <a href="#">
-                    <span class="linkIcon">
-                      <img src="Images/share_icon.png"></span>
+                <li id="tabShare" runat="server" style="display: none">
+                  <a href="#" class="MenuItem Normal " >
+                    <i class="fa fa-share-alt" aria-hidden="true"></i>
                     <span class="linkTxt ">Share</span>
                   </a>
                 </li>
@@ -127,9 +123,8 @@ limitations under the License.
             </div>
           </div>
         </div>
-        <div class="">
           <div id="pnlFunction" runat="server" class="left_details">
-            <%-- Fuction tab name with < to click to return to main menu --%>
+            <%-- Function tab name with  click to return to main menu --%>
             <div id="pnlSearch" runat="server" class="FunctionPanel Panel" style="display: none">
               <uc1:SearchPanel ID="ucSearchPanel" runat="server" />
             </div>
@@ -152,16 +147,15 @@ limitations under the License.
               <uc1:SharePanel ID="ucSharePanel" runat="server" />
             </div>
           </div>
-        </div>
       </div>
       <div id="pnlMapSizer" runat="server" class="Panel">
         <div id="pnlMap" class="MainPanel Panel">
-          <div id="pnlMapMenus" class="MapMenu">
+          <div id="pnlMapMenus" runat="server" class="MapMenu">
             <div id="pnlBasemapMenu" class="MapMenu">
               <div class="layerImagePanel baseMapImage">
                 <label style="width: 100%; height: 100%;">
                   <input id="pnlBaseMap" style="display: none;" type="checkbox" />
-                  <img class="layerImage" src="Images/dropdownMap-icon.jpg" title="Esri Street Map" />
+                  <span class="layerImage" title="Overlays and Basemaps"></span>
                 </label>
               </div>
               <div id="pnlBaseLayer" style="display: none; margin-top: 13px">
@@ -171,25 +165,28 @@ limitations under the License.
             <div id="pnlMapTools" class="MapMenu mapNavigation ">
               <div class="selectCol">
                 <button class=" dropdown identify" type="button" id="btnToolMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Tool">
+                  <span class="rightArrw"></span>
                   <span id="selectedTool">
-                    <img class="flag " src="Images/info-icon.png" alt="" />
+                    <span class="flag mapToolId"></span>
                     <span class="txt glyphicon">Identify</span></span>
                 </button>
                 <ul id="selectMapTools" class="dropdown-menu dropdown" aria-labelledby="btnToolMenu">
-                  <li id="optIdentify" runat="server" class="Button MapTool "><a href="#">
-                    <img class="flag " src="Images/info-icon.png" alt="" />
+                  <li id="optIdentify" runat="server" class="Button MapTool"><a href="#">
+                    <span class="flag mapToolId"></span>
                     <span class="txt glyphicon">Identify</span></a></li>
                   <li id="optSelect" runat="server" class="Button MapTool"><a href="#">
-                    <img class="flag " src="Images/select-icon.png" alt="" />
-                    <span class="txt glyphicon">Select</span></a></li>
+                    <span class="flag mapToolSelect"></span>
+                    <span class="txt glyphicon">Select</span></a>
+                  </li>
                   <li id="optMarkupTool" runat="server" class="Button MapTool"><a href="#">
-                    <img class="flag " src="Images/draw-icon.png" alt="" />
+                    <span class="flag mapToolDraw"></span>
                     <span class="txt glyphicon">Draw</span></a></li>
                 </ul>
               </div>
             </div>
             <div id="pnlMapLevels" runat="server" class="MapMenu" style="display: none">
-              <button class="frmSelect dropdown-toggle" type="button" id="btnMapLevel" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Level">
+              <button class="frmSelect dropdown-toggle" type="button" id="btnMapLevel" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Class">
+                <span class="rightArrw"></span>
                 <span id="selectedLevel" runat="server"></span>
               </button>
               <ul id="selectMapLevel" class="dropdown-menu " aria-labelledby="btnMapLevel">
@@ -223,8 +220,8 @@ limitations under the License.
             <span class="topLftTxt">Details
             </span>
             <span class="rightCol">
-              <a id="cmdDataPrint" href="#" class="printRght_icon"></a>
-              <a href="#" class=" DataExit nxt_arrw"></a>
+              <i id="cmdDataPrint" class="fa fa-print printRght_icon" aria-hidden="true"></i>
+              <i class="fa fa-angle-right DataExit " aria-hidden="true"></i>
             </span>
           </div>
         </div>

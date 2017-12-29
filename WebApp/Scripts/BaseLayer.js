@@ -13,16 +13,20 @@
 //  limitations under the License.
 
 var GPV = (function (gpv) {
-
   $(function () {
+    var previousChecked = null;
     var $container = $(".LegendScroll");
     var $layerContainer = $("#pnlLayerScroll");
     var $tileContainer = $("#pnlBaseMapScroll");
     $tileContainer.find(".LegendCheck").on("click", function () {
+      if (previousChecked != null) {
+        gpv.viewer.toggleTileGroup(previousChecked, false);
+      }
       var $this = $(this);
       var isChecked = $this.is(":checked");
       gpv.viewer.toggleTileGroup($this.attr("data-tilegroup"), isChecked);
       gpv.appState.VisibleTiles[gpv.appState.MapTab] = getVisibleTiles(gpv.appState.MapTab);
+      previousChecked = $this.attr("data-tilegroup");
     });
     // =====  public functions  =====
 
@@ -39,10 +43,14 @@ var GPV = (function (gpv) {
 
     function getVisibleTiles(mapTabID) {
       var tileGroupIds = [];
+
       $tileContainer.find(".LegendTop").filter('[data-maptab="' + mapTabID + '"]').find(".LegendCheck:checked").each(function (i, e) {
         var tileGroup = $(this).attr("data-tilegroup");
         if (tileGroup) {
           tileGroupIds.push(tileGroup);
+        }
+        if (tileGroup == 'Imagery') {
+          $(this).prop("checked", "checked");
         }
       });
       return tileGroupIds;

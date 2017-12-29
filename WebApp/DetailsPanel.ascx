@@ -16,25 +16,25 @@ limitations under the License.
 
 <%@ Control Language="C#" AutoEventWireup="true" CodeFile="DetailsPanel.ascx.cs" Inherits="DetailsPanel" %>
 <%@ Register TagPrefix="gpv" Assembly="App_Code" Namespace="GPV" %>
-<div class="topHead">
+<div class="topHead FunctionHeader"> <%--FunctionHeader class for changing Header Background Color and Font color--%>
   <div class="inner">
-    <div class="FunctionHeader">
       <span class="topLftTxt ">
         <span class="topTxt">Details</span>
         <a href="#">
-          <img src="Images/faq-icon.png"></a>
+        </a>
       </span>
       <span class="rightCol">
-        <a class="prev_arrw FunctionExit" aria-hidden="true"></a>
+        <i class="fa fa-angle-left FunctionExit" aria-hidden="true"></i>
       </span>
-    </div>
   </div>
 </div>
 <div class="frm_box">
   <div id="pnlData" class="frm_box">
-    <div class="frm_row noTopMargin">
+    <div class="frm_row noTopMargin customDetails">
       <select id="ddlMobDataTheme" class="frmSelect" title="Data category"></select>
-      <span class="dtlPrint"><a id="cmdMobDataPrint" href="#" class="printRght_icon"></a></span>
+      <span class="dtlPrint">
+        <i id="cmdMobDataPrint" class="fa fa-print printRght_icon" aria-hidden="true"></i>
+      </span>
     </div>
     <div class="frm_box  topMargin">
       <div id="MobDetailContent" class="customScroll">

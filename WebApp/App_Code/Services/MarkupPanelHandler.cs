@@ -77,7 +77,7 @@ public class MarkupPanelHandler : WebServiceHandler
 
     int id = Sequences.NextMarkupGroupId;
     string title = "[untitled]";
-    string details = "[unDetailed]";
+    string details = "[No Details]";
     bool locked = AppAuthentication.Mode != AuthenticationMode.None;
     DateTime now = DateTime.Now;
 
@@ -595,7 +595,7 @@ public class MarkupPanelHandler : WebServiceHandler
   }
 
   [WebServiceMethod]
-  private void UpdateMarkupGroupTitle()
+  private void UpdateMarkupGroupTitleAndDetails()
   {
     int groupId = Convert.ToInt32(Request.Form["id"]);
     string title = Request.Form["title"];

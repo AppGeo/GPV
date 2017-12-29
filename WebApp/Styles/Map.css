@@ -114,7 +114,9 @@ div.leaflet-control-attribution.leaflet-control {
   width: auto;
   float: left;
 }
-
+.MapMenu button, .MapMenu button a{
+  cursor: default;
+}
 #pnlMapMenus {
   float: left;
   position: relative;
@@ -156,27 +158,16 @@ div.leaflet-control-attribution.leaflet-control {
   color: #000;
 }
 
-.MapMenu > .dropdown-toggle { /*
-border: none;
-margin-left: 10px;
-box-shadow: 0 1px 5px rgba(0,0,0,.65);
--webkit-box-shadow: 0 1px 5px rgba(0,0,0,.65);
--moz-box-shadow: 0 1px 5px rgba(0,0,0,.65);
-border-radius: 4px;
--webkit-border-radius: 4px;
--moz-border-radius: 4px;
-height: 26px;
-font-size: 13px;
-padding: 0 10px;*/
+.MapMenu > .dropdown-toggle { 
 }
 
-  .MapMenu > .dropdown-toggle > span:first-child {
-    letter-spacing: .5px;
-    margin-right: 5px;
-    vertical-align: middle;
-    position: relative;
-    top: -3px;
-  }
+.MapMenu > .dropdown-toggle > span:first-child {
+  letter-spacing: .5px;
+  margin-right: 5px;
+  vertical-align: middle;
+  position: relative;
+  top: -3px;
+}
 
 .MapMenu > .dropdown-menu {
   left: 0px;
@@ -186,7 +177,7 @@ padding: 0 10px;*/
 }
 
 .MapMenu > .dropdown-menu li {
-  cursor: pointer;
+  cursor: default;
   display: inline-block;
   height: 28px;
   padding: 4px 8px;
@@ -194,7 +185,6 @@ padding: 0 10px;*/
 }
 
 li.MapTool span {
-  /* vertical-align: middle;*/
 }
 
 li.MapTool.Disabled {
@@ -206,126 +196,6 @@ li.MapTool.Disabled {
   border-top: solid 1px #b9b9b9;
   text-transform: uppercase;
   padding: 3px 10px;
-}
-
-li.MapTool span:not(.glyphicon), #selectedTool span:not(.glyphicon), #selectedMarkupTool span:not(.glyphicon) {
-  background-image: url(../Images/UI/Icons.png);
-  display: inline-block;
-  height: 20px;
-  width: 20px;
-  vertical-align: middle;
-}
-
-.pan {
-  background-position: -768px 0px; /* Select.gif */
-}
-
-.select {
-  background-position: -816px 0px; /* Select.gif */
-}
-
-#optSelect.Disabled {
-  background-position: -840px 0px; /* SelectDisable.gif */
-}
-
-.draw-point {
-  background-position: -432px 0px; /* DrawPoint.gif */
-}
-
-.MapTooldraw-point {
-  background: url(../Images/draw-icon.png);
-}
-
-.MapToolselect {
-  background: url(../Images/select-icon.png);
-}
-
-.MapToolinfo-sign {
-  background: url(../Images/info-icon.png);
-}
-
-#optDrawPoint.Disabled {
-  background-position: -456px 0px; /* DrawPointDisable.gif */
-}
-
-.draw-line {
-  background-position: -384px 0px; /* DrawLine.gif */
-}
-
-#optDrawLine.Disabled {
-  background-position: -408px 0px; /* DrawLineDisable.gif */
-}
-
-.draw-polygon {
-  background-position: -480px 0px; /* DrawPolygon.gif */
-}
-
-#optDrawPolygon.Disabled {
-  background-position: -504px 0px; /* DrawPolygonDisable.gif */
-}
-
-.draw-circle {
-  background-position: -240px 0px; /* DrawCircle.gif */
-}
-
-#optDrawCircle.Disabled {
-  background-position: -264px 0px; /* DrawCircleDisable.gif */
-}
-
-.draw-coordinates {
-  background-position: -288px 0px; /* DrawCoordinates.gif */
-}
-
-#optDrawCoordinates.Disabled {
-  background-position: -312px 0px; /* DrawCoordinatesDisable.gif */
-}
-
-.draw-length {
-  background-position: -336px 0px; /* DrawLength.gif */
-}
-
-#optDrawLength.Disabled {
-  background-position: -360px 0px; /* DrawLengthDisable.gif */
-}
-
-.draw-area {
-  background-position: -192px 0px; /* DrawArea.gif */
-}
-
-#optDrawArea.Disabled {
-  background-position: -216px 0px; /* DrawAreaDisable.gif */
-}
-
-.delete-markup {
-  background-position: -144px 0px; /* Delete.gif */
-}
-
-#optDeleteMarkup.Disabled {
-  background-position: -168px 0px; /* DeleteDisable.gif */
-}
-
-.color-picker {
-  background-position: -72px 0px; /* ColorPicker.gif */
-}
-
-#optColorPicker.Disabled {
-  background-position: -96px 0px; /* ColorPickerDisable.gif */
-}
-
-.paint-bucket {
-  background-position: -720px 0px; /* PaintBucket.gif */
-}
-
-#optPaintBucket.Disabled {
-  background-position: -744px 0px; /* PaintBucketDisable.gif */
-}
-
-.draw-text {
-  background-position: -528px 0px; /* DrawText.gif */
-}
-
-#optDrawText.Disabled {
-  background-position: -552px 0px; /* DrawTextDisable.gif */
 }
 
 #mapMain {
@@ -390,4 +260,75 @@ input.MarkupText {
   top: -21px;
   border: solid 1px rgba(128, 128, 128, 0.5);
   background-color: rgba(255, 255, 255, 0.5);
+}
+#locatorBox {
+    border: solid 2px #FF0000;
+}
+
+/* Styles dragged from leaflet.css */
+.leaflet-top,
+.leaflet-bottom { 
+  float:right;
+}
+.leaflet-top {
+  top: 40px;
+  margin-top:6px;
+  float:right;
+}
+.leaflet-right{
+  margin:5% 0.0% 5px 0;
+}
+
+
+/* =============================Map Custom DropDown=========================== */
+
+.customMaps {
+  position: relative;
+  float: left;
+  min-width: calc(100% / 2 - 8px);
+}
+
+.customMaps:after {
+    content: " ";
+    font: normal normal normal 17px/1 FontAwesome;
+    color: #b7b7b7;
+    right: 11px;
+    top: 0;
+    height: 29px;
+    padding: 5px 0 0 8px;
+    border-left: 1px solid #b7b7b7;
+    position: absolute;
+    pointer-events: none;
+    background-color: #fff;
+    width: 21px;
+    background-image: url(../Images/UI/all-icons.png);
+    background-position: -184px -92px;
+}
+
+/* IE11 hide native button (thanks Matt!) */
+select::-ms-expand {
+  display: none;
+}
+
+.customMaps button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: 29px;
+  float: right;
+  margin: 0px;
+  padding: 0px 40px 0px 5px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: #333;
+  background-color: #ffffff;
+  background-image: none;
+  border: none;
+  -ms-word-break: normal;
+  word-break: normal;
+  text-align: left;
+  outline: none;
 }

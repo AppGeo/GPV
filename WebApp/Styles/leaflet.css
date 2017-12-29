@@ -102,16 +102,12 @@
 	position: absolute;
 	z-index: 1000;
 	pointer-events: none;
-    float:right;
 	}
 .leaflet-top {
-	top: 40px;
-    margin-top:6px;
-    float:right;
+	top: 0;
 	}
 .leaflet-right {
 	right: 0;
-    margin:5% 0.0% 5px 0;
 	}
 .leaflet-bottom {
 	bottom: 0;

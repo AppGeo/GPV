@@ -18,20 +18,19 @@ limitations under the License.
 <%@ Register TagPrefix="gpv" Assembly="App_Code" Namespace="GPV" %>
 
 
-<div class="topHead">
+<div class="topHead FunctionHeader"> <%--FunctionHeader class for changing Header Background Color and Font color--%>
   <div class="inner">
-    <div class="FunctionHeader">
       <span class="topLftTxt ">
         <span class="topTxt">Selection</span>
-        <a class ="helpIcon" type ="selection">
-          <img src="Images/faq-icon.png"></a>
+        <a  class ="helpIcon"  type ="selection">
+           <i class=" fa fa-question-circle" aria-hidden="true"></i>
+         </a>
       </span>
       <span class="rightCol">
-        <a class="prev_arrw FunctionExit" aria-hidden="true"></a>
+        <i class="fa fa-angle-left FunctionExit" aria-hidden="true"></i>
       </span>
     </div>
   </div>
-</div>
 <div id="pnlQuery" class="">
   <div class="upperSelection">Build a Spatial Query</div>
   <div id="pnlSelectionOptions" class="frm_box">
@@ -68,8 +67,8 @@ limitations under the License.
     </div>
     <div id="pnlQueryCommand topMargin" class="frm_row ">
       <span id="labSelectionCount" class="floatLeft">None selected</span>
-      <button id="cmdMailingLabels" class="Disabled btn frmBtn mailingLblBtn" title="Mailing Labels">Mailing Labels</button>
-      <button id="cmdExportData" class="Disabled btn frmBtn spreadsheetBtn" title="Spreadsheet">Spreadsheet</button>
+      <button id="cmdMailingLabels" class="Disabled btn frmBtn mailingLblBtn" title="Mailing Labels"><span class="lbl"></span><span class="txt">Mailing Labels</span></button>
+      <button id="cmdExportData" class="Disabled btn frmBtn spreadsheetBtn" title="Spreadsheet"><span class="lbl"></span><span class="txt">Spreadsheet</span></button>
     </div>
   </div>
 </div>

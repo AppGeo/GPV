@@ -16,5 +16,4 @@
 
 <%@ Control Language="C#" ClassName="Header" %>
   <div class="logo">
-    <img src="Images/UI/AppGeo.png" />
   </div>

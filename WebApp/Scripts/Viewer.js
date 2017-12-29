@@ -30,7 +30,7 @@ var GPV = (function (gpv) {
     var extentChangedHandlers = [];
     var mapRefreshedHandlers = [];
     var panelAnimationTime = 0;
-
+    console.log("appState", appState);
     // =====  controls required prior to map control creation  =====
 
     var $pnlDataDisplay = $("#pnlDataDisplay");
@@ -74,9 +74,7 @@ var GPV = (function (gpv) {
     });
 
     map.on("click", identify);
-    $(document).ready(function () {
-      $("#optIdentify").trigger("click");
-    });
+
     var shingleLayer = L.shingleLayer({
       urlBuilder: refreshMap,
       zIndex: 100,
@@ -128,6 +126,30 @@ var GPV = (function (gpv) {
     gpv.selectionPanel.setMap(map);
     gpv.markupPanel.setMap(map);
     gpv.sharePanel.setMap(map);
+
+    //On Init set DefaultFunction Tab
+    if (appState.ActiveFunctionTab != 0) {
+    
+      
+      if ($(window).width() < 700) {
+        $("#pnlFunctionTabs").animate({ left: 0, opacity: "1.0" }, 600);
+        $("#pnlFunction").animate({ left: "50px", opacity: "1.0" }, 600);
+        $("#pnlFunction").css("display", "block");
+        $("#btnHamburger").addClass("hidden");
+        $("#btnHamburgerClose").removeClass("hidden");
+      }
+      else {
+        $("#pnlFunctionTabs").animate({ left: 0, opacity: "1.0" }, 600);
+        $("#pnlFunction").animate({ left: "161px", opacity: "1.0" }, 600);
+        $('.leaflet-control').css('margin-left', '3px');
+        $("#pnlMapMenus").addClass("pnlMapMenus_option");
+        $("#logo").addClass("pnlMapMenus_option");
+        $('#mapMain .leaflet-control-container .leaflet-top').addClass('pnlMapMenus_option');
+      
+      }
+     
+    }
+    
 
     // =====  control events  =====
 
@@ -197,6 +219,8 @@ var GPV = (function (gpv) {
       trigger: 'manual'
     });
 
+    
+
     //  ==== fort detail panel display ( in large device) ====
     $("#cmdShowDetails").on("click", function () {
       var myw = $pnlDataDisplay.css("right").substring(0, 1);
@@ -257,24 +281,63 @@ var GPV = (function (gpv) {
       }
     });
 
-    function OpenSelectionTab(name) {
-      hideFunctionMenu(function () { showFunctionPanel(name); });
-      $.each(functionTabChangedHandlers, function () {
-        this(name);
-      });
-    }
-
+    // optSelect click event
     $("#optSelect").on("click", function () {
       gpv.selectTool($(this), map, { cursor: 'default', dragging: false, boxZoom: false, drawing: { mode: 'rectangle', style: { color: '#c0c0c0', fill: true, fillColor: '#e0e0e0' } } });
       HidePanel();
-      $(".MenuItem").removeClass("active");
+      $(".Menu li").removeClass("active");
       $("#tabSelection").addClass("active");
       showFunctionPanel("Selection");   // open selection panel when Select selected in Maptool
       $.each(functionTabChangedHandlers, function () {
         this("Selection");
       });
     });
+    //If optSelect has Select Class
+    var $optSelect = $('#optSelect');
+    if ($optSelect.hasClass('Selected')) {
+      gpv.selectTool($(this), map, { cursor: 'default', dragging: false, boxZoom: false, drawing: { mode: 'rectangle', style: { color: '#c0c0c0', fill: true, fillColor: '#e0e0e0' } } });
+      HidePanel();
+      $(".Menu li").removeClass("active");
+      $("#tabSelection").addClass("active");
+      showFunctionPanel("Selection");   // open selection panel when Select selected in Maptool
+      $.each(functionTabChangedHandlers, function () {
+        this("Selection");
+      });
+    };
 
+    //If optMarkupTool has Select Class
+    var $optMarkupTool = $("#optMarkupTool");
+    if ($optMarkupTool.hasClass('Selected')) {
+      $(".Menu li").removeClass("active");
+      $("#tabMarkup").addClass("active");
+
+      HidePanel();
+      showFunctionPanel("Markup");
+      $.each(functionTabChangedHandlers, function () {
+        this("Markup");
+      });
+    }
+    //optMarkupTool Click event
+    var $optMarkupTool = $("#optMarkupTool").on("click", function () {
+      $(".Menu li").removeClass("active");
+      $("#tabMarkup").addClass("active");
+
+      HidePanel();
+      showFunctionPanel("Markup");
+      $.each(functionTabChangedHandlers, function () {
+        this("Markup");
+      });
+    });
+    // if optIdentify Has Select Class
+    var $optIdentify = $("#optIdentify");
+    if ($optIdentify.hasClass("Selected")) {
+      gpv.selectTool($(this), map, { cursor: 'default', drawing: { mode: 'off' } });
+      $optIdentify.addClass("Selected");
+    }
+    // optIdentify Click event
+    $optIdentify.on("click", function () {
+      gpv.selectTool($(this), map, { cursor: 'default', drawing: { mode: 'off' } });
+    });
     $("#selectMapTheme li").click(function () {
       $("#ucLegendPanel_selectedTheme").html($(this).html());
       var mapTab = $(this).attr("data-maptab");
@@ -300,16 +363,9 @@ var GPV = (function (gpv) {
 
     // ==== cusror type selection when Identify select in MapTool ====
     var $MapTool = $(".MapTool");
-    var $optIdentify = $("#optIdentify");
-    $optIdentify.hasClass("Selected")
-    {
-      gpv.selectTool($(this), map, { cursor: 'default', drawing: { mode: 'off' } });
-    }
-    $optIdentify.on("click", function () {
-      gpv.selectTool($(this), map, { cursor: 'default', drawing: { mode: 'off' } });
-    });
 
-    $("#ucMarkupPanel_optPan").on("click", function () {
+
+    $("#optPan").on("click", function () {
       gpv.selectTool($(this), map, { cursor: '', drawing: { mode: 'off' } });
     });
 
@@ -339,7 +395,9 @@ var GPV = (function (gpv) {
               opacity: tg.opacity,
               maxZoom: tl.maxZoom || map.options.maxZoom
             });
+
           });
+
         });
       });
     }
@@ -365,21 +423,23 @@ var GPV = (function (gpv) {
     }
 
     // ==== for open any Panel ====
-    $(".MenuItem").on("click", function () {
+    $(".Menu li").on("click", function () {
       var name = $(this).text();
       var trimName = $.trim(name);
+     $("#pnlFunction").css("display", "block");
+      
       if (trimName == "Draw") {
         trimName = "Markup";
       }
       if (trimName == "Maps") {
         trimName = "Legend";
       }
-      $(".MenuItem").removeClass("active");
+      $(".Menu li ").removeClass("active");
       $("#tab" + trimName).addClass("active");
       $(".share").hide();
-      hideFunctionMenu(function () {
+      //hideFunctionMenu(function () {
         showFunctionPanel(trimName);
-      });
+     // });
 
       $.each(functionTabChangedHandlers, function () {
         this(trimName);
@@ -389,7 +449,7 @@ var GPV = (function (gpv) {
     // ==== for closing any panel
     $(".FunctionHeader").on("click", function () {
       if ($(window).width() < 700) {
-        $(".MenuItem").removeClass("active");
+        $(".Menu li ").removeClass("active");
         $("#btnHamburger").removeClass("hidden");
         $("#btnHamburgerClose").addClass("hidden");
       }
@@ -417,7 +477,7 @@ var GPV = (function (gpv) {
 
       });
       $("#btnHamburgerClose").on("click", function () {   // for small device close panel
-        $(".MenuItem").removeClass("active");
+        $(".Menu li").removeClass("active");
         $("#btnHamburger").removeClass("hidden");
         $("#btnHamburgerClose").addClass("hidden");
         hideFunctionPanel(showFunctionMenu);
@@ -433,7 +493,10 @@ var GPV = (function (gpv) {
         }
         pnlFunctionTabsWidth = $("#pnlFunctionTabs").width();
         if (($("#pnlFunction").css("opacity")) == "0")
-        { pnlFunctionWidth = 0; }
+        {
+          pnlFunctionWidth = 0;
+          $("#pnlFunction").css("display", "none");
+        }
         else
         { pnlFunctionWidth = $("#pnlFunction").width(); }
         $("#pnlFunction").animate({ left: pnlFunctionTabsWidth, opacity: $("#pnlFunction").css("opacity") }, panelAnimationTime, function () {
@@ -454,8 +517,9 @@ var GPV = (function (gpv) {
     function showFunctionMenu() {
       $(".share").hide();
       $(".FunctionExit").removeClass("FunctionExitOpen");
+
     }
-    var pnlFuctionLeft, pnlMapSizerLaft, pnlFunctionTabsWidth, pnlFunctionWidth;
+    //var pnlFuctionLeft, pnlMapSizerLaft, pnlFunctionTabsWidth, pnlFunctionWidth;
     // ==== fuction for Show Panel ====
     function showFunctionPanel(name) {
       if ($(window).width() < 700) {
@@ -473,9 +537,16 @@ var GPV = (function (gpv) {
         $("#selectedTool").html($("#optSelect").html());
       }
       else if (name == "Markup") {     // When Draw panel open , Draw tool selected in pnlMapTools Dropdown 
-        $("#ucMarkupPanel_optDrawLine").trigger("click");
+       
         $("#optMarkupTool").addClass("Selected");
         $("#selectedTool").html($("#optMarkupTool").html());
+        if (!$("#selectMarkupTools").hasClass("Selected"))
+        {
+          $("#optDrawLine").addClass(" Selected ");
+        }
+        $('#selectMarkupTools .Selected').trigger('click');
+        $("#selectedMarkupTool").html($("#selectMarkupTools .Selected").html());
+        
       }
       else {    // When Share ,Search , Map ,Location  panel open , Identify tool selected in pnlMapTools Dropdown 
         $("#optIdentify").addClass("Selected");
@@ -484,8 +555,9 @@ var GPV = (function (gpv) {
       pnlFunctionTabsWidth = $("#pnlFunctionTabs").width();
       pnlFunctionWidth = $("#pnlFunction").width();
       $(".FunctionExit").addClass("FunctionExitOpen");
-      $("#pnlFunction").css("display", "block");
-      $("#pnlFunction").animate({ left: pnlFunctionTabsWidth, opacity: "1.0" }, 800);
+      $("#pnlFunction").animate({ left: pnlFunctionTabsWidth, opacity: "1.0" }, 400 , function () {
+        $("#pnlFunction").css("display", "block");
+      });
       $("#pnlMapSizer").animate({ left: pnlFunctionTabsWidth }, {
         progress: function () {
           map.invalidateSize();
@@ -521,6 +593,7 @@ var GPV = (function (gpv) {
           map.invalidateSize();
           shingleLayer.redraw();
           if ($(window).width() > 700) { // for large device
+            $(".Menu li").removeClass("active");
             $("#pnlMapMenus").removeClass("pnlMapMenus_option");
             $("#mapMain .leaflet-left").removeClass("pnlMapMenus_option");
             $(".leaflet-left .leaflet-control").css("margin-left", "10px");
@@ -584,17 +657,14 @@ var GPV = (function (gpv) {
                 'No Results</p></div>');
               }
 
-              var $pnlDataDisplay = $("#pnlDataDisplay");
-              $pnlDataDisplay.show();
-              $pnlDataDisplay.find("#spnDataTheme").text("Identify");
-              $pnlDataDisplay.find("#ddlDataTheme").hide();
-              $("#ddlMobDataTheme").hide();
-              if ($("#tabMobDetails").css("display") != "none") {   // for small device trigger tabMobDetails click for showing Detail panel
-                $("#tabMobDetails").trigger("click");
-                $(".MenuItem").removeClass("active");
-                $("#tabMobDetails").addClass("active");
-              }
-              else {
+              if ($(window).width() > 700){
+                var $pnlDataDisplay = $("#pnlDataDisplay");
+                $pnlDataDisplay.show();
+                $pnlDataDisplay.find("#spnDataTheme").text("Identify");
+                $pnlDataDisplay.find("#ddlDataTheme").hide();
+                $("#pnlData .customDetails").removeClass("customDetails");
+                $("#pnlDataDisplay .customDetails").css("display", "none");
+                $("#ddlMobDataTheme").hide();
                 if ($pnlDataDisplay.css("right").substring(0, 1) === "-") {   // for large device showing Detail panel
                   $pnlDataDisplay.animate({ right: 0, opacity: "1.0" }, 600, function () {
                     $(".DataExit").addClass("DataExitOpen");
@@ -604,6 +674,11 @@ var GPV = (function (gpv) {
 
                 }
               }
+              else {
+                $("#tabMobDetails").trigger("click");
+                $(".Menu li").removeClass("active");
+                $("#tabMobDetails").addClass("active");
+              }    
             },
             error: function (xhr, status, message) {
               alert(message);
@@ -659,16 +734,6 @@ var GPV = (function (gpv) {
       return map.getProjectedBounds().toArray();
     }
 
-    var $optMarkupTool = $("#optMarkupTool").on("click", function () {
-      $(".MenuItem").removeClass("active");
-      $("#tabMarkup").addClass("active");
-
-      HidePanel();
-      showFunctionPanel("Markup");
-      $.each(functionTabChangedHandlers, function () {
-        this("Markup");
-      });
-    });
 
     function showLevel() {
       var $li = $("#selectMapLevel li[data-level=\"" + appState.Level + "\"]");
@@ -685,6 +750,20 @@ var GPV = (function (gpv) {
     }
 
     function toggleTileGroup(groupId, visible) {
+      if (groupId === 'None') {
+        map.removeLayer(tl);
+      } else {
+        tileLayers[appState.MapTab][groupId].forEach(function (tl) {
+          if (visible) {
+            map.removeLayer(tl);
+            tl.addTo(map);
+          }
+          else {
+            map.removeLayer(tl);
+          }
+        });
+
+      }
       tileLayers[appState.MapTab][groupId].forEach(function (tl) {
         if (visible) {
           tl.addTo(map);
@@ -822,7 +901,6 @@ var GPV = (function (gpv) {
       setExtent: setExtent,
       switchToPanel: switchToPanel,
       toggleTileGroup: toggleTileGroup,
-      OpenSelectionTab: OpenSelectionTab,
       zoomToActive: zoomToActive
     };
 
@@ -833,10 +911,11 @@ var GPV = (function (gpv) {
     //need to add title attribute due to bootstrap overwriting title with popover
     $("#cmdLocation").attr("title", "Current Location");
     gpv.loadComplete();
+
     createTileLayers();
     drawTileLayers();
     triggerMapTabChanged();
-
+    SetDefaultTile();
     /*$('input').on('change', function () {
       var dataTile = $(this).attr('data-tilegroup');
       var isChecked = $(this).is(':checked')
@@ -865,63 +944,80 @@ var GPV = (function (gpv) {
 
     // ==== for custom scrollbar theme ====
     $('.customScroll').mCustomScrollbar({
-      theme: "3d-thick"
+      theme: "3d-thick",
+      //axis: "xy"
     })
-    //$('.horizontalScroll').mCustomScrollbar({
-    //  theme: "3d-thick",
-    //  axis: "x"
-    //})
+    $('.horizontalScroll').mCustomScrollbar({
+     theme: "3d-thick",
+      axis: "xy"
+    })
 
     // ==== Help popUp ====
     var showHelpPopup = function (type, ele) {
       var helpTxtObj = {
         'search': {
           'title': 'Search',
-          'desc': 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. '+
-          'Lorem Ipsum has been the industrys standard dummy text ever since the 1500s,'+ 
-          'when an unknown printer took a galley of type and scrambled it to make a type specimen book.'
+          'desc': 'There are two sections of the Search Panel. The top section ' +
+        'allows users to define their search criteria and the bottom section presents the results of the search. ' +
+        'Users can select one or more of the search results from the bottom section any see each on the map using ' +
+        'the “Show on Map” buttons. This visualization of search results will automatically open the Selection Panel ' +
+        'with the features selected from the search results. At any time users can navigate back to the Search panel ' +
+        'to continue searching for additional results, where the original search criteria and results will be preserved until reset.'
         },
         'selection': {
           'title': 'Selection',
-          'desc': 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. '+
-          'Lorem Ipsum has been the industrys standard dummy text ever since the 1500s,'+ 
-          'when an unknown printer took a galley of type and scrambled it to make a type specimen book.'
+          'desc': 'There are two sections of the Selection Panels. The top section ' +
+        'allows users to select features (mapped objects) from the map and bottom section presents information about ' +
+        'the selected features. The top panel contains drop down lists that control the selection of one or two map ' +
+        'layers and a filter for limiting the data shown. The bottom panel has one or more columns and shows detailed ' +
+        'data for the objects highlighted on the map.'
         },
         'maps': {
           'title': 'Maps',
-          'desc': 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ' +
-          'Lorem Ipsum has been the industrys standard dummy text ever since the 1500s,' +
-          'when an unknown printer took a galley of type and scrambled it to make a type specimen book.'
+          'desc': 'The current application provides a panel which displays legend for the current maps. Depending on the GPV configuration, ' +
+        'parts of the legend may be expandable and collapsible.The changes to the layers do not appear immediately ' +
+        'on the map. Click the Refresh Map button at the top of the legend to see ' +
+        'layer changes. Layer names that appear as a link are clickable and will open a window that contains more information ' +
+        'about that layer.'
         },
         'location': {
           'title': 'Location',
-          'desc': 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ' +
-          'Lorem Ipsum has been the industrys standard dummy text ever since the 1500s,' +
-          'when an unknown printer took a galley of type and scrambled it to make a type specimen book.'
+          'desc': 'There are two sections of the Location Panels. The top section  ' +
+        'allows users to select features (mapped objects) from the map and bottom section presents information about the  ' +
+        'selected features. The top panel contains drop down lists that control the selection of one or two map layers and a  ' +
+        'filter for limiting the data shown. The bottom panel has one or more columns and shows detailed data for the ' +
+        'objects highlighted on the map.'
         },
         'draw': {
           'title': 'Draw',
-          'desc': 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ' +
-          'Lorem Ipsum has been the industrys standard dummy text ever since the 1500s,' +
-          'when an unknown printer took a galley of type and scrambled it to make a type specimen book.'
+          'desc': 'The current application provides a panel for creating and managing ' +
+        'draw on the map. Groups of points, lines and polygons and text can be added to the map and saved in a database and can ' +
+        'later be retrieved and viewed by other users. User can select any tools from the Draw Tools list for draw on map.'
         },
         'share': {
           'title': 'Share',
-          'desc': 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ' +
-          'Lorem Ipsum has been the industrys standard dummy text ever since the 1500s,' +
-          'when an unknown printer took a galley of type and scrambled it to make a type specimen book.'
+          'desc': 'The current application provides a panel for communicating the content presented.' +
+          '<br/><span style="font-weight:bold">Print:</span> Displays a utility for ' +
+      'creating a PDF version of the current map suitable for printing or archiving. Options can be set to select page layout and ' +
+     ' preservation of either the scale or the width of the current map. Depending on the configuration, options may be enabled to provide text, ' +
+      'such as a title and/or notes, which will appear in specific locations on the printable page.' +
+          '<br/><span style="font-weight:bold">Go To:</span> Presents a pull down list of other web-based map viewers. Select one then click Go to see the' +
+        'the current map area in that viewer. '+
+           '<br/><span style="font-weight:bold"> Export:</span> Shows a pull down list with image format options that allow for saving of the current map view to a ' +
+        'file. Select "as Image" to save the map as a PNG or JPEG image file. Select "as KML" to save the map in a format that can be viewed in ' +
+        'Google Earth. Click Save Map to download and save the file.' 
         }
       }
 
-      var infoBox = '<div class = "dtlInfoPopup">'+
-                    '<div class="arrw"></div>'+
-                    '<div class ="title">'+
+      var infoBox = '<div class = "dtlInfoPopup ">' +
+                    '<div class="arrw"></div>' +
+                    '<div class ="title">' +
                      helpTxtObj[type].title +
                     '</div>' +
                     '<div class="helpClose"></div>' +
-                    '<div class = "content">'+
-                    helpTxtObj[type].desc+
-                    '</div>'+
+                    '<div class = "content customScroll ">' +
+                    helpTxtObj[type].desc +
+                    '</div>' +
                     '</div>';
 
       $(ele).append(infoBox);
@@ -936,6 +1032,10 @@ var GPV = (function (gpv) {
         var ele = event.target.closest('a');
         var type = $(ele).attr('type');
         showHelpPopup(type, ele);
+        $('.customScroll').mCustomScrollbar({
+          theme: "3d-thick",
+          //axis: "xy"
+        })
       }
     });
 
@@ -949,7 +1049,14 @@ var GPV = (function (gpv) {
       if (!flag) {
         removeHelpPopup();
       }
+
     });
+    //Set Imagery as default baselayer selected Item
+    function SetDefaultTile() {
+      $($("#pnlBaseMapScroll").find('input[data-tilegroup="Imagery"]')[0]).trigger('click');
+      toggleTileGroup('Imagery', true);
+    }
+
   });
   return gpv;
 })(GPV || {});

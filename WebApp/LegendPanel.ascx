@@ -17,19 +17,18 @@ limitations under the License.
 <%@ Control Language="C#" AutoEventWireup="true" CodeFile="LegendPanel.ascx.cs" Inherits="LegendPanel" %>
 <%@ Register TagPrefix="gpv" Assembly="App_Code" Namespace="GPV" %>
 
-<div class="topHead">
+<div class="topHead FunctionHeader"> <%--FunctionHeader class for changing Header Background Color and Font color--%>
   <div class="inner">
-    <div class="FunctionHeader">
       <span class="topLftTxt ">
         <span class="topTxt">Maps</span>
-        <a class ="helpIcon" type ="maps">
-          <img src="Images/faq-icon.png"></a>
+        <a  class ="helpIcon"  type ="maps"> 
+           <i class=" fa fa-question-circle" aria-hidden="true"></i>
+          </a>
       </span>
       <span class="rightCol">
-        <a class="prev_arrw FunctionExit" aria-hidden="true"></a>
+        <i class="fa fa-angle-left FunctionExit" aria-hidden="true"></i>
       </span>
     </div>
-  </div>
 </div>
 <div class="frm_box">
   <div class="frm_row">

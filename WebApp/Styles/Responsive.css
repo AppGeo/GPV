@@ -20,7 +20,6 @@
 
 @media only screen and (max-width: 850px) {
   #tabMobDetails {
-    display: list-item !important;
   }
 
   #pnlDataDisplay {
@@ -43,6 +42,10 @@
 
   #ddlMobDataTheme {
     width: 85%;
+    float: left;
+  }
+  .customDetails:after {
+    right: 49px;
   }
 }
 
@@ -52,14 +55,10 @@
   }
   /* details panel */
   #pnlMarkup #pnlMarkupContent {
-    /*padding-top: 4px;*/
     padding-right: 5px;
   }
 
   .left_details .customScroll {
-    /*height: calc(100vh - 260px);
-overflow-y: hidden;
-padding: 0;*/
   }
 
   .DataList .RowSetHeader, .DataList .RowSetSubheader {
@@ -82,7 +81,6 @@ padding: 0;*/
   }
 
   #pnlDetails .mCustomScrollBox {
-    border: 1px solid #526870;
     border-radius: 3px;
   }
 
@@ -160,12 +158,23 @@ padding: 0;*/
     height: 187px;
   }
 
-  .dataTable {
-    border: none;
-  }
+  #pnlData .dtlPara{
+    position: relative;
+    top: -5px;
+  } 
 
   .leaflet-left .leaflet-control-scale {
     top: -20px;
+  }
+
+  .dtlInfoPopup .content {
+    max-height: 350px;
+  }
+
+  .leftNav_panel .leftCol {
+    float: none;
+    text-align: center;
+    margin-right: 2px;
   }
 }
 
@@ -177,20 +186,27 @@ padding: 0;*/
   }
 
   #cmdEmail {
-    width: 25px;
-    background-size: 70%;
-    margin: 0 5px;
-    padding: 14px 0px;
-    text-indent: -9999px;
-    background-position: 19% 50%;
   }
 
   .helpTxt {
-    width: 25px;
-    background-size: 70%;
-    margin: 0px 5px;
-    padding: 14px 0px;
-    text-indent: -9999px;
+  }
+
+  #cmdEmail{
+    padding-right: 5px; 
+  }
+
+  .helpTxt{
+    padding-left: 5px;
+    padding-right: 12px; 
+  }
+
+  #cmdEmail .txt{
+    display: none;
+  }
+
+  .helpTxt .txt{
+    display: none;
+    padding-right: 12px; 
   }
 
   .topHead .prev_arrw {
@@ -264,7 +280,6 @@ padding: 0;*/
 @media only screen and (max-width: 480px) {
   header.main {
     min-height: auto;
-    /*height: 30px;*/
   }
 
     header.main ul.rightLinks li {
@@ -291,7 +306,6 @@ padding: 0;*/
 
   .frmBtn {
     padding: 5px 6px;
-    /*min-width: 80px;*/
     min-width: 63px;
     font-size: 12px;
     height: 25px;
@@ -396,8 +410,6 @@ padding: 0;*/
   }
 
   .radioWrap {
-    /*margin-bottom: 10px;*/
-    /*margin-top: 10px;*/
   }
 
   #cmdMarkupColor, #cmdTextGlowColor {
@@ -437,9 +449,7 @@ padding: 0;*/
     max-width: 100%;
     top: 4px;
   }
-  /*	#pnlSelection .mailingLblBtn{
-padding-left: 19px;
-}*/
+
   #pnlSelection .spreadsheetBtn, #pnlSelection .mailingLblBtn {
     padding-left: 20px;
     margin-top: 25px;
@@ -466,23 +476,17 @@ padding-left: 19px;
   }
 
   .markup .data_box {
-    /*height: calc(100vh - 558px);*/
-    /*height: calc(100vh - 548px);*/
-    /*height: calc(100vh - 416px);*/
   }
 
   #mCSB_5_container {
-    overflow-x: scroll;
+    overflow-x: auto;
   }
 
   .markup .tabMrkp {
-    /*height: calc(100vh - 543px);*/
     height: initial;
   }
 
   .markup .quickTab {
-    /*height: calc(100vh - 384px);*/
-    /*height: calc(100vh - 548px);*/
   }
 
   #cmdRefreshMap {
@@ -544,8 +548,6 @@ padding-left: 19px;
     }
 
     .pnlMapMenus_option .leaflet-bar a, .leaflet-bar a:hover {
-      /*top: 75px;
-position: relative;*/
     }
 
     .pnlMapMenus_option #cmdFullView {
@@ -589,7 +591,6 @@ position: relative;*/
   }
 
   #frmPrint .topMargin {
-    /*margin-top: 0;*/
   }
 
   .customPrint {
@@ -656,7 +657,6 @@ position: relative;*/
   }
 
   #pnlMarkupContent button {
-    /*font-size: 12.5px !important;*/
   }
 
   #divMarkupSearch .fourCol {
@@ -675,12 +675,16 @@ position: relative;*/
   }
 
   #pnlSearchScroll .SearchInputField .Input {
-    width: 100%;
+    width: 98%;
   }
 
   #pnlSearchScroll .SearchInputField .NumberRange {
     width: calc(100%/2 - 10px);
   }
+
+#pnlSearchScroll .SearchInputField .DateRange{
+    width: calc(100%/2 - 10px);  
+}
 
   .SearchInputField {
     margin: 10px 0 0;
@@ -712,6 +716,18 @@ position: relative;*/
   .dtlInfoPopup {
     background-color: #fff;
     width: 170px;
+  }
+  .customDetails:after {                    
+    right: 39px;
+  }
+  .customSearch:after {
+    top: 26px;
+  }
+  #pnlSearchInputField>.customSearch:after{
+    top:0;
+  }
+  .customDetails select {
+    padding: 0 30px 0 5px;
   }
 }
 

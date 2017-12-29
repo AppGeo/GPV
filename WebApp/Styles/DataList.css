@@ -13,109 +13,109 @@
  *  limitations under the License.
  */
 
-.DataList .ResultSet, .DataList .RowSet, .DataList .RowSetHeader, .DataList .RowSetSubheader, .DataList .ValueSet, .DataList .Space1, .DataList .Space2, .DataList .Space4
-{
+.DataList .ResultSet, .DataList .RowSet, .DataList .RowSetHeader, .DataList .RowSetSubheader, .DataList .ValueSet, .DataList .Space1, .DataList .Space2, .DataList .Space4 {
   position: relative;
   clear: left;
   width: 100%;
 }
 
-.DataList .ResultSet
-{
+.DataList .ResultSet {
 }
 
-.DataList .RowSet
-{
+.DataList .RowSet {
 }
 
-.DataList .RowSetHeader, .DataList .RowSetSubheader
-{
+.DataList .RowSetHeader {
+  width: calc(100% - 14px);
+  padding: 5px 0 6px 6px;
+  margin-bottom: 7px;
   font-weight: bold;
   font-size: 13px;
-  padding: 2px 0px 2px 6px;
 }
 
-.DataList .ValueSet
-{
+.DataList .RowSetSubheader {
+  text-align: left;
+  font-size: 14px;
+  font-weight: 400;
+  margin: 7px 0 6px;
+  padding: 5px 0 4px 6px;
+  border-bottom: 1px solid #3c4c58;
+  width: calc(100% - 14px) !important;
 }
 
-.DataList .Label, .DataList .Separator, .DataList .Value
-{
+.DataList .ValueSet {
+}
+
+.DataList .Label, .DataList .Separator, .DataList .Value {
   position: relative;
   float: left;
   font-size: 13px;
 }
 
-.DataList .Label
-{
+.DataList .Label {
   width: 40%;
   text-align: right;
   margin: 0 3px;
   font-weight: bold;
 }
 
-.DataList .Separator
-{
+.DataList .Separator {
   width: 2%;
 }
 
-.DataList .Value
-{
+.DataList .Value {
   width: 50%;
   margin: 0 3px;
 }
 
-.DataList .Space1, .DataList .Space2, .DataList .Space4
-{
+.DataList .Space1, .DataList .Space2, .DataList .Space4 {
   font-size: 0px;
 }
 
-.DataList .Space1
-{
+.DataList .Space1 {
   height: 1px;
 }
 
-.DataList .Space2
-{
+.DataList .Space2 {
   height: 2px;
 }
 
-.DataList .Space4
-{
+.DataList .Space4 {
   height: 4px;
 }
 
-/**
+/*
 New Style for Data List
 Date 12-09-2017
 */
 /* table styles */
-.dataTable{
-    text-align: center;
-    font-size: 12px;
-   /* margin-top: 10px;*/
-    border: 1px solid #526870;
-    width:100%;
-}
-.dataTable tr td{
-    border: 1px solid #526870;
-}
-.dataTable tr th{
-    border: 1px solid #526870;
-    font-size: 13px;
-    color: #fff;
-    font-weight: normal;
-}
-.dataTable thead{
-    background-color: #849ba4;
-    font-size:14px;
+.dataTable {
+  font-size: 12px;
+  border: 1px solid #526870;
+  width: 100%;
 }
 
- thead th{
-    text-align: center;
-    padding :2px;
+.dataTable tr td {
+  border: 1px solid #526870;
 }
-.DataList .Value{
-    text-align: left;
+
+.dataTable tr th {
+  border: 1px solid #526870;
+  font-size: 13px;
+  color: #fff;
+  font-weight: normal;
+}
+
+.dataTable thead {
+  background-color: #849ba4;
+  font-size: 14px;
+}
+
+thead th {
+  padding: 2px;
+}
+
+.DataList .Value {
+  text-align: left;
 }
 /* ends here */

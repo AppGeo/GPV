@@ -15,20 +15,19 @@ limitations under the License.
 <%@ Register TagPrefix="gpv" Assembly="App_Code" Namespace="GPV" %>
 
 
-<div class="topHead">
+<div class="topHead FunctionHeader"> <%--FunctionHeader class for changing Header Background Color and Font color--%>
   <div class="inner">
-    <div class="FunctionHeader">
       <span class="topLftTxt ">
         <span class="topTxt">Search</span>
-        <a class = "helpIcon" type = "search">
-          <img src="Images/faq-icon.png"></a>
+        <a  class ="helpIcon"  type = "search"> 
+           <i class=" fa fa-question-circle" aria-hidden="true"></i>
+         </a>
       </span>
       <span class="rightCol">
-        <a class="prev_arrw FunctionExit" aria-hidden="true"></a>
+         <i class="fa fa-angle-left FunctionExit" aria-hidden="true"></i>
       </span>
     </div>
   </div>
-</div>
 <div id="pnlSearchFields" class="customScroll ">
   <div id="pnlSearchInputField" class="frm_box">
     <div class="frm_row noTopMargin customSearch">
@@ -42,7 +41,7 @@ limitations under the License.
   </div>
   <div id="pnlSearchGrid" class="frm_box horizontalScroll">
     <table id="grdSearch" class="DataGrid dataTable"></table>
-  </div>
+      </div>
 </div>
 <div id="pnlSearchCommand" class="searchCommand Panel septr">
   <div id="labSearchCount">None found</div>
