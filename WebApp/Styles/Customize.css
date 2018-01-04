@@ -197,6 +197,10 @@ a.VersionText {
   color: #fff;
 }
 
+.active .MenuItem{
+  color: #fff;
+}
+
 /* text color for help page menu item */
 #listContents .MenuItem {
   color: #212121;
