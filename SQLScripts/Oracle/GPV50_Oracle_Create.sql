@@ -214,6 +214,12 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'MarkupGroup (' ||
   'DateCreated date NOT NULL,' ||
   'DateLastAccessed date NOT NULL,' ||
   'Deleted number(1) NOT NULL' ||
+  'Details varchar2(500) NULL'||
+')';
+
+--Add new column in MarkupGroup for insert the details of the markUp
+EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'MarkupGroup (' ||
+  'ADD Details varchar2(500) NULL'||
 ')';
 
 EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'MarkupSequence (' ||

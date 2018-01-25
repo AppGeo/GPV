@@ -172,3 +172,7 @@ div
   top: 7px;
 }
 
+a, .CommandLink 
+{
+  color: #0000ff;
+}

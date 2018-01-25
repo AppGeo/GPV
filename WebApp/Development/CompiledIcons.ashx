@@ -29,7 +29,7 @@ public class CompiledIcons : IHttpHandler
   
   public void ProcessRequest(HttpContext context)
   {
-    string imagePath = context.Server.MapPath("~/Development/Images/UI/Icons");
+    string imagePath=context.Server.MapPath("~/Development/Images/UI/Icons");
     
     List<String> files = new List<String>(Directory.GetFiles(imagePath));
 

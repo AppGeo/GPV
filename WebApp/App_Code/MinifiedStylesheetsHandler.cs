@@ -31,8 +31,11 @@ public class MinifiedStylesheetsHandler : IHttpHandler
       "Styles/bootstrap.min.css",
       "Styles/Common.css",
       "Styles/font-awesome.css",
+      "Styles/font-icons-styles.css",
       "Styles/leaflet.css",
       "Styles/jquery-ui-datepicker.css",
+      "Styles/jquery.mCustomScrollbar.css",
+      "Styles/Main.css",
       "Styles/Customize.css",
       "Styles/DataList.css",
       "Styles/Viewer.css",
@@ -41,10 +44,11 @@ public class MinifiedStylesheetsHandler : IHttpHandler
       "Styles/Map.css",
       "Styles/SelectionPanel.css",
       "Styles/SearchPanel.css",
-      "Styles/LegendPanel.css",
       "Styles/LocationPanel.css",
       "Styles/MarkupPanel.css",
-      "Styles/SharePanel.css"
+      "Styles/SharePanel.css",
+      "Styles/LegendPanel.css",
+      "Styles/Responsive.css"
     });
   }
 

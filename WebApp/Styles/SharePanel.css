@@ -18,35 +18,7 @@
 }
 
 .share{
-  width: 380px;
-  margin: 10px;
   display: none;
-}
-
-#pnlPrint span, #pnlPrint label{
-  display: inline-block;
-  width: 25%;
-  text-align: right;
-  padding-right: 5px;
-}
-
-#pnlPrint input[type="text"], #pnlPrint select{
-  width: 75%;
-}
-
-#pnlPrint .PrintOptionLabel {
-  text-align: left;
-  width: auto;
-  font-weight: normal;
-}
-
-#ddlPrintTemplate{
-  padding: 0;
-  margin-left: -4px;
-}
-
-.printInput{
-  margin-bottom: 5px
 }
 
 #cmdPrint
@@ -60,3 +32,318 @@
   margin-top: 6px;
 }
 
+/**
+New style for share panel
+Date 14-09-2017
+*/
+/* Share details panel */
+#pnlShareContent .share_box .frm_row .twoCol {
+    float: left;
+}
+#pnlShareContent .share_box .frm_row .threeCol {
+    float: left;
+}
+#pnlPrint .PrintOptionLabel{
+    float: left;
+    position: relative;
+    top: 2px;
+    left: 5px;
+    font-size: 12.5px;
+}
+.printInput label {
+    margin-bottom: 15px;
+    display: inline-block;
+    width: 50px;
+    float: left;
+    font-weight : unset;
+}
+.printInput input {
+    margin-bottom: 12px;
+    display: inline-block;
+    width: calc(100% - 50px);
+    float: right;
+     border: none;
+    border-radius: 3px;
+    padding: 5px 8px;
+    font-size: 13px;
+    height: 30px;
+}
+/*.seg_title{     
+    font-size: 15px;        
+}  */     
+.share_box{     
+    width: 100%;        
+    float: left;        
+    border: 1px solid #949494;      
+    min-height: 250px;      
+    margin-top: 20px;       
+    padding: 12px 15px;     
+}       
+.share .share_box .frmLabel{        
+    width: 43px;        
+}       
+.share .share_box .frmField{        
+    width: calc(100% - 47px);       
+}
+#pnlShareContent .share_box {
+   padding: 12px 12px;
+}
+.share .share_box .frmField .frmRadio{
+        position: relative;
+    top: -1px;
+    float: left;
+}
+.share .share_box .frmField .inlineCol{     
+    display: inline-block;      
+}       
+.share .share_box .frmField .inlineCol .ratting{        
+    width: 60px;        
+    border-radius: 0;       
+}
+.customGoto{
+    width: 74%!important;
+    float: left!important;
+    margin-left: 0!important;
+}
+#pnlShareContent .share_box .frm_row .twoCol {
+    float: left;
+    width: 20%;
+}
+#cmdExternalMap{
+    min-width: 56px;
+    float: right;
+    min-height: 29px;
+}
+#pnlDownload .share_box .frm_row div.threeCol:first-child{
+    width: 50px;
+    padding-top: 5px;
+}
+#pnlDownload .share_box .frm_row .customExport{
+    width: 76%;
+}
+#pnlDownload .share_box .frm_row div.threeCol:nth-of-type(3){
+    margin-top: 10px;
+    width: 79%;
+    float: right;
+}
+#cmdSaveMap{
+    float: left;
+}
+#pnlMarkup div:nth-of-type(3){
+}
+#cmdSaveMap{
+    min-width: 70px;
+}
+#pnlPrintInputs .printInput{
+  float: left
+}
+
+/* ===========================SharePrint Custom DropDown============================= */
+
+.customPrint {
+  position: relative;
+  /*Don't really need this just for demo styling*/
+  float: left;
+  min-width: calc(100% / 2 - 8px);
+}
+
+.customPrint:after {
+    content: " ";
+    font: normal normal normal 17px/1 FontAwesome;
+    color: #b7b7b7;
+    right: 11px;
+    top: 0;
+    height: 29px;
+    padding: 5px 0 0 8px;
+    border-left: 1px solid #b7b7b7;
+    position: absolute;
+    pointer-events: none;
+    background-color: #fff;
+    width: 21px;
+    background-image: url(../Images/UI/all-icons.png);
+    background-position: -184px -92px;
+}
+
+/* IE11 hide native button (thanks Matt!) */
+select::-ms-expand {
+  display: none;
+}
+
+.customPrint select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Add some styling */
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: 29px;
+  float: right;
+  margin: 0px;
+  padding: 0px 40px 0 5px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: #333;
+  background-color: #ffffff;
+  background-image: none;
+  border: none;
+  -ms-word-break: normal;
+  word-break: normal;
+  outline: none;
+}
+
+
+/* ===========================ShareGoto Custom DropDown============================= */
+
+.customGoto {
+  position: relative;
+  /*Don't really need this just for demo styling*/
+  float: left;
+  min-width: calc(100% / 2 - 8px);
+}
+
+.customGoto:after {
+
+  content: " ";
+  font: normal normal normal 17px/1 FontAwesome;
+  color: #b7b7b7;
+  right: 11px;
+  top: 0;
+  height: 29px;
+  padding: 5px 0 0 8px;
+  border-left: 1px solid #b7b7b7;
+  position: absolute;
+  pointer-events: none;
+  background-color: #fff;
+  width: 21px;
+  background-image: url(../Images/UI/all-icons.png);
+  background-position: -184px -92px;
+}
+
+/* IE11 hide native button (thanks Matt!) */
+select::-ms-expand {
+  display: none;
+}
+
+.customGoto select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Add some styling */
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: 29px;
+  float: right;
+  margin: 0px;
+  padding: 0px 40px 0 5px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: #333;
+  background-color: #ffffff;
+  background-image: none;
+  border: none;
+  -ms-word-break: normal;
+  word-break: normal;
+  outline: none;
+}
+
+/* ===========================ShareExport Custom DropDown============================= */
+
+.customExport {
+  position: relative;
+  /*Don't really need this just for demo styling*/
+  float: left;
+}
+
+.customExport:after {
+    content: " ";
+    font: normal normal normal 17px/1 FontAwesome;
+    color: #b7b7b7;
+    right: 11px;
+    top: 0;
+    height: 29px;
+    padding: 5px 0 0 8px;
+    border-left: 1px solid #b7b7b7;
+    position: absolute;
+    pointer-events: none;
+    background-color: #fff;
+    width: 21px;
+    background-image: url(../Images/UI/all-icons.png);
+    background-position: -184px -92px;
+}
+
+/* IE11 hide native button (thanks Matt!) */
+select::-ms-expand {
+  display: none;
+}
+
+.customExport select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Add some styling */
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: 29px;
+  float: right;
+  margin: 0px;
+  padding: 0px 40px 0 5px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: #333;
+  background-color: #ffffff;
+  background-image: none;
+  border: none;
+  -ms-word-break: normal;
+  word-break: normal;
+  outline: none;
+}
+
+.printInput input {
+  margin-bottom: 12px;
+  display: inline-block;
+  width: calc(100% - 47px) !important; /* no need important*/
+  float: right;
+  border: none;
+  border-radius: 3px;
+  padding: 5px 8px;
+  font-size: 13px;
+  height: 30px;
+}
+
+.printInput label {
+  margin-bottom: 15px;
+  display: inline-block;
+  width: 47px !important; /* no need important*/
+  float: left;
+  font-weight: unset;
+}
+
+.btnPrint {
+  background-image: url(../Images/print-icon-black.png);
+  background-repeat: no-repeat;
+  background-position: 8px center !important; /* no need important*/
+  padding-left: 12px !important; /* no need important*/
+}
+
+.LocPrint {
+  background-image: url(../Images/loc-icon-black.png);
+  background-repeat: no-repeat;
+  background-repeat: no-repeat;
+  background-position: 8px center !important; /* no need important*/
+  padding-left: 8px !important; /* no need important*/
+}
+
+.exprtPrint {
+  background-image: url(../Images/export-icon-black.png);
+  background-repeat: no-repeat;
+  background-repeat: no-repeat;
+  background-position: 8px center !important; /* no need important*/
+  padding-left: 18px !important; /* no need important*/
+}
+
+
+
+/* share panel ends */

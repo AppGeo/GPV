@@ -13,65 +13,49 @@
  *  limitations under the License.
  */
 
-#pnlSearchFields
-{
+#pnlSearchFields {
   bottom: 0;
   top: 40px;
-}
-
-#ddlSearches {
-  position: absolute;
-  z-index: 10;
-  width: 60%;
-}
-
-#pnlSearchInputField
-{
-  padding: 5px;
-  height: 285px;
+  width: 100%;
+  float: left;
+  overflow: auto;
+  height: calc(100vh - 202px);
+  margin-top: 10px;
 }
 
 #cmdSearch, #cmdReset {
-  float: left;
   margin-left: 10px;
+  min-width: 77px;
 }
 
-#pnlSearchGrid
-{
-  top: 286px;
-  bottom: 37px;
-  border-top: solid 1px #C9C9C9;
-  border-bottom: solid 1px #C9C9C9;
-  background-color: #f4f7f7;
-  overflow: auto;
+#cmdReset {
+  margin-right: 2px;
 }
 
 #grdSearch {
   width: 98%;
 }
 
-.searchCommand 
-{
+.searchCommand {
   top: auto;
   bottom: 0;
-  height: 41px;
+  height: auto;
+  padding: 10px 6px;
 }
 
-#labSearchCount
-{
+#labSearchCount {
   float: left;
   margin-left: 10px;
   margin-top: 12px;
+  max-width: 80px;
 }
 
-#cmdShowOnMap, #cmdShowAllOnMap 
-{
+#cmdShowOnMap, #cmdShowAllOnMap {
   float: right;
-  margin: 10px 5px;
+  margin: 10px 4px;
 }
 
-#pnlSearchScroll
-{
+#pnlSearchScroll {
   top: 40px;
   left: 10px;
   right: 10px;
@@ -80,39 +64,34 @@
   z-index: 5;
 }
 
-.Search
-{
+.Search {
   width: 100%;
+  float: left;
 }
 
-.SearchInputField
-{
+.SearchInputField {
   position: static;
   width: 100%;
   float: left;
   margin: 2px 0;
 }
 
-.SearchInputField .Input.DateRange, .SearchInputField .Input.NumberRange
-{
-  width: 25%;
-  margin: 2px 2px;
-  margin-left: 2px;
-}
+  .SearchInputField .Input.DateRange, .SearchInputField .Input.NumberRange {
+    width: 25%;
+    margin: 2px 2px;
+    margin-left: 2px;
+  }
 
-.SearchInputField .Input
-{
-  width: 64%;
-  margin: 0 2px;
-}
+  .SearchInputField .Input {
+    width: 64%;
+    margin: 0 2px;
+  }
 
-.SearchInputField .Input, .SearchInputField span
-{
-  vertical-align: middle;
-}
+  .SearchInputField .Input, .SearchInputField span {
+    vertical-align: middle;
+  }
 
-#pnlSearchScroll span.Label
-{
+#pnlSearchScroll span.Label {
   width: 34%;
   display: inline-block;
   text-align: right;
@@ -120,13 +99,31 @@
   line-height: 16px;
 }
 
-.autocomplete-suggestions { border: 1px solid #999; background: #FFF; max-height: 150px; overflow: auto; }
-.autocomplete-suggestion { position: static; padding: 2px 5px; white-space: nowrap; overflow: hidden; }
-.autocomplete-selected { background: #F0F0F0; }
-.autocomplete-suggestions strong { font-weight: bold; }
+.autocomplete-suggestions {
+  border: 1px solid #999;
+  background: #FFF;
+  max-height: 150px;
+  color:#333;
+  overflow: auto;
+}
 
-.ui-datepicker, .ui-datepicker div
-{
+.autocomplete-suggestion {
+  position: static;
+  padding: 2px 5px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.autocomplete-selected {
+  background: #F0F0F0;
+  cursor : default;
+}
+
+.autocomplete-suggestions strong {
+  font-weight: bold;
+}
+
+.ui-datepicker, .ui-datepicker div {
   position: static;
   margin: auto;
   left: auto;
@@ -135,3 +132,241 @@
   top: auto;
 }
 
+/* Styles for search panel */
+#pnlSearchScroll .SearchInputField .Label {
+  display: inline-block;
+  width: 118px;
+  float: left;
+  color: #fff;
+  text-align: left;
+  font-weight: normal;
+  font-size: 13px;
+}
+
+#pnlSearchScroll .SearchInputField .Input {
+  width: calc(100% - 125px);
+  margin: 0 2px;
+  border: none;
+  border-radius: 3px;
+  padding: 5px 8px;
+  font-size: 13px;
+  height: 30px;
+  color: #333;
+}
+
+#pnlSearchScroll .SearchInputField .NumberRange {
+  width: calc(100% / 2 - 70px);
+  display: inline-block;
+}
+
+.SearchInputField {
+  margin: 15px 0 0;
+}
+
+#pnlSearchScroll .SearchInputField .DateRange {
+  width: calc(100% / 2 - 70px);
+  display: inline-block;
+}
+
+#pnlSearchScroll .Search .SearchInputField:nth-of-type(4), #pnlSearchScroll .Search .SearchInputField:nth-of-type(5) {
+  position: relative;
+  float: left;
+  min-width: calc(100% / 2 - 8px);
+}
+
+  #pnlSearchScroll .Search .SearchInputField:nth-of-type(4):after, #pnlSearchScroll .Search .SearchInputField:nth-of-type(5):after {
+    content: " ";
+    font: normal normal normal 17px/1 FontAwesome;
+    color: #b7b7b7;
+    right: 11px;
+    top: 0;
+    height: 29px;
+    padding: 5px 0 0 8px;
+    border-left: 1px solid #b7b7b7;
+    position: absolute;
+    pointer-events: none;
+    background-color: #fff;
+    width: 21px;
+    background-image: url(../Images/UI/all-icons.png);
+    background-position: -184px -92px;
+  }
+
+.SearchInputField select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Add some styling */
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: 29px;
+  float: right;
+  margin: 0px;
+  padding: 0px 40px 0px 5px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: #333;
+  background-color: #ffffff;
+  background-image: none;
+  border: none;
+  -ms-word-break: normal;
+  word-break: normal;
+  outline: none;
+}
+
+.Search .SearchInputField:first-child {
+  margin-top: 5px;
+}
+
+#pnlSearchGrid {
+  top: 286px;
+  bottom: 37px;
+  border-top: solid 1px #C9C9C9;
+  border-bottom: solid 1px #C9C9C9;
+  background-color: #f4f7f7;
+  overflow: auto;
+  background-color: transparent;
+  width: 100%;
+  border: none;
+  overflow-x: auto;
+  height: 230px;
+  overflow-y: auto;
+}
+
+#pnlSearchFields div.frm_box:first-child {
+  padding-top: 2px;
+  padding-bottom: 6px;
+}
+
+#mCSB_1_container {
+  overflow-x: hidden;
+}
+
+#pnlSearchFields .mCSB_container {
+  padding-right: 4px;
+}
+
+#pnlSearchFields .mCSB_container_wrapper{
+  margin-right: 18px;
+  /*margin-bottom: 30px;*/
+  padding-right: 20px;
+}
+
+#mCSB_1_scrollbar_vertical {
+  margin-right: 3px;
+}
+/*New Style for horizontal scroll*/
+#pnlSearchGrid .mCSB_scrollTools_horizontal {
+  width: auto !important;
+}
+
+#mCSB_8_dragger_horizontal .mCSB_dragger_bar {
+  margin-top: 4px;
+  height: 5px;
+  width: auto !important;
+}
+
+/**
+  New Style for Search Panel 
+  Date 12-09-2017
+*/
+/* Search details panel */
+.topLftTxt {
+  position: relative;
+  top: -3px;
+}
+
+.topLftTxt .topTxt {
+  margin-right: 7px;
+  position: relative;
+  top: -1px;
+}
+
+.topLftTxt .picLink {
+  display: inline-block;
+  margin-left: 6px;
+  position: relative;
+  top: -2px;
+}
+
+#pnlSearchFields div.frm_box:nth-of-type(2) button:first-child {
+  margin-left: 0;
+}
+
+#pnlSearchFields div.frm_box:nth-of-type(2) {
+  padding-top: 15px;
+}
+
+#pnlLegendContent .mCustomScrollBox {
+  height: 100%;
+}
+
+#pnlSearchScroll {
+  top: 10px;
+  left: 0;
+  right: 0;
+  overflow-y: auto;
+  bottom: 0;
+  z-index: 5;
+  position: relative;
+  width: 100%;
+  float: left;
+  min-height: auto;
+  padding-bottom: 1px;
+}
+/* ends here */
+
+
+/* ===============================Search Custom DropDown=========================== */
+
+.customSearch {
+  position: relative;
+  /*Don't really need this just for demo styling*/
+  float: left;
+  min-width: calc(100% / 2 - 8px);
+}
+
+.customSearch:after {
+  content: " ";
+  font: normal normal normal 17px/1 FontAwesome;
+  color: #b7b7b7;
+  right: 11px;
+  top: 0;
+  height: 29px;
+  padding: 5px 0 0 8px;
+  border-left: 1px solid #b7b7b7;
+  position: absolute;
+  pointer-events: none;
+  background-color: #fff;
+  width: 21px;
+  background-image: url(../Images/UI/all-icons.png);
+  background-position: -184px -92px;
+}
+
+/* IE11 hide native button (thanks Matt!) */
+select::-ms-expand {
+  display: none;
+}
+
+.customSearch select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Add some styling */
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: 29px;
+  float: right;
+  margin: 0px;
+  padding: 0px 40px 0px 5px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: #333;
+  background-color: #ffffff;
+  background-image: none;
+  border: none;
+  -ms-word-break: normal;
+  word-break: normal;
+  outline: none;
+}

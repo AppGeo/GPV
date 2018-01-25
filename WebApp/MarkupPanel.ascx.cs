@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿﻿//  Copyright 2012 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ using System.Web.UI.HtmlControls;
 
 public partial class MarkupPanel : System.Web.UI.UserControl
 {
-  public void Initialize(Configuration config, AppState appState, Configuration.ApplicationRow application)
+  public void Initialize(Configuration config, AppState appState, Configuration.ApplicationRow application, Dictionary<String, String> launchParams)
   {
     using (OleDbConnection connection = AppContext.GetDatabaseConnection())
     {
@@ -33,7 +33,7 @@ public partial class MarkupPanel : System.Web.UI.UserControl
       {
         tboMarkupUser.Attributes["value"] = AppUser.GetDisplayName(connection);
         tboMarkupUser.Attributes["disabled"] = "disabled";
-        chkMarkupLock.Style["visibility"] = "visible";
+				chkMarkupLock.Style["visibility"] = "visible";
         labMarkupLock.Style["visibility"] = "visible";
         cmdNewMarkup.Attributes["class"] = "CommandLink";
       }
@@ -74,5 +74,24 @@ public partial class MarkupPanel : System.Web.UI.UserControl
         appState.MarkupCategory = ((HtmlGenericControl)ddlMarkupCategory.Controls[0]).Attributes["value"];
       }
     }
+  }
+
+  private bool SetDefaultTool(string name)
+  {
+    HtmlControl defaultTool = Page.FindControl("opt" + name, false) as HtmlControl;
+    bool found = defaultTool != null;
+
+    if (found)
+    {
+      defaultTool.Attributes["class"] += " Selected";
+    }
+
+    return found;
+  }
+
+  private void ShowError(string message)
+  {
+    Session["StartError"] = message;
+    Server.Transfer("StartViewer.aspx");
   }
 }

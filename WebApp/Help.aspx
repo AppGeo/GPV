@@ -77,6 +77,13 @@
           <td>
             <img src="Images/Help/Help.png" alt="zoom in and out" /></td>
           <td><span class="component">Help:</span> Click to get access to help documents.</td>
+        </tr>  
+        <tr class="mobile">
+          <td>
+            <img src="Images/Help/getLinks.png" alt="zoom in and out" /></td>
+          <td><span class="component">Get Link:</span>Provides a link to the current map page.  You can copy this link and paste it into a messaging
+        application to share it with others.  All the information about the page - the current map tab, zoom level, selected object, and markup - 
+        are encrypted in this link.  When the link is clicked, the GPV will reappear in its current state.</td>
         </tr>
           </tbody>
       </table>
@@ -103,7 +110,7 @@
       </p>
       <p class="txtLeft showLegend legend">
         <img class="imgRight" src="Images/Help/LegendPanel.png" alt="legend panel" />
-        <span class="component">Legend Panel:</span> The current application provides a panel which displays both the 
+        <span class="component">Maps Panel:</span> The current application provides a panel which displays both the 
         legend for the current map and controls to manage additional basemap options. Depending on the GPV configuration, 
         parts of the legend may be expandable and collapsible and the basemap controls may be visible. Click check boxes 
         or radio buttons to turn thematic layers or basemaps on and off. The changes to the layers do not appear immediately 
@@ -131,13 +138,19 @@
         presented. There are a number of communication options including printing and electronic output formats. Additional 
         details about these features can be found in the <a href="#other">Communicating with Others Section</a>.
       </p>
-      <p>The Search, Selection, Legend, Location, Markup, and Share Panels occupy the same space on the UI.</p>
+      <p>The Search, Selection, Maps, Location, Markup, and Share Panels occupy the same space on the UI.</p>
 
       <%--Map Tools--%>
       <h2 class="MenuItem mobile" id="maptools">Interacting with the Map</h2>
 
       <table class="mobile">
-        <tbody class="mobile">
+        <tbody class="mobile">       
+        <tr class="mobile">
+          <td>
+            <img src="Images/Help/BasemapsOverLays.png" alt="Basemaps and Overlays" /></td>
+          <td><span class="component">Overlays and BaseMaps:</span> Controls to manage additional basemap options visible. 
+            Click check boxes or radio buttons to turn thematic layers or basemaps on and off,the changes to basemaps appear immediately.</td>
+        </tr>
         <tr class="mobile">
           <td>
             <img src="Images/Help/ZoomButtons.png" alt="zoom in and out" /></td>
@@ -174,8 +187,8 @@
             selected theme. Choose a new theme from the list to update the map.
           </td>
         </tr>
-        <tr class="mobile">
-          <td>
+        <tr class="mobile pantool">
+          <td class="">
             <img src="Images/Help/PanTool.png" alt="map tools / pan tool" /></td>
           <td><span class="component">Map Tools:</span> By default 
             the Pan tool is selected. The pan tool allows dragging of the map to change the current extent. Clicking on this 
@@ -184,10 +197,24 @@
         <tr class="mobile">
           <td>
             <img src="Images/Help/IdentifyTool.png" alt="identify tool" /></td>
-          <td><span class="component">Identify Tool:</span> When 
+          <td><span class="component">Identify Tool:</span> By default 
+            this identify tool is selected. When 
             this is selected, hover over a map feature will display a popup with information about that feature. Clicking on a 
             feature will open the Details Panel with more information. The Details Panel contains a print button to print this 
             information. *NOTE: Not all map features are identifiable.</td>
+        </tr>
+          <tr class="mobile">
+          <td>
+            <img src="Images/Help/SelectTool.png" alt="identify tool" /></td>
+          <td><span class="component">Select Tool:</span> When 
+            this is selected, Select Panel opens from the left side of the UI and shows detailed data from the 
+        feature highlighted in the selection data grid.</td>
+        </tr>
+          <tr class="mobile">
+          <td>
+            <img src="Images/Help/DrawTool.png" alt="identify tool" /></td>
+          <td><span class="component">Draw Tool:</span> When 
+            this is selected, Draw Panel will be opened for creating and managing markups on the map..</td>
         </tr>
         <tr class="selection">
           <td>

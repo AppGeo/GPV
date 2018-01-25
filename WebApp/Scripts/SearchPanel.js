@@ -32,6 +32,8 @@ var GPV = (function (gpv) {
 
     $(".Number,.NumberRange").numericInput();
     $(".Date,.DateRange").dateInput().datepicker({ showAnim: "slideDown", changeMonth: true, changeYear: true });
+    $(".SearchInputField:has(select)").addClass('customSearch');
+
 
     var $grdSearch = $("#grdSearch").dataGrid({
       multiSelect: true,
@@ -75,6 +77,7 @@ var GPV = (function (gpv) {
     }
 
     function fillSearches() {
+
       var changed = gpv.loadOptions($ddlSearch, config.mapTab[appState.MapTab].search);
 
       if (changed) {
@@ -89,7 +92,7 @@ var GPV = (function (gpv) {
         }
       });
     }
-
+   
     function getSearchResults() {
       gpv.post({
         url: service,
@@ -149,6 +152,7 @@ var GPV = (function (gpv) {
         $("#pnlSearchScroll").find("select").prop('selectedIndex', 0);
         $cmdSearch.toggleClass("Disabled");
         $cmdReset.toggleClass("Disabled");
+        $labSearchCount.text("None Found");
         emptyResultGrid();
       }
     }
