@@ -22,10 +22,11 @@ limitations under the License.
       <span class="topLftTxt ">
         <span class="topTxt">Share</span>
         <a class ="helpIcon" type ="share">
+           <i class="fa fa-question-circle" aria-hidden="true"></i>
          </a>
       </span>
       <span class="rightCol">
-        <a class="prev_arrw FunctionExit" aria-hidden="true"></a>
+        <i class="fa fa-angle-left FunctionExit" aria-hidden="true"></i>
       </span>
     </div>
 </div>

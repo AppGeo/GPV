@@ -158,8 +158,6 @@
     height: 187px;
   }
 
-  .dataTable {
-  }
   #pnlData .dtlPara{
     position: relative;
     top: -5px;
@@ -168,8 +166,15 @@
   .leaflet-left .leaflet-control-scale {
     top: -20px;
   }
+
   .dtlInfoPopup .content {
     max-height: 350px;
+  }
+
+  .leftNav_panel .leftCol {
+    float: none;
+    text-align: center;
+    margin-right: 2px;
   }
 }
 

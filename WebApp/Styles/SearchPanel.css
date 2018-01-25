@@ -23,19 +23,7 @@
   margin-top: 10px;
 }
 
-/*#ddlSearches {
-  position: absolute;
-  z-index: 10;
-  width: 60%;
-}*/
-
-#pnlSearchInputField {
-  /* padding: 5px;
-  height: 285px;*/
-}
-
 #cmdSearch, #cmdReset {
-  /*float: left;*/
   margin-left: 10px;
   min-width: 77px;
 }
@@ -115,6 +103,7 @@
   border: 1px solid #999;
   background: #FFF;
   max-height: 150px;
+  color:#333;
   overflow: auto;
 }
 
@@ -127,6 +116,7 @@
 
 .autocomplete-selected {
   background: #F0F0F0;
+  cursor : default;
 }
 
 .autocomplete-suggestions strong {
@@ -258,7 +248,7 @@
 
 #pnlSearchFields .mCSB_container_wrapper{
   margin-right: 18px;
-  margin-bottom: 30px;
+  /*margin-bottom: 30px;*/
   padding-right: 20px;
 }
 
@@ -282,7 +272,6 @@
 */
 /* Search details panel */
 .topLftTxt {
-  /*ont-size: 15px;*/
   position: relative;
   top: -3px;
 }
@@ -295,7 +284,6 @@
 
 .topLftTxt .picLink {
   display: inline-block;
-  /* float: left; */
   margin-left: 6px;
   position: relative;
   top: -2px;
@@ -324,6 +312,7 @@
   width: 100%;
   float: left;
   min-height: auto;
+  padding-bottom: 1px;
 }
 /* ends here */
 

@@ -155,8 +155,6 @@ select::-ms-expand {
 }
 
 .spreadsheetBtn {
-  /*background-image: url(../Images/spreadsheet-icon.png);
-	background-repeat: no-repeat;*/
   padding-left: 5px;
   background-position: 5px 8px;
 }
@@ -176,8 +174,6 @@ select::-ms-expand {
 }
 
 .mailingLblBtn {
-  /*	background-image: url(../Images/maillingLbl-icon.png);
-	background-repeat: no-repeat;*/
   padding-left: 5px;
   background-position: 5px 8px;
 }
@@ -208,14 +204,12 @@ select::-ms-expand {
 }
 
 .markup .data_box {
-  /*height: calc(100vh - 334px);*/
   height: initial;
 }
 
 #pnlQuery .upperSelection {
   float: left;
   width: 100%;
-  /* height: 35px; */
   padding: 10px 15px;
   font-size: 15px;
 }

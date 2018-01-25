@@ -46,8 +46,11 @@ limitations under the License.
           <div class="rightCol">
             <ul class="rightLinks">
               <span id="cmdShowDetails" class="glyphicon glyphicon-option-vertical" title="Show/hide details panel" style="font-size: 22px;"></span>
-              <a id="cmdHelp" runat="server" class="CommandLink" title="Show the help pages" href="Help.aspx" target="help"><span class="helpTxt "><span class="lbl"></span><span class="txt">Help</span></span></a>
-              <span id="cmdEmail" title="Get a link to this map for emailing"><span class="lbl"></span><span class="txt">Get Link</span></span>
+              <a id="cmdHelp" runat="server" class="CommandLink" title="Show the help pages" href="Help.aspx" target="help">
+                <span class="helpTxt "><i class="lbl fa fa-question-circle" aria-hidden="true"></i><span class="txt">Help</span></span></a>
+              <span id="cmdEmail" title="Get a link to this map for emailing">
+                <i class="lbl icon icon-link" aria-hidden="true"></i>
+                <span class="txt">Get Link</span></span>
               <div id="pnlEmail" class="input-group">
                 <textarea id="lnkEmail" readonly="readonly" class="form-control custom-control" rows="3"></textarea>
                 <span id="cmdEmailClose" class="input-group-addon btn">x</span>
@@ -62,8 +65,8 @@ limitations under the License.
         <div id="pnlFunctionSidebar" class="inner">
           <div class="topSection">
             <div class="leftCol" id="cmdMenu">
-              <i id="btnHamburger" class="fa fa-bars hamburger" aria-hidden="true"></i>
-              <span id="btnHamburgerClose" class="hamburgerClose hidden"></span>
+              <span id="btnHamburger" class="fa fa-bars hamburger" aria-hidden="true"></span>
+              <i id="btnHamburgerClose" class="fa fa-times hamburgerClose hidden" aria-hidden="true"></i>
             </div>
             <div class="rightCol"><a class="pinIco" href="#"></a></div>
           </div>
@@ -90,7 +93,7 @@ limitations under the License.
                 </li>
                 <li id="tabLegend" runat="server" style="display: none">
                   <a href="#" class="MenuItem Normal ">
-                    <span class="linkIcon mapsICN">&nbsp;</span>
+                    <i class="icon icon-maps" aria-hidden="true"></i>
                     <span class="linkTxt ">Maps</span>
                   </a>
                 </li>
@@ -102,7 +105,7 @@ limitations under the License.
                 </li>
                 <li id="tabMarkup" runat="server" style="display: none">
                   <a href="#" class="MenuItem Normal">
-                    <span class="linkIcon markupICN">&nbsp;</span>
+                     <i class=" icon icon-drow" aria-hidden="true"></i>
                     <span class="linkTxt ">Draw</span>
                   </a>
                 </li>
@@ -120,7 +123,6 @@ limitations under the License.
             </div>
           </div>
         </div>
-        <div class="">
           <div id="pnlFunction" runat="server" class="left_details">
             <%-- Function tab name with  click to return to main menu --%>
             <div id="pnlSearch" runat="server" class="FunctionPanel Panel" style="display: none">
@@ -145,7 +147,6 @@ limitations under the License.
               <uc1:SharePanel ID="ucSharePanel" runat="server" />
             </div>
           </div>
-        </div>
       </div>
       <div id="pnlMapSizer" runat="server" class="Panel">
         <div id="pnlMap" class="MainPanel Panel">
@@ -219,8 +220,8 @@ limitations under the License.
             <span class="topLftTxt">Details
             </span>
             <span class="rightCol">
-              <a id="cmdDataPrint" href="#" class="printRght_icon"></a>
-              <a href="#" class=" DataExit nxt_arrw"></a>
+              <i id="cmdDataPrint" class="fa fa-print printRght_icon" aria-hidden="true"></i>
+              <i class="fa fa-angle-right DataExit " aria-hidden="true"></i>
             </span>
           </div>
         </div>

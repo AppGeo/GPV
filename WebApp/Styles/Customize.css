@@ -39,6 +39,7 @@
 
 #pnlHeader {
   min-height: 50px;
+  height: 50px;
 }
 
 /* top and bottom of the main content area (map and function panels); */
@@ -84,7 +85,10 @@
 /* default color of the hamburger menu icon and the help question icon */
 
 #cmdMenu span, #cmdHelp span, #cmdEmail i {
-  color: #009688;
+  color: #ffffff;
+}
+#cmdMenu span:hover{
+  color: #ffb74d;
 }
 
 /* default color of the details panel three dot icon */
@@ -96,7 +100,7 @@
 /* text color of links (external pages and GPV commands) */
 
 a, .CommandLink {
-  color: white;
+  color: #ffffff;
 }
 
 /* text color of the GPV version text below the map */
@@ -189,6 +193,14 @@ a.VersionText {
   color: #fff;
 }
 
+.MenuItem:hover {
+  color: #fff;
+}
+
+.active .MenuItem{
+  color: #fff;
+}
+
 /* text color for help page menu item */
 #listContents .MenuItem {
   color: #212121;
@@ -222,8 +234,11 @@ a.VersionText {
 
 .FunctionHeader {
   background-color: #172936;
-  color: #FFFFFF;
   border-left: none;
+}
+
+.FunctionHeader, .FunctionHeader span a {
+  color : #ffffff;
 }
 
 /* sets the color of the < and > icons used to close the function and data panels 
@@ -237,7 +252,7 @@ a.VersionText {
 
 .DataHeader {
   background-color: #172936;
-  color: red;
+  color: #fff;
 }
 
 /* font for function panel menu items and headers on the function and data panels */

@@ -47,7 +47,7 @@
         </div>
       </form>
     </div>
-    <div id="pnlFooter"><uc1:Footer id="Footer1" runat="server" /></div>
+    <div id="pnlFooter" class="loginFooter"><uc1:Footer id="Footer1" runat="server" /></div>
   </div>
 </body>
 </html>

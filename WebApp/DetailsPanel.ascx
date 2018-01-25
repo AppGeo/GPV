@@ -24,7 +24,7 @@ limitations under the License.
         </a>
       </span>
       <span class="rightCol">
-        <a class="prev_arrw FunctionExit" aria-hidden="true"></a>
+        <i class="fa fa-angle-left FunctionExit" aria-hidden="true"></i>
       </span>
   </div>
 </div>
@@ -32,7 +32,9 @@ limitations under the License.
   <div id="pnlData" class="frm_box">
     <div class="frm_row noTopMargin customDetails">
       <select id="ddlMobDataTheme" class="frmSelect" title="Data category"></select>
-      <span class="dtlPrint"><a id="cmdMobDataPrint" href="#" class="printRght_icon"></a></span>
+      <span class="dtlPrint">
+        <i id="cmdMobDataPrint" class="fa fa-print printRght_icon" aria-hidden="true"></i>
+      </span>
     </div>
     <div class="frm_box  topMargin">
       <div id="MobDetailContent" class="customScroll">

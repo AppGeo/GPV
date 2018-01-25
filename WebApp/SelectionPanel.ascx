@@ -22,11 +22,12 @@ limitations under the License.
   <div class="inner">
       <span class="topLftTxt ">
         <span class="topTxt">Selection</span>
-        <a class ="helpIcon" type ="selection">
+        <a  class ="helpIcon"  type ="selection">
+           <i class=" fa fa-question-circle" aria-hidden="true"></i>
          </a>
       </span>
       <span class="rightCol">
-        <a class="prev_arrw FunctionExit" aria-hidden="true"></a>
+        <i class="fa fa-angle-left FunctionExit" aria-hidden="true"></i>
       </span>
     </div>
   </div>

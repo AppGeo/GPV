@@ -216,6 +216,7 @@ header.main .logo {
   z-index: 2;
 }
 
+
 .leftNav_panel .inner {
   width: 100%;
   float: left;
@@ -272,7 +273,6 @@ header.main .logo {
   width: 100%;
   display: inline-block;
   padding: 12px 10px 12px 6px;
-  color: #ffffff;
 }
 
 .leftNav_panel .leftLinks ul li a:hover {
@@ -329,50 +329,43 @@ header.main .logo {
 }
 
 .topSection .hamburger {
-  background-image: url(../Images/UI/all-icons.png);
-  width: 29px;
-  height: 18px;
   display: inline-block;
-  background-position: -256px -11px;
   cursor: pointer;
+  font-size: 21px;
+  margin-left: 2px;
 }
 
 .topSection .hamburger:hover {
-  background-position: -298px -11px;
+  color: #ffb74d;
 }
 
 .hamburgerClose {
-  background-image: url(../Images/UI/all-icons.png);
-  background-position: -5px -55px;
-  height: 18px;
-  width: 29px;
   display: inline-block;
-  background-repeat: no-repeat;
   cursor: pointer;
+  font-size: 20px;
 }
 
-.topSection .pinIco {
+/*.topSection .pinIco {
   background-image: url(../Images/pin-icon.png);
   background-repeat: no-repeat;
   width: 17px;
   height: 19px;
   display: none;
-}
+}*/
 
-.topSection .pinIco:hover {
-  background-image: url(../Images/pin-icon_over.png);
-}
+
 
 .helpIcon {
   position: relative;
-  width: 18px;
-  height: 18px;
-  background-image: url(../Images/UI/all-icons.png);
   display: inline-block;
-  background-position: -224px -11px;
-  top: 3px;
+  top: 1px;
+  line-height: normal;
+  height: auto;
+  cursor: pointer;
 }
-
+.helpIcon i{
+  font-size: 20px;
+}
 .dtlInfoPopup {
   background-color: #fff;
   width: 220px;
@@ -388,8 +381,9 @@ header.main .logo {
 }
 
 .dtlInfoPopup .arrw {
-  background-image: url(../images/popup-arrw.png);
+  background-image: url(../Images/UI/all-icons.png);
   background-repeat: no-repeat;
+  background-position: -420px -52px;
   width: 10px;
   height: 20px;
   position: absolute;
@@ -448,7 +442,7 @@ header.main .logo {
 .topHead {
   width: 100%;
   float: left;
-  min-height: 44px;
+  min-height: 43px;
   background-color: #172936;
   border-bottom: 1px solid #526870;
   box-sizing: content-box;
@@ -457,7 +451,7 @@ header.main .logo {
 .topHead .inner {
   width: 100%;
   float: left;
-  padding: 13px 15px 8px;
+  padding: 13px 15px 7px;
   box-sizing: border-box;
 }
 
@@ -468,6 +462,12 @@ header.main .logo {
   display: inline-block;
   background-position: 105px -54px;
   transform: rotate(-180deg);
+}
+
+.FunctionExit{
+    font-size: 26px;
+    cursor: pointer;
+    margin-top: -5px;
 }
 
 .topHead .nxt_arrw {
@@ -615,7 +615,7 @@ label {
 }
 
 .frm_row .twoCol:first-child {
-  margin-right: 16px; /*12px*/
+  margin-right: 16px; 
 }
 
 .frm_row .threeCol {

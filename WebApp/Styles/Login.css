@@ -14,16 +14,11 @@ div
   bottom: 0px;
 }
 
-/*#pnlHeader
-{
-  bottom: auto;
-}*/
-
 #pnlContent
 {
-  left: 8px;
+  left: 0;
   right: 8px;
-  min-width: 930px;
+  min-width: 100%;
 }
 
 .Input
@@ -45,13 +40,12 @@ div
   color: #800000;
 }
 
-/*#pnlFooter
-{
-  top: auto;
-  bottom: 0px;
-}*/
-
 #Login1 .Label label{
   font-family: 'Open Sans',sans-serif;
   font-size: 14px;
+}
+
+/* Footer class for login page */
+.loginFooter{
+  top: auto;
 }

@@ -84,7 +84,7 @@
   height: 4px;
 }
 
-/**
+/*
 New Style for Data List
 Date 12-09-2017
 */
@@ -97,6 +97,8 @@ Date 12-09-2017
 
 .dataTable tr td {
   border: 1px solid #526870;
+  padding-left: 5px;
+  padding-right: 5px;  
 }
 
 .dataTable tr th {
@@ -104,6 +106,7 @@ Date 12-09-2017
   font-size: 13px;
   color: #fff;
   font-weight: normal;
+  padding-left: 5px;
 }
 
 .dataTable thead {

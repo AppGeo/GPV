@@ -31,6 +31,7 @@ public class MinifiedStylesheetsHandler : IHttpHandler
       "Styles/bootstrap.min.css",
       "Styles/Common.css",
       "Styles/font-awesome.css",
+      "Styles/font-icons-styles.css",
       "Styles/leaflet.css",
       "Styles/jquery-ui-datepicker.css",
       "Styles/jquery.mCustomScrollbar.css",

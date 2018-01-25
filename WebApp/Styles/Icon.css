@@ -96,7 +96,7 @@
   position:relative;
   width:55px;
   height:55px;
-  color:#162a36 !important;
+  color:#fff!important; /*162a36*/
   overflow:hidden;
   -webkit-border-radius:3px;
   border-radius:3px;
@@ -105,7 +105,7 @@
 .icon svg{
   fill:#000
 }
-.icon{
+/*.icon{
   margin:0;
   margin-right:10px;
   padding:13px;
@@ -115,7 +115,7 @@
   overflow:hidden;
   float:left;
   font-size:24px
-}
+}*/
 
 
 

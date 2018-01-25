@@ -18,36 +18,8 @@
 }
 
 .share{
-  /*width: 380px;
-  margin: 10px;*/
   display: none;
 }
-
-/*#pnlPrint span, #pnlPrint label{
-  display: inline-block;
-  width: 25%;
-  text-align: right;
-  padding-right: 5px;
-}
-
-#pnlPrint input[type="text"], #pnlPrint select{
-  width: 75%;
-}
-
-#pnlPrint .PrintOptionLabel {
-  text-align: left;
-  width: auto;
-  font-weight: normal;
-}
-
-#ddlPrintTemplate{
-  padding: 0;
-  margin-left: -4px;
-}
-
-.printInput{
-  margin-bottom: 5px;
-}*/
 
 #cmdPrint
 {
@@ -282,7 +254,6 @@ select::-ms-expand {
   position: relative;
   /*Don't really need this just for demo styling*/
   float: left;
-  /*min-width: calc(100% / 2 - 8px);*/
 }
 
 .customExport:after {

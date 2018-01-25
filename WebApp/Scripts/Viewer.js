@@ -30,7 +30,7 @@ var GPV = (function (gpv) {
     var extentChangedHandlers = [];
     var mapRefreshedHandlers = [];
     var panelAnimationTime = 0;
-    console.log("appState", appState);
+  
     // =====  controls required prior to map control creation  =====
 
     var $pnlDataDisplay = $("#pnlDataDisplay");
@@ -402,6 +402,7 @@ var GPV = (function (gpv) {
       });
     }
 
+
     function drawTileLayers() {
       map.eachLayer(function (layer) {
         if (layer.constructor === L.TileLayer) {
@@ -751,11 +752,11 @@ var GPV = (function (gpv) {
 
     function toggleTileGroup(groupId, visible) {
       if (groupId === 'None') {
-        map.removeLayer(tl);
+        //map.removeLayer(tl);
       } else {
         tileLayers[appState.MapTab][groupId].forEach(function (tl) {
           if (visible) {
-            map.removeLayer(tl);
+            //map.removeLayer(tl);
             tl.addTo(map);
           }
           else {
@@ -764,14 +765,14 @@ var GPV = (function (gpv) {
         });
 
       }
-      tileLayers[appState.MapTab][groupId].forEach(function (tl) {
-        if (visible) {
-          tl.addTo(map);
-        }
-        else {
-          map.removeLayer(tl);
-        }
-      });
+      //tileLayers[appState.MapTab][groupId].forEach(function (tl) {
+      //  if (visible) {
+      //    tl.addTo(map);
+      //  }
+      //  else {
+      //    map.removeLayer(tl);
+      //  }
+      //});
     }
 
     function triggerMapTabChanged() {
@@ -930,6 +931,7 @@ var GPV = (function (gpv) {
       }
     });*/
 
+    // for show Overlay and BaseMap
     var $layerContainer = $("#pnlBaseMap");
     var $baseMapContainer = $('#pnlBaseMaps');
     var itm = document.getElementById('pnlBaseMaps');
@@ -1053,8 +1055,21 @@ var GPV = (function (gpv) {
     });
     //Set Imagery as default baselayer selected Item
     function SetDefaultTile() {
-      $($("#pnlBaseMapScroll").find('input[data-tilegroup="Imagery"]')[0]).trigger('click');
-      toggleTileGroup('Imagery', true);
+      var dataTileGroup = $("#pnlBaseMapScroll").find('input[data-tilegroup]');
+      $(dataTileGroup).each(function (dt) {
+        if (dataTileGroup[dt].attributes['data-tilegroup'].value == "Ortho") {
+          var dataTileGroup1 = appState.MapTab;
+          var $ele = $("#pnlBaseMapScroll").find($('div[data-maptab= "' + appState.MapTab + '"]'));
+          $ele.find('input[data-tilegroup="Ortho"]').trigger('click');
+          toggleTileGroup('Ortho', true);
+        }
+        else if (dataTileGroup[dt].attributes['data-tilegroup'].value == "Imagery") {
+          var $ele = $("#pnlBaseMapScroll").find($('div[data-maptab= "' + appState.MapTab + '"]'));
+          $ele.find('input[data-tilegroup="Imagery"]').trigger('click');
+          toggleTileGroup('Imagery', true);
+          
+        }
+      });
     }
 
   });
