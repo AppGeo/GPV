@@ -103,6 +103,7 @@
   border: 1px solid #999;
   background: #FFF;
   max-height: 150px;
+  color:#333;
   overflow: auto;
 }
 
@@ -115,6 +116,7 @@
 
 .autocomplete-selected {
   background: #F0F0F0;
+  cursor : default;
 }
 
 .autocomplete-suggestions strong {
@@ -246,7 +248,7 @@
 
 #pnlSearchFields .mCSB_container_wrapper{
   margin-right: 18px;
-  margin-bottom: 30px;
+  /*margin-bottom: 30px;*/
   padding-right: 20px;
 }
 
@@ -310,6 +312,7 @@
   width: 100%;
   float: left;
   min-height: auto;
+  padding-bottom: 1px;
 }
 /* ends here */
 

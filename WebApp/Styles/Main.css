@@ -345,13 +345,13 @@ header.main .logo {
   font-size: 20px;
 }
 
-.topSection .pinIco {
+/*.topSection .pinIco {
   background-image: url(../Images/pin-icon.png);
   background-repeat: no-repeat;
   width: 17px;
   height: 19px;
   display: none;
-}
+}*/
 
 
 
@@ -542,7 +542,6 @@ header.main .logo {
   height: 16px;
   display: inline-block;
 }
-
 .radioTxt {
   display: inline-block;
   position: relative;
