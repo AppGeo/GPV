@@ -103,7 +103,10 @@
   border: 1px solid #999;
   background: #FFF;
   max-height: 150px;
+<<<<<<< HEAD
   color:#333;
+=======
+>>>>>>> 5fbbaeedab6dd7fb69c37cd72c492bc1ddf4559e
   overflow: auto;
 }
 
@@ -116,7 +119,10 @@
 
 .autocomplete-selected {
   background: #F0F0F0;
+<<<<<<< HEAD
   cursor : default;
+=======
+>>>>>>> 5fbbaeedab6dd7fb69c37cd72c492bc1ddf4559e
 }
 
 .autocomplete-suggestions strong {
@@ -248,7 +254,11 @@
 
 #pnlSearchFields .mCSB_container_wrapper{
   margin-right: 18px;
+<<<<<<< HEAD
   /*margin-bottom: 30px;*/
+=======
+  margin-bottom: 30px;
+>>>>>>> 5fbbaeedab6dd7fb69c37cd72c492bc1ddf4559e
   padding-right: 20px;
 }
 
@@ -312,7 +322,10 @@
   width: 100%;
   float: left;
   min-height: auto;
+<<<<<<< HEAD
   padding-bottom: 1px;
+=======
+>>>>>>> 5fbbaeedab6dd7fb69c37cd72c492bc1ddf4559e
 }
 /* ends here */
 
