@@ -40,16 +40,16 @@ public partial class BaseMap:System.Web.UI.UserControl
 				bool isOverlay=!tileLayer.IsOverlayNull()&&tileLayer.Overlay==1;
 				if(!isOverlay)
 				{
-			HtmlGenericControl legendEntry=new HtmlGenericControl("div");
-			parentLegend.Controls.Add(legendEntry);
-			legendEntry.Attributes["class"]="LegendEntry";
-			HtmlGenericControl legendHeader=new HtmlGenericControl("div");
-			legendEntry.Controls.Add(legendHeader);
-			legendHeader.Attributes["class"]="LegendHeader";
-			HtmlGenericControl visibility=new HtmlGenericControl("span");
-			legendHeader.Controls.Add(visibility);
-			visibility.Attributes["class"]="LegendVisibility";
-			// HtmlInputCheckBox radio = new HtmlInputCheckBox();
+					HtmlGenericControl legendEntry=new HtmlGenericControl("div");
+					parentLegend.Controls.Add(legendEntry);
+					legendEntry.Attributes["class"]="LegendEntry";
+					HtmlGenericControl legendHeader=new HtmlGenericControl("div");
+					legendEntry.Controls.Add(legendHeader);
+					legendHeader.Attributes["class"]="LegendHeader";
+					HtmlGenericControl visibility=new HtmlGenericControl("span");
+					legendHeader.Controls.Add(visibility);
+					visibility.Attributes["class"]="LegendVisibility";
+					// HtmlInputCheckBox radio = new HtmlInputCheckBox();
 					HtmlInputRadioButton radio=new HtmlInputRadioButton();
 					visibility.Controls.Add(radio);
 					radio.Checked=visibleTiles.Contains(tileGroupRow.TileGroupID);
@@ -57,17 +57,11 @@ public partial class BaseMap:System.Web.UI.UserControl
 					radio.Attributes["group"]=mapTabRow.MapTabID;
 					radio.Attributes["name"]=mapTabRow.MapTabID;
 					radio.Attributes["data-tilegroup"]=tileGroupRow.TileGroupID;
-			HtmlGenericControl name=new HtmlGenericControl("span");
-			legendHeader.Controls.Add(name);
-			name.Attributes["class"]="LegendName";
-			name.InnerText=tileGroupRow.DisplayName;
+					HtmlGenericControl name=new HtmlGenericControl("span");
+					legendHeader.Controls.Add(name);
+					name.Attributes["class"]="LegendName";
+					name.InnerText=tileGroupRow.DisplayName;
 				}
-				else
-				{
-
-
-				}
-
 			}
 		}
 	}
@@ -87,23 +81,18 @@ public partial class BaseMap:System.Web.UI.UserControl
 			foreach(Configuration.TileLayerRow tileLayer in mapTabTileGroupRow.TileGroupRow.GetTileLayerRows())
 			{
 				bool isOverlay=!tileLayer.IsOverlayNull()&&tileLayer.Overlay==1;
-				if(!isOverlay)
+				if(isOverlay)
 				{
-
-				}
-				else
-				{
-			HtmlGenericControl legendEntry=new HtmlGenericControl("div");
-			parentLegend.Controls.Add(legendEntry);
-			legendEntry.Attributes["class"]="LegendEntry";
-			HtmlGenericControl legendHeader=new HtmlGenericControl("div");
-			legendEntry.Controls.Add(legendHeader);
-			legendHeader.Attributes["class"]="LegendHeader";
-			HtmlGenericControl visibility=new HtmlGenericControl("span");
-			legendHeader.Controls.Add(visibility);
-			visibility.Attributes["class"]="LegendVisibility";
-			// HtmlInputCheckBox radio = new HtmlInputCheckBox();
-			
+					HtmlGenericControl legendEntry=new HtmlGenericControl("div");
+					parentLegend.Controls.Add(legendEntry);
+					legendEntry.Attributes["class"]="LegendEntry";
+					HtmlGenericControl legendHeader=new HtmlGenericControl("div");
+					legendEntry.Controls.Add(legendHeader);
+					legendHeader.Attributes["class"]="LegendHeader";
+					HtmlGenericControl visibility=new HtmlGenericControl("span");
+					legendHeader.Controls.Add(visibility);
+					visibility.Attributes["class"]="LegendVisibility";
+					// HtmlInputCheckBox radio = new HtmlInputCheckBox();
 					HtmlInputCheckBox ckeckBox=new HtmlInputCheckBox();
 					visibility.Controls.Add(ckeckBox);
 					ckeckBox.Checked=visibleTiles.Contains(tileGroupRow.TileGroupID);
@@ -111,13 +100,11 @@ public partial class BaseMap:System.Web.UI.UserControl
 					ckeckBox.Attributes["data-tilegroup"]=tileGroupRow.TileGroupID;
 					ckeckBox.Attributes["group"]=mapTabRow.MapTabID;
 					ckeckBox.Attributes["name"]=mapTabRow.MapTabID;
-			HtmlGenericControl name=new HtmlGenericControl("span");
-			legendHeader.Controls.Add(name);
-			name.Attributes["class"]="LegendName";
-			name.InnerText=tileGroupRow.DisplayName;
-
+					HtmlGenericControl name=new HtmlGenericControl("span");
+					legendHeader.Controls.Add(name);
+					name.Attributes["class"]="LegendName";
+					name.InnerText=tileGroupRow.DisplayName;
 				}
-
 			}
 		}
 	}
@@ -155,7 +142,7 @@ public partial class BaseMap:System.Web.UI.UserControl
 			Configuration.MapTabRow mapTabRow=appMapTabRow.MapTabRow;
 			AddTilesForOverlay(mapTabRow, appState);
 		}
-		
+
 	}
 
 	public void AddTilesForBaseMap(Configuration config, AppState appState, Configuration.ApplicationRow application)
@@ -191,6 +178,5 @@ public partial class BaseMap:System.Web.UI.UserControl
 			name.Attributes["class"]="LegendName";
 			name.InnerText="None";
 		}
-	
 	}
 }
