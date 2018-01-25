@@ -30,11 +30,7 @@ var GPV = (function (gpv) {
     var extentChangedHandlers = [];
     var mapRefreshedHandlers = [];
     var panelAnimationTime = 0;
-<<<<<<< HEAD
-  
-=======
-    console.log("appState", appState);
->>>>>>> 5fbbaeedab6dd7fb69c37cd72c492bc1ddf4559e
+
     // =====  controls required prior to map control creation  =====
 
     var $pnlDataDisplay = $("#pnlDataDisplay");
@@ -314,9 +310,6 @@ var GPV = (function (gpv) {
     if ($optMarkupTool.hasClass('Selected')) {
       $(".Menu li").removeClass("active");
       $("#tabMarkup").addClass("active");
-<<<<<<< HEAD
-=======
-
       HidePanel();
       showFunctionPanel("Markup");
       $.each(functionTabChangedHandlers, function () {
@@ -324,30 +317,14 @@ var GPV = (function (gpv) {
       });
     }
     //optMarkupTool Click event
-    var $optMarkupTool = $("#optMarkupTool").on("click", function () {
+ $("#optMarkupTool").on("click", function () {
       $(".Menu li").removeClass("active");
       $("#tabMarkup").addClass("active");
->>>>>>> 5fbbaeedab6dd7fb69c37cd72c492bc1ddf4559e
-
       HidePanel();
       showFunctionPanel("Markup");
       $.each(functionTabChangedHandlers, function () {
         this("Markup");
       });
-<<<<<<< HEAD
-    }
-    //optMarkupTool Click event
-    var $optMarkupTool = $("#optMarkupTool").on("click", function () {
-      $(".Menu li").removeClass("active");
-      $("#tabMarkup").addClass("active");
-
-      HidePanel();
-      showFunctionPanel("Markup");
-      $.each(functionTabChangedHandlers, function () {
-        this("Markup");
-      });
-=======
->>>>>>> 5fbbaeedab6dd7fb69c37cd72c492bc1ddf4559e
     });
     // if optIdentify Has Select Class
     var $optIdentify = $("#optIdentify");
@@ -773,19 +750,11 @@ var GPV = (function (gpv) {
 
     function toggleTileGroup(groupId, visible) {
       if (groupId === 'None') {
-<<<<<<< HEAD
         //map.removeLayer(tl);
       } else {
         tileLayers[appState.MapTab][groupId].forEach(function (tl) {
           if (visible) {
             //map.removeLayer(tl);
-=======
-        map.removeLayer(tl);
-      } else {
-        tileLayers[appState.MapTab][groupId].forEach(function (tl) {
-          if (visible) {
-            map.removeLayer(tl);
->>>>>>> 5fbbaeedab6dd7fb69c37cd72c492bc1ddf4559e
             tl.addTo(map);
           }
           else {
@@ -794,25 +763,6 @@ var GPV = (function (gpv) {
         });
 
       }
-<<<<<<< HEAD
-      //tileLayers[appState.MapTab][groupId].forEach(function (tl) {
-      //  if (visible) {
-      //    tl.addTo(map);
-      //  }
-      //  else {
-      //    map.removeLayer(tl);
-      //  }
-      //});
-=======
-      tileLayers[appState.MapTab][groupId].forEach(function (tl) {
-        if (visible) {
-          tl.addTo(map);
-        }
-        else {
-          map.removeLayer(tl);
-        }
-      });
->>>>>>> 5fbbaeedab6dd7fb69c37cd72c492bc1ddf4559e
     }
 
     function triggerMapTabChanged() {
@@ -1095,7 +1045,6 @@ var GPV = (function (gpv) {
     });
     //Set Imagery as default baselayer selected Item
     function SetDefaultTile() {
-<<<<<<< HEAD
       var dataTileGroup = $("#pnlBaseMapScroll").find('input[data-tilegroup]');
       $(dataTileGroup).each(function (dt) {
         if (dataTileGroup[dt].attributes['data-tilegroup'].value == "Ortho") {
@@ -1111,10 +1060,7 @@ var GPV = (function (gpv) {
           
         }
       });
-=======
-      $($("#pnlBaseMapScroll").find('input[data-tilegroup="Imagery"]')[0]).trigger('click');
-      toggleTileGroup('Imagery', true);
->>>>>>> 5fbbaeedab6dd7fb69c37cd72c492bc1ddf4559e
+
     }
 
   });

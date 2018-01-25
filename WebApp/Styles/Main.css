@@ -204,7 +204,6 @@ header.main .logo {
 
 .leftNav_panel.active .left_details {
   left: 51px;
-<<<<<<< HEAD
 }
 
 .leftNav_panel {
@@ -399,202 +398,6 @@ header.main .logo {
   overflow-y: auto;
 }
 
-=======
-}
-
-.leftNav_panel {
-  width: 163px;
-  float: left;
-  border: 1px solid #526870;
-  height: calc(100vh - 70px);
-  position: relative;
-  left: -1px;
-  z-index: 2;
-}
-
-
-.leftNav_panel .inner {
-  width: 100%;
-  float: left;
-  height: 100%;
-}
-
-.leftNav_panel ul {
-  list-style: none;
-  margin-left: 0;
-  padding-left: 0;
-}
-
-.leftNav_panel .topSection {
-  width: 100%;
-  float: left;
-  padding: 14px 10px 7px;
-}
-
-.leftNav_panel.active .topSection {
-  padding-bottom: 8px;
-}
-
-.leftNav_panel .leftCol {
-  float: left;
-}
-
-.leftNav_panel .rightCol {
-  float: right;
-}
-
-.leftNav_panel .leftLinks {
-  width: 100%;
-  float: left;
-}
-
-.leftNav_panel .leftLinks ul li {
-  width: 100%;
-  border-top: 1px solid #526870;
-}
-
-.leftNav_panel .leftLinks ul li:last-child {
-  border-bottom: 1px solid #526870;
-}
-
-.leftNav_panel .leftLinks ul li.active a {
-  background-color: #374c5a;
-  background-image: url(../Images/side-arrw.png);
-  background-repeat: no-repeat;
-  background-position: right center;
-  text-decoration: none;
-}
-
-.leftNav_panel .leftLinks ul li a {
-  width: 100%;
-  display: inline-block;
-  padding: 12px 10px 12px 6px;
-}
-
-.leftNav_panel .leftLinks ul li a:hover {
-  background-color: #374c5a;
-  text-decoration: none;
-}
-
-.leftNav_panel .leftLinks ul li .linkIcon {
-  display: inline-block;
-  margin: 0 5px 0 3px;
-  width: 27px;
-  text-align: center;
-  min-height: 20px;
-  background-image: url(../Images/UI/all-icons.png);
-}
-/* Adding icons from common file */
-.searchICN {
-  background-position: -11px -9px;
-}
-
-.selectionICN {
-  background-position: -114px -94px;
-  height: 22px;
-}
-
-.mapsICN {
-  background-position: -374px -9px;
-}
-
-.locationICN {
-  background-position: -223px -52px;
-  height: 21px;
-}
-
-.markupICN {
-  background-position: -303px -53px;
-  height: 21px;
-}
-
-.shareICN {
-  background-position: -148px -96px;
-}
-
-.detailsICN {
-  background-position: -148px -8px;
-  height: 23px;
-}
-
-
-/* Ends there */
-
-.leftNav_panel .leftLinks ul li .linkTxt {
-  display: inline-block;
-}
-
-.topSection .hamburger {
-  display: inline-block;
-  cursor: pointer;
-  font-size: 21px;
-  margin-left: 2px;
-}
-
-.topSection .hamburger:hover {
-  color: #ffb74d;
-}
-
-.hamburgerClose {
-  display: inline-block;
-  cursor: pointer;
-  font-size: 20px;
-}
-
-.topSection .pinIco {
-  background-image: url(../Images/pin-icon.png);
-  background-repeat: no-repeat;
-  width: 17px;
-  height: 19px;
-  display: none;
-}
-
-
-
-.helpIcon {
-  position: relative;
-  display: inline-block;
-  top: 1px;
-  line-height: normal;
-  height: auto;
-  cursor: pointer;
-}
-.helpIcon i{
-  font-size: 20px;
-}
-.dtlInfoPopup {
-  background-color: #fff;
-  width: 220px;
-  min-height: 46px;
-  color: #000;
-  position: absolute;
-  top: -7px;
-  z-index: 9999;
-  left: 33px;
-  border-radius: 4px;
-  padding: 6px 10px;
-  box-shadow: 2px 2px 10px #949494;
-}
-
-.dtlInfoPopup .arrw {
-  background-image: url(../Images/UI/all-icons.png);
-  background-repeat: no-repeat;
-  background-position: -420px -52px;
-  width: 10px;
-  height: 20px;
-  position: absolute;
-  left: -10px;
-  top: 12px;
-}
-
-.dtlInfoPopup .content {
-  font-size: 12px;
-  margin-top: 5px;
-  max-height: 440px;
-  overflow-y: auto;
-}
-
->>>>>>> 5fbbaeedab6dd7fb69c37cd72c492bc1ddf4559e
 .dtlInfoPopup .title {
   font-weight: bold;
   border-bottom: 1px solid #dcdcdc;
@@ -721,7 +524,6 @@ header.main .logo {
 
 .frmBtn2 {
   min-width: 93px;
-<<<<<<< HEAD
 }
 
 .frmBtnFlex {
@@ -740,28 +542,6 @@ header.main .logo {
   height: 16px;
   display: inline-block;
 }
-
-=======
-}
-
-.frmBtnFlex {
-  min-width: auto;
-  width: 100%;
-  padding: 5px 0;
-}
-
-.frmBtn:hover {
-  background-color: #ffb74d;
-  color: #fff;
-}
-
-.frmRadio {
-  width: 16px;
-  height: 16px;
-  display: inline-block;
-}
-
->>>>>>> 5fbbaeedab6dd7fb69c37cd72c492bc1ddf4559e
 .radioTxt {
   display: inline-block;
   position: relative;
