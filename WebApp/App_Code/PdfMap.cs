@@ -17,9 +17,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Web;
-using System.Web.UI;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using GeoAPI.Geometries;
@@ -267,7 +265,7 @@ public class PdfMap
 		int pixelHeight = Convert.ToInt32(row.Height * PixelsPerInch);
 
 		MapMaker mapMaker = new MapMaker(_appState, pixelWidth, pixelHeight, 2);
-		byte[] mapImage = mapMaker.GetImage().Image;
+		byte[] mapImage = mapMaker.GetTileCompositeImage().Image;
 
 		float originX = Convert.ToSingle(row.OriginX) * PointsPerInch;
 		float originY = Convert.ToSingle(row.OriginY) * PointsPerInch;
@@ -278,9 +276,7 @@ public class PdfMap
 		image.SetAbsolutePosition(originX, originY);
 		image.ScaleAbsolute(width, height);
 
-    CreatePdfTiles(content, row, false);
 		content.AddImage(image);
-    CreatePdfTiles(content, row, true);
 
 		CreatePdfBox(content, row, false);
 	}
@@ -457,46 +453,6 @@ public class PdfMap
 			content.EndText();
 		}
 	}
-
-  private void CreatePdfTiles(PdfContentByte content, Configuration.PrintTemplateContentRow row, bool overlay)
-  {
-    int pixelWidth = Convert.ToInt32(row.Width * PixelsPerInch);
-    int pixelHeight = Convert.ToInt32(row.Height * PixelsPerInch);
-
-    float originX = Convert.ToSingle(row.OriginX) * PointsPerInch;
-    float originY = Convert.ToSingle(row.OriginY) * PointsPerInch;
-    float width = Convert.ToSingle(row.Width) * PointsPerInch;
-    float height = Convert.ToSingle(row.Height) * PointsPerInch;
-
-    StringCollection visibleTiles = _appState.VisibleTiles[_appState.MapTab];
-    int level = Convert.ToInt32(Math.Log(Constants.BasePixelSize / _pixelSize, 2));
-
-    if (visibleTiles.Count > 0)
-    {
-      Configuration.MapTabRow mapTab = AppContext.GetConfiguration().MapTab.FindByMapTabID(_appState.MapTab);
-
-      foreach (Configuration.MapTabTileGroupRow mapTabTileGroup in mapTab.GetMapTabTileGroupRows().Where(o => visibleTiles.Contains(o.TileGroupID)))
-      {
-        double opacity = mapTabTileGroup.IsOpacityNull() ? 1 : mapTabTileGroup.Opacity;
-
-        foreach (Configuration.TileLayerRow tileLayer in mapTabTileGroup.TileGroupRow.GetTileLayerRows())
-        {
-          bool isOverlay = !tileLayer.IsOverlayNull() && tileLayer.Overlay == 1;
-
-          if (isOverlay == overlay)
-          {
-            byte[] tileImage = TileAggregator.GetImageBytes(tileLayer.URL, _appState.Extent, level, opacity);
-
-            iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance(tileImage);
-            image.SetAbsolutePosition(originX, originY);
-            image.ScaleAbsolute(width, height);
-
-            content.AddImage(image);
-          }
-        }
-      }
-    }
-  }
 
   private float GetLayerHeightInLegend(List<CommonLayer> layerList, LegendProperties properties, CommonLayer layer)
   {

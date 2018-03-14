@@ -934,6 +934,89 @@ public class MapMaker
     }
   }
 
+  public MapImageData GetTileCompositeImage()
+  {
+    MapImageData mapImageData = GetImage();
+
+    List<Bitmap> baseTiles = GetTileImages(false);
+    List<Bitmap> overlayTiles = GetTileImages( true);
+
+    if (baseTiles.Count == 0 && overlayTiles.Count == 0)
+    {
+      return mapImageData;
+    }
+
+    int width = Convert.ToInt32(_width * _resolution);
+    int height = Convert.ToInt32(_height * _resolution);
+
+    using (Bitmap composite = new Bitmap(width, height))
+    {
+      using (Graphics graphics = Graphics.FromImage(composite))
+      {
+        graphics.Clear(Color.Transparent);
+
+        foreach (Bitmap tileImage in baseTiles)
+        {
+          graphics.DrawImage(tileImage, 0, 0, width, height);
+        }
+
+        using (MemoryStream imageStream = new MemoryStream(mapImageData.Image))
+        {
+          using (Bitmap mapImage = new Bitmap(imageStream))
+          {
+            graphics.DrawImage(mapImage, 0, 0, width, height);
+          }
+        }
+
+        foreach (Bitmap tileImage in overlayTiles)
+        {
+          graphics.DrawImage(tileImage, 0, 0, width, height);
+        }
+      }
+
+      using (MemoryStream imageStream = new MemoryStream())
+      {
+        composite.Save(imageStream, ImageFormat.Png);
+        mapImageData.Image = imageStream.ToArray();
+        mapImageData.Type = CommonImageType.Png;
+      }
+    }
+
+    return mapImageData;
+  }
+
+  private List<Bitmap> GetTileImages(bool overlay)
+  {
+    List<Bitmap> tileImages = new List<Bitmap>();
+
+    StringCollection visibleTiles = _appState.VisibleTiles[_appState.MapTab];
+    double pixelSize = _appState.Extent.Width / _width;
+    int level = Convert.ToInt32(Math.Log(Constants.BasePixelSize / pixelSize, 2));
+
+    if (visibleTiles.Count > 0)
+    {
+      Configuration.MapTabRow mapTab = AppContext.GetConfiguration().MapTab.FindByMapTabID(_appState.MapTab);
+
+      foreach (Configuration.MapTabTileGroupRow mapTabTileGroup in mapTab.GetMapTabTileGroupRows().Where(o => visibleTiles.Contains(o.TileGroupID)))
+      {
+        double opacity = mapTabTileGroup.IsOpacityNull() ? 1 : mapTabTileGroup.Opacity;
+
+        foreach (Configuration.TileLayerRow tileLayer in mapTabTileGroup.TileGroupRow.GetTileLayerRows())
+        {
+          bool isOverlay = !tileLayer.IsOverlayNull() && tileLayer.Overlay == 1;
+
+          if (isOverlay == overlay)
+          {
+            Bitmap tileImage = TileAggregator.GetImage(tileLayer.URL, _appState.Extent, level, opacity);
+            tileImages.Add(tileImage);
+          }
+        }
+      }
+    }
+
+    return tileImages;
+  }
+
   private void PrepareIds(out StringCollection targetIds, out StringCollection filteredIds, out StringCollection selectionIds)
   {
     targetIds = _appState.TargetIds.Clone();

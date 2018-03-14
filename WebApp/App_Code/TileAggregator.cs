@@ -23,6 +23,8 @@ using GeoAPI.Geometries;
 
 public class TileAggregator
 {
+  private static double _tileZeroWidth = 20037508.342787;
+
   public static byte[] GetImageBytes(string tileCacheUrl, Envelope extent, int level, double opacity)
   {
     byte[] imageBytes;
@@ -74,10 +76,18 @@ public class TileAggregator
       {
         row.Add(null);
 
+        double w = _tileZeroWidth / Math.Pow(2, level - 1);
+        double minx = -_tileZeroWidth + c * w;
+        double miny = _tileZeroWidth - (r + 1) * w;
+
         string tileUrl = tileCacheUrl.Replace("{s}", "a")
           .Replace("{z}", level.ToString())
           .Replace("{y}", r.ToString())
-          .Replace("{x}", c.ToString());
+          .Replace("{x}", c.ToString())
+          .Replace("{minx}", minx.ToString())
+          .Replace("{miny}", miny.ToString())
+          .Replace("{maxx}", (minx + w).ToString())
+          .Replace("{maxy}", (miny + w).ToString());
 
         Thread t = new Thread(new ParameterizedThreadStart(GetTile));
         threads.Add(t);
