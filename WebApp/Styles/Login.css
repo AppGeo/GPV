@@ -14,16 +14,11 @@ div
   bottom: 0px;
 }
 
-#pnlHeader
-{
-  bottom: auto;
-}
-
 #pnlContent
 {
-  left: 8px;
+  left: 0;
   right: 8px;
-  min-width: 930px;
+  min-width: 100%;
 }
 
 .Input
@@ -33,9 +28,11 @@ div
 
 .LoginButton
 {
-  width: 60px;
-  font-weight: bold;
-  margin: 20px;
+    width: 60px;
+    font-weight: 400;
+    margin: 20px;
+    font-family: 'Open Sans',sans-serif;
+    font-size: 14px;
 }
 
 .Error
@@ -43,8 +40,11 @@ div
   color: #800000;
 }
 
-#pnlFooter
-{
+#Login1 .Label label{
+  font-family: 'Open Sans',sans-serif;
+  font-size: 14px;
+}
+
+.loginFooter{
   top: auto;
-  bottom: 0px;
 }

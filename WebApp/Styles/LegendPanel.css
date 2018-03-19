@@ -13,9 +13,9 @@
  *  limitations under the License.
  */
 
-#pnlLegendContent
+#pnlLegendContent 
 {
-  top: 40px;
+  top: 190px;
 }
 
 #pnlLayers
@@ -23,14 +23,11 @@
   position: absolute;
   width: 100%;
   height: 80%;
+  color: white;
 }
 
 #pnlBaseMaps
 {
-  position: absolute;
-  top: 80%;
-  width: 100%;
-  height: 20%;
 }
 
 #pnlLegendContent label
@@ -49,13 +46,13 @@
 
 .LegendScroll
 {
-  top: 40px;
   bottom: 0px;
   left: 10px;
   right: 10px;
   padding-left: 10px;
-  background-color: White;
-  overflow: auto; 
+  margin-bottom: 50px;
+  overflow: auto;
+  border-radius: 3px;
 }
 
 .LegendTop
@@ -77,6 +74,8 @@
 .LegendExpander, .LegendVisibility, .LegendName, .LegendSwatch, .LegendClassName
 {
   vertical-align: middle;
+  color: white;
+  font-size: 13px;
 }
 
 .LegendEntry
@@ -85,7 +84,6 @@
 
 .LegendHeader
 {
-  margin-bottom: 4px;
 }
 
 .LegendExpander
@@ -112,8 +110,14 @@
 
 .LegendVisibility
 {
-  margin-right: 5px;
+  margin-right: 6px;
   margin-top: 2px;
+}
+
+.LegendCheck
+{
+  width: 15px;
+  height: 15px;
 }
 
 .LegendContent
@@ -134,3 +138,35 @@
   margin-right: 4px;
 }
 
+.list_headng {
+  width: 100%;
+  float: left;
+  margin: 10px 0;
+}
+
+.dropdown-menu {
+  width: 100%;
+}
+
+#pnlLegend div.frm_box:nth-of-type(2) {
+  padding-top: 4px;
+  padding-bottom: 18px;
+}
+
+#cmdRefreshMap {
+  margin-right: 18px;
+  padding: 5px 8px;
+}
+
+#cmdRefreshMap i {
+  padding-right: 5px;
+}
+
+#pnlLayers {
+  font-size: 15px;
+}
+
+#pnlLegend .themeTitle {
+  font-size: 15px;
+  width: 100px;
+}

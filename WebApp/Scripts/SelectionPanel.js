@@ -40,6 +40,7 @@ var GPV = (function (gpv) {
     $("#cmdClearSelection").on("click", clearSelection);
 
     var $cmdDataPrint = $("#cmdDataPrint").on("click", printData);
+    var $cmdMobDataPrint = $("#cmdMobDataPrint").on("click", printData);
 
     $("#cmdExportData").on("click", function () {
       exportData($(this), "ExportData.ashx");
@@ -51,6 +52,7 @@ var GPV = (function (gpv) {
 
     $("#cmdSelectView").on("click", function () {
       gpv.selection.selectByGeometry(gpv.viewer.getExtent());
+      $("#pnlQueryGrid").slideDown();
     });
 
     var $ddlAction = $("#ddlAction").on("change", actionChanged);
@@ -69,7 +71,15 @@ var GPV = (function (gpv) {
 
     var $pnlDataList = $("#pnlDataList").on("click", "a.CommandLink", function (e) {
       var url = $(this).attr("href");
+      if (url.substr(0, 12) == "application:") {
+        e.preventDefault();
+        reinitialize(url);
+      }
+    });
 
+    // ==== this is for mobile showing details panel data ====
+    var $pnlMobDataList = $("#pnlMobDataList").on("click", "a.CommandLink", function (e) {
+      var url = $(this).attr("href");
       if (url.substr(0, 12) == "application:") {
         e.preventDefault();
         reinitialize(url);
@@ -82,10 +92,11 @@ var GPV = (function (gpv) {
       fillDataList();
     });
 
-    // =====  map tools  =====
-
-    var $optSelect = $("#optSelect").on("click", function () {
-      gpv.selectTool($(this), map, { cursor: 'default', dragging: false, boxZoom: false, drawing: { mode: 'rectangle',style: { color: '#c0c0c0', fill: true, fillColor: '#e0e0e0' } } });
+    // ==== this is for mobile detail panel dropdown selection functionally
+    var $ddlMobDataTheme = $("#ddlMobDataTheme").on("change", function () {
+      dataTab = $("#ddlMobDataTheme :selected").attr("data-datatab");
+      appState.DataTab = dataTab;
+      fillDataList();
     });
 
     // =====  component events
@@ -238,9 +249,10 @@ var GPV = (function (gpv) {
 
     function fillDataList() {
       $cmdDataPrint.addClass("Disabled");
-
+      $cmdMobDataPrint.addClass("Disabled");
       if (!appState.ActiveDataId) {
         $pnlDataList.empty();
+        $pnlMobDataList.empty();
       }
       else {
         $.ajax({
@@ -254,20 +266,36 @@ var GPV = (function (gpv) {
           dataType: "html",
           success: function (html) {
             $pnlDataList.empty().append(html);
+            $pnlMobDataList.empty().append(html);
             $cmdDataPrint.removeClass("Disabled").data("printdata", [
-              "datatab=", encodeURIComponent(appState.DataTab), 
-              "&id=", encodeURIComponent(appState.ActiveDataId), 
+              "datatab=", encodeURIComponent(appState.DataTab),
+              "&id=", encodeURIComponent(appState.ActiveDataId),
               "&print=1"
             ].join(""));
-
+            $cmdMobDataPrint.removeClass("Disabled").data("printdata", [
+              "datatab=", encodeURIComponent(appState.DataTab),
+              "&id=", encodeURIComponent(appState.ActiveDataId),
+              "&print=1"
+            ].join(""));
             $pnlDataDisplay.show();
             $pnlDataDisplay.find("#spnDataTheme").text("Data Set");
             $pnlDataDisplay.find("#ddlDataTheme").show();
+            // this is for Detail panel display when device is mobile or other
+            if ($(window).width() > 700) {
+              if ($pnlDataDisplay.css("right").substring(0, 1) === "-") {
+                $pnlDataDisplay.animate({ right: 0, opacity: "1.0" }, 600, function () {
+                  $(".DataExit").addClass("DataExitOpen");
+                });
+                $("#pnlOverview").animate({ right: 290 }, 600);   // shifting his place when detail panel display in device ( not mobile )
+                $("div.leaflet-control-attribution.leaflet-control").animate({ right: 322 }, 600);    // shifting his place when detail panel display in device ( not mobile )
+              }
 
-            if($pnlDataDisplay.css("right").substring(0, 1) === "-"){
-              $pnlDataDisplay.animate({ right: 0, opacity: "1.0" }, 600, function () {
-                $(".DataExit").addClass("DataExitOpen");
-              });
+            }
+            else {
+              $("#ddlMobDataTheme").show();
+              $("#tabMobDetails").trigger("click");
+              $(".MenuItem").removeClass("active");
+              $("#tabMobDetails").addClass("active");
             }
           },
           error: function (xhr, status, message) {
@@ -280,7 +308,7 @@ var GPV = (function (gpv) {
     function fillProximity(initializing) {
       var isFindAll = appState.TargetLayer && appState.Action == action.findAllWithin;
       var isFindNear = appState.TargetLayer && action.findNearest1 <= appState.Action && appState.Action <= action.findNearest5;
-      var list = isFindAll ? config.layer[appState.TargetLayer].proximity : isFindNear ? [{ id: "", name: "nearest to the selected"}] : [];
+      var list = isFindAll ? config.layer[appState.TargetLayer].proximity : isFindNear ? [{ id: "", name: "nearest to the selected" }] : [];
 
       var changed = gpv.loadOptions($ddlProximity, list);
 
@@ -350,7 +378,7 @@ var GPV = (function (gpv) {
     }
 
     function mapShape(e) {
-      if ($optSelect.hasClass("Selected") && appState.TargetLayer.length > 0) {
+      if ($("#optSelect").hasClass("Selected") && appState.TargetLayer.length > 0) {
         map.removeLayer(e.shape);
         var geo = gpv.latLngsToSearchShape(map, e.shape.getLatLngs());
         gpv.selection.selectByGeometry(geo, e.shiftKey ? "add" : e.ctrlKey ? "remove" : "new");
@@ -396,6 +424,13 @@ var GPV = (function (gpv) {
     function printData() {
       if (!$cmdDataPrint.hasClass("Disabled")) {
         var data = $cmdDataPrint.data("printdata");
+        var windowName = "identify" + (new Date()).getTime();
+        var features = "width=700,height=500,menubar=no,titlebar=no,toolbar=no,status=no,scrollbars=no,location=no,resizable=no";
+        window.open("Identify.aspx?" + data, windowName, features, true);
+      }
+
+      if (!$cmdMobDataPrint.hasClass("Disabled")) {
+        var data = $cmdMobDataPrint.data("printdata");
         var windowName = "identify" + (new Date()).getTime();
         var features = "width=700,height=500,menubar=no,titlebar=no,toolbar=no,status=no,scrollbars=no,location=no,resizable=no";
         window.open("Identify.aspx?" + data, windowName, features, true);
@@ -518,6 +553,15 @@ var GPV = (function (gpv) {
 
             if (!hasRows) {
               $("#cmdMailingLabels,#cmdExportData").addClass("Disabled");
+              // clear detail tab data if exists
+              $("#pnlDataList").empty().append('<div class="DataList">' +
+              '<p class="dtlPara" style="text-align: center; margin-top: 10px; color: #898989;">' +
+              'No Results</p></div>');
+              $("#pnlMobDataList").empty().append('<div class="DataList">' +
+              '<p class="dtlPara" style="text-align: center; margin-top: 10px; color: #898989;">' +
+              'No Results</p></div>');
+
+
             }
             else {
               if ($("#pnlSelection").css("display") === "none") {
@@ -531,8 +575,8 @@ var GPV = (function (gpv) {
                 },
                 success: function (result) {
                   if (result) {
-                    $("#cmdMailingLabels").toggleClass("Disabled", !result.supportsMailingLabels);
-                    $("#cmdExportData").toggleClass("Disabled", !result.supportsExportData);
+                    $("#cmdMailingLabels").toggleClass("Disabled", result.supportsMailingLabels);
+                    $("#cmdExportData").toggleClass("Disabled", result.supportsExportData);
                   }
                 }
               });
@@ -550,7 +594,7 @@ var GPV = (function (gpv) {
       appState.update({ SelectionLayer: emptyIfNull($ddlSelectionLayer.val()) });
 
       if (e) {
-        appState.update({ 
+        appState.update({
           TargetIds: [],
           SelectionIds: []
         });
@@ -560,6 +604,7 @@ var GPV = (function (gpv) {
 
     function setDataTabs() {
       $ddlDataTheme.empty();
+      $ddlMobDataTheme.empty();
 
       if (appState.TargetLayer) {
         var layer = config.layer[appState.TargetLayer];
@@ -575,6 +620,7 @@ var GPV = (function (gpv) {
           }
 
           $("<option value='" + v.name + "' data-datatab='" + v.id + "'>" + v.name + "</option>").prop("selected", appState.DataTab === v.id).appendTo($ddlDataTheme);
+          $("<option value='" + v.name + "' data-datatab='" + v.id + "'>" + v.name + "</option>").prop("selected", appState.DataTab === v.id).appendTo($ddlMobDataTheme);
         });
       }
     }

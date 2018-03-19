@@ -1,28 +1,28 @@
-﻿//  Copyright 2016 Applied Geographics, Inc.
-//
-//  Licensed under the Apache License, Version 2.0 (the "License");
-//  you may not use this file except in compliance with the License.
-//  You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-//  Unless required by applicable law or agreed to in writing, software
-//  distributed under the License is distributed on an "AS IS" BASIS,
-//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//  See the License for the specific language governing permissions and
-//  limitations under the License.
+﻿  //  Copyright 2016 Applied Geographics, Inc.
+  //
+  //  Licensed under the Apache License, Version 2.0 (the "License");
+  //  you may not use this file except in compliance with the License.
+  //  You may obtain a copy of the License at
+  //
+  //      http://www.apache.org/licenses/LICENSE-2.0
+  //
+  //  Unless required by applicable law or agreed to in writing, software
+  //  distributed under the License is distributed on an "AS IS" BASIS,
+  //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  //  See the License for the specific language governing permissions and
+  //  limitations under the License.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using AppGeo.Clients;
-using System.Web.UI.HtmlControls;
-using System.IO;
-using System.Drawing;
-using System.Data;
+  using System;
+  using System.Collections.Generic;
+  using System.Linq;
+  using System.Web;
+  using System.Web.UI;
+  using System.Web.UI.WebControls;
+  using AppGeo.Clients;
+  using System.Web.UI.HtmlControls;
+  using System.IO;
+  using System.Drawing;
+  using System.Data;
 
 public partial class LegendPanel : System.Web.UI.UserControl
 {
@@ -49,7 +49,6 @@ public partial class LegendPanel : System.Web.UI.UserControl
 
     HtmlGenericControl expander = new HtmlGenericControl("span");
     legendHeader.Controls.Add(expander);
-    expander.Attributes["class"] = "LegendExpander " + (expanded ? "Expanded" : "Collapsed");
 
     if (layerProperties[i].CheckMode != CheckMode.None)
     {
@@ -60,24 +59,27 @@ public partial class LegendPanel : System.Web.UI.UserControl
       if (layerProperties[i].CheckMode != CheckMode.Empty)
       {
         HtmlControl check = null;
+        bool itemChecked = false;
 
         if (layerProperties[i].IsExclusive)
         {
           HtmlInputRadioButton radio = new HtmlInputRadioButton();
-          radio.Checked = layerProperties[i].CheckMode == CheckMode.Checked;
+          radio.Checked = itemChecked = layerProperties[i].CheckMode == CheckMode.Checked;
           radio.Name = String.Format("{0}_{1}", mapTabId, layer.Parent.ID);
           check = radio;
         }
         else
         {
           HtmlInputCheckBox checkBox = new HtmlInputCheckBox();
-          checkBox.Checked = layerProperties[i].CheckMode == CheckMode.Checked;
+          checkBox.Checked = itemChecked = layerProperties[i].CheckMode == CheckMode.Checked;
           check = checkBox;
         }
 
         visibility.Controls.Add(check);
         check.Attributes["class"] = "LegendCheck";
         check.Attributes["data-layer"] = layerProperties[i].Tag;
+        expanded = expanded && itemChecked;
+        expander.Attributes["class"] = "LegendExpander " + (expanded ? "Expanded" : "Collapsed");
       }
     }
 
@@ -191,7 +193,7 @@ public partial class LegendPanel : System.Web.UI.UserControl
   {
     CommonDataFrame dataFrame = AppContext.GetDataFrame(mapTabRow);
 
-    bool isInteractive = !mapTabRow.IsInteractiveLegendNull() && mapTabRow.InteractiveLegend == 1;
+        bool isInteractive = !mapTabRow.IsInteractiveLegendNull() && mapTabRow.InteractiveLegend == 1;
     CheckMode checkMode = CheckMode.None;
 
     List<CommonLayer> configuredLayers = new List<CommonLayer>();
@@ -274,54 +276,30 @@ public partial class LegendPanel : System.Web.UI.UserControl
     }
   }
 
-  private void AddTiles(Configuration.MapTabRow mapTabRow, AppState appState)
+  private void CreateMapThemes(Configuration.ApplicationRow application, AppState _appState)
   {
-    StringCollection visibleTiles = appState.VisibleTiles[mapTabRow.MapTabID];
-
-    // create the top level legend control for this map tab
-
-    HtmlGenericControl parentLegend = new HtmlGenericControl("div");
-    pnlTileScroll.Controls.Add(parentLegend);
-    parentLegend.Attributes["data-maptab"] = mapTabRow.MapTabID;
-    parentLegend.Attributes["class"] = "LegendTop";
-    parentLegend.Style["display"] = mapTabRow.MapTabID == appState.MapTab ? "block" : "none";
-
-    foreach (Configuration.MapTabTileGroupRow mapTabTileGroupRow in mapTabRow.GetMapTabTileGroupRows())
+    foreach (Configuration.ApplicationMapTabRow appMapTabRow in application.GetApplicationMapTabRows())
     {
-      Configuration.TileGroupRow tileGroupRow = mapTabTileGroupRow.TileGroupRow;
+      HtmlGenericControl li = new HtmlGenericControl("li");
+      phlMapTheme.Controls.Add(li);
+      li.InnerHtml = appMapTabRow.MapTabRow.DisplayName.Replace(" ", "&nbsp;");
+      li.Attributes["data-maptab"] = appMapTabRow.MapTabID;
 
-      HtmlGenericControl legendEntry = new HtmlGenericControl("div");
-      parentLegend.Controls.Add(legendEntry);
-      legendEntry.Attributes["class"] = "LegendEntry";
-
-      HtmlGenericControl legendHeader = new HtmlGenericControl("div");
-      legendEntry.Controls.Add(legendHeader);
-      legendHeader.Attributes["class"] = "LegendHeader";
-
-      HtmlGenericControl visibility = new HtmlGenericControl("span");
-      legendHeader.Controls.Add(visibility);
-      visibility.Attributes["class"] = "LegendVisibility";
-      
-      HtmlInputCheckBox checkBox = new HtmlInputCheckBox();
-      visibility.Controls.Add(checkBox);
-      checkBox.Checked = visibleTiles.Contains(tileGroupRow.TileGroupID);
-      checkBox.Attributes["class"] = "LegendCheck";
-      checkBox.Attributes["data-tilegroup"] = tileGroupRow.TileGroupID;
-
-      HtmlGenericControl name = new HtmlGenericControl("span");
-      legendHeader.Controls.Add(name);
-      name.Attributes["class"] = "LegendName";
-      name.InnerText = tileGroupRow.DisplayName;
+      if (_appState.MapTab == appMapTabRow.MapTabID)
+      {
+        selectedTheme.Text = appMapTabRow.MapTabRow.DisplayName;
+      }
     }
   }
 
   public void Initialize(Configuration config, AppState appState, Configuration.ApplicationRow application)
   {
+    CreateMapThemes(application, appState);
+
     foreach (Configuration.ApplicationMapTabRow appMapTabRow in application.GetApplicationMapTabRows())
     {
       Configuration.MapTabRow mapTabRow = appMapTabRow.MapTabRow;
       AddLayers(mapTabRow, appState);
-      AddTiles(mapTabRow, appState);
     }
   }
 

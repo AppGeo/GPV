@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+  Copyright 2016 Applied Geographics, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!--
+  Authentication Options
+    You must configure this instance of the GPV to use one of the following authentication methods:
+    
+    * No authentication (public access, the default)
+    * Windows authentication
+    * Database authentication
+    * Certificate authentication
+    
+    Uncomment all the sections below that are associated with the option of your choice.  Comment out the
+    sections for all other types of authentication.  See https://github.com/AppGeo/GPV/wiki/Securing%20the%20GPV 
+    for complete instructions including required IIS virtual directory settings.
+-->
+
+<configuration>
+  <appSettings>
+    <!-- =====  Database authentication ===== -->
+    <!-- <add key="FormsAuthenticationMode" value="Database" /> -->
+    <!-- ==================================== -->
+
+    <!-- =====  Certificate authentication ===== -->
+    <!-- <add key="FormsAuthenticationMode" value="Certificate" /> -->
+    <!-- <add key="CertificateUserField" value=""/> -->
+    <!-- ======================================= -->
+
+    <add key="AppIsAvailable" value="yes"/>  <!-- yes or no -->
+    <add key="AppStatusMessage" value="The General Purpose Viewer is up and running."/>
+
+    <add key="ConfigTablePrefix" value="GPV"/>
+  </appSettings>
+
+  <connectionStrings>
+    <!-- Oracle example -->
+    <!-- <add name="DBConnection" connectionString="Provider=OraOLEDB.Oracle;OLEDB.NET=true;PLSQLRSet=true;Data Source=GPVHost;User ID=GPVUser;Password=GPVPassword"/> -->
+    <!-- SQL Server example -->
+    <!-- <add name="DBConnection" connectionString="Provider=sqloledb;Data Source=GPVHost;Initial Catalog=GPVDatabase;User Id=GPVUser;Password=GPVPassword"/> -->
+  </connectionStrings>
+
+  <!-- 
+  To Enable Map Server Trace Logging - Uncomment the <system.diagnostics> element, set
+    the switch that is appropriate for your map server to 1, specify an appropriate log
+    file name, and change <compiler> element below.
+  NOTE: Make sure the identity running this web app (local ASPNET user in IIS 6, identity 
+    for the application pool in IIS 7) has write access to the specified log file.
+    USE SPARINGLY - the log file will grow large very quickly.
+  -->
+  <!--
+  <system.diagnostics>
+    <switches>
+      <add name="ArcXmlTrace" value="0"/>
+      <add name="AgsTrace" value="0"/>
+    </switches>
+    <trace autoflush="true">
+      <listeners>
+        <add name="LogWriter" initializeData="c:\temp\trace.log"
+          type="System.Diagnostics.TextWriterTraceListener, System, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+      </listeners>
+    </trace>
+  </system.diagnostics>
+  -->
+
+  <system.web>
+    <!-- =====  No authentication ===== -->
+    <authentication mode="Forms">
+      <forms loginUrl="~/Login.aspx" defaultUrl="~/Admin/Applications.aspx" name=".GPVAuth">
+        <credentials passwordFormat="Clear">
+          <user name="admin" password="admin"/>
+        </credentials>
+      </forms>
+    </authentication>
+    <!-- ============================== -->
+
+    <!-- =====  Windows authentication ===== -->
+    <!--<authentication mode="Windows"/>-->
+    <!-- =================================== -->
+
+    <!-- =====  Database or Certificate authentication ===== -->
+    <!--
+    <authentication mode="Forms">
+      <forms loginUrl="~/Login.aspx" defaultUrl="~/Viewer.aspx" name=".GPVAuth" />
+    </authentication>
+    -->
+    <!-- =================================================== -->
+
+    <!-- =====  No authentication ===== -->
+    <authorization>
+      <allow users="*"/>
+    </authorization>
+    <!-- ============================== -->
+
+    <!-- =====  Windows, Database or Certificate authentication ===== -->
+    <!--
+    <authorization>
+      <deny users="?" />
+    </authorization>
+    -->
+    <!-- ============================================================ -->
+
+    <customErrors mode="RemoteOnly" defaultRedirect="Error.aspx" />
+
+    <compilation debug="true" strict="false" explicit="true" targetFramework="4.0">
+      <assemblies>
+        <add assembly="System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=B77A5C561934E089"/>
+        <add assembly="System.Data.DataSetExtensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=B77A5C561934E089"/>
+        <add assembly="System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35"/>
+        <add assembly="System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=B77A5C561934E089"/>
+      </assemblies>
+    </compilation>
+  </system.web>
+
+  <location path="Status.aspx" allowOverride="true">
+    <system.web>
+      <authorization>
+        <allow users="*"/>
+      </authorization>
+    </system.web>
+  </location>
+
+  <system.codedom>
+    <compilers>
+  <!-- 
+  To Enable Map Server Trace Logging - swap the commented and uncommented version of the next line
+  -->
+  <!--
+      <compiler compilerOptions="/d:TRACE" language="c#;cs;csharp" extension=".cs" warningLevel="4" type="Microsoft.CSharp.CSharpCodeProvider, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  -->
+      <compiler language="c#;cs;csharp" extension=".cs" warningLevel="4" type="Microsoft.CSharp.CSharpCodeProvider, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+        <providerOption name="CompilerVersion" value="v4.0"/>
+      </compiler>
+    </compilers>
+  </system.codedom>
+
+  <system.webServer>
+    <validation validateIntegratedModeConfiguration="false"/>
+    <staticContent>
+      <remove fileExtension=".eot"/>
+      <mimeMap fileExtension=".eot" mimeType="application/x-font-eot" />
+      <remove fileExtension=".woff"/>
+      <mimeMap fileExtension=".woff" mimeType="application/x-font-woff" />
+      <remove fileExtension=".woff2"/>
+      <mimeMap fileExtension=".woff2" mimeType="application/x-font-woff2" />
+    </staticContent>
+    <defaultDocument>
+      <files>
+        <add value="Viewer.aspx" />
+      </files>
+    </defaultDocument>
+  </system.webServer>
+</configuration>

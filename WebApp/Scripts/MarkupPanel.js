@@ -42,7 +42,7 @@ var GPV = (function (gpv) {
     // =====  controls  =====
 
     $("#tboMarkupUser").attr("placeholder", "enter name");
-    
+
     var $colorSelectors = $(".Color").colorSelector({
       selectorClass: "ColorSelector",
       disabledClass: "Disabled",
@@ -55,6 +55,9 @@ var GPV = (function (gpv) {
     $("#cmdDeleteMarkup").on("click", function () {
       if (!$(this).hasClass("Disabled")) {
         deleteMarkupGroup();
+        $("#cmdExportMarkup").addClass("btnControlLock");
+        $("#cmdDeleteMarkup").addClass("btnControlLock");
+        $("#cmdZoomToMarkup").addClass("btnControlLock");
       }
     });
 
@@ -67,6 +70,10 @@ var GPV = (function (gpv) {
     var $cmdNewMarkup = $("#cmdNewMarkup").on("click", function () {
       if (!$(this).hasClass("Disabled")) {
         createMarkupGroup();
+        $("#tboMarkupTitle").removeClass("btnControlLock");
+        $("#cmdExportMarkup").removeClass("btnControlLock");
+        $("#cmdDeleteMarkup").removeClass("btnControlLock");
+        $("#cmdZoomToMarkup").removeClass("btnControlLock");
       }
     });
 
@@ -115,9 +122,41 @@ var GPV = (function (gpv) {
 
     var $tboMarkupTitle = $("#tboMarkupTitle").on("keydown", function (e) {
       if (e.keyCode == 13) {
-        updateMarkupGroupTitle();
+        updateMarkupGroupTitleAndDetails();
       }
-    }).on("blur", updateMarkupGroupTitle);
+    }).on("blur", updateMarkupGroupTitleAndDetails);
+
+    // ====  For detail data updating    ==== 
+    var $tboMarkupDetails = $("#tboMarkupDetails").on("keydown", function (e) {
+      if (e.keyCode == 13) {
+        updateMarkupGroupTitleAndDetails();
+      }
+    }).on("blur", updateMarkupGroupTitleAndDetails);
+
+    // ===for drop down selection in Markup tool Panel ==== 
+    $(".dropdown .imgflag").addClass("flagvisibility");
+    $(".dropdown dt a").click(function () {
+      $(".dropdown dd ul").toggle();
+    });
+    $(".dropdown dd ul li a").click(function () {
+      var text = $(this).html();
+      $(".dropdown dt a span").html(text);
+      $(".dropdown dd ul").hide();
+      $("#result").html("Selected value is: " + getSelectedValue("sample"));
+    });
+
+    function getSelectedValue(id) {
+      return $("#" + id).find("dt a span.value").html();
+    }
+
+    $(document).bind('click', function (e) {
+      var $clicked = $(e.target);
+      if (!$clicked.parents().hasClass("dropdown"))
+        $(".dropdown dd ul").hide();
+    });
+    $(".dropdown .imgflag").toggleClass("flagvisibility");
+
+    // ==== close ====
 
     var $tboMarkupUser = $("#tboMarkupUser").on("keyup", function () {
       var name = $(this).val();
@@ -126,8 +165,25 @@ var GPV = (function (gpv) {
     });
 
     // =====  map tools  =====
-
+    // ==== this is for hiding and showing panel on CreateMarkup and QuickSketch button click ====
     var $MapTool = $(".MapTool");
+    $("#btnCreateMarkup").on("click", function () {
+      $("#divMarkupSearch").removeClass("hidden");
+      $("#btnCreateMarkup").addClass("active");
+      $("#btnQuickSketch").removeClass("active");
+      $("#divTblWithHead").removeClass("hidden");
+      $("#pnlMarkupGrid").addClass("tabMrkp");
+    });
+
+    $("#btnQuickSketch").on("click", function () {
+      $("#divMarkupSearch").addClass("hidden");
+      $("#btnQuickSketch").addClass("active");
+      $("#btnCreateMarkup").removeClass("active");
+      $("#divTblWithHead").addClass("hidden");
+      $("#pnlMarkupGrid").removeClass("tabMrkp");
+    });
+
+
 
     $("#optColorPicker,#optPaintBucket").on("click", function () {
       gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "point" } });
@@ -229,6 +285,7 @@ var GPV = (function (gpv) {
           if (result) {
             appState.update({ MarkupGroups: [result.id] });
             $tboMarkupTitle.val(result.title);
+            $("#tboMarkupDetails").val(result.details);
             $chkMarkupLock.prop("checked", result.locked);
             enableControls();
             fillGrid();
@@ -279,6 +336,7 @@ var GPV = (function (gpv) {
           if (result) {
             appState.update({ MarkupGroups: [] });
             $tboMarkupTitle.val("");
+            $("#tboMarkupDetails").val("");
             enableControls();
             $grdMarkup.dataGrid("deleteSelection");
             gpv.viewer.refreshMap();
@@ -436,7 +494,7 @@ var GPV = (function (gpv) {
 
       if (shape instanceof L.Polyline) {
         var points = shape.getLatLngs();
-          
+
         if (shape instanceof L.Polygon) {
           valid = getAreaCentroid(points[0]).area > 0;
         }
@@ -540,9 +598,14 @@ var GPV = (function (gpv) {
       appState.update({ MarkupGroups: $grdMarkup.dataGrid("getSelection") });
       var numGroups = appState.MarkupGroups.length;
       var markupTitle = numGroups == 1 ? $grdMarkup.dataGrid("getData", appState.MarkupGroups[0])[2] : "";
-
+      var markupDetails = numGroups == 1 ? $grdMarkup.dataGrid("getData", appState.MarkupGroups[0])[3] : "";
       $tboMarkupTitle.val(markupTitle);
+      $tboMarkupDetails.val(markupDetails);
       enableControls();
+
+      $("#cmdExportMarkup").removeClass("btnControlLock");
+      $("#cmdDeleteMarkup").removeClass("btnControlLock");
+      $("#cmdZoomToMarkup").removeClass("btnControlLock");
 
       if (numGroups) {
         zoomToMarkupGroup();
@@ -612,11 +675,11 @@ var GPV = (function (gpv) {
               value.push(length < 1000 ? Math.round(length) + " m" : (length / 1000).toFixed(1) + " km");
             }
 
-            measureText = L.text({ 
+            measureText = L.text({
               latlng: latlngs[latlngs.length - 1],
               className: "MeasureText",
-              value: value.join("\n"), 
-              pointerEvents: 'none' 
+              value: value.join("\n"),
+              pointerEvents: 'none'
             }).addTo(map);
           }
         }
@@ -641,11 +704,11 @@ var GPV = (function (gpv) {
               value.push(acres.toFixed(2) + " acres");
             }
 
-            measureText = L.text({ 
+            measureText = L.text({
               latlng: measureCrs.unproject(ca.centroid),
               className: "MeasureText " + (inFeet ? "Area3" : "Area2"),
-              value: value.join("\n"), 
-              pointerEvents: 'none' 
+              value: value.join("\n"),
+              pointerEvents: 'none'
             }).addTo(map);
           }
         }
@@ -676,7 +739,7 @@ var GPV = (function (gpv) {
       else if (shape instanceof L.Circle) {
         var sweepAngle = 3;
         var segments = 360 / sweepAngle;
-          
+
         sweepAngle *= Math.PI / 180;
         var cos = Math.cos(sweepAngle);
         var sin = Math.sin(sweepAngle);
@@ -712,21 +775,24 @@ var GPV = (function (gpv) {
       return c.join(",");
     }
 
-    function updateMarkupGroupTitle() {
+    function updateMarkupGroupTitleAndDetails() {
       if (appState.MarkupGroups.length == 1) {
         var id = appState.MarkupGroups[0];
         var title = $tboMarkupTitle.val();
+        var details = $tboMarkupDetails.val();
 
         post({
           data: {
-            m: "UpdateMarkupGroupTitle",
+            m: "UpdateMarkupGroupTitleAndDetails",
             id: id,
-            title: title
+            title: title,
+            details: details
           },
           success: function (result) {
             if (result) {
               var data = $grdMarkup.dataGrid("getData", id);
               data[2] = title;
+              data[3] = details;
               $grdMarkup.dataGrid("setData", id, data);
             }
           }

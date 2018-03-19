@@ -1,24 +1,21 @@
 ﻿/*  Copyright 2012 Applied Geographics, Inc.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
+*
+*  Licensed under the Apache License, Version 2.0 (the "License");
+*  you may not use this file except in compliance with the License.
+*  You may obtain a copy of the License at
+*
+*      http://www.apache.org/licenses/LICENSE-2.0
+*
+*  Unless required by applicable law or agreed to in writing, software
+*  distributed under the License is distributed on an "AS IS" BASIS,
+*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*  See the License for the specific language governing permissions and
+*  limitations under the License.
+*/
 
-
-#pnlQuery
+#pnlQuery #mCSB_2 table tr
 {
-  bottom: 0;
-  top: 40px;
-  min-height: 212px;
+  cursor: default;
 }
 
 #selectionDivider
@@ -38,106 +35,201 @@
   min-height: 212px;
 }
 
-#pnlSelectionOptions {
-  left: 5px; 
-  top: 3px; 
-  right: 5px; 
-  height: 86px;
-}
-
-#ddlAction, #ddlProximity {
-  float: left;
-  width: 53%;
-  margin: 2px;
-}
-
-#ddlTargetLayer, #ddlSelectionLayer{
-  float: right;
-  width: 44%;
-  margin: 2px;
-  border-left: solid 6px;
-}
-
-#ddlQuery{
+#ddlQuery {
   width: 99%;
   margin: 2px;
 }
 
-#pnlSelectTools{
-  top: 87px;
-  width: 400px;
-  padding: 2px 5px;
-  height: 35px;
-}
-#pnlSelectTools button{
-  display: inline-block;
-  margin: 2px;
+#pnlSelectTools {
+  top: auto;
+  font-size: 13px;
 }
 
-.select-view, .select-zoom, .select-clear{
-  position: relative;
-  display: inline-block;
-  left: 0;
-  width: 24px;
-  height: 16px;
-  background-image: url(../Images/UI/Icons.png);
-  background-repeat: no-repeat;
-  cursor: default;
+#pnlQueryGrid {
+  height: auto;
 }
 
-#cmdClearSelection{
-  float: right;
-}
-
-.select-view
-{
-  background-position: -864px 0px;  /* SelectView.gif */
-}
-
-.select-view .Disabled
-{
-  background-position: -888px 0px;  /* SelectViewDisable.gif */
-}
-
-.select-zoom
-{
-  background-position: -936px -1px;  /* ZoomSelected.gif */
-}
-
-.select-clear
-{
-  background-position: -24px 0px;  /* Clear.gif */
-}
-
-#pnlQueryGrid
-{
-  top: 122px;
-  bottom: 35px;
-  margin-top: 3px;
-  border-top: solid 1px #b9b9b9;
-  border-bottom: solid 1px #b9b9b9;
-  background-color: #f4f7f7;
-  overflow: auto;
-}
-
-#pnlQueryCommand
-{
+#pnlQueryCommand {
   top: auto;
   bottom: 0px;
   height: 41px;
 }
 
-#labSelectionCount {
-  float: left;
-  margin-left: 10px;
-  margin-top: 12px
+#cmdMailingLabels, #cmdExportData {
+  position: relative;
+  top: 3px;
+  float: right;
 }
 
-#cmdMailingLabels, #cmdExportData{
-  float: right;
-  margin: 10px 5px;
-  display: block;
+#cmdExportData {
+  margin-right: 5px;
 }
-#cmdMailingLabels.Disabled, #cmdExportData.Disabled{
+
+  #cmdMailingLabels.Disabled, #cmdExportData.Disabled {
+    display: none;
+  }
+
+/* ===========================SelectCustom DropDown============================= */
+
+.customSelect {
+  position: relative;
+  /*Don't really need this just for demo styling*/
+  float: left;
+  min-width: calc(100% / 2 - 8px);
+}
+
+  .customSelect:after {
+    content: " ";
+    font: normal normal normal 17px/1 FontAwesome;
+    color: #b7b7b7;
+    right: 11px;
+    top: 0;
+    height: 29px;
+    padding: 5px 0 0 8px;
+    border-left: 1px solid #b7b7b7;
+    position: absolute;
+    pointer-events: none;
+    background-color: #fff;
+    width: 21px;
+    background-image: url(../Images/UI/all-icons.png);
+    background-position: -184px -92px;
+  }
+
+/* IE11 hide native button (thanks Matt!) */
+select::-ms-expand {
   display: none;
+}
+
+.customSelect select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Add some styling */
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: 29px;
+  float: right;
+  margin: 0px;
+  padding: 0px 40px 0 5px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: #333;
+  background-color: #ffffff;
+  background-image: none;
+  border: none;
+  -ms-word-break: normal;
+  word-break: normal;
+  outline: none;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+/* Ends here */
+
+#ddlQuery {
+  width: 100%;
+  margin: 0px;
+}
+
+#labSelectionCount {
+  max-width: 60px;
+  display: inline-block;
+  position: relative;
+  top: -2px;
+}
+
+.frm_row .arrwAhead {
+  position: relative;
+}
+
+  .frm_row .arrwAhead .arrw {
+    width: 7px;
+    height: 9px;
+    background-image: url(../Images/UI/all-icons.png);
+    position: absolute;
+    right: -12px;
+    top: 10px;
+    background-position: -153px -59px;
+  }
+
+.data_box {
+  width: 100%;
+  float: left;
+}
+
+.spreadsheetBtn {
+  padding-left: 5px;
+  background-position: 5px 8px;
+}
+
+.spreadsheetBtn .lbl {
+  width: 14px;
+  height: 10px;
+  display: inline-block;
+  background-image: url(../Images/UI/all-icons.png);
+  background-position: -82px -101px;
+  background-repeat: no-repeat;
+  margin-right: 3px;
+}
+
+.spreadsheetBtn .text {
+  display: inline-block;
+}
+
+.mailingLblBtn {
+  padding-left: 5px;
+  background-position: 5px 8px;
+}
+
+.mailingLblBtn .lbl {
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  background-image: url(../Images/UI/all-icons.png);
+  background-position: -266px -59px;
+  background-repeat: no-repeat;
+  margin-right: 3px;
+}
+
+.mailingLblBtn .text {
+  display: inline-block;
+}
+
+#pnlSelection .data_box {
+  height: calc(100vh - 420px);
+  overflow-y: auto;
+}
+
+#pnlQuery div.frm_box:nth-of-type(2) {
+  margin-top: 3px;
+  padding-top: 0;
+  padding-bottom: 11px;
+}
+
+.markup .data_box {
+  height: initial;
+}
+
+#pnlQuery .upperSelection {
+  float: left;
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 15px;
+}
+
+#grdQuery {
+  width: 95%;
+  margin-right: 10px;
+}
+
+#pnlSelection .frm_row {
+  margin-top: 15px;
+}
+
+#pnlSelection .frm_box {
+  margin-top: 10px;
+}
+
+#pnlSelectTools {
+  margin-top: 5px !important;
 }

@@ -1,3 +1,4 @@
+﻿
 ﻿/*  Copyright 2012 Applied Geographics, Inc.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,78 +18,88 @@
 
 html
 {
-	color: #000;
-	background: #FFF;
+  color: #000;
+  background: #FFF;
+  color: #fff;
+  font-size: 1em;
+  line-height: 1.4;
+  font-family: sans-serif; /* 1 */
+  -ms-text-size-adjust: 100%; /* 2 */
+  -webkit-text-size-adjust: 100%; /* 2 */
+  overflow: hidden;
 }
 
 body, div, ul, li, form, input, textarea, p, th, td 
 {
-	margin: 0;
-	padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 html, body{
   height: 100%;
 }
 
+body {
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  overflow: hidden;
+}
+
 table
 {
-	border-collapse: collapse;
-	border-spacing: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
 img
 {
-	border: 0;
+  border: 0;
 }
 
 th
 {
-	font-style: normal;
-	font-weight: normal;
-	text-align: left;
+  font-style: normal;
+  font-weight: normal;
+  text-align: left;
 }
 
 ul 
 {
-	list-style: none;
+  list-style: none;
 }
 
 input, textarea, select 
 {
-	font-family: inherit;
-	font-weight: inherit;
-	font-size: 100%;
+  font-family: inherit;
+  font-weight: inherit;
+  font-size: 100%;
+}
+
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
+  display: block;
 }
 
 /* Remove button padding in FF */
 button::-moz-focus-inner {
-    border: 0;
-    padding: 0;
-    margin: 0;
+  border: 0;
+  padding: 0;
+  margin: 0;
 }
 
 /* proper placeholder default color in IE */
 
 :-ms-input-placeholder {  
-   color: #A0A0A0;  
+  color: #A0A0A0;  
 }
 
 /* =====  common styles  ===== */
-
-body, div, span, td, th, input, select
-{
-  font-family: 'Open Sans', Helvetica, San-Serif;
-  font-size: 14px;
-  letter-spacing: .2px;
-  color: Black;
-}
-
-input, select
-{
-  padding: 1px;
-  font-size: 14px;
-}
 
 .Title
 {
@@ -105,6 +116,13 @@ input, select
 {
   z-index: 1;
   border-top: solid 1px #b9b9b9;
+}
+
+.LegendScroll 
+{
+  top: -32px;
+  padding-left: 10px;
+  overflow: auto;
 }
 
 a, .CommandLink
@@ -129,20 +147,9 @@ a:hover, .CommandLink:hover
   cursor: default;
 }
 
-input.Button
-{
-  font-weight: bold;
-  padding: 1px 6px 1px 6px;
-}
-
 #pnlBody
 {
-  height: 100%;
   min-height: 526px;
 }
 
-/*@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
-  body, div, span, td, th, input, select {
-    font-size: 1.03em;
-  }
-}*/
+

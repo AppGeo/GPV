@@ -1,39 +1,55 @@
 ﻿<%-- 
-  Copyright 2012 Applied Geographics, Inc.
+Copyright 2012 Applied Geographics, Inc.
 
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-      http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 --%>
 
 <%@ Control Language="C#" AutoEventWireup="true" CodeFile="LocationPanel.ascx.cs" Inherits="LocationPanel" %>
 <%@ Register TagPrefix="gpv" Assembly="App_Code" Namespace="GPV" %>
-
-<div class="FunctionHeader"><span class="glyphicon glyphicon-menu-left FunctionExit" aria-hidden="true"></span>Location</div>
-
-<div id="pnlLocationContent" class="Panel">
-
-  <select id="ddlZoneLevelSelect" class="Input">
-    <gpv:Option id="optTabZone" runat="server" style="display: none" data-table="tblZone"></gpv:Option>
-    <gpv:Option id="optTabLevel" runat="server" style="display: none" data-table="tblLevel"></gpv:Option>
-    <gpv:Option id="optTabLevelByZone" runat="server" style="display: none" data-table="tblLevelByZone"></gpv:Option>
-  </select>
-
-  <div id="pnlZoneLevel">
-    <gpv:Div id="pnlZoneLevelControl" runat="server" style="display: none">
-      <input type="radio" id="optZoneLevelAll" name="zls" class="ZoneLevelSelection" checked="checked" /> <label for="optZoneLevelAll">All</label>&nbsp;&nbsp;
-      <input type="radio" id="optZoneLevelSelected" name="zls" class="ZoneLevelSelection" /> <label for="optZoneLevelAll">Containing selection only</label>
-    </gpv:Div>
-    <div id="pnlZoneLevelScroll">
-      <gpv:Table id="tblZone" runat="server" CssClass="ZoneLevelTable" style="display: none">
+<div class="topHead FunctionHeader">
+  <div class="inner">
+      <span class="topLftTxt ">
+        <span class="topTxt">Location</span>
+        <a  class ="helpIcon"  type ="location">  
+           <i class=" fa fa-question-circle" aria-hidden="true"></i>
+          </a>
+      </span>
+      <span class="rightCol">
+        <i class="fa fa-angle-left FunctionExit" aria-hidden="true"></i>
+      </span>
+    </div>
+</div>
+<div class="frm_box">
+  <div id="pnlLocationContent" class="Panel">
+    <div class="frm_row">
+      <div class="oneCol customLocation">
+        <select id="ddlZoneLevelSelect" class="Input frmSelect">
+          <gpv:Option ID="optTabZone" runat="server" Style="display: none" data-table="tblZone"></gpv:Option>
+          <gpv:Option ID="optTabLevel" runat="server" Style="display: none" data-table="tblLevel"></gpv:Option>
+          <gpv:Option ID="optTabLevelByZone" runat="server" Style="display: none" data-table="tblLevelByZone"></gpv:Option>
+        </select>
+      </div>
+    </div>
+    <div id="pnlZoneLevel" class="frm_row">
+      <gpv:Div ID="pnlZoneLevelControl" CssClass="radioWrap" runat="server" Style="display: none">
+        <input type="radio" id="optZoneLevelAll" name="zls" class="ZoneLevelSelection frmRadio" checked="checked" />
+        <label class="radioTxt" for="optZoneLevelAll">All</label>&nbsp;&nbsp;
+        <input type="radio" id="optZoneLevelSelected" name="zls" class="ZoneLevelSelection frmRadio" />
+        <label class="radioTxt" for="optZoneLevelAll">Containing selection only</label>
+      </gpv:Div>
+    </div>
+    <div id="pnlZoneLevelScroll" class="frm_row customScroll">
+      <gpv:Table ID="tblZone" runat="server" CssClass="ZoneLevelTable" Style="display: none">
         <thead>
           <tr>
             <th class="Value">Selected</th>
@@ -41,7 +57,7 @@
           </tr>
         </thead>
       </gpv:Table>
-      <gpv:Table id="tblLevel" runat="server" CssClass="ZoneLevelTable" style="display: none">
+      <gpv:Table ID="tblLevel" runat="server" CssClass="ZoneLevelTable" Style="display: none">
         <thead>
           <tr>
             <th class="Value">Selected</th>
@@ -49,7 +65,7 @@
           </tr>
         </thead>
       </gpv:Table>
-      <gpv:Table id="tblLevelByZone" runat="server" CssClass="ZoneLevelTable" style="display: none">
+      <gpv:Table ID="tblLevelByZone" runat="server" CssClass="ZoneLevelTable" Style="display: none">
         <thead>
           <tr>
             <th class="Value">Selected</th>

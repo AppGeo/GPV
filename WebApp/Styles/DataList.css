@@ -28,11 +28,24 @@
 {
 }
 
-.DataList .RowSetHeader, .DataList .RowSetSubheader
+.DataList .RowSetHeader
 {
+  width: calc(100% - 14px);
+  padding: 5px 0 6px 6px;
+  margin-bottom: 7px;
   font-weight: bold;
   font-size: 13px;
-  padding: 2px 0px 2px 6px;
+}
+
+.DataList .RowSetSubheader
+{
+  text-align: left;
+  font-size: 14px;
+  font-weight: 400;
+  margin: 7px 0 6px;
+  padding: 5px 0 4px 6px;
+  border-bottom: 1px solid #3c4c58;
+  width: calc(100% - 14px) !important;
 }
 
 .DataList .ValueSet
@@ -63,6 +76,7 @@
 {
   width: 50%;
   margin: 0 3px;
+  text-align: left;
 }
 
 .DataList .Space1, .DataList .Space2, .DataList .Space4
@@ -83,4 +97,33 @@
 .DataList .Space4
 {
   height: 4px;
+}
+
+.dataTable {
+  font-size: 12px;
+  border: 1px solid #526870;
+  width: 100%;
+}
+
+.dataTable tr td {
+  border: 1px solid #526870;
+  padding-left: 5px;
+  padding-right: 5px;  
+}
+
+.dataTable tr th {
+  border: 1px solid #526870;
+  font-size: 13px;
+  color: #fff;
+  font-weight: normal;
+  padding-left: 5px;
+}
+
+.dataTable thead {
+  background-color: #849ba4;
+  font-size: 14px;
+}
+
+thead th {
+  padding: 2px;
 }

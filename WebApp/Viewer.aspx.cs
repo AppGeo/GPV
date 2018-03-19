@@ -88,7 +88,7 @@ public partial class Viewer : CustomStyledPage
       launchParams = Request.GetNormalizedParameters();
 
       if (Request.HttpMethod != "POST" && !launchParams.ContainsKey("keepurl") || (launchParams.Count == 1 && launchParams.ContainsKey("showapps")) ||
-          (launchParams.Count == 0 && System.Diagnostics.Debugger.IsAttached))
+      (launchParams.Count == 0 && System.Diagnostics.Debugger.IsAttached))
       {
         Session["LaunchParams"] = launchParams;
         Server.Transfer("StartViewer.aspx", false);
@@ -109,21 +109,77 @@ public partial class Viewer : CustomStyledPage
       AddMetaTag("keywords", application.MetaKeywords);
     }
 
+    string tool = launchParams.ContainsKey("tool") ? launchParams["tool"] : (!application.IsDefaultToolNull() ? application.DefaultTool : null);
+
+    if (!String.IsNullOrEmpty(tool))
+    {
+
+      if (tool == "identify" || tool == "select")
+      {
+        HtmlControl defaultTool = Page.FindControl(("opt" + tool), false) as HtmlControl;
+        if (defaultTool != null)
+        {
+          defaultTool.Attributes["class"] += " Selected ";
+
+        }
+
+        HtmlControl MarkupDefaultTool = Page.FindControl(("optDrawLine"), false) as HtmlControl;
+        MarkupDefaultTool.Attributes["class"] += " Selected ";
+      }
+      else
+      {
+        HtmlControl defaultTool = Page.FindControl(("optMarkupTool"), false) as HtmlControl;
+
+        if (defaultTool != null)
+        {
+          defaultTool.Attributes["class"] += " Selected ";
+          HtmlControl markupDefaultTool = Page.FindControl(("opt" + tool), false) as HtmlControl;
+          markupDefaultTool.Attributes["class"] += " Selected ";
+        }
+      }
+    }
+    else
+    {
+      HtmlControl defaultTool = Page.FindControl(("optIdentify"), false) as HtmlControl;
+      optIdentify.Attributes["class"] += " Selected ";
+      HtmlControl markupDefaultTool = Page.FindControl(("optDrawLine"), false) as HtmlControl;
+      markupDefaultTool.Attributes["class"] += " Selected ";
+    }
+
     Title = application.DisplayName;
 
     SetHelpLink();
-    CreateMapThemes(application);
 
     bool isPublic = AppAuthentication.Mode == AuthenticationMode.None;
     ucLegendPanel.Initialize(_config, _appState, application);
+    ucBaseMapPanel.Initialize(_config, _appState, application);
     ucSharePanel.Initialize(_config, application);
 
     if (_appState.ActiveFunctionTab != FunctionTab.None)
     {
-      pnlFunctionTabs.Style["left"] = "-400px";
-      pnlFunctionTabs.Style["opacity"] = "0";
-      pnlFunction.Style["left"] = "0px";
-      pnlFunction.Style["opacity"] = "1";
+      HtmlControl defaultToolSelect = Page.FindControl("optSelect", false) as HtmlControl;
+      HtmlControl defaultToolDraw = Page.FindControl("optMarkupTool", false) as HtmlControl;
+      HtmlControl defaultToolIdentify = Page.FindControl("optIdentify", false) as HtmlControl;
+
+      defaultToolSelect.Attributes.Remove("Selected");
+      defaultToolDraw.Attributes.Remove("Selected");
+      defaultToolIdentify.Attributes.Remove("Selected");
+
+      if (_appState.ActiveFunctionTab == FunctionTab.Selection)
+      {
+        HtmlControl defaultTool = Page.FindControl("optSelect", false) as HtmlControl;
+        defaultToolSelect.Attributes["class"] += " Selected ";
+      }
+      else if (_appState.ActiveFunctionTab == FunctionTab.Markup)
+      {
+        HtmlControl defaultTool = Page.FindControl("optMarkupTool", false) as HtmlControl;
+        defaultToolDraw.Attributes["class"] += " Selected ";
+      }
+      else
+      {
+        HtmlControl defaultTool = Page.FindControl("optIdentify", false) as HtmlControl;
+        defaultToolIdentify.Attributes["class"] += " Selected ";
+      }
     }
 
     if ((_appState.FunctionTabs & FunctionTab.Search) == FunctionTab.Search)
@@ -134,9 +190,10 @@ public partial class Viewer : CustomStyledPage
       if (_appState.ActiveFunctionTab == FunctionTab.Search)
       {
         pnlSearch.Style["display"] = "block";
+        tabSearch.Attributes["class"] += " active";
       }
-    } 
-      
+    }
+
     if ((_appState.FunctionTabs & FunctionTab.Selection) == FunctionTab.Selection)
     {
       tabSelection.Style["display"] = "block";
@@ -144,7 +201,8 @@ public partial class Viewer : CustomStyledPage
 
       if (_appState.ActiveFunctionTab == FunctionTab.Selection)
       {
-        pnlSelection.Style["display"] = "block";
+        pnlSelection.Style["display"] += "block";
+        tabSelection.Attributes["class"] += " active";
       }
     }
 
@@ -154,7 +212,8 @@ public partial class Viewer : CustomStyledPage
 
       if (_appState.ActiveFunctionTab == FunctionTab.Legend)
       {
-        pnlLegend.Style["display"] = "block";;
+        pnlLegend.Style["display"] = "block";
+        tabLegend.Attributes["class"] += " active";
       }
     }
 
@@ -166,6 +225,7 @@ public partial class Viewer : CustomStyledPage
       if (_appState.ActiveFunctionTab == FunctionTab.Location)
       {
         pnlLocation.Style["display"] = "block";
+        tabLocation.Attributes["class"] += " active";
       }
     }
 
@@ -177,6 +237,7 @@ public partial class Viewer : CustomStyledPage
       if (_appState.ActiveFunctionTab == FunctionTab.Markup)
       {
         pnlMarkup.Style["display"] = "block";
+        tabMarkup.Attributes["class"] += " active";
       }
     }
 
@@ -187,24 +248,11 @@ public partial class Viewer : CustomStyledPage
       if (_appState.ActiveFunctionTab == FunctionTab.Share)
       {
         pnlShare.Style["display"] = "block";
-      }
-    } 
-
-    ShowLevelSelector(application);
-
-    // set the default tool
-
-    string tool = launchParams.ContainsKey("tool") ? launchParams["tool"] : (!application.IsDefaultToolNull() ? application.DefaultTool : null);
-    
-    if (!String.IsNullOrEmpty(tool))
-    {
-      HtmlControl defaultTool = Page.FindControl("opt" + tool, false) as HtmlControl;
-
-      if (defaultTool != null)
-      {
-        defaultTool.Attributes["class"] += " Selected";
+        tabShare.Attributes["class"] += " active";
       }
     }
+
+    ShowLevelSelector(application);
 
     CreateAppStateScript(application);
     CreateActiveSelectionStyle();
@@ -246,24 +294,6 @@ public partial class Viewer : CustomStyledPage
     head.Controls.Add(scriptElem);
     scriptElem.Attributes["type"] = "text/javascript";
     scriptElem.InnerHtml = String.Format(script, application.ToJson(), AppContext.AppSettings.ToJson(), _appState.ToJson());
-  }
-
-  private void CreateMapThemes(Configuration.ApplicationRow application)
-  {
-    // add map tabs
-
-    foreach (Configuration.ApplicationMapTabRow appMapTabRow in application.GetApplicationMapTabRows())
-    {
-      HtmlGenericControl li = new HtmlGenericControl("li");
-      phlMapTheme.Controls.Add(li);
-      li.InnerHtml = appMapTabRow.MapTabRow.DisplayName.Replace(" ", "&nbsp;");
-      li.Attributes["data-maptab"] = appMapTabRow.MapTabID;
-
-      if (_appState.MapTab == appMapTabRow.MapTabID)
-      {
-        selectedTheme.InnerHtml = appMapTabRow.MapTabRow.DisplayName.Replace(" ", "&nbsp;");
-      }
-    }
   }
 
   private string GetCacheControl()
@@ -362,7 +392,7 @@ public partial class Viewer : CustomStyledPage
         foreach (Configuration.MapTabLayerRow mapTabLayer in mapTab.GetMapTabLayerRows())
         {
           if (!mapTabLayer.IsShowInLegendNull() && mapTabLayer.ShowInLegend == 1 &&
-              !mapTabLayer.IsCheckInLegendNull() && mapTabLayer.CheckInLegend == 1)
+          !mapTabLayer.IsCheckInLegendNull() && mapTabLayer.CheckInLegend == 1)
           {
             values.Add(mapTabLayer.LayerID);
           }
@@ -444,8 +474,8 @@ public partial class Viewer : CustomStyledPage
           ShowError(String.Format("Layer \"{0}\" does not exist in map tab \"{1}\"", layerId, mapTab.MapTabID));
         }
         else if (!mapTabLayer.IsShowInLegendNull() && mapTabLayer.ShowInLegend == 1 &&
-            !mapTabLayer.IsCheckInLegendNull() && mapTabLayer.CheckInLegend >= 0 &&
-            !visibleLayers.Contains(layerId))
+        !mapTabLayer.IsCheckInLegendNull() && mapTabLayer.CheckInLegend >= 0 &&
+        !visibleLayers.Contains(layerId))
         {
           visibleLayers.Add(layerId);
         }
@@ -468,8 +498,8 @@ public partial class Viewer : CustomStyledPage
           ShowError(String.Format("Layer \"{0}\" does not exist in map tab \"{1}\"", layerId, mapTab.MapTabID));
         }
         else if (!mapTabLayer.IsShowInLegendNull() && mapTabLayer.ShowInLegend == 1 &&
-            !mapTabLayer.IsCheckInLegendNull() && mapTabLayer.CheckInLegend >= 1 &&
-            visibleLayers.Contains(layerId))
+        !mapTabLayer.IsCheckInLegendNull() && mapTabLayer.CheckInLegend >= 1 &&
+        visibleLayers.Contains(layerId))
         {
           visibleLayers.Remove(layerId);
         }
@@ -1150,7 +1180,7 @@ public partial class Viewer : CustomStyledPage
           }
 
           string sql = String.Format("select CategoryID from {0}MarkupGroup where GroupID = {1}",
-              WebConfigSettings.ConfigurationTablePrefix, groupId);
+          WebConfigSettings.ConfigurationTablePrefix, groupId);
           string categoryID = null;
 
           using (OleDbCommand command = new OleDbCommand(sql, connection))
@@ -1269,7 +1299,7 @@ public partial class Viewer : CustomStyledPage
         double xmax = Convert.ToDouble(ext[2]);
         double ymax = Convert.ToDouble(ext[3]);
 
-        _appState.Extent = new Envelope(new Coordinate(xmin, ymin),  new Coordinate(xmax, ymax));
+        _appState.Extent = new Envelope(new Coordinate(xmin, ymin), new Coordinate(xmax, ymax));
       }
       catch
       {
@@ -1367,7 +1397,7 @@ public partial class Viewer : CustomStyledPage
       }
 
       double dx = _appState.Extent.Width / 2;
-      _appState.Extent = new Envelope( new Coordinate(x - dx, _appState.Extent.MinY),  new Coordinate(x + dx, _appState.Extent.MaxY));
+      _appState.Extent = new Envelope(new Coordinate(x - dx, _appState.Extent.MinY), new Coordinate(x + dx, _appState.Extent.MaxY));
     }
 
     // === centery ===
@@ -1401,7 +1431,7 @@ public partial class Viewer : CustomStyledPage
       }
 
       double dy = _appState.Extent.Height / 2;
-      _appState.Extent = new Envelope( new Coordinate(_appState.Extent.MinX, y - dy),  new Coordinate(_appState.Extent.MaxX, y + dy));
+      _appState.Extent = new Envelope(new Coordinate(_appState.Extent.MinX, y - dy), new Coordinate(_appState.Extent.MaxX, y + dy));
     }
 
     // === centerlat ===
@@ -1487,7 +1517,7 @@ public partial class Viewer : CustomStyledPage
     if (launchParams.ContainsKey("markcenter"))
     {
       string label = launchParams["markcenter"];
-      
+
       Coordinate center = _appState.Extent.Centre;
       string point = String.Format("POINT({0} {1})", center.X, center.Y);
       Markup markup = new Markup(point, "#000000", 1);
@@ -1583,7 +1613,7 @@ public partial class Viewer : CustomStyledPage
       using (OleDbConnection connection = AppContext.GetDatabaseConnection())
       {
         string sql = "select State from " + WebConfigSettings.ConfigurationTablePrefix + @"SavedState 
-					where StateID = ?";
+where StateID = ?";
 
         using (OleDbCommand command = new OleDbCommand(sql, connection))
         {
@@ -1597,7 +1627,7 @@ public partial class Viewer : CustomStyledPage
         }
 
         sql = "update " + WebConfigSettings.ConfigurationTablePrefix + @"SavedState 
-					set DateLastAccessed = ? where StateID = ?";
+set DateLastAccessed = ? where StateID = ?";
 
         using (OleDbCommand command = new OleDbCommand(sql, connection))
         {

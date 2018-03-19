@@ -1,38 +1,52 @@
 ﻿<%-- 
-  Copyright 2012 Applied Geographics, Inc.
+Copyright 2012 Applied Geographics, Inc.
 
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-      http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 --%>
 
 <%@ Control Language="C#" AutoEventWireup="true" CodeFile="SearchPanel.ascx.cs" Inherits="SearchPanel" %>
 <%@ Register TagPrefix="gpv" Assembly="App_Code" Namespace="GPV" %>
 
-<div class="FunctionHeader"><span class="glyphicon glyphicon-menu-left FunctionExit" aria-hidden="true"></span>Search</div>
-<div id="pnlSearchFields" class="Panel">
-  <div id="pnlSearchInputField" class="Panel">
-    <gpv:Select ID="ddlSearches" runat="server" CssClass="Input" ToolTip="Choose a search to perform" />
-    <gpv:Div id="pnlSearchScroll" runat="server" class="Panel" ></gpv:Div>
-    <div class="searchCommand Panel">
-      <button id="cmdSearch" title="Search">Search</button>
-      <button id="cmdReset" title="Reset">Reset</button>
+<div class="topHead FunctionHeader">
+  <div class="inner">
+      <span class="topLftTxt ">
+        <span class="topTxt">Search</span>
+        <a  class ="helpIcon"  type = "search"> 
+           <i class=" fa fa-question-circle" aria-hidden="true"></i>
+         </a>
+      </span>
+      <span class="rightCol">
+         <i class="fa fa-angle-left FunctionExit" aria-hidden="true"></i>
+      </span>
     </div>
   </div>
-  <div id="pnlSearchGrid" class="Panel">
-    <table id="grdSearch" class="DataGrid"></table>
+<div id="pnlSearchFields" class="customScroll ">
+  <div id="pnlSearchInputField" class="frm_box">
+    <div class="frm_row noTopMargin customSearch">
+      <gpv:Select ID="ddlSearches" runat="server" CssClass="frmSelect" ToolTip="Choose a search to perform" />
+    </div>
+    <gpv:Div ID="pnlSearchScroll" runat="server" class="Panel"></gpv:Div>
   </div>
-  <div id="pnlSearchCommand" class="searchCommand Panel">
-    <div id="labSearchCount"></div>
-    <button id="cmdShowOnMap" class="Disabled" title="Show on Map">Show on Map</button>
-    <button id="cmdShowAllOnMap" class="Disabled" title="Show All on Map">Show All on Map</button>
+  <div class="frm_box topMargin alignRight">
+    <button id="cmdSearch" title="Search" class="btn frmBtn">Search</button>
+    <button id="cmdReset" title="Reset" class="btn frmBtn">Reset</button>
   </div>
+  <div id="pnlSearchGrid" class="frm_box horizontalScroll">
+    <table id="grdSearch" class="DataGrid dataTable"></table>
+      </div>
+</div>
+<div id="pnlSearchCommand" class="searchCommand Panel septr">
+  <div id="labSearchCount">None found</div>
+  <button id="cmdShowOnMap" class="btn frmBtn Disabled" title="Show on Map">Show on Map</button>
+  <button id="cmdShowAllOnMap" class="btn frmBtn Disabled" title="Show All on Map">Show All on Map</button>
 </div>

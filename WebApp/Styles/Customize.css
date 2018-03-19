@@ -39,16 +39,17 @@
 
 #pnlHeader
 {
-  height: 42px;
+  min-height: 50px;
+  height: 50px;
 }
 
 /* top and bottom of the main content area (map and function panels); */
 /* top and bottom of the main content area should match the hight of the header */
 /* and the footer respectively */
 
-#pnlContent
+#pnlContent 
 {
-  top: 42px;
+  top: 50px;
   bottom: 20px;
 }
 
@@ -57,10 +58,11 @@
 #pnlFooter
 {
   height: 20px;
+  text-align: center;
 }
 
 /* IMPORTANT!  Set this to 450 plus the top and bottom values of */
-/* pnlContent above. Not doing so could cause the interface to   */ 
+/* pnlContent above. Not doing so could cause the interface to   */
 /* layout incorrectly.                                           */
 
 #pnlBody
@@ -76,30 +78,38 @@
 
 /* default background color of the header and footer */
 
-#pnlHeader, #pnlFooter
+#pnlHeader
 {
-  background-color: #f4f7f7;
+  background-color: #3c8dbc;
+}
+
+#pnlFooter {
+  background-color: #172936;
 }
 
 /* default color of the hamburger menu icon and the help question icon */
 
 #cmdMenu span, #cmdHelp span, #cmdEmail i
 {
-color: #009688;
+  color: #ffffff;
+}
+
+#cmdMenu span:hover{
+  color: #ffb74d;
 }
 
 /* default color of the details panel three dot icon */
 
 #cmdShowDetails
 {
-  color: #FFB74D;
+  color: #fff;
 }
 
 /* text color of links (external pages and GPV commands) */
 
 a, .CommandLink
 {
-  color: Blue;
+  color: #ffffff;
 }
 
 /* text color of the GPV version text below the map */
@@ -173,122 +183,143 @@ a.VersionText
 
 .DataGridRowAlternate
 {
-  background-color: #E0F2F1;
+  background-color: transparent;
 }
 
 /* background and text color of headers in right data panel */
 
 .DataList .RowSetHeader
 {
-  background-color: #FFE0B2;
-  color: Black;
+  background-color: #444f56;
+  color: #f3f7d9;
 }
 
 /* background and text color of subheaders in data panel */
 
 .DataList .RowSetSubheader
 {
-  background-color: #F0F0F0;
-  color: Black;
+  background-color: transparent;
+  color: #f3f7d9;
 }
 
-/* background and border colors of the map theme, level and tool dropdown buttons */
+/* color for function menu left boarder */
 
-.MapMenu > .dropdown-toggle
+.Menu
 {
-  background-color: White;
-  border-color: #cccccc;
+  border-left: none;
 }
 
-/* background and border colors of the map theme, level and tool dropdown buttons when hovering */
+/* link text color for left menu items */
 
-.MapMenu > .dropdown-toggle:hover, .MapMenu.open > .dropdown-toggle
+.MenuItem
 {
-  background-color: #e6e6e6;
-  border-color: #adadad;  
+  color: #fff;
 }
 
-/* text color of the map theme, level and tool dropdown buttons */
-
-.MapMenu > .dropdown-toggle > span:first-child
+.MenuItem:hover
 {
-  color: Black;
+  color: #fff;
 }
 
-/* colors of the map theme, level and tool dropdown buttons when hovering */
-
-/* color for function menu left border */
-
-.Menu 
+.active .MenuItem
 {
-  border-left: solid 4px #B2DFDB; 
+  color: #fff;
 }
 
-/* text color for function panel menu items */
+/* text color for help page menu item */
 
-.MenuItem 
+#listContents .MenuItem
 {
-  color: #00796B;
+  color: #212121;
 }
 
-/* function panel background color and right border color; should match the .FunctionHeader background color below */
+/* left border of Menu */
 
-#pnlFunctionSidebar 
+#pnlTableofContents .Menu
 {
-  background-color: #FFFFFF;
-  border-right: solid 1px #009688;
+  border-left: solid 4px #3c8dbc;
+}
+
+/* left border of Menu */
+
+#pnlHelpContent .MenuItem
+{
+  font-size: 24px;
+  color: #212121;
+}
+
+/* function panel background color and right border color */
+
+#pnlFunction {
+    background: rgba(23,41,54,.9);
+}
+
+#pnlFunctionSidebar
+{
+  background-color: #172936;
+  border-right: none;
 }
 
 /* function panel background color, text color and left border  */
 
-.FunctionHeader 
+.FunctionHeader
 {
-  background-color: #009688;
-  color: #FFFFFF;
-  border-left: #B2DFDB solid 6px;
+  background-color: #172936;
+  border-left: none;
+}
+
+.FunctionHeader, .FunctionHeader span a
+{
+  color : #ffffff;
 }
 
 /* sets the color of the < and > icons used to close the function and data panels 
  * currently set to match the font color in the function header */
 
-.FunctionExit, .DataExit 
+.FunctionExit, .DataExit
 {
   color: #FFFFFF;
 }
 
 /* data panel header background color and text color  */
 
-.DataHeader 
+.DataHeader
 {
-  background-color: #FFB74D;
-  color: #FFFFFF;
+  background-color: #172936;
+  color: #fff;
 }
 
 /* font for function panel menu items and headers on the function and data panels */
 
-.MenuItem, .FunctionHeader, .DataHeader
+.MenuItem
 {
-  font-family: Open Sans, Arial, sans-serif;
-  font-size: 24px;
+  font-family: Open Sans, sans-serif;
+  font-size: 13px;
+}
+
+.FunctionHeader, .DataHeader {
+  font-size: 15px;
+  font-family: Open Sans, sans-serif;
 }
 
 /* color of the labels used for various options in the Share panel */
 
-.FunctionLabel 
+.FunctionLabel
 {
-  color: #00796B;
+  color: #fff;
+  font-size: 15px;
 }
 
 /* sets the color in the map tool menu for when hovering over an active map tool item */
 
-li.MapTool:hover, #selectMapTheme li:hover, #selectMapLevel li:hover 
+li.MapTool:hover, #selectMapTheme li:hover, #selectMapLevel li:hover
 {
-  background-color: #B2DFDB;
+  background-color: #1e90ff;
 }
 
 /* sets the height and width for the overview map popout in the bottom right corner of the map */
 
-.overviewMap 
+.overviewMap
 {
   height: 250px;
   width: 175px;
@@ -296,15 +327,16 @@ li.MapTool:hover, #selectMapTheme li:hover, #selectMapLevel li:hover
 
 /* color of the overview map locator box that shows current extent */
 
-#locatorBox 
+#locatorBox
 {
- border: solid 2px #FF0000;
+  border: solid 2px #FF0000;
 }
 
-#pnlSearchGrid, #pnlQueryGrid 
+#pnlSearchGrid, #pnlQueryGrid
 {
   color: #f4f7f7;
 }
+
 
 /* =================================== */
 /*   Custom header and footer styles   */
