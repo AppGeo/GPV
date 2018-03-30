@@ -148,16 +148,15 @@ public class TileAggregator
     int r = tileData.R;
     int c = tileData.C;
 
-    WebClient webClient = new WebClient();
+    using (WebClient webClient = new WebClient())
+    {
+      ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 
-    try
-    {
-      tiles[r][c] = webClient.DownloadData(url);
-    }
-    catch { }
-    finally
-    {
-      webClient.Dispose();
+      try
+      {
+        tiles[r][c] = webClient.DownloadData(url);
+      }
+      catch { }
     }
   }
 

@@ -64,21 +64,38 @@ public static class AppAuthentication
     switch (Mode)
     {
       case AuthenticationMode.None:
-        authenticated = FormsAuthentication.Authenticate(userName, password);
+        AuthenticationSection authenticationSection = GetAuthenticationSection();
+
+        if (authenticationSection.Mode == System.Web.Configuration.AuthenticationMode.Forms && authenticationSection.Forms != null && authenticationSection.Forms.Credentials != null)
+        {
+          FormsAuthenticationCredentials credentials = authenticationSection.Forms.Credentials;
+
+          if (credentials.Users.Count > 0)
+          {
+            if (credentials.PasswordFormat == FormsAuthPasswordFormat.SHA1)
+            {
+              password = HashPasswordForWebConfig(password);
+            }
+
+            authenticated = String.Compare(userName, credentials.Users[0].Name, true) == 0 && String.Compare(password, credentials.Users[0].Password) == 0;
+          }
+        }
         break;
 
       case AuthenticationMode.Database:
         using (OleDbConnection connection = AppContext.GetDatabaseConnection())
         {
-          string format = String.Format("select count(*) from {0}User where UserName = '{1}' and Password = '{{0}}' and Active = 1", WebConfigSettings.ConfigurationTablePrefix, userName);
+          string sql = String.Format("select count(*) from {0}User where UserName = ? and Password = ? and Active = 1", WebConfigSettings.ConfigurationTablePrefix);
 
-          using (OleDbCommand command = new OleDbCommand(String.Format(format, password), connection))
+          using (OleDbCommand command = new OleDbCommand(sql, connection))
           {
+            command.Parameters.Add("@1", OleDbType.VarWChar).Value = userName;
+            command.Parameters.Add("@2", OleDbType.VarWChar).Value = password;
             authenticated = Convert.ToInt32(command.ExecuteScalar()) > 0;
 
             if (!authenticated)
             {
-              command.CommandText = String.Format(format, HashPassword(password));
+              command.Parameters[2].Value = HashPassword(password);
               authenticated = Convert.ToInt32(command.ExecuteScalar()) > 0;
             }
           }
@@ -123,6 +140,23 @@ public static class AppAuthentication
     Array.Copy(source, 0, saltedSource, salt.Length, source.Length);
 
     byte[] data = sha1.ComputeHash(saltedSource);
+    string hash = "";
+
+    foreach (byte b in data)
+    {
+      hash += b.ToString("X2");
+    }
+
+    return hash;
+  }
+
+  public static string HashPasswordForWebConfig(string password)
+  {
+    UnicodeEncoding encoding = new UnicodeEncoding();
+    SHA1CryptoServiceProvider sha1 = new SHA1CryptoServiceProvider();
+
+    byte[] source = encoding.GetBytes(password);
+    byte[] data = sha1.ComputeHash(source);
     string hash = "";
 
     foreach (byte b in data)

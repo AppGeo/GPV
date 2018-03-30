@@ -36,7 +36,7 @@ public partial class Admin_Hash : System.Web.UI.Page
       }
       else
       {
-        tboHash.Text = FormsAuthentication.HashPasswordForStoringInConfigFile(tboPassword.Text, "SHA1");
+        tboHash.Text = AppAuthentication.HashPasswordForWebConfig(tboPassword.Text);
       }
     }
   }
