@@ -201,11 +201,12 @@ var GPV = (function (gpv) {
       $lnkEmail.prop("selectionStart", 0).prop("selectionEnd", $lnkEmail.val().length);
     }
 
-    $("#cmdFullView").on("click", function () {
+    $("#cmdFullView").on("click", function (event) {
       zoomToFullExtent();
+      event.stopPropagation();
     });
 
-    $("#cmdLocation").on("click", function () {
+    $("#cmdLocation").on("click", function (event) {
       if (navigator && navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (pos) {
           var latlng = L.latLng(pos.coords.latitude, pos.coords.longitude);
@@ -215,6 +216,8 @@ var GPV = (function (gpv) {
       else {
         showGpsError();
       }
+
+      event.stopPropagation();
     }).popover({
       content: 'GPS is not enabled on this device',
       delay: { show: 500, hide: 500 },

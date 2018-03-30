@@ -112,6 +112,9 @@ a, .CommandLink
   color: #ffffff;
 }
 
+#pnlMain a{
+  color: #0000EE;
+}
 /* text color of the GPV version text below the map */
 
 .VersionText

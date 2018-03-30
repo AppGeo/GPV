@@ -45,6 +45,11 @@ div
   font-size: 14px;
 }
 
+#Login1 Input{
+  font-family: 'Open Sans',sans-serif;
+  font-size: 14px;
+}
+
 .loginFooter{
   top: auto;
 }

@@ -30,9 +30,9 @@ limitations under the License.
       </span>
     </div>
   </div>
-<div id="pnlSearchFields" class="customScroll ">
-  <div id="pnlSearchInputField" class="frm_box">
-    <div class="frm_row noTopMargin customSearch">
+<div id="pnlSearchFields" class=" ">
+  <div id="pnlSearchInputField" class="frm_box customScroll">
+    <div class="frm_row noTopMargin customSelect ">
       <gpv:Select ID="ddlSearches" runat="server" CssClass="frmSelect" ToolTip="Choose a search to perform" />
     </div>
     <gpv:Div ID="pnlSearchScroll" runat="server" class="Panel"></gpv:Div>

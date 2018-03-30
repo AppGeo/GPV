@@ -70,9 +70,11 @@ var GPV = (function (gpv) {
     // =====  private functions  =====
 
     function emptyResultGrid() {
+      $labSearchCount.text("None found");
       $grdSearch.dataGrid("empty");
       $cmdShowOnMap.addClass("Disabled");
       $cmdShowAllOnMap.addClass("Disabled");
+      $("#pnlSearchGrid").attr("style", "display:none");
     }
 
     function fillSearches() {
@@ -104,6 +106,7 @@ var GPV = (function (gpv) {
             $grdSearch.dataGrid("load", result);
             $labSearchCount.text((result.rows.length == 0 ? "None" : result.rows.length) + " found");
             $cmdShowAllOnMap.toggleClass("Disabled", result.rows.length == 0);
+            $("#pnlSearchGrid").attr("style", "display:block");
 
             if (!initializing && gpv.settings.searchAutoSelect && result.rows.length == 1) {
               showOnMap();
@@ -150,7 +153,7 @@ var GPV = (function (gpv) {
       if (!$cmdReset.hasClass("Disabled")) {
         $("#pnlSearchScroll").find("input:text").val('');
         $("#pnlSearchScroll").find("select").prop('selectedIndex', 0);
-        $labSearchCount.text("");
+        $labSearchCount.text("None found");
         $cmdSearch.toggleClass("Disabled");
         $cmdReset.toggleClass("Disabled");
         emptyResultGrid();

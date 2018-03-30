@@ -50,6 +50,7 @@ a:active, a:hover {
   top: 0px;
   right: 0px;
   bottom: 0px;
+  color: #fff;
 }
 
 .hidden { /* hide visually and from screen readers */
@@ -136,7 +137,7 @@ header.main .logo {
   font-size: 23px;
   background: #367fa9;
   width: 162px;
-  display: none;
+  /*display: none;*/
 }
 
 /* =====  left navigation panel  ===== */

@@ -43,11 +43,15 @@ var GPV = (function (gpv) {
     var $cmdMobDataPrint = $("#cmdMobDataPrint").on("click", printData);
 
     $("#cmdExportData").on("click", function () {
-      exportData($(this), "ExportData.ashx");
+      if (!$(this).hasClass("Disabled")) {
+        exportData($(this), "ExportData.ashx");
+      }
     });
 
     $("#cmdMailingLabels").on("click", function () {
-      exportData($(this), "MailingLabels.aspx");
+      if (!$(this).hasClass("Disabled")) {
+        exportData($(this), "MailingLabels.aspx");
+      }
     });
 
     $("#cmdSelectView").on("click", function () {
@@ -423,6 +427,7 @@ var GPV = (function (gpv) {
 
     function printData() {
       if (!$cmdDataPrint.hasClass("Disabled")) {
+        event.stopPropagation();
         var data = $cmdDataPrint.data("printdata");
         var windowName = "identify" + (new Date()).getTime();
         var features = "width=700,height=500,menubar=no,titlebar=no,toolbar=no,status=no,scrollbars=no,location=no,resizable=no";
@@ -430,6 +435,7 @@ var GPV = (function (gpv) {
       }
 
       if (!$cmdMobDataPrint.hasClass("Disabled")) {
+        event.stopPropagation();
         var data = $cmdMobDataPrint.data("printdata");
         var windowName = "identify" + (new Date()).getTime();
         var features = "width=700,height=500,menubar=no,titlebar=no,toolbar=no,status=no,scrollbars=no,location=no,resizable=no";
@@ -575,8 +581,8 @@ var GPV = (function (gpv) {
                 },
                 success: function (result) {
                   if (result) {
-                    $("#cmdMailingLabels").toggleClass("Disabled", result.supportsMailingLabels);
-                    $("#cmdExportData").toggleClass("Disabled", result.supportsExportData);
+                    $("#cmdMailingLabels").toggleClass("Disabled", !result.supportsMailingLabels);
+                    $("#cmdExportData").toggleClass("Disabled", !result.supportsExportData);
                   }
                 }
               });

@@ -436,7 +436,12 @@
   }
 
   #pnlSelection .data_box {
-    height: 78px;
+    /*height: 78px;*/
+    height: calc(100vh - 489px);
+  }
+
+  #pnlSelection #pnlQueryGrid .mCustomScrollBox{
+    padding-right: 15px;
   }
 
   #pnlSelection .frm_row {
@@ -445,22 +450,26 @@
   }
 
   #labSelectionCount {
-    position: absolute;
+    position: static;
     max-width: 100%;
     top: 4px;
-  }
-
-  #pnlSelection .spreadsheetBtn, #pnlSelection .mailingLblBtn {
-    padding-left: 20px;
-    margin-top: 25px;
-  }
-
-  #pnlSelection .mailingLblBtn {
-    margin-right: 5px;
+    width: 100%;
   }
 
   #pnlSelection .spreadsheetBtn {
+    padding-left: 6px;
+    margin-top: 10px;
     background-position: 4px 7px;
+    position: static;
+    float: none;
+  }
+
+  #pnlSelection .mailingLblBtn{
+    padding-left: 5px;
+    margin-right: 5px;
+    margin-top: 10px;
+    position: static;
+    float: none;
   }
 
   #ddlZoneLevelSelect {
@@ -695,7 +704,7 @@
 
   /* Search panel */
   #pnlSearchFields {
-    height: 360px;
+    /*height: 360px;*/
   }
 
   .searchCommand {

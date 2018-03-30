@@ -299,6 +299,7 @@ Date 17-09-2017
     display: inline-block;
     position: relative;
     top: -6px;
+    color: #fff;
 }
 #cmdEmail:hover{
     background-color: #367fa9;

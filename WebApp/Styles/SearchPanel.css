@@ -20,7 +20,7 @@
   width: 100%;
   float: left;
   overflow: auto;
-  height: calc(100vh - 202px);
+  /*height: calc(100vh - 202px);*/
   margin-top: 10px;
 }
 
@@ -51,13 +51,18 @@
   margin-left: 10px;
   margin-top: 12px;
   max-width: 80px;
+  color: #fff;
 }
 
-#cmdShowOnMap, #cmdShowAllOnMap
+#cmdShowOnMap, #cmdShowAllOnMap 
 {
   float: right;
   margin: 10px 4px;
 }
+
+#cmdShowAllOnMap.Disabled, #cmdShowOnMap.Disabled {
+   display: none;
+ }
 
 #pnlSearchScroll
 {
@@ -222,13 +227,17 @@
   width: 100%;
   border: none;
   overflow-x: auto;
-  height: 230px;
+  /*height: 206px;*/
+  height: calc(100vh - 459px);
   overflow-y: auto;
 }
 
 #pnlSearchFields div.frm_box:first-child {
   padding-top: 2px;
   padding-bottom: 6px;
+  height: 219px;
+  overflow: hidden;
+  /*overflow-y: scroll;*/
 }
 
 #mCSB_1_container {
@@ -236,13 +245,18 @@
 }
 
 #pnlSearchFields .mCSB_container {
-  padding-right: 4px;
+  padding-right: 22px;
 }
-
+#pnlSearchFields #pnlSearchGrid .mCSB_container{ 
+  padding-right: 16px;
+  box-sizing: content-box;
+}
 #pnlSearchFields .mCSB_container_wrapper{
   margin-right: 18px;
   /*margin-bottom: 30px;*/
   padding-right: 20px;
+  /*left: -18px;*/
+  width: 93%;
 }
 
 #mCSB_1_scrollbar_vertical {
@@ -252,7 +266,9 @@
 #pnlSearchGrid .mCSB_scrollTools_horizontal {
   width: auto !important;
 }
-
+#pnlSearchGrid .mCS-3d-thick.mCSB_scrollTools_horizontal{
+  bottom: 6px;
+}
 #mCSB_8_dragger_horizontal .mCSB_dragger_bar {
   margin-top: 4px;
   height: 5px;
@@ -287,7 +303,9 @@
 }
 
 #pnlSearchFields div.frm_box:nth-of-type(2) {
-  padding-top: 15px;
+  padding-top: 10px;
+  margin-top: 5px;
+  text-align: center;
 }
 
 #pnlLegendContent .mCustomScrollBox {
@@ -306,6 +324,10 @@
   float: left;
   min-height: auto;
   padding-bottom: 1px;
+}
+
+#pnlSearchInputField .Search{
+  padding-bottom: 12px;
 }
 /* ends here */
 
@@ -363,3 +385,4 @@ select::-ms-expand {
   word-break: normal;
   outline: none;
 }
+
