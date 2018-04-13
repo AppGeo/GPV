@@ -355,7 +355,7 @@ public class MarkupPanelHandler : WebServiceHandler
    
     using (OleDbConnection connection = AppContext.GetDatabaseConnection())
     {
-      string sql = String.Format("select GroupID, DateCreated, CreatedBy, DisplayName ,Details  from {0}MarkupGroup where CategoryID = ? and DateLastAccessed >= ? and Deleted = 0 order by DateCreated desc",
+      string sql = String.Format("select GroupID, DateCreated, CreatedBy, DisplayName, Details  from {0}MarkupGroup where CategoryID = ? and DateLastAccessed >= ? and Deleted = 0 order by DateCreated desc",
           WebConfigSettings.ConfigurationTablePrefix);
 
       using (OleDbCommand command = new OleDbCommand(sql, connection))
@@ -607,7 +607,7 @@ public class MarkupPanelHandler : WebServiceHandler
     {
       using (OleDbConnection connection = AppContext.GetDatabaseConnection())
       {
-        string sql = String.Format("update {0}MarkupGroup set DisplayName = ?, Details=? , DateLastAccessed = ? where GroupID = ?", WebConfigSettings.ConfigurationTablePrefix);
+        string sql = String.Format("update {0}MarkupGroup set DisplayName = ?, Details = ? , DateLastAccessed = ? where GroupID = ?", WebConfigSettings.ConfigurationTablePrefix);
 
         using (OleDbCommand command = new OleDbCommand(sql, connection))
         {
