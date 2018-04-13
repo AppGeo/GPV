@@ -1,5 +1,5 @@
 --
---  Copyright 2016 Applied Geographics, Inc.
+--  Copyright 2018 Applied Geographics, Inc.
 --
 --  Licensed under the Apache License, Version 2.0 (the "License");
 --  you may not use this file except in compliance with the License.
@@ -13,14 +13,14 @@
 --  See the License for the specific language governing permissions and
 --  limitations under the License.
 --
---  GPV50_Oracle_Create.sql
+--  GPV51_Oracle_Create.sql
 --
---  Creates the GPV v5.0 configuration tables.  You can set the prefix for the table names by changing
+--  Creates the GPV v5.1 configuration tables.  You can set the prefix for the table names by changing
 --  the value in the "prefix varchar2(10)" line below.  Make sure to run the follow scripts after this
 --  one using the same prefix:
 --
---    GPV50_Oracle_AddConstraints.sql - to create the necessary constraints
---    GPV50_Oracle_LoadMailingLabels.sql - to load the mailing labels table
+--    GPV51_Oracle_AddConstraints.sql - to create the necessary constraints
+--    GPV51_Oracle_LoadMailingLabels.sql - to load the mailing labels table
 --
 
 -- make sure SQL Plus does not interpret the ampersand as a substitution character (needed for URLs)
@@ -28,7 +28,7 @@
 SET define off
 
 DECLARE
-  prefix varchar2(10):= 'GPV50';
+  prefix varchar2(10):= 'GPV51';
 
 BEGIN
 
@@ -208,6 +208,7 @@ EXECUTE IMMEDIATE 'CREATE TABLE ' || prefix || 'MarkupGroup (' ||
   'GroupID number(11) NOT NULL,' ||
   'CategoryID varchar2(50) NOT NULL,' ||
   'DisplayName varchar2(100) NOT NULL,' ||
+  'Details varchar2(1000),' ||
   'CreatedBy varchar2(50) NOT NULL,' ||
   'CreatedByUser varchar2(200),' ||
   'Locked number(1) NOT NULL,' ||

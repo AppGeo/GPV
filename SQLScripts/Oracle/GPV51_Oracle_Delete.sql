@@ -1,5 +1,5 @@
 --
---  Copyright 2016 Applied Geographics, Inc.
+--  Copyright 2018 Applied Geographics, Inc.
 --
 --  Licensed under the Apache License, Version 2.0 (the "License");
 --  you may not use this file except in compliance with the License.
@@ -13,14 +13,14 @@
 --  See the License for the specific language governing permissions and
 --  limitations under the License.
 --
---  GPV50_Oracle_Delete.sql
+--  GPV51_Oracle_Delete.sql
 --
---  Deletes all GPV v5.0 configuration tables.  You can set the prefix for the table names by
+--  Deletes all GPV v5.1 configuration tables.  You can set the prefix for the table names by
 --  changing the value in the "prefix varchar2(10)" line below.
 --
 
 DECLARE
-  prefix varchar2(10):= 'GPV50';
+  prefix varchar2(10):= 'GPV51';
 
 BEGIN
 

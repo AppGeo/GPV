@@ -1,5 +1,5 @@
 --
---  Copyright 2016 Applied Geographics, Inc.
+--  Copyright 2018 Applied Geographics, Inc.
 --
 --  Licensed under the Apache License, Version 2.0 (the "License");
 --  you may not use this file except in compliance with the License.
@@ -13,16 +13,16 @@
 --  See the License for the specific language governing permissions and
 --  limitations under the License.
 --
---  GPV50_Oracle_Copy.sql
+--  GPV51_Oracle_Copy.sql
 --
---  Copies the GPV v5.0 configuration tables.  You can set the source and destination prefixes for
+--  Copies the GPV v5.1 configuration tables.  You can set the source and destination prefixes for
 --  the table names by changing the values in the "srcPrefix varchar2(10)" and "desPrefix varchar2(10)"
---  lines below.  Make sure to run GPV50_Oracle_AddConstraints.sql using the destination prefix to
+--  lines below.  Make sure to run GPV51_Oracle_AddConstraints.sql using the destination prefix to
 --  create the necessary constraints on the copied tables.
 --
 
 DECLARE
-  srcPrefix varchar2(10):= 'GPV50';
+  srcPrefix varchar2(10):= 'GPV51';
   desPrefix varchar2(10):= 'GPVx';
 
 BEGIN
