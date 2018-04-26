@@ -24,17 +24,12 @@ using System.Web.UI.WebControls;
 
 public partial class SearchPanel : System.Web.UI.UserControl
 {
-  private void AddInputFieldValue(HtmlControl parent, HtmlControl control, Configuration.SearchInputFieldRow searchInputFieldRow, string className)
+  private void AddInputControl(HtmlControl parent, HtmlControl control, Configuration.SearchInputFieldRow searchInputFieldRow, string className, string tip)
   {
     parent.Controls.Add(control);
     control.Attributes["class"] = "Input " + className;
     control.Attributes["data-id"] = searchInputFieldRow.FieldID;
-  }
-
-  private HtmlControl AddNumericTip(HtmlControl control)
-  {
-    control.Attributes["title"] = "Enter a number";
-    return control;
+    control.Attributes["title"] = tip;
   }
 
   public void Initialize(Configuration.ApplicationRow application)
@@ -75,6 +70,7 @@ public partial class SearchPanel : System.Web.UI.UserControl
       foreach (Configuration.SearchInputFieldRow searchInputFieldRow in searchRow.GetSearchInputFieldRows().OrderBy(o => o.SequenceNo))
       {
         // add UI elements for this criterion
+
         HtmlGenericControl searchInputField = new HtmlGenericControl("div");
         search.Controls.Add(searchInputField);
         searchInputField.Attributes["data-criteria"] = searchInputFieldRow.FieldID;
@@ -90,48 +86,56 @@ public partial class SearchPanel : System.Web.UI.UserControl
         switch (searchInputFieldRow.FieldType)
         {
           case "autocomplete":
-            AddInputFieldValue(searchInputField, new HtmlInputText("text"), searchInputFieldRow, "Autocomplete");
+            AddInputControl(searchInputField, new HtmlInputText("text"), searchInputFieldRow, "Autocomplete", "Enter some text");
             break;
 
           case "date":
-            AddInputFieldValue(searchInputField, new HtmlInputText("text"), searchInputFieldRow, "Date");
+            AddInputControl(searchInputField, new HtmlInputText("text"), searchInputFieldRow, "Date", "Enter a date");
             break;
 
           case "daterange":
-            AddInputFieldValue(searchInputField, new HtmlInputText("text"), searchInputFieldRow, "DateRange 1");
+            AddInputControl(searchInputField, new HtmlInputText("text"), searchInputFieldRow, "DateRange 1", "Enter a date");
 
             betweenText = new HtmlGenericControl("span");
             searchInputField.Controls.Add(betweenText);
             betweenText.InnerText = " - ";
 
-            AddInputFieldValue(searchInputField, new HtmlInputText("text"), searchInputFieldRow, "DateRange 2");
+            AddInputControl(searchInputField, new HtmlInputText("text"), searchInputFieldRow, "DateRange 2", "Enter a date");
             break;
 
           case "list":
             HtmlSelect select = CreateSelect(searchInputFieldRow);
-            AddInputFieldValue(searchInputField, select, searchInputFieldRow, "List");
+            AddInputControl(searchInputField, select, searchInputFieldRow, "List", "Select from a list");
             break;
 
           case "number":
-            AddInputFieldValue(searchInputField, AddNumericTip(new HtmlInputText("text")), searchInputFieldRow, "Number");
+            AddInputControl(searchInputField, new HtmlInputText("text"), searchInputFieldRow, "Number", "Enter a number");
             break;
 
           case "numberrange":
-            AddInputFieldValue(searchInputField, AddNumericTip(new HtmlInputText("text")), searchInputFieldRow, "NumberRange 1");
+            AddInputControl(searchInputField, new HtmlInputText("text"), searchInputFieldRow, "NumberRange 1", "Enter a number");
 
             betweenText = new HtmlGenericControl("span");
             searchInputField.Controls.Add(betweenText);
             betweenText.InnerText = " - ";
 
-            AddInputFieldValue(searchInputField, AddNumericTip(new HtmlInputText("text")), searchInputFieldRow, "NumberRange 2");
+            AddInputControl(searchInputField, new HtmlInputText("text"), searchInputFieldRow, "NumberRange 2", "Enter a number");
             break;
 
           case "text":
-            AddInputFieldValue(searchInputField, new HtmlInputText("text"), searchInputFieldRow, "Text");
+            AddInputControl(searchInputField, new HtmlInputText("text"), searchInputFieldRow, "Text", "Enter some text");
+            break;
+
+          case "textcontains":
+            AddInputControl(searchInputField, new HtmlInputText("text"), searchInputFieldRow, "Text", "Enter some text (contains)");
+            break;
+
+          case "textstarts":
+            AddInputControl(searchInputField, new HtmlInputText("text"), searchInputFieldRow, "Text", "Enter some text (starts with)");
             break;
         }
 
-        search.Controls.Add(new HtmlGenericControl("br"));
+        search.Controls.Add(new LiteralControl("<br/>"));
       }
      
       pnlSearchScroll.Controls.Add(search);

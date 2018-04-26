@@ -13,15 +13,27 @@
 //  limitations under the License.
 
 var GPV = (function (gpv) {
-  var supportsTouch = "ontouchend" in document;
   var handlers = [];
-
-  $.geo.proj = null;
 
   // =====  private functions  =====
 
-  function getEventPoint(e) {
-    return supportsTouch ? [e.originalEvent.changedTouches[0].pageX, e.originalEvent.changedTouches[0].pageY] : [e.pageX, e.pageY];
+  function latLngsToSearchShape(map, latLngs) {
+    var p0 = map.options.crs.project(latLngs[0][0]);
+    var p1 = map.options.crs.project(latLngs[0][2]);
+    var dx = Math.abs(p0.x - p1.x);
+    var dy = Math.abs(p0.y - p1.y);
+        
+    var distance = map.getProjectedPixelSize() * searchDistance();
+    var geo;
+
+    if (dx <= distance && dy <= distance) {
+      geo = [ (p0.x + p1.x) * 0.5, (p0.y + p1.y) * 0.5, distance ];
+    }
+    else {
+      geo = [ Math.min(p0.x, p1.x), Math.min(p0.y, p1.y), Math.max(p0.x, p1.x), Math.max(p0.y, p1.y) ];
+    }
+
+    return geo;
   }
 
   function loadComplete() {
@@ -66,19 +78,25 @@ var GPV = (function (gpv) {
     return $.ajax(args);
   }
 
-  function selectTool($tool, mapOptions, cursor) {
+  function selectTool($tool, map, mapOptions) {
     if (!$tool.hasClass("Disabled")) {
       $(".MapTool").not($tool.addClass("Selected")).removeClass("Selected");
 
-      mapOptions = $.extend({ shift: "zoom" }, mapOptions);
+      mapOptions = mapOptions || {};
+      $(map.getPanes().mapPane).css("cursor", mapOptions.cursor || "");
+      delete mapOptions.cursor;
 
-      if (cursor) {
-        mapOptions.cursors = $("#mapMain").geomap("option", "cursors");
-        mapOptions.cursors[mapOptions.mode] = cursor;
-      }
+      $.each(['dragging', 'touchZoom', 'doubleClickZoom', 'scrollWheelZoom', 'boxZoom'], function (i, handler) {
+        var toggle = handler in mapOptions ? mapOptions[handler] : true;
+        map[handler][toggle ? 'enable' : 'disable']();
+      });
 
-      $("#mapMain").geomap("option", mapOptions);
+      $.extend(true, map.options, mapOptions);
     }
+  }
+
+  function searchDistance() {
+    return L.Browser.mobile && L.Browser.touch ? 16 : 4;
   }
 
   function store(name, value) {
@@ -96,13 +114,13 @@ var GPV = (function (gpv) {
 
   // =====  public interface  =====
 
-  gpv.supportsTouch = supportsTouch;
-  gpv.getEventPoint = getEventPoint;
+  gpv.latLngsToSearchShape = latLngsToSearchShape;
   gpv.loadComplete = loadComplete;
   gpv.loadOptions = loadOptions;
   gpv.on = on;
   gpv.post = post;
   gpv.selectTool = selectTool;
+  gpv.searchDistance = searchDistance;
   gpv.store = store;
 
   return gpv;

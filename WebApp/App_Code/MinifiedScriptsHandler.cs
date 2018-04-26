@@ -28,11 +28,15 @@ public class MinifiedScriptsHandler : IHttpHandler
   public static List<ScriptItem> GetList()
   {
     return new List<ScriptItem>(new ScriptItem[] { 
-      new ScriptItem("Scripts/jquery-1.7.2.min.js", false, true),
+      new ScriptItem("Scripts/jquery-2.1.4.min.js", false, true),
       new ScriptItem("Scripts/jquery.cookie.min.js", false, true),
-      new ScriptItem("Scripts/jquery.geo-test.min.js", false, true),
       new ScriptItem("Scripts/jquery.autocomplete.min.js", false, true),
       new ScriptItem("Scripts/jquery-ui-datepicker.js", false, true),
+      new ScriptItem("Scripts/leaflet.js", false, true),
+      new ScriptItem("Scripts/proj4-compressed.js", false, true),
+      new ScriptItem("Scripts/proj4leaflet.js", false, true),
+      new ScriptItem("Scripts/leaflet-gpv-extensions.js", true, true),
+      new ScriptItem("Scripts/bootstrap.min.js", false, true),
       new ScriptItem("Scripts/NumericInput.js", true, true),
       new ScriptItem("Scripts/DateInput.js", true, true),
       new ScriptItem("Scripts/ColorSelector.js", true, true),
@@ -42,16 +46,14 @@ public class MinifiedScriptsHandler : IHttpHandler
       new ScriptItem("Scripts/Configuration.js", true, true),
       new ScriptItem("Scripts/AppState.js", true, true),
       new ScriptItem("Scripts/Selection.js", true, true),
-      new ScriptItem("Scripts/WaitClock.js", true, true),
-      new ScriptItem("Scripts/ZoomBar.js", true, true),
       new ScriptItem("Scripts/SearchPanel.js", true, true),
       new ScriptItem("Scripts/SelectionPanel.js", true, true),
       new ScriptItem("Scripts/LegendPanel.js", true, true),
       new ScriptItem("Scripts/LocationPanel.js", true, true),
       new ScriptItem("Scripts/MarkupPanel.js", true, true),
-      new ScriptItem("Scripts/Resize.js", true, true),
-      new ScriptItem("Scripts/Tab.js", true, true),
+      new ScriptItem("Scripts/SharePanel.js", true, true),
       new ScriptItem("Scripts/MapTip.js", true, true),
+      new ScriptItem("Scripts/Progress.js", true, true),
       new ScriptItem("Scripts/Viewer.js", true, true)
     });
   }

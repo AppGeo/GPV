@@ -13,44 +13,19 @@
  *  limitations under the License.
  */
 
-#pnlOverviewSizer
-{
-  bottom: auto;
-  height: 250px;
-  min-height: 212px;
+#pnlLocationContent{
+  top: 40px;
+  bottom: 0;
 }
 
-#locationDivider
-{
-  left: 8px;
-  right: 8px;
-  top: 250px;
-  bottom: auto;
-  height: 8px;
-  cursor: n-resize;
-  z-index: 3;
-}
-
-#pnlZoneLevelSizer
-{
-  top: auto;
-  top: 258px;
-  min-height : 212px;
-}
-
-#mapOverview
-{
-  left: 10px;
-  top: 10px;
-  right: 10px;
-  bottom: 10px;
-  border: solid 1px #606060;
-  background-color: White;  
-  overflow: hidden;
+#ddlZoneLevelSelect{
+  margin: 10px
 }
 
 #pnlZoneLevelTabs
 {
+  position: absolute;
+  top: 10px;
   left: 12px;
   right: 12px;
   bottom: auto;
@@ -60,22 +35,28 @@
 
 #pnlZoneLevel
 {
-  top: 18px;
+  position: absolute;
+  top: 40px;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 #pnlZoneLevelControl
 {
   left: 10px;
   top: 4px;
+  padding: 10px
 }
 
 #pnlZoneLevelScroll
 {
-  left: 10px;
-  top: 22px;
-  right: 10px;
-  bottom: 10px;
-  border: solid 1px #606060;
+  position: absolute;
+  left: 0;
+  top: 40px;
+  right: 0;
+  bottom: 0;
+  border-top: solid 1px #b9b9b9;
   background-color: White;
   overflow: auto; 
 }

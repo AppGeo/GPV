@@ -1,4 +1,4 @@
-﻿/*  Copyright 2012 Applied Geographics, Inc.
+﻿/*  Copyright 2016 Applied Geographics, Inc.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ body
   overflow: hidden;
 }
 
-div
+.Panel
 {
   position: absolute;
   left: 0px;
@@ -29,37 +29,41 @@ div
 
 div.Button, div.Button.Disabled:hover
 {
+  position: absolute;
   left: auto;
   right: auto;
   bottom: auto;
-  width: 23px;
-  height: 22px;
+  width: 25px;
+  height: 25px;
   background-image: url(../Images/UI/Icons.png);
   background-position: 0px 24px;
   background-repeat: no-repeat;
-  border: solid 1px transparent;
+  background-color: #FFFFFF;
+  border: solid 1px #b9b9b9;
   cursor: default;
-  behavior: url(Styles/PIE.htc);
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
 }
+
+.Button span{
+  color: #7B7B7B;
+}
+.Selected span{
+  color: #000000;
+}
+
 div.Button:hover
 {
-  border-left: solid 1px White;
-  border-top: solid 1px White;
-  border-right: solid 1px Gray;
-  border-bottom: solid 1px Gray;
   cursor: pointer;
 }
 
 div.Button.Selected, div.Button.Selected:hover
 {
-  border-left: solid 1px Gray;
-  border-top: solid 1px Gray;
-  border-right: solid 1px White;
-  border-bottom: solid 1px White;
   cursor: default;
+}
+
+button {
+  margin: 10px;
+  border-width: 1px;
+  padding: 2px 5px;
 }
 
 .DataGrid
@@ -74,22 +78,21 @@ div.Button.Selected, div.Button.Selected:hover
 
 .DataGridRow:hover, .DataGridRowAlternate:hover
 {
-  background-color: #FFFFC8;
+  background-color: #FFF9C4;
 }
 
 .DataGridRowSelect, .DataGridRowSelect:hover
 {
-  background-color: yellow;
+  background-color: #FFEB3B;
 }
 
 .DataGrid th, .DataGrid td
 {
-  padding-left: 3px;
-  padding-right: 3px;
-  padding-bottom: 2px;
-  padding-top: 2px;
+  padding: 2px 3px;
   border-right: solid 1px #D0D0D0;
   white-space: nowrap;
+  height: 20px;
+  cursor: default;
 }
 
 .DataGrid th
@@ -98,11 +101,9 @@ div.Button.Selected, div.Button.Selected:hover
   font-weight: bold;
 }
 
-
 .Resizer
 {
   z-index: 4;
-  behavior: url(Styles/PIE.htc);
   background-color: rgba(0, 0, 0, 0);
   -pie-background: rgba(0, 0, 0, 0);
 }
@@ -126,38 +127,200 @@ div.Button.Selected, div.Button.Selected:hover
   bottom: auto;
 }
 
-#pnlContent
+#pnlEmail
 {
-  left: 8px;
-  right: 8px;
-  min-width: 930px;
+  position: absolute;
+  top: 42px;
+  right: 0;
+  width: 320px;
+  resize: none;
+  z-index: 5;
+  display: none;
+}
+
+#lnkEmail{
+  width: 89%;
+  background-color: #FFFFFF;
+  overflow: hidden;
+  font-size: 12px;
+  resize: none;
+}
+
+#cmdEmailClose, #lnkEmail {
+  height: 50px;
+}
+
+#cmdHelp, #cmdShowDetails, #cmdEmail{
+  float: right;
+  margin: 8px;
+}
+
+#cmdEmail{
+  font-size: 19px;
+  padding: 0 4px;
+}
+
+#cmdShowDetails {
+  cursor: pointer;
+}
+
+#cmdMenu {
+  float: left;
+  margin: 8px;
 }
 
 #pnlMapSizer
 {
-  right: 408px;
-  min-width: 548px;
+  left: 400px;
+  right: 0;
 }
 
-#contentDivider
-{
-  left: auto;
-  top: 26px;
-  right: 400px;
-  bottom: 8px;
-  width: 8px;
-  cursor: e-resize;
-  z-index: 3;
-}
-
-#pnlFunctionSizer
-{
-  left: auto;
+#pnlFunctionSidebar {
+  left: 0;
   width: 400px;
-  min-width: 374px;
+  z-index: 2;
+}
+
+.FunctionLabel, .Title, .DataLabel{
+  font-size: 20px;
+  margin-top: 8px;
+  display: inline-block;
+  text-align: right;
+}
+
+.DataLabel{
+  font-size: 14px;
+}
+
+#pnlTheme .FunctionLabel, #pnlDataDisplay .FunctionLabel {
+  width: 130px;
 }
 
 #pnlFunctionTabs
+{
+  left: 12px;
+  right: 12px;
+  width: 376px;
+  bottom: 0;
+  overflow: hidden;
+  opacity: 1;
+}
+
+.Menu
+{
+  margin-top: 20px;
+}
+
+.MenuItem
+{
+  display: block;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.MenuItem:last-child
+{
+  border-bottom: none;
+}
+
+#pnlFunction
+{
+  position: absolute;
+  left: -400px;
+  width: 400px;
+  bottom: 0;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.FunctionHeader
+{
+  letter-spacing: .25px;
+  height: 40px;
+  padding: 3px 0;
+  cursor: pointer;
+}
+
+.FunctionExit, .DataExit
+{
+  font-size: 18px;
+  margin: 5px 10px;
+  cursor: pointer;
+  -webkit-transition: 0.5s;
+  -moz-transition: 0.5s;  
+  transition: 0.5s;  
+  -webkit-transform: translate(3em,0);
+  -moz-transform: translate(3em,0);
+  -ms-transform: translate(3em,0);
+  transform: translate(3em,0) rotate(180deg);
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+.FunctionExitOpen
+{
+  transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -ms-transform: rotate(0deg);
+}
+
+.DataExitOpen 
+{
+  transform: rotate(360deg);
+  -webkit-transform: rotate(360deg);
+  -moz-transform: rotate(360deg);
+  -ms-transform: rotate(360deg);
+}
+
+.FunctionPanel
+{
+  right: 1px;
+}
+
+#pnlAttribution 
+{
+  top: auto;
+  bottom: 5px;
+  height: 15px;
+}
+
+#pnlDataDisplay
+{
+  background-color: #FFFFFF;
+  display: none;
+  left: auto;
+  right: -355px;
+  height: 100%;
+  width: 285px;
+  box-shadow: -4px 0px 5px -2px #b9b9b9;
+  -webkit-box-shadow: -4px 0px 5px -2px #b9b9b9;
+  -moz-box-shadow: -4px 0px 5px -2px #b9b9b9;
+  z-index: 11;
+}
+
+.DataHeader
+{
+  letter-spacing: .25px;
+  text-align: right;
+  height: 40px;
+  padding: 3px 10px;
+  cursor: pointer;
+}
+
+.DataLabel {
+  margin-left: 10px;
+}
+
+#ddlDataTheme{
+  margin: 7px 10px;
+  font-size: 14px;
+  width: 215px
+}
+
+#pnlDataTabs
 {
   left: 12px;
   right: 12px;
@@ -166,13 +329,72 @@ div.Button.Selected, div.Button.Selected:hover
   overflow: hidden;
 }
 
-#pnlFunction
+#pnlData
 {
-  top: 18px;
+  top: 40px;
+}
+
+#pnlDataList
+{
+  left: 0px;
+  top: 43px;
+  right: 0px;
+  bottom: 0px;
+  border-top: solid 1px #b9b9b9;
+  background-color: White;
+  overflow: auto;
+}
+
+#pnlDataList .DataList
+{
+  left: 10px;
+  top: 10px;
+  right: 30px;
+}
+
+#cmdDataPrint
+{
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  margin: 0;
 }
 
 #pnlFooter
 {
   top: auto;
   bottom: 0px;
+}
+
+@media screen and (max-width: 600px)
+{
+  #pnlFunctionSidebar
+  {
+    left: -400px;
+  }
+
+  #pnlMapSizer
+  {
+    left: 0px;
+  }
+}
+
+/* restore shadowed zoom bar on touch devices */
+
+.leaflet-touch .leaflet-bar {
+  box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+  border: none;
+}
+
+.leaflet-touch .leaflet-bar a {
+	width: 26px;
+	height: 26px;
+	line-height: 26px;
+}
+
+.leaflet-touch .leaflet-control-zoom-in {
+	font-size: 18px;
+}
+.leaflet-touch .leaflet-control-zoom-out {
+	font-size: 20px;
 }

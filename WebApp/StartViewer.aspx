@@ -24,6 +24,7 @@
 <head id="head" runat="server">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>General Purpose Viewer</title>
+  <script type="text/javascript" src="Scripts/WebFonts.js"></script>
   <link href="Styles/Common.css" type="text/css" rel="stylesheet" />
   <link href="Styles/Customize.css" type="text/css" rel="stylesheet" />
   <link href="Styles/StartViewer.css" type="text/css" rel="stylesheet" />

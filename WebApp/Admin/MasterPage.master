@@ -24,11 +24,13 @@
 <head id="head" runat="server">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GPV Administration</title>
+  <script type="text/javascript" src="../Scripts/WebFonts.js"></script>
+  <link href="../Styles/bootstrap.css" type="text/css" rel="stylesheet" />
   <link href="../Styles/Common.css" type="text/css" rel="stylesheet" />
   <link href="../Styles/Customize.css" type="text/css" rel="stylesheet" />
   <link href="../Styles/Tab.css" type="text/css" rel="stylesheet" />
   <link href="Styles/Admin.css" type="text/css" rel="Stylesheet" />
-  <script type="text/javascript" src="../Scripts/jquery-1.7.2.min.js"></script>
+  <script type="text/javascript" src="../Scripts/jquery-2.1.4.min.js"></script>
   <script type="text/javascript" src="Scripts/Admin.js"></script>
 </head>
 <body>

@@ -17,37 +17,31 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeFile="SelectionPanel.ascx.cs" Inherits="SelectionPanel" %>
 <%@ Register TagPrefix="gpv" Assembly="App_Code" Namespace="GPV" %>
 
-<div id="pnlQuerySizer">
-  <div id="pnlQuery" class="MainPanel">
-    <gpv:Div ID="optSelect" runat="server" CssClass="Button MapTool" Style="left: 10px; top: 3px" ToolTip="Select Features" />
-    <div id="cmdSelectView" class="Button" style="left: 10px; top: 28px" title="Select All in View"></div>
-    <div id="cmdClearSelection" class="Button" style="left: 10px; top: 53px" title="Clear Selection"></div>
-    <div style="left: 38px; top: 8px; right: 8px; bottom: auto">
-      <gpv:Select ID="ddlAction" runat="server" CssClass="Input" Style="position: absolute; width: 60%" ToolTip="Action to perform with the Select Features tool to the left" />
-      <gpv:Select ID="ddlTargetLayer" runat="server" CssClass="Input" Style="position: absolute; left: 61%; width: 39%" ToolTip="Target layer containing features of interest" />
-      <gpv:Select ID="ddlProximity" runat="server" CssClass="Input" Style="position: absolute; top: 22px; width: 60%" ToolTip="Proximity of target features to selection features" />
-      <gpv:Select ID="ddlSelectionLayer" runat="server" CssClass="Input" Style="position: absolute; left: 61%; top: 22px; width: 39%" ToolTip="Selection layer with features that will help find target features" />
-      <gpv:Select ID="ddlQuery" runat="server" CssClass="Input" Style="position: absolute; top: 44px; width: 100%" ToolTip="Filter which lists only those features meeting certain criteria" />
+<div class="FunctionHeader"><span class="glyphicon glyphicon-menu-left FunctionExit" aria-hidden="true"></span>Selection</div>
+
+  <div id="pnlQuery" class="Panel">
+    <div id="pnlSelectionOptions" class="Panel">
+      <gpv:Select ID="ddlAction" runat="server" CssClass="Input" ToolTip="Action to perform with the Select Features tool to the left" />
+      <gpv:Select ID="ddlTargetLayer" runat="server" CssClass="Input" ToolTip="Target layer containing features of interest" />
+      <gpv:Select ID="ddlProximity" runat="server" CssClass="Input" ToolTip="Proximity of target features to selection features" />
+      <gpv:Select ID="ddlSelectionLayer" runat="server" CssClass="Input" ToolTip="Selection layer with features that will help find target features" />
+      <gpv:Select ID="ddlQuery" runat="server" CssClass="Input" ToolTip="Filter which lists only those features meeting certain criteria" />
     </div>
-    <div id="pnlQueryGrid">
+    <div id="pnlSelectTools" class="Panel">
+      <button id="cmdSelectView" title="Select All in View"><span class="select-view"></span>Select All</button>
+      <button id="cmdZoomSelect" title="Zoom to Selected Features"><span class="select-zoom"></span>Zoom To</button>
+      <button id="cmdClearSelection" title="Clear Selection"><span class="select-clear"></span>Clear</button>
+    </div>
+    <div id="pnlQueryGrid" class="Panel">
       <table id="grdQuery" class="DataGrid"></table>
     </div>
-    <div id="pnlQueryCommand">
-      <div id="labSelectionCount" style="position: absolute">None selected</div>
-      <div id="cmdMailingLabels" class="CommandLink Disabled" style="position: absolute; left: 120px">To Mailing Labels</div>
-      <div id="cmdExportData" class="CommandLink Disabled" style="position: absolute; left: 240px">To Spreadsheet</div>
+    <div id="pnlQueryCommand" class="Panel">
+      <div id="labSelectionCount">None selected</div>
+      <button id="cmdMailingLabels" class="Disabled" title="Mailing Labels"><i class="fa fa-tag"></i> Mailing Labels</button>
+      <button id="cmdExportData" class="Disabled" title="Spreadsheet"><i class="fa fa-table"></i> Spreadsheet</button>
     </div>
   </div>
-</div>
-<div id="pnlDataSizer">
-  <div id="pnlDataTabs" class="TabPanel">
-    <div id="pnlDataTabScroll" class="TabScroll"></div>
-  </div>
-  <div id="pnlData" class="MainPanel">
-    <div id="cmdDataPrint" class="CommandLink Disabled">Print</div>
-    <div id="pnlDataList"></div>
-  </div>
-</div>
+
 <div id="selectionDivider"></div>
 <form id="frmExportData" method="post" target="export">
   <input id="hdnExportLayer" type="hidden" name="layer" />

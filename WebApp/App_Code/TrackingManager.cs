@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ using System.Web;
 
 public static class TrackingManager
 {
-  public static void TrackUse(Dictionary<String, String> launchParams, bool isMobile)
+  public static void TrackUse(Dictionary<String, String> launchParams)
   {
     HttpRequest request = HttpContext.Current.Request;
 
@@ -36,11 +36,11 @@ public static class TrackingManager
 
         using (OleDbConnection connection = AppContext.GetDatabaseConnection())
         {
-          string sql = String.Format("insert into {0}UsageTracking (ApplicationID, UrlQuery, DateStarted, UserAgent, UserHostAddress, UserHostName) values (?, ?, ?, ?, ?, ?)", AppSettings.ConfigurationTablePrefix);
+          string sql = String.Format("insert into {0}UsageTracking (ApplicationID, UrlQuery, DateStarted, UserAgent, UserHostAddress, UserHostName) values (?, ?, ?, ?, ?, ?)", WebConfigSettings.ConfigurationTablePrefix);
 
           using (OleDbCommand command = new OleDbCommand(sql, connection))
           {
-            command.Parameters.Add("@1", OleDbType.VarWChar).Value = applicationID + (isMobile && applicationID.Length < 46 ? " [m]" : "");
+            command.Parameters.Add("@1", OleDbType.VarWChar).Value = applicationID;
             command.Parameters.Add("@2", OleDbType.VarWChar).Value = urlQuery.Length < 1000 ? urlQuery : urlQuery.Substring(0, 1000);
             command.Parameters.Add("@3", OleDbType.Date).Value = DateTime.Now;
             command.Parameters.Add("@4", OleDbType.VarWChar).Value = request.UserAgent.Length < 400 ? request.UserAgent : request.UserAgent.Substring(0, 400);

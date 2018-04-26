@@ -1,4 +1,4 @@
-﻿/*  Copyright 2012 Applied Geographics, Inc.
+﻿/*  Copyright 2016 Applied Geographics, Inc.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -20,6 +20,13 @@
   font-size: 11px;
   color: #262624;
   padding: 2px 5px 2px 5px;
-  border: solid 1px #262624;
-  background-color: #F8F8E8;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  box-shadow: 0 1px 5px rgba(0,0,0,.65);
+  -webkit-box-shadow: 0 1px 5px rgba(0,0,0,.65);
+  -moz-box-shadow: 0 1px 5px rgba(0,0,0,.65);
+  background-color: #F4F7F7;
+  line-height: 12px;
+  z-index: 1003;
 }

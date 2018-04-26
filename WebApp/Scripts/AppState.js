@@ -15,11 +15,13 @@
 var GPV = (function (gpv) {
   $(function () {
     var appState = gpv.appState;
+    var updatedHandlers = [];
 
     // =====  public interface  =====
 
     appState.update = function (state) {
       $.extend(appState, state);
+      updatedHandlers.forEach(function (h) { h(); });
     };
 
     appState.toJson = function () {
@@ -45,6 +47,10 @@ var GPV = (function (gpv) {
       });
 
       return JSON.stringify(state);
+    };
+
+    appState.updated = function (f) {
+      updatedHandlers.push(f);
     };
   });
 

@@ -25,11 +25,18 @@ public static class HttpRequestExtensions
     NameValueCollection parameters = request.HttpMethod == "GET" ? request.QueryString : request.Form;
     Dictionary<String, String> dictionary = new Dictionary<String, String>();
 
-    foreach (string key in parameters)
+    if (parameters.ToString().Length > 0 && parameters.AllKeys.Count() == 1 && String.IsNullOrEmpty(parameters.AllKeys[0]))
     {
-      if (!String.IsNullOrEmpty(key))
+      dictionary.Add(parameters.ToString().ToLower(), null);
+    }
+    else
+    {
+      foreach (string key in parameters)
       {
-        dictionary.Add(key.ToLower(), parameters[key]);
+        if (!String.IsNullOrEmpty(key))
+        {
+          dictionary.Add(key.ToLower(), parameters[key]);
+        }
       }
     }
 

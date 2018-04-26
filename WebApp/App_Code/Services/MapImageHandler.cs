@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -13,6 +13,9 @@
 //  limitations under the License.
 
 using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.IO;
 using System.Text;
@@ -46,6 +49,55 @@ public class MapImageHandler : WebServiceHandler
     Response.BinaryWrite(mapImageData.Image);
   }
 
+  private MapImageData CompositeMapImage(AppState appState, int width, int height)
+  {
+    MapMaker mapMaker = new MapMaker(appState, width, height);
+    MapImageData mapImageData = mapMaker.GetImage();
+
+    List<Bitmap> baseTiles = GetTileImages(appState, width, height, false);
+    List<Bitmap> overlayTiles = GetTileImages(appState, width, height, true);
+
+    if (baseTiles.Count == 0 && overlayTiles.Count == 0)
+    {
+      return mapImageData;
+    }
+
+    using (Bitmap composite = new Bitmap(width, height))
+    {
+      using (Graphics graphics = Graphics.FromImage(composite))
+      {
+        graphics.Clear(Color.Transparent);
+
+        foreach (Bitmap tileImage in baseTiles)
+        {
+          graphics.DrawImage(tileImage, 0, 0);
+        }
+
+        using (MemoryStream imageStream = new MemoryStream(mapImageData.Image))
+        {
+          using (Bitmap mapImage = new Bitmap(imageStream))
+          {
+            graphics.DrawImage(mapImage, 0, 0);
+          }
+        }
+
+        foreach (Bitmap tileImage in overlayTiles)
+        {
+          graphics.DrawImage(tileImage, 0, 0);
+        }
+      }
+
+      using (MemoryStream imageStream = new MemoryStream())
+      {
+        composite.Save(imageStream, ImageFormat.Png);
+        mapImageData.Image = imageStream.ToArray();
+        mapImageData.Type = CommonImageType.Png;
+      }
+    }
+
+    return mapImageData;
+  }
+
   private string GetImageUrl(AppState appState, int width, int height)
   {
     MapMaker mapMaker = new MapMaker(appState, width, height);
@@ -53,12 +105,44 @@ public class MapImageHandler : WebServiceHandler
     return "Services/MapImage.ashx?key=" + key;
   }
 
+  private List<Bitmap> GetTileImages(AppState appState, int width, int height, bool overlay)
+  {
+    List<Bitmap> tileImages = new List<Bitmap>();
+
+    StringCollection visibleTiles = appState.VisibleTiles[appState.MapTab];
+    double pixelSize = appState.Extent.Width / width;
+    int level = Convert.ToInt32(Math.Log(Constants.BasePixelSize / pixelSize, 2));
+
+    if (visibleTiles.Count > 0)
+    {
+      Configuration.MapTabRow mapTab = AppContext.GetConfiguration().MapTab.FindByMapTabID(appState.MapTab);
+
+      foreach (Configuration.MapTabTileGroupRow mapTabTileGroup in mapTab.GetMapTabTileGroupRows().Where(o => visibleTiles.Contains(o.TileGroupID)))
+      {
+        double opacity = mapTabTileGroup.IsOpacityNull() ? 1 : mapTabTileGroup.Opacity;
+
+        foreach (Configuration.TileLayerRow tileLayer in mapTabTileGroup.TileGroupRow.GetTileLayerRows())
+        {
+          bool isOverlay = !tileLayer.IsOverlayNull() && tileLayer.Overlay == 1;
+
+          if (isOverlay == overlay)
+          {
+            Bitmap tileImage = TileAggregator.GetImage(tileLayer.URL, appState.Extent, level, opacity);
+            tileImages.Add(tileImage);
+          }
+        }
+      }
+    }
+
+    return tileImages;
+  }
+
   [WebServiceMethod]
   private void MakeMapImage()
   {
     AppState appState = AppState.FromJson(Request.Form["state"]);
-    int width = Convert.ToInt32(Request.Form["width"]);
-    int height = Convert.ToInt32(Request.Form["height"]);
+    int width = Convert.ToInt32(Math.Round(Convert.ToDouble(Request.Form["width"])));
+    int height = Convert.ToInt32(Math.Round(Convert.ToDouble(Request.Form["height"])));
     ReturnJson(GetImageUrl(appState, width, height));
   }
 
@@ -96,8 +180,8 @@ public class MapImageHandler : WebServiceHandler
     appState.MapTab = application.OverviewMapID;
     appState.Extent = application.GetFullExtentEnvelope();
 
-    int width = Convert.ToInt32(Request.Form["width"]);
-    int height = Convert.ToInt32(Request.Form["height"]);
+    int width = Convert.ToInt32(Math.Round(Convert.ToDouble(Request.Form["width"])));
+    int height = Convert.ToInt32(Math.Round(Convert.ToDouble(Request.Form["height"])));
 
     ReturnJson(GetImageUrl(appState, width, height));
   }
@@ -108,11 +192,11 @@ public class MapImageHandler : WebServiceHandler
   [WebServiceMethod]
   private void GetOverviewImage()
   {
-    Configuration.ApplicationRow application = Configuration.Application.First(o => o.ApplicationID == Request.QueryString["application"]);
+    Configuration.ApplicationRow application = Configuration.Application.First(o => o.ApplicationID == Request.Params["application"]);
 
-    int width = Convert.ToInt32(Request.QueryString["width"]);
-    int height = Convert.ToInt32(Request.QueryString["height"]);
-    string[] bbox = Request.QueryString["bbox"].Split(',');
+    int width = Convert.ToInt32(Request.Params["width"]);
+    int height = Convert.ToInt32(Request.Params["height"]);
+    string[] bbox = Request.Params["bbox"].Split(',');
     
     AppState appState = new AppState()
     {
@@ -132,11 +216,10 @@ public class MapImageHandler : WebServiceHandler
   private void SaveMapImage()
   {
     AppState appState = AppState.FromJson(Request.Form["state"]);
-    int width = Convert.ToInt32(Request.Form["width"]);
-    int height = Convert.ToInt32(Request.Form["height"]);
+    int width = Convert.ToInt32(Math.Round(Convert.ToDouble(Request.Form["width"])));
+    int height = Convert.ToInt32(Math.Round(Convert.ToDouble(Request.Form["height"])));
 
-    MapMaker mapMaker = new MapMaker(appState, width, height);
-    MapImageData mapImageData = mapMaker.GetImage();
+    MapImageData mapImageData = CompositeMapImage(appState, width, height);
 
     Response.ContentType = mapImageData.Type == CommonImageType.Png ? "image/png" : "image/jpeg";
     Response.AddHeader("Content-Disposition", "attachment; filename=Map." + (mapImageData.Type == CommonImageType.Png ? "png" : "jpg"));
@@ -147,11 +230,10 @@ public class MapImageHandler : WebServiceHandler
   private void SaveMapKml()
   {
     AppState appState = AppState.FromJson(Request.Form["state"]);
-    int width = Convert.ToInt32(Request.Form["width"]);
-    int height = Convert.ToInt32(Request.Form["height"]);
+    int width = Convert.ToInt32(Math.Round(Convert.ToDouble(Request.Form["width"])));
+    int height = Convert.ToInt32(Math.Round(Convert.ToDouble(Request.Form["height"])));
 
-    MapMaker mapMaker = new MapMaker(appState, width, height);
-    MapImageData mapImageData = mapMaker.GetImage();
+    MapImageData mapImageData = CompositeMapImage(appState, width, height);
 
     Configuration.ApplicationRow application = Configuration.Application.Select(String.Format("ApplicationID = '{0}'", appState.Application))[0] as Configuration.ApplicationRow;
     string appName = application.DisplayName;
@@ -164,48 +246,38 @@ public class MapImageHandler : WebServiceHandler
     string kmlName = String.Format("Map_{0}.kml", timeStamp);
     string imageName = String.Format("Map_{0}.", timeStamp) + (mapImageData.Type == CommonImageType.Png ? "png" : "jpg");
 
-    double f = AppSettings.MapUnits == "feet" ? Constants.MetersPerFoot : 1;
+    CoordinateSystem coordSys = AppContext.AppSettings.MapCoordinateSystem;
 
-    CoordinateSystem coordSys = AppSettings.CoordinateSystem;
+    Coordinate g = coordSys.ToGeodetic(new Coordinate(appState.Extent.MinX, appState.Extent.MinY));
+    double minLat = g.Y;
+    double maxLat = g.Y;
+    double minLon = g.X;
+    double maxLon = g.X;
 
-    double lat;
-    double lon;
+    g = coordSys.ToGeodetic(new Coordinate(appState.Extent.MinX, appState.Extent.MaxY));
+    minLat = Math.Min(minLat, g.Y);
+    maxLat = Math.Max(maxLat, g.Y);
+    minLon = Math.Min(minLon, g.X);
+    maxLon = Math.Max(maxLon, g.X);
 
-    coordSys.ToGeodetic((appState.Extent.MinX - AppSettings.DatumShiftX) * f, (appState.Extent.MinY - AppSettings.DatumShiftY) * f, out lon, out lat);
-    double minLat = lat;
-    double maxLat = lat;
-    double minLon = lon;
-    double maxLon = lon;
+    g = coordSys.ToGeodetic(new Coordinate(appState.Extent.MaxX, appState.Extent.MaxY));
+    minLat = Math.Min(minLat, g.Y);
+    maxLat = Math.Max(maxLat, g.Y);
+    minLon = Math.Min(minLon, g.X);
+    maxLon = Math.Max(maxLon, g.X);
 
-    coordSys.ToGeodetic((appState.Extent.MinX - AppSettings.DatumShiftX) * f, (appState.Extent.MaxY - AppSettings.DatumShiftY) * f, out lon, out lat);
-    minLat = Math.Min(minLat, lat);
-    maxLat = Math.Max(maxLat, lat);
-    minLon = Math.Min(minLon, lon);
-    maxLon = Math.Max(maxLon, lon);
-
-    coordSys.ToGeodetic((appState.Extent.MaxX - AppSettings.DatumShiftX) * f, (appState.Extent.MaxY - AppSettings.DatumShiftY) * f, out lon, out lat);
-    minLat = Math.Min(minLat, lat);
-    maxLat = Math.Max(maxLat, lat);
-    minLon = Math.Min(minLon, lon);
-    maxLon = Math.Max(maxLon, lon);
-
-    coordSys.ToGeodetic((appState.Extent.MaxX - AppSettings.DatumShiftX) * f, (appState.Extent.MinY - AppSettings.DatumShiftY) * f, out lon, out lat);
-    minLat = Math.Min(minLat, lat);
-    maxLat = Math.Max(maxLat, lat);
-    minLon = Math.Min(minLon, lon);
-    maxLon = Math.Max(maxLon, lon);
+    g = coordSys.ToGeodetic(new Coordinate(appState.Extent.MaxX, appState.Extent.MinY));
+    minLat = Math.Min(minLat, g.Y);
+    maxLat = Math.Max(maxLat, g.Y);
+    minLon = Math.Min(minLon, g.X);
+    maxLon = Math.Max(maxLon, g.X);
 
     Coordinate p = appState.Extent.Centre;
-    double cLat;
-    double cLon;
-    coordSys.ToGeodetic((p.X - AppSettings.DatumShiftX) * f, (p.Y - AppSettings.DatumShiftY) * f, out cLon, out cLat);
-
+    Coordinate c = coordSys.ToGeodetic(p);
     p.X = appState.Extent.MaxX;
-    double eLat;
-    double eLon;
-    coordSys.ToGeodetic((p.X - AppSettings.DatumShiftX) * f, (p.Y - AppSettings.DatumShiftY) * f, out eLon, out eLat);
+    Coordinate e = coordSys.ToGeodetic(p);
 
-    double rotation = Math.Atan2(eLat - cLat, eLon - cLon) * 180 / Math.PI;
+    double rotation = Math.Atan2(e.Y - c.Y, e.X - c.X) * 180 / Math.PI;
 
     string kml = @"<?xml version=""1.0"" encoding=""UTF-8""?>
         <kml xmlns=""http://earth.google.com/kml/2.2"">

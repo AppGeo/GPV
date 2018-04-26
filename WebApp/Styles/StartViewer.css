@@ -21,8 +21,8 @@ div
 
 #pnlContent
 {
-  left: 8px;
-  right: 8px;
+  left: 0px;
+  right: 0px;
   min-width: 930px;
 }
 

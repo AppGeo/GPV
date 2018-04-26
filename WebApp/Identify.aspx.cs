@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -40,16 +40,9 @@ public partial class Identify : System.Web.UI.Page
 
     if (!Double.IsNaN(lat) && !Double.IsNaN(lon))
     {
-      AppSettings.CoordinateSystem.ToProjected(lon, lat, out x, out y);
-
-      if (AppSettings.MapUnits == "feet")
-      {
-        x *= Constants.FeetPerMeter;
-        y *= Constants.FeetPerMeter;
-      }
-
-      x += AppSettings.DatumShiftX;
-      y += AppSettings.DatumShiftY;
+      Coordinate p = AppContext.AppSettings.MapCoordinateSystem.ToProjected(new Coordinate(lon, lat));
+      x = p.X;
+      y = p.Y;
     }
 
     string dataTabID = Request.QueryString["datatab"];
@@ -85,6 +78,16 @@ public partial class Identify : System.Web.UI.Page
       {
         ShowTabData(dataTabID, id);
       }
+
+      bool print = !String.IsNullOrEmpty(Request.QueryString["print"]);
+
+      cmdIdentifyPrint.Visible = !print;
+      autoPrint.Visible = print;
+
+      if (print)
+      {
+        Title = "Print";
+      }
     }
   }
 
@@ -110,101 +113,12 @@ public partial class Identify : System.Web.UI.Page
     string[] visibleLayers = ParseStringArray(Request.QueryString["visiblelayers"], '\u0001');
     string levelID = Request.QueryString["level"];
 
-    DataListBuilder dataListBuilder = new DataListBuilder();
-
-    Configuration config = AppContext.GetConfiguration();
-    Configuration.MapTabRow mapTab = config.MapTab.First(o => o.MapTabID == mapTabID);
-    CommonDataFrame dataFrame = AppContext.GetDataFrame(mapTab);
-
-    Dictionary<String, Configuration.LayerRow> layers = new Dictionary<String, Configuration.LayerRow>();
-    Dictionary<String, Configuration.LayerFunctionRow> layerFunctions = new Dictionary<String, Configuration.LayerFunctionRow>();
-
-    bool useDefaultVisible = visibleLayers.Length == 1 && visibleLayers[0] == "*";
-
-    foreach (Configuration.MapTabLayerRow mapTabLayer in mapTab.GetMapTabLayerRows())
-    {
-      bool isCandidateLayer = mapTab.IsInteractiveLegendNull() || mapTab.InteractiveLegend == 0;
-
-      if (!isCandidateLayer)
-      {
-        bool shownInLegend = !mapTabLayer.IsShowInLegendNull() && mapTabLayer.ShowInLegend == 1;
-        bool checkedInLegend = mapTabLayer.IsCheckInLegendNull() || mapTabLayer.CheckInLegend < 0 || visibleLayers.Any(o => o == mapTabLayer.LayerID);
-        bool defaultVisible = useDefaultVisible && !mapTabLayer.IsCheckInLegendNull() && mapTabLayer.CheckInLegend == 1;
-        isCandidateLayer = !shownInLegend || checkedInLegend || defaultVisible;
-      }
-
-      if (isCandidateLayer)
-      {
-        Configuration.LayerRow layer = mapTabLayer.LayerRow;
-        Configuration.LayerFunctionRow layerFunction = layer.GetLayerFunctionRows().FirstOrDefault(o => o.FunctionName.ToLower() == "identify");
-
-        if (layerFunction != null)
-        {
-          layers.Add(layer.LayerName, layer);
-          layerFunctions.Add(layer.LayerName, layerFunction);
-        }
-      }
-    }
-
-    foreach (CommonLayer commonLayer in dataFrame.Layers)
-    {
-      DataTable table = null;
-
-      if (layers.ContainsKey(commonLayer.Name) && commonLayer.IsWithinScaleThresholds(scale))
-      {
-        Configuration.LayerRow layer = layers[commonLayer.Name];
-
-        if (commonLayer.Type == CommonLayerType.Feature)
-        {
-          CommonField keyField = commonLayer.FindField(layer.KeyField);
-          string levelQuery = layer.GetLevelQuery(commonLayer, levelID);
-          table = commonLayer.GetFeatureTable(keyField.Name, levelQuery, x, y, commonLayer.FeatureType == OgcGeometryType.MultiPolygon ? 0 : distance * scale);
-        }
-
-        if (commonLayer.Type == CommonLayerType.Image && commonLayer is AgsLayer)
-        {
-          string id = ((AgsLayer)commonLayer).GetRasterValue(x, y);
-          table = new DataTable();
-          table.Columns.Add("ID");
-          table.Rows.Add(id);
-        }
-      }
-
-      if (table != null && table.Rows.Count > 0)
-      {
-        Configuration.LayerFunctionRow layerFunction = layerFunctions[commonLayer.Name];
-
-        foreach (DataRow row in table.Rows)
-        {
-          string id = row[0].ToString();
-
-          using (OleDbCommand command = layerFunction.GetDatabaseCommand())
-          {
-            command.Parameters[0].Value = id;
-
-            if (command.Parameters.Count > 1)
-            {
-              command.Parameters[1].Value = AppUser.GetRole();
-            }
-
-            using (OleDbDataReader reader = command.ExecuteReader())
-            {
-              dataListBuilder.AddFromReader(reader, addSpace);
-            }
-
-            command.Connection.Dispose();
-          }
-        }
-      }
-    }
-
+    DataListBuilder dataListBuilder = MapIdentifyHandler.SearchMapTab(mapTabID, visibleLayers, levelID, x, y, distance, scale, addSpace);
     pnlContent.Controls.Add(dataListBuilder.BuiltControl);
   }
 
   private void ShowTabData(string dataTabID, string id)
   {
-    bool print = !String.IsNullOrEmpty(Request.QueryString["print"]);
-
     Configuration config = AppContext.GetConfiguration();
     Configuration.DataTabRow dataTab = config.DataTab.First(o => o.DataTabID == dataTabID);
 
@@ -225,14 +139,6 @@ public partial class Identify : System.Web.UI.Page
       }
 
       command.Connection.Dispose();
-    }
-
-    cmdPrint.Visible = !print;
-    autoPrint.Visible = print;
-
-    if (print)
-    {
-      Title = "Print";
     }
   }
 }

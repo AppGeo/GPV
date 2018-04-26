@@ -1,4 +1,4 @@
-//  Copyright 2012 Applied Geographics, Inc.
+//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -52,33 +52,18 @@ public partial class StartViewer : CustomStyledPage
       Session["LaunchParams"] = launchParams;
 		}
 
-    if (launchParams.ContainsKey("application") || launchParams.ContainsKey("state"))
+    bool isDebugging = launchParams.Count == 0 && System.Diagnostics.Debugger.IsAttached;
+    bool hasShowApps = AppContext.AppSettings.AllowShowApps && launchParams.Count == 1 && launchParams.ContainsKey("showapps");
+    bool hasApplication = (!hasShowApps && !String.IsNullOrEmpty(AppContext.AppSettings.DefaultApplication)) || launchParams.ContainsKey("application") || launchParams.ContainsKey("state");
+
+    if (hasApplication)
 		{
 			Response.Redirect("Viewer.aspx");
 		}
 
     Session["LaunchParams"] = null;
-    bool showApps = launchParams.Count == 0 && System.Diagnostics.Debugger.IsAttached;
 
-    if (!showApps && launchParams.Count == 1 && launchParams.ContainsKey("showapps"))
-		{
-      showApps = true;
-
-      if (AppSettings.AdminOnlyShowApps && AppAuthentication.Mode == AuthenticationMode.None)
-      {
-        if (!Context.User.Identity.IsAuthenticated)
-        {
-          showApps = String.IsNullOrEmpty(launchParams["showapps"]) ? false : FormsAuthentication.Authenticate("admin", launchParams["showapps"]);
-
-          if (showApps)
-          {
-            FormsAuthentication.SetAuthCookie("admin", false);
-          }
-        }
-      }
-		}
-
-		if (showApps)
+    if (isDebugging || hasShowApps)
 		{
       ShowApplications();
 		}

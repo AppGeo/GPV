@@ -87,7 +87,7 @@ public class SelectionPanelHandler : WebServiceHandler
       {
         command.Parameters[1].Value = AppUser.GetRole();
       }
-    
+
       using (OleDbDataReader reader = command.ExecuteReader())
       {
         // get the indexes of the ID columns
@@ -117,22 +117,25 @@ public class SelectionPanelHandler : WebServiceHandler
 
         while (reader.Read())
         {
-          if (!reader.IsDBNull(mapIdColumn) && !reader.IsDBNull(dataIdColumn))
+          string m = !reader.IsDBNull(mapIdColumn) ? reader.GetValue(mapIdColumn).ToString() : null;
+          string d = !reader.IsDBNull(dataIdColumn) ? reader.GetValue(dataIdColumn).ToString() : null;
+
+          if (!String.IsNullOrEmpty(m) && !String.IsNullOrEmpty(d))
           {
             Dictionary<String, String> id = new Dictionary<String, String>();
 
-            id.Add("m", reader.GetValue(mapIdColumn).ToString());
+            id.Add("m", m);
 
             if (dataIdColumn > -1 && !reader.IsDBNull(dataIdColumn))
             {
-              id.Add("d", reader.GetValue(dataIdColumn).ToString());
+              id.Add("d", d);
             }
 
             if (zoneIdColumn > -1 && !reader.IsDBNull(zoneIdColumn))
             {
               string zoneId = reader.GetValue(zoneIdColumn).ToString();
 
-              if (zones.Contains(zoneId))
+              if (!String.IsNullOrEmpty(zoneId) && zones.Contains(zoneId))
               {
                 id.Add("z", zoneId);
               }
@@ -142,7 +145,7 @@ public class SelectionPanelHandler : WebServiceHandler
             {
               string levelId = reader.GetValue(levelIdColumn).ToString();
 
-              if (levels.Contains(levelId))
+              if (!String.IsNullOrEmpty(levelId) && levels.Contains(levelId))
               {
                 id.Add("l", levelId);
               }
@@ -171,6 +174,7 @@ public class SelectionPanelHandler : WebServiceHandler
 
       command.Connection.Dispose();
     }
+
 
     ReturnJson(result);
   }

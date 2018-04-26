@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ public class SaveAppStateHandler : WebServiceHandler
 
     using (OleDbConnection connection = AppContext.GetDatabaseConnection())
     {
-      string sql = String.Format("select count(*) from {0}SavedState where StateID = ?", AppSettings.ConfigurationTablePrefix);
+      string sql = String.Format("select count(*) from {0}SavedState where StateID = ?", WebConfigSettings.ConfigurationTablePrefix);
 
       using (OleDbCommand command = new OleDbCommand(sql, connection))
       {
@@ -56,7 +56,7 @@ public class SaveAppStateHandler : WebServiceHandler
         while (id == null);
       }
 
-      sql = String.Format("insert into {0}SavedState (StateID, DateCreated, DateLastAccessed, State) values (?, ?, ?, ?)", AppSettings.ConfigurationTablePrefix);
+      sql = String.Format("insert into {0}SavedState (StateID, DateCreated, DateLastAccessed, State) values (?, ?, ?, ?)", WebConfigSettings.ConfigurationTablePrefix);
       DateTime now = DateTime.Now;
 
       using (OleDbCommand command = new OleDbCommand(sql, connection))

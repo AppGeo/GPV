@@ -13,135 +13,99 @@
  *  limitations under the License.
  */
 
-#optDrawPoint
-{
-  background-position: -432px 0px;  /* DrawPoint.gif */
+
+
+#pnlMarkupContent {
+  top: 40px;
+  padding: 5px;
 }
 
-#optDrawPoint.Disabled
-{
-  background-position: -456px 0px;  /* DrawPointDisable.gif */
+#pnlMarkupContent label {
+  width: 27%;
+  text-align: right;
 }
 
-#optDrawLine
-{
-  background-position: -384px 0px;  /* DrawLine.gif */
+#pnlMarkupContent label:nth-of-type(5){
+  width: 10%;
 }
 
-#optDrawLine.Disabled
-{
-  background-position: -408px 0px;  /* DrawLineDisable.gif */
+#chkMarkupLock{
+  margin-left:10px;
 }
 
-#optDrawPolygon
-{
-  background-position: -480px 0px;  /* DrawPolygon.gif */
+label#labMarkupLock {
+  width: 9%;
 }
 
-#optDrawPolygon.Disabled
-{
-  background-position: -504px 0px;  /* DrawPolygonDisable.gif */
+#pnlMarkupContent .Input {
+  width: 71%;
+  margin-top: 1px;
 }
 
-#optDrawCircle
-{
-  background-position: -240px 0px;  /* DrawCircle.gif */
+#pnlMarkupContent button {
+  margin: 2px;
+  border-width: 1px;
 }
 
-#optDrawCircle.Disabled
-{
-  background-position: -264px 0px;  /* DrawCircleDisable.gif */
+.MarkupGroup.CommandLink {
+  display: inline-block;
+  text-align: center;
+  color: #000000;
 }
 
-#optDrawCoordinates
-{
-  background-position: -288px 0px;  /* DrawCoordinates.gif */
+#chkTextGlow{
+  display: inline-block;
+  margin: 8px 5px;
 }
 
-#optDrawCoordinates.Disabled
-{
-  background-position: -312px 0px;  /* DrawCoordinatesDisable.gif */
+#cmdMarkupColor, #cmdTextGlowColor {
+  position: relative;
+  top: 2px;
+  height: 16px;
+  width: 16px;
+  display: inline-block;
 }
 
-#optDrawLength
-{
-  background-position: -336px 0px;  /* DrawLength.gif */
+#btnMarkupColor, #btnTextGlowColor{
 }
 
-#optDrawLength.Disabled
-{
-  background-position: -360px 0px;  /* DrawLengthDisable.gif */
-}
-
-#optDrawArea
-{
-  background-position: -192px 0px;  /* DrawArea.gif */
-}
-
-#optDrawArea.Disabled
-{
-  background-position: -216px 0px;  /* DrawAreaDisable.gif */
-}
-
-#optDeleteMarkup
-{
-  background-position: -144px 0px;  /* Delete.gif */
-}
-
-#optDeleteMarkup.Disabled
-{
-  background-position: -168px 0px;  /* DeleteDisable.gif */
-}
-
-#optColorPicker
-{
-  background-position: -72px 0px;  /* ColorPicker.gif */
-}
-
-#optColorPicker.Disabled
-{
-  background-position: -96px 0px;  /* ColorPickerDisable.gif */
-}
-
-#optPaintBucket
-{
-  background-position: -720px 0px;  /* PaintBucket.gif */
-}
-
-#optPaintBucket.Disabled
-{
-  background-position: -744px 0px;  /* PaintBucketDisable.gif */
-}
-
-#optDrawText
-{
-  background-position: -528px 0px;  /* DrawText.gif */
-}
-
-#optDrawText.Disabled
-{
-  background-position: -552px 0px;  /* DrawTextDisable.gif */
-}
-
-#pnlMarkupGrid
-{
-  left: 10px;
-  top: 165px;
-  right: 10px;
-  bottom: 10px;
-  border: solid 1px #606060;
+#pnlMarkupGrid {
+  top: 150px;
+  border-top: solid 1px #b9b9b9;
   background-color: #F0F0F0;
   overflow: auto;
 }
 
-.ColorSelector
-{
+.ColorSelector {
   position: absolute;
-  behavior: url(Styles/PIE.htc);
+  box-shadow: 0 1px 5px rgba(0,0,0,.65);
+  -webkit-box-shadow: 0 1px 5px rgba(0,0,0,.65);
+  -moz-box-shadow: 0 1px 5px rgba(0,0,0,.65);
+  border-radius: 4px;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: #909090 2px 2px 4px;
-  -moz-box-shadow: #909090 2px 2px 4px;
-  box-shadow: #909090 2px 2px 4px;
+}
+
+.MeasureText {
+  left: 3px;
+  top: 1px;
+  font-family: Verdana, sans-serif;
+  font-size: 11px;
+  color: #404040;
+  width: 200px;
+  line-height: 13px;
+  cursor: default;
+  text-shadow: 0px 0px 4px white;
+}
+
+.MeasureText.Area2 {
+  left: -100px;
+  top: -13px;
+  text-align: center;
+}
+
+.MeasureText.Area3 {
+  left: -100px;
+  top: -19px;
+  text-align: center;
 }

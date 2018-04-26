@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -14,11 +14,13 @@
 
 var GPV = (function (gpv) {
   $(function () {
-    var $container = $("#pnlLegendScroll");
+    var $container = $(".LegendScroll");
+    var $layerContainer = $("#pnlLayerScroll");
+    var $tileContainer = $("#pnlTileScroll");
 
     // =====  control events  =====
 
-    $container.find(".LegendExpander").on("click", function (e) {
+    $layerContainer.find(".LegendExpander").on("click", function (e) {
       var $this = $(this);
 
       if (!$this.hasClass("Empty")) {
@@ -36,13 +38,13 @@ var GPV = (function (gpv) {
       }
     }).on("selectstart", function () { return false; });
 
-    $container.find(".LegendCheck").on("click", function () {
+    $layerContainer.find(".LegendCheck").on("click", function () {
       var $this = $(this);
       var isChecked = $this.is(":checked");
 
       if ($this.is(":checked")) {
         $this.parents(".LegendEntry").each(function (i, e) {
-          $(this).find(".LegendCheck").eq(0).attr("checked", true);
+          $(this).find(".LegendCheck").eq(0).prop("checked", true);
         });
       }
 
@@ -52,8 +54,16 @@ var GPV = (function (gpv) {
       var $children = $this.closest(".LegendEntry").find(".LegendCheck");
 
       for (var i = $children.length - 1; i >= 0; --i) {
-        $children.eq(i).attr("checked", isChecked);
+        $children.eq(i).prop("checked", isChecked);
       }
+    });
+
+    $tileContainer.find(".LegendCheck").on("click", function () {
+      var $this = $(this);
+      var isChecked = $this.is(":checked");
+
+      gpv.viewer.toggleTileGroup($this.attr("data-tilegroup"), isChecked);
+      gpv.appState.VisibleTiles[gpv.appState.MapTab] = getVisibleTiles(gpv.appState.MapTab);
     });
 
     $("#cmdRefreshMap").on("click", function () {
@@ -83,10 +93,10 @@ var GPV = (function (gpv) {
     }
 
     function toggleLayers(list, check) {
-      var $legend = $container.find('.LegendTop[data-maptab="' + gpv.appState.MapTab + '"]');
+      var $legend = $layerContainer.find('.LegendTop[data-maptab="' + gpv.appState.MapTab + '"]');
 
       $.each(list, function () {
-        $legend.find('input[data-layer="' + this + '"]').attr("checked", check);
+        $legend.find('input[data-layer="' + this + '"]').prop("checked", check);
       });
     }
 
@@ -95,7 +105,7 @@ var GPV = (function (gpv) {
     function getVisibleLayers(mapTabID) {
       var layerIds = [];
 
-      $container.find(".LegendTop").filter('[data-maptab="' + mapTabID + '"]').find(".LegendCheck:checked").each(function (i, e) {
+      $layerContainer.find(".LegendTop").filter('[data-maptab="' + mapTabID + '"]').find(".LegendCheck:checked").each(function (i, e) {
         var layer = $(this).attr("data-layer");
 
         if (layer) {
@@ -106,10 +116,25 @@ var GPV = (function (gpv) {
       return layerIds;
     }
 
+    function getVisibleTiles(mapTabID) {
+      var tileGroupIds = [];
+
+      $tileContainer.find(".LegendTop").filter('[data-maptab="' + mapTabID + '"]').find(".LegendCheck:checked").each(function (i, e) {
+        var tileGroup = $(this).attr("data-tilegroup");
+
+        if (tileGroup) {
+          tileGroupIds.push(tileGroup);
+        }
+      });
+
+      return tileGroupIds;
+    }
+
     // =====  public interface  =====
 
     gpv.legendPanel = {
-      getVisibleLayers: getVisibleLayers
+      getVisibleLayers: getVisibleLayers,
+      getVisibleTiles: getVisibleTiles
     };
   });
 

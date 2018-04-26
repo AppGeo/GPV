@@ -14,7 +14,6 @@
 
 $(function () {
   var jsonDateRegex = /^\/Date\((-?\d+)\)\//;
-  var numberRegex = /^(\+|-)?(\d+(\.\d*)?|\.\d+)$/;
   var objectTypeRegex = /^\[object (.*)\]$/;
 
   Date.fromJson = function (s) {
@@ -52,7 +51,31 @@ $(function () {
     return value == null ? "null" : Object.prototype.toString.call(value).match(objectTypeRegex)[1].toLowerCase();
   };
 
-  String.prototype.isNumeric = function () {
-    return numberRegex.exec(this) != null;
+  String.prototype.isNumeric = function (allowSeparators) {
+    var s = this;
+
+    if (allowSeparators && this.indexOf(",", 0) > -1) {
+      var v = this.split(".");
+
+      if (v.length > 1 && v[1].indexOf(",", 0) > -1) {
+        return false;
+      }
+
+      v = v[0].split(",");
+
+      if (v[0].length > 3 || !v[0].isNumeric) {
+        return false;
+      }
+
+      for (var i = 1; i < v.length; ++i) {
+        if (v[i].length != 3 || !v[i].isNumeric) {
+          return false;
+        }
+      }
+
+      s = s.replace(/,/g, "");
+    }
+
+    return s - parseFloat(s) >= 0;
   };
 });

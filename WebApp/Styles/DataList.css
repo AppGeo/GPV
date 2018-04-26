@@ -31,6 +31,7 @@
 .DataList .RowSetHeader, .DataList .RowSetSubheader
 {
   font-weight: bold;
+  font-size: 13px;
   padding: 2px 0px 2px 6px;
 }
 
@@ -42,12 +43,15 @@
 {
   position: relative;
   float: left;
+  font-size: 13px;
 }
 
 .DataList .Label
 {
   width: 40%;
   text-align: right;
+  margin: 0 3px;
+  font-weight: bold;
 }
 
 .DataList .Separator
@@ -57,7 +61,8 @@
 
 .DataList .Value
 {
-  width: 58%;
+  width: 50%;
+  margin: 0 3px;
 }
 
 .DataList .Space1, .DataList .Space2, .DataList .Space4

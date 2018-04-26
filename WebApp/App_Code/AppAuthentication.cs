@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -70,7 +70,7 @@ public static class AppAuthentication
       case AuthenticationMode.Database:
         using (OleDbConnection connection = AppContext.GetDatabaseConnection())
         {
-          string format = String.Format("select count(*) from {0}User where UserName = '{1}' and Password = '{{0}}' and Active = 1", AppSettings.ConfigurationTablePrefix, userName);
+          string format = String.Format("select count(*) from {0}User where UserName = '{1}' and Password = '{{0}}' and Active = 1", WebConfigSettings.ConfigurationTablePrefix, userName);
 
           using (OleDbCommand command = new OleDbCommand(String.Format(format, password), connection))
           {

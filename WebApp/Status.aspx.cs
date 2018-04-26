@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -29,11 +29,11 @@ public partial class Status : CustomStyledPage
       switch (Request.QueryString["check"].ToLower())
       {
         case "app":
-          status = AppSettings.AppIsAvailable ? "up" : "down";
+          status = WebConfigSettings.AppIsAvailable ? "up" : "down";
           break;
 
         case "appmessage":
-          status = AppSettings.AppStatusMessage;
+          status = WebConfigSettings.AppStatusMessage;
           break;
 
         case "mapservices":
@@ -53,9 +53,9 @@ public partial class Status : CustomStyledPage
       Response.End();
     }
 
-    labMessage.Text = AppSettings.AppStatusMessage;
+    labMessage.Text = WebConfigSettings.AppStatusMessage;
 
-    if (AppSettings.AppIsAvailable)
+    if (WebConfigSettings.AppIsAvailable)
     {
       DataTable table = config.MapTab.Copy();
       table.Columns.Add("Status", typeof(string));

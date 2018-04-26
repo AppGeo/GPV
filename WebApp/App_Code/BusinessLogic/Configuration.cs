@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -28,22 +29,25 @@ using System.Web.Script.Serialization;
 public partial class Configuration
 {
   private static Regex _searchSubstitutionRegex = new Regex(@"\s+\{0\}(\s+|$)");
+  private static BooleanSwitch _debugSwitch = new BooleanSwitch("ConfigDebug", "Shows configuration validation performance in the debug window");
+
+  private AppSettings _appSettings = null;
 
   private static string[] TableNames
   {
     get
     {
       return new string[] {"ZoneLevel", "Application", "Connection", "MapTab", "Layer", "DataTab", "Query", "Search", "SearchInputField", "Proximity", 
-				"ApplicationMapTab", "MapTabLayer", "LayerFunction", "LayerProximity", "PrintTemplate", 
+				"ApplicationMapTab", "MapTabLayer", "LayerFunction", "LayerProximity", "TileGroup", "TileLayer", "MapTabTileGroup", "PrintTemplate", 
 				"PrintTemplateContent", "ApplicationPrintTemplate", "MarkupCategory", "ApplicationMarkupCategory", 
-        "Zone", "Level", "ZoneLevelCombo", "MailingLabel", "ExternalMap"};
+        "Zone", "Level", "ZoneLevelCombo", "MailingLabel", "ExternalMap", "Setting"};
     }
   }
 
   public static Configuration GetCurrent()
   {
     Configuration config = new Configuration();
-    string prefix = AppSettings.ConfigurationTablePrefix;
+    string prefix = WebConfigSettings.ConfigurationTablePrefix;
     
     using (OleDbConnection connection = AppContext.GetDatabaseConnection())
     {
@@ -71,6 +75,10 @@ public partial class Configuration
                 inner join {0}Level c on a.ZoneLevelID = c.ZoneLevelID and a.LevelID = c.LevelID
                 order by a.ZoneLevelID, b.SequenceNo, a.ZoneID, c.SequenceNo, a.LevelID", prefix);
           }
+          else if (tableName == "Setting")
+          {
+            sql = "select Setting, Value from " + prefix + tableName;
+          }
           else
           {
             sql += " order by " + columns[0].ColumnName;
@@ -96,39 +104,34 @@ public partial class Configuration
     return config;
   }
 
-  public static int GetParameterCount(OleDbCommand command, bool isSearch)
+  public static int GetParameterCount(OleDbCommand command)
   {
-    int c = -1;
+    // get the procedure owner and name from the command text
 
-    for (int i = 0; i <= 5; ++i)
+    string[] nameParts = command.CommandText.Split('.');
+    string owner = nameParts.Length > 1 ? nameParts[nameParts.Length - 2] : null;
+    string name = nameParts[nameParts.Length - 1];
+
+    // get the parameters schema for that procedure
+
+    DataTable procSchema = command.Connection.GetSchema("ProcedureParameters", new string[] { null, owner, name });
+
+    // return the number of rows (parameters) that are not procedure return values
+
+    return procSchema.Select("PARAMETER_TYPE <> 4").Count();
+  }
+
+  public AppSettings AppSettings
+  {
+    get
     {
-      try
+      if (_appSettings == null)
       {
-        using (OleDbCommand testCommand = new OleDbCommand(command.CommandText, command.Connection))
-        {
-          testCommand.CommandType = CommandType.StoredProcedure;
-
-          for (int n = 1; n <= i; ++n)
-          {
-            string testValue = isSearch && i == 1 ? "1 = 0" : "0";
-            testCommand.Parameters.AddWithValue(n.ToString(), testValue);
-          }
-
-          using (OleDbDataReader reader = testCommand.ExecuteReader())
-          {
-            c = i;
-          }
-        }
+        _appSettings = new AppSettings(Setting);
       }
-      catch { }
 
-      if (c > -1)
-      {
-        break;
-      }
+      return _appSettings;
     }
-
-    return c;
   }
 
   public void CascadeDeactivated()
@@ -198,6 +201,21 @@ public partial class Configuration
     foreach (Configuration.ProximityRow proximity in Proximity.Where(o => o.IsActiveNull() || o.Active != 1))
     {
       proximity.Active = 0;
+    }
+
+    foreach (Configuration.MapTabTileGroupRow mapTabTileGroup in MapTabTileGroup)
+    {
+      mapTabTileGroup.Active = 1;
+    }
+
+    foreach (Configuration.TileGroupRow tileGroup in TileGroup.Where(o => o.IsActiveNull() || o.Active != 1))
+    {
+      tileGroup.Active = 0;
+    }
+
+    foreach (Configuration.TileLayerRow tileLayer in TileLayer.Where(o => o.IsActiveNull() || o.Active != 1))
+    {
+      tileLayer.Active = 0;
     }
 
     foreach (Configuration.ApplicationMarkupCategoryRow applicationMarkupCategory in ApplicationMarkupCategory)
@@ -328,6 +346,21 @@ public partial class Configuration
       searchInputField.Active = 0;
     }
 
+    foreach (Configuration.MapTabTileGroupRow mapTabTileGroup in MapTabTileGroup.Where(o => o.MapTabRow.Active == 0 || o.TileGroupRow.Active == 0))
+    {
+      mapTabTileGroup.Active = 0;
+    }
+
+    foreach (Configuration.TileGroupRow tileGroup in TileGroup.Where(o => o.GetMapTabTileGroupRows().Length > 0 && o.GetMapTabTileGroupRows().All(o2 => o2.Active == 0)))
+    {
+      tileGroup.Active = 0;
+    }
+
+    foreach (Configuration.TileLayerRow tileLayer in TileLayer.Where(o => o.TileGroupRow.Active == 0))
+    {
+      tileLayer.Active = 0;
+    }
+
     foreach (Configuration.ApplicationMarkupCategoryRow applicationMarkupCategory in ApplicationMarkupCategory.Where(o => o.ApplicationRow.Active == 0 || o.MarkupCategoryRow.Active == 0))
     {
       applicationMarkupCategory.Active = 0;
@@ -378,6 +411,15 @@ public partial class Configuration
     foreach (Configuration.ApplicationRow application in Application.Where(o => !o.IsZoneLevelIDNull() && o.ZoneLevelRow.Active == 0))
     {
       application.ZoneLevelID = null;
+    }
+  }
+
+  public static void Log(string message)
+  {
+    if (_debugSwitch.Enabled)
+    {
+      message = String.Format("{0:yyyy-MM-dd hh:mm:ss.fff}  Configuration: {1}\n", DateTime.Now, message);
+      Debugger.Log(0, "GPV", message);
     }
   }
 
@@ -458,14 +500,14 @@ public partial class Configuration
       newErrorsFound = ValidateQueries() || newErrorsFound;
       newErrorsFound = ValidateSearches() || newErrorsFound;
       newErrorsFound = ValidateSearchInputField() || newErrorsFound;
+      newErrorsFound = ValidateMapTabTileGroups() || newErrorsFound;
+      newErrorsFound = ValidateTileGroups() || newErrorsFound;
+      newErrorsFound = ValidateTileLayers() || newErrorsFound;
 
       if (newErrorsFound)
       {
+        newErrorsFound = ValidateMapTabTileGroups() || newErrorsFound;
         newErrorsFound = ValidateSearches() || newErrorsFound;
-        newErrorsFound = ValidateQueries() || newErrorsFound;
-        newErrorsFound = ValidateDataTabs() || newErrorsFound;
-        newErrorsFound = ValidateLayerFunctions() || newErrorsFound;
-        newErrorsFound = ValidateProximities() || newErrorsFound;
         newErrorsFound = ValidateLayerProximities() || newErrorsFound;
         newErrorsFound = ValidateLayers() || newErrorsFound;
         newErrorsFound = ValidateMapTabLayers() || newErrorsFound;
@@ -482,6 +524,8 @@ public partial class Configuration
 
   private bool ValidateApplications()
   {
+    Log("ValidateApplications");
+
     bool newErrorsFound = false;
 
     // each application
@@ -502,9 +546,30 @@ public partial class Configuration
         application.ValidationError = "The default map tab is not a valid map tab in this application";
       }
 
+      // DefaultSearch must be valid if not null
+
+      if (application.IsValidationErrorNull() && !application.IsDefaultSearchNull())
+      {
+        // DefaultMapTab must not be null
+
+        if (application.IsDefaultMapTabNull())
+        {
+          application.ValidationError = "A default map tab must be provided when a default search is defined";
+        }
+        else
+        {
+          Configuration.MapTabRow mapTab = MapTab.First(o => o.MapTabID == application.DefaultMapTab);
+
+          if (!mapTab.GetMapTabLayerRows().Any(o => o.LayerRow.GetSearchRows().Any(o2 => o2.SearchID == application.DefaultSearch)))
+          {
+            application.ValidationError = "The default search is not linked to a layer in the default map tab";
+          }
+        }
+      }
+
       // DefaultAction must be valid if not null
 
-      else if (!application.IsDefaultActionNull())
+      if (application.IsValidationErrorNull() && !application.IsDefaultActionNull())
       {
         string[] validActions = EnumHelper.ToChoiceArray(typeof(Action));
 
@@ -607,16 +672,18 @@ public partial class Configuration
         }
       }
 
+      string[] validFunctionTabs = EnumHelper.ToChoiceArray(typeof(FunctionTab));
+      string[] tabs = validFunctionTabs;
+
       if (application.IsValidationErrorNull() && !application.IsFunctionTabsNull())
       {
-        string[] tabs = application.FunctionTabs.ToLower().Split(',');
-        string[] validFunctionTabs = EnumHelper.ToChoiceArray(typeof(FunctionTab));
+        tabs = application.FunctionTabs.ToLower().Split(',');
 
         foreach (string tab in tabs)
         {
           if (!validFunctionTabs.Contains(tab) || ((tab == "all" || tab == "none") && tabs.Length > 1))
           {
-            application.ValidationError = "The function tabs must be 'all', 'none', or any combination of 'selection', 'search', 'legend', 'location' and 'markup' separated by commas if set";
+            application.ValidationError = "The function tabs must be 'all', 'none', or any combination of 'selection', 'search', 'legend', 'location', 'markup' and 'share' separated by commas if set";
             break;
           }
         }
@@ -624,6 +691,24 @@ public partial class Configuration
         if (application.IsValidationErrorNull() && tabs.Contains("location") && application.IsOverviewMapIDNull())
         {
           application.ValidationError = "An overview map ID must be provided when function tabs are 'all' or 'location'";
+        }
+      }
+
+      if (application.IsValidationErrorNull() && !application.IsDefaultFunctionTabNull())
+      {
+        if (tabs.Contains(application.DefaultFunctionTab))
+        {
+          application.ValidationError = "The default function tab must be one of " + String.Join(", ", tabs.Select(o => String.Format("'{0}'", o)).ToArray());
+        }
+      }
+
+      if (application.IsValidationErrorNull() && !application.IsDefaultToolNull())
+      {
+        string[] tools = new string[] { "pan", "identify", "select", "drawlength", "drawarea", "drawpoint", "drawline", "drawpolygon", "drawcircle", "drawtext", "drawcoordinates", "deletemarkup", "colorpicker", "paintbucket" };
+
+        if (!tools.Contains(application.DefaultTool.ToLower()))
+        {
+          application.ValidationError = "The default tool must be one of " + String.Join(", ", tools.Select(o => String.Format("'{0}'", o)).ToArray());
         }
       }
 
@@ -690,6 +775,8 @@ public partial class Configuration
 
   private bool ValidateApplicationMapTabs()
   {
+    Log("ValidateApplicationMapTabs");
+
     bool newErrorsFound = false;
 
     // each ApplicationMapTab must link to a valid application and valid map tab
@@ -714,7 +801,11 @@ public partial class Configuration
 
   private void ValidateDataSources()
   {
+    Log("ValidateDataSources");
+
     // check connections
+
+    Log("ValidateDataSources: Connections");
 
     foreach (Configuration.ConnectionRow connectionRow in Connection.Where(o => o.IsValidationErrorNull()))
     {
@@ -733,6 +824,8 @@ public partial class Configuration
     // check stored procedures
 
     // === LayerFunction ===
+
+    Log("ValidateDataSources: LayerFunction");
 
     foreach (Configuration.LayerFunctionRow layerFunction in LayerFunction.Where(o => o.IsValidationErrorNull()))
     {
@@ -758,6 +851,8 @@ public partial class Configuration
 
     // === DataTab ===
 
+    Log("ValidateDataSources: DataTab");
+
     foreach (Configuration.DataTabRow dataTab in DataTab.Where(o => o.IsValidationErrorNull()))
     {
       if (!dataTab.IsConnectionIDNull() && !dataTab.ConnectionRow.IsValidationErrorNull())
@@ -781,6 +876,8 @@ public partial class Configuration
     }
 
     // === Query ===
+
+    Log("ValidateDataSources: Query");
 
     foreach (Configuration.QueryRow query in Query.Where(o => o.IsValidationErrorNull()))
     {
@@ -822,6 +919,8 @@ public partial class Configuration
     }
 
     // === Search ===
+
+    Log("ValidateDataSources: Search");
 
     foreach (Configuration.SearchRow search in Search.Where(o => o.IsValidationErrorNull()))
     {
@@ -877,6 +976,8 @@ public partial class Configuration
 
     // === SearchInputField ===
 
+    Log("ValidateDataSources: SearchInputField");
+
     foreach (Configuration.SearchInputFieldRow searchInputField in SearchInputField.Where(o => !o.IsStoredProcNull() && o.IsValidationErrorNull()))
     {
       if (!searchInputField.IsConnectionIDNull() && !searchInputField.ConnectionRow.IsValidationErrorNull())
@@ -902,6 +1003,8 @@ public partial class Configuration
 
   private bool ValidateDataTabs()
   {
+    Log("ValidateDataTabs");
+
     bool newErrorsFound = false;
 
     // each data tab
@@ -930,14 +1033,17 @@ public partial class Configuration
 
   private bool ValidateLayers()
   {
+    Log("ValidateLayers");
+
     bool newErrorsFound = false;
 
     // each layer must be contained in at least one valid map tab
 
     foreach (Configuration.LayerRow layer in Layer.Where(o => o.IsValidationErrorNull()))
     {
-      if (!layer.GetMapTabLayerRows().Any(o => o.IsValidationErrorNull()) &&
-          (layer.IsBaseMapIDNull() || !MapTab.Any(o => o.IsValidationErrorNull() && !o.IsBaseMapIDNull() && o.BaseMapID == layer.BaseMapID)))
+      //if (!layer.GetMapTabLayerRows().Any(o => o.IsValidationErrorNull()) &&
+      //    (layer.IsBaseMapIDNull() || !MapTab.Any(o => o.IsValidationErrorNull() && !o.IsBaseMapIDNull() && o.BaseMapID == layer.BaseMapID)))
+      if(!layer.GetMapTabLayerRows().Any(o => o.IsValidationErrorNull()))
       {
         layer.ValidationError = "Is not contained in any valid map tab";
       }
@@ -950,6 +1056,8 @@ public partial class Configuration
 
   private bool ValidateLayerFunctions()
   {
+    Log("ValidateLayerFunctions");
+
     string[] validLayerFunctions = new string[] { "maptip", "identify", "mailinglabel", "export", "targetparams" };
     bool newErrorsFound = false;
 
@@ -988,6 +1096,8 @@ public partial class Configuration
 
   private bool ValidateLayerProximities()
   {
+    Log("ValidateLayerProximities");
+
     bool newErrorsFound = false;
 
     // each LayerProximity must point to a valid layer and a valid proximity
@@ -1012,6 +1122,8 @@ public partial class Configuration
 
   private void ValidateMapServices()
   {
+    Log("ValidateMapServices");
+
     Dictionary<String, CommonHost> mapHosts = new Dictionary<String, CommonHost>();
     Dictionary<String, CommonMapService> mapServices = new Dictionary<String, CommonMapService>();
     Dictionary<String, CommonDataFrame> mapDataFrames = new Dictionary<String, CommonDataFrame>();
@@ -1221,42 +1333,24 @@ public partial class Configuration
           }
         }
       }
-
-      // for each valid MapTab linked via BaseMapID a single layer with the specified name must be present in the MapTab dataframe
-
-      if (!layer.IsBaseMapIDNull())
-      {
-        foreach (Configuration.MapTabRow mapTab in MapTab.Where(o => o.IsValidationErrorNull() && !o.IsBaseMapIDNull() && o.BaseMapID == layer.BaseMapID))
-        {
-          int n = mapDataFrames[mapTab.GetDataFrameKey()].Layers.Count<CommonLayer>(o => String.Compare(o.Name, layer.LayerName, true) == 0);
-
-          if (n == 0)
-          {
-            layer.ValidationError = String.Format("'{0}' is not a layer in the service/dataframe for map tab '{1}'", layer.LayerName, mapTab.MapTabID);
-          }
-          else if (n > 1)
-          {
-            layer.ValidationError = String.Format("More than one layer named '{0}' in the service/dataframe for map tab '{1}'", layer.LayerName, mapTab.MapTabID);
-          }
-        }
-      }
     }
   }
 
   private bool ValidateMapTabs()
   {
+    Log("ValidateMapTabs");
+
     bool newErrorsFound = false;
 
     // each map tab
 
     foreach (Configuration.MapTabRow mapTab in MapTab.Where(o => o.IsValidationErrorNull()))
     {
-      // must contain as least one valid layer
+      // must contain as least one valid layer or tile group
 
-      if (!mapTab.GetMapTabLayerRows().Any(o => o.IsValidationErrorNull()) &&
-          (mapTab.IsBaseMapIDNull() || !Layer.Any(o => o.IsValidationErrorNull() && !o.IsBaseMapIDNull() && o.BaseMapID == mapTab.BaseMapID)))
+      if (!mapTab.GetMapTabLayerRows().Any(o => o.IsValidationErrorNull()) && !mapTab.GetMapTabTileGroupRows().Any(o => o.IsValidationErrorNull()))
       {
-        mapTab.ValidationError = "Does not contain any valid layers";
+        mapTab.ValidationError = "Does not contain any valid layers or tile groups";
       }
 
       // must be contained in a valid application
@@ -1274,6 +1368,8 @@ public partial class Configuration
 
   private bool ValidateMapTabLayers()
   {
+    Log("ValidateMapTabLayers");
+
     bool newErrorsFound = false;
 
     // each MapTabLayer
@@ -1331,8 +1427,38 @@ public partial class Configuration
     return newErrorsFound;
   }
 
+  private bool ValidateMapTabTileGroups()
+  {
+    Log("ValidateMapTabTileGroups");
+
+    bool newErrorsFound = false;
+
+    // each MapTabTileGroup
+
+    foreach (Configuration.MapTabTileGroupRow link in MapTabTileGroup.Where(o => o.IsValidationErrorNull()))
+    {
+      // must point to a valid MapTab and TileGroup
+
+      if (!link.MapTabRow.IsValidationErrorNull())
+      {
+        link.ValidationError = "Does not link to a valid map tab";
+      }
+
+      else if (!link.TileGroupRow.IsValidationErrorNull())
+      {
+        link.ValidationError = "Does not link to a valid tile group";
+      }
+
+      newErrorsFound = newErrorsFound || !link.IsValidationErrorNull();
+    }
+
+    return newErrorsFound;
+  }
+
   private void ValidateMarkupCategories()
   {
+    Log("ValidateMarkupCategories");
+
     // each ApplicationMarkupCategory must point to a valid application
 
     foreach (Configuration.ApplicationMarkupCategoryRow link in ApplicationMarkupCategory.Where(o => !o.ApplicationRow.IsValidationErrorNull()))
@@ -1350,7 +1476,8 @@ public partial class Configuration
 
   private void ValidatePrintTemplates()
   {
-    //string[] validContentTypes = new string[] { "box", "date", "image", "input", "legend", "map", "overviewmap", "scale", "scalefeet", "tabdata", "text" };
+    Log("ValidatePrintTemplates");
+
     string[] validContentTypes = new string[] { "box", "date", "image", "input", "legend", "map", "overviewmap", "scale", "scalefeet", "text" };
 
     // each PrintTemplateContent 
@@ -1451,6 +1578,8 @@ public partial class Configuration
 
   private bool ValidateProximities()
   {
+    Log("ValidateProximities");
+
     bool newErrorsFound = false;
 
     // each proximity
@@ -1479,6 +1608,8 @@ public partial class Configuration
 
   private bool ValidateQueries()
   {
+    Log("ValidateQueries");
+
     bool newErrorsFound = false;
 
     // each query
@@ -1514,7 +1645,9 @@ public partial class Configuration
 
   private bool ValidateSearchInputField()
   {
-    string[] validTypes = new string[] { "autocomplete", "date", "daterange", "list", "number", "numberrange", "text" };
+    Log("ValidateSearchInputField");
+
+    string[] validTypes = new string[] { "autocomplete", "date", "daterange", "list", "number", "numberrange", "text", "textcontains", "textstarts" };
     string[] procedureTypes = new string[] { "autocomplete", "list" };
 
     bool newErrorsFound = false;
@@ -1545,6 +1678,8 @@ public partial class Configuration
 
   private bool ValidateSearches()
   {
+    Log("ValidateSearches");
+
     bool newErrorsFound = false;
 
     // each search
@@ -1578,8 +1713,63 @@ public partial class Configuration
     return newErrorsFound;
   }
 
+  private bool ValidateTileGroups()
+  {
+    Log("ValidateTileGroups");
+
+    bool newErrorsFound = false;
+
+    // each tile group
+
+    foreach (Configuration.TileGroupRow tileGroup in TileGroup.Where(o => o.IsValidationErrorNull()))
+    {
+      // must be referenced by at least one valid map tab
+
+      if (!tileGroup.GetMapTabTileGroupRows().Any(o => o.IsValidationErrorNull()))
+      {
+        tileGroup.ValidationError = "Is not contained in a valid map tab";
+      }
+
+      // must contain at least one tile layer
+
+      if (tileGroup.GetTileLayerRows().Count() == 0)
+      {
+        tileGroup.ValidationError = "Does not contain any tile layers";
+      }
+
+      newErrorsFound = newErrorsFound || !tileGroup.IsValidationErrorNull();
+    }
+
+    return newErrorsFound;
+  }
+
+  private bool ValidateTileLayers()
+  {
+    Log("ValidateTileLayers");
+
+    bool newErrorsFound = false;
+
+    // each tile layer
+
+    foreach (Configuration.TileLayerRow tileLayer in TileLayer.Where(o => o.IsValidationErrorNull()))
+    {
+      // must be referenced by a valid tile group
+
+      if (!tileLayer.TileGroupRow.IsValidationErrorNull())
+      {
+        tileLayer.ValidationError = "Is not contained in a valid tile group";
+      }
+
+      newErrorsFound = newErrorsFound || !tileLayer.IsValidationErrorNull();
+    }
+
+    return newErrorsFound;
+  }
+
   private void ValidateZoneLevels()
   {
+    Log("ValidateZoneLevels");
+
     // each zone/level spec
 
     foreach (Configuration.ZoneLevelRow zoneLevel in ZoneLevel.Where(o => o.IsValidationErrorNull()))

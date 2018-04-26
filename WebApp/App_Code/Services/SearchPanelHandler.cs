@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -61,12 +61,12 @@ public class SearchPanelHandler : WebServiceHandler
   [WebServiceMethod]
   private void DefaultMethod()
   {
-    Configuration config = AppContext.GetConfiguration();
-    Configuration.ApplicationRow applicationRow = config.Application.First(o => o.ApplicationID == Request.Form["app"]);
-    Configuration.SearchRow searchRow = config.Search.First(o => o.SearchID == Request.Form["search"]);
+    AppState appState = AppState.FromJson(Request.Form["state"]);
 
-    JavaScriptSerializer serializer = new JavaScriptSerializer();
-    Dictionary<String, Object> criteria = serializer.Deserialize<Dictionary<String, Object>>(Request.Form["criteria"]);
+    Configuration config = AppContext.GetConfiguration();
+    Configuration.ApplicationRow applicationRow = config.Application.First(o => o.ApplicationID == appState.Application);
+    Configuration.SearchRow searchRow = config.Search.First(o => o.SearchID == appState.Search);
+    Dictionary<String, Object> criteria = appState.SearchCriteria;
 
     List<String> levels = new List<String>();
 
@@ -91,6 +91,16 @@ public class SearchPanelHandler : WebServiceHandler
         case "text":
           where.Add(searchInputFieldRow.ColumnName + " = ?");
           parameters.Add(criteria[criteriaID]);
+          break;
+
+        case "textcontains":
+          where.Add(searchInputFieldRow.ColumnName + " like ?");
+          parameters.Add("%" + criteria[criteriaID].ToString() + "%");
+          break;
+
+        case "textstarts":
+          where.Add(searchInputFieldRow.ColumnName + " like ?");
+          parameters.Add(criteria[criteriaID].ToString() + "%");
           break;
 
         case "daterange":

@@ -1,4 +1,4 @@
-//  Copyright 2012 Applied Geographics, Inc.
+//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -27,96 +27,96 @@ using ICSharpCode.SharpZipLib.GZip;
 
 public class AppState
 {
-	private const char Separator = '\u0001';
-	private const char Separator2 = '\u0002';
+  private const char Separator = '\u0001';
+  private const char Separator2 = '\u0002';
   private const char Separator3 = '\u0004';
   private const string Key = "AppState";
 
-	private const char VersionMarker = '\u0003';
-	private const string CurrentVersion = "3.1";
+  private const char VersionMarker = '\u0003';
+  private const string CurrentVersion = "5.0";
 
   public static AppState FromJson(string json)
   {
     return GetJsonSerializer().Deserialize<AppState>(json);
   }
 
-	public static bool IsIn(HttpSessionState session)
-	{
-		return session[Key] != null;
-	}
-
-	public static bool IsIn(StateBag viewState)
-	{
-		return viewState[Key] != null;
-	}
-
-	public static void RemoveFrom(HttpSessionState session)
-	{
-		if (IsIn(session))
-		{
-			session.Remove(Key);
-		}
-	}
-
-	public static void RemoveFrom(StateBag viewState)
-	{
-		if (IsIn(viewState))
-		{
-			viewState.Remove(Key);
-		}
-	}
-
-	public static AppState RestoreFrom(HttpSessionState session)
-	{
-		return RestoreFrom(session, true);
-	}
-
-	public static AppState RestoreFrom(HttpSessionState session, bool remove)
-	{
-		if (IsIn(session))
-		{
-			AppState appState = FromString((string)session[Key]);
-
-			if (remove)
-			{
-				RemoveFrom(session);
-			}
-
-			return appState;
-		}
-		else
-		{
-			return new AppState();
-		}
-	}
-
-	public static AppState RestoreFrom(StateBag viewState)
-	{
-		return RestoreFrom(viewState, true);
-	}
-
-	public static AppState RestoreFrom(StateBag viewState, bool remove)
-	{
-		if (IsIn(viewState))
-		{
-			AppState appState = FromString((string)viewState[Key]);
-
-			if (remove)
-			{
-				RemoveFrom(viewState);
-			}
-
-			return appState;
-		}
-		else
-		{
-			return new AppState();
-		}
-	}
-
-  private static List<Coordinate> CoordinatesFromString(string value)
+  public static bool IsIn(HttpSessionState session)
   {
-    List<Coordinate> coordinates = new List<Coordinate>();
+    return session[Key] != null;
+  }
+
+  public static bool IsIn(StateBag viewState)
+  {
+    return viewState[Key] != null;
+  }
+
+  public static void RemoveFrom(HttpSessionState session)
+  {
+    if (IsIn(session))
+    {
+      session.Remove(Key);
+    }
+  }
+
+  public static void RemoveFrom(StateBag viewState)
+  {
+    if (IsIn(viewState))
+    {
+      viewState.Remove(Key);
+    }
+  }
+
+  public static AppState RestoreFrom(HttpSessionState session)
+  {
+    return RestoreFrom(session, true);
+  }
+
+  public static AppState RestoreFrom(HttpSessionState session, bool remove)
+  {
+    if (IsIn(session))
+    {
+      AppState appState = FromString((string)session[Key]);
+
+      if (remove)
+      {
+        RemoveFrom(session);
+      }
+
+      return appState;
+    }
+    else
+    {
+      return new AppState();
+    }
+  }
+
+  public static AppState RestoreFrom(StateBag viewState)
+  {
+    return RestoreFrom(viewState, true);
+  }
+
+  public static AppState RestoreFrom(StateBag viewState, bool remove)
+  {
+    if (IsIn(viewState))
+    {
+      AppState appState = FromString((string)viewState[Key]);
+
+      if (remove)
+      {
+        RemoveFrom(viewState);
+      }
+
+      return appState;
+    }
+    else
+    {
+      return new AppState();
+    }
+  }
+
+  private static List<Markup> CoordinateMarkupFromString(string value)
+  {
+    List<Markup> markup = new List<Markup>();
 
     if (value.Length > 0)
     {
@@ -125,86 +125,92 @@ public class AppState
       for (int i = 0; i < values.Length; ++i)
       {
         string[] coords = values[i].Split(',');
-        coordinates.Add(new Coordinate(Convert.ToDouble(coords[0]), Convert.ToDouble(coords[1])));
+        string point = String.Format("POINT({0} {1})", coords[0], coords[1]);
+        markup.Add(new Markup(point, "#000000", 1));
       }
     }
 
-    return coordinates;
+    return markup;
   }
 
-	public static AppState FromString(string stateString)
-	{
-		Queue values = new Queue(stateString.Split(Separator));
-		AppState appState = new AppState();
+  private static T FromJson<T>(string json)
+  {
+    return GetJsonSerializer().Deserialize<T>(json);
+  }
 
-		string version = ((string)values.Peek())[0] != VersionMarker ? "2.0" : ((string)values.Dequeue()).Substring(1);
-		
-		int tab;
-		FunctionTab functionTabs;
+  public static AppState FromString(string stateString)
+  {
+    Queue values = new Queue(stateString.Split(Separator));
+    AppState appState = new AppState();
 
-		switch (version)
-		{
-			case "2.0":
-				appState.Application = (string)values.Dequeue();
-				appState.MapTab = (string)values.Dequeue();
-				appState.TargetLayer = (string)values.Dequeue();
-				appState.SelectionLayer = (string)values.Dequeue();
-				values.Dequeue();  // skip SelectionDistance
-				appState.ActiveMapId = (string)values.Dequeue();
-				appState.ActiveDataId = (string)values.Dequeue();
-				appState.TargetIds = StringCollection.FromString((string)values.Dequeue());
-				appState.SelectionIds = StringCollection.FromString((string)values.Dequeue());
-				appState.Query = (string)values.Dequeue();
-				appState.DataTab = (string)values.Dequeue();
-				appState.MarkupCategory = (string)values.Dequeue();
+    string version = ((string)values.Peek())[0] != VersionMarker ? "2.0" : ((string)values.Dequeue()).Substring(1);
+    
+    int tab;
+    FunctionTab functionTabs;
+
+    switch (version)
+    {
+      case "2.0":
+        appState.Application = (string)values.Dequeue();
+        appState.MapTab = (string)values.Dequeue();
+        appState.TargetLayer = (string)values.Dequeue();
+        appState.SelectionLayer = (string)values.Dequeue();
+        values.Dequeue();  // skip SelectionDistance
+        appState.ActiveMapId = (string)values.Dequeue();
+        appState.ActiveDataId = (string)values.Dequeue();
+        appState.TargetIds = StringCollection.FromString((string)values.Dequeue());
+        appState.SelectionIds = StringCollection.FromString((string)values.Dequeue());
+        appState.Query = (string)values.Dequeue();
+        appState.DataTab = (string)values.Dequeue();
+        appState.MarkupCategory = (string)values.Dequeue();
         appState.MarkupGroups = StringCollection.FromString((string)values.Dequeue());
 
-			  tab = Convert.ToInt32((string)values.Dequeue());
-				functionTabs = FunctionTab.All;
+        tab = Convert.ToInt32((string)values.Dequeue());
+        functionTabs = FunctionTab.All;
 
-				switch (tab)
-				{
-					case 1: functionTabs = FunctionTab.Selection; break;
-					case 2: functionTabs = FunctionTab.Markup; break;
-					case 3: functionTabs = FunctionTab.None; break;
-				}
+        switch (tab)
+        {
+          case 1: functionTabs = FunctionTab.Selection; break;
+          case 2: functionTabs = FunctionTab.Markup; break;
+          case 3: functionTabs = FunctionTab.None; break;
+        }
 
-				appState.FunctionTabs = functionTabs;
-				appState.ActiveFunctionTab = functionTabs == FunctionTab.All ? FunctionTab.Selection : functionTabs;
-        appState.Extent = EnvelopeExtensions.FromDelimitedString((string)values.Dequeue(), Separator2);
-				break;
+        appState.FunctionTabs = functionTabs;
+        appState.ActiveFunctionTab = functionTabs == FunctionTab.All ? FunctionTab.Selection : functionTabs;
+        appState.Extent = ProjectExtent(EnvelopeExtensions.FromDelimitedString((string)values.Dequeue(), Separator2));
+        break;
 
-			case "2.1":
-				appState.Application = (string)values.Dequeue();
-				appState.MapTab = (string)values.Dequeue();
-				appState.Action = (Action)(Convert.ToInt32((string)values.Dequeue()));
-				appState.TargetLayer = (string)values.Dequeue();
-				appState.TargetIds = StringCollection.FromString((string)values.Dequeue());
-				appState.ActiveMapId = (string)values.Dequeue();
-				appState.ActiveDataId = (string)values.Dequeue();
-				appState.Proximity = (string)values.Dequeue();
-				appState.SelectionLayer = (string)values.Dequeue();
-				appState.SelectionIds = StringCollection.FromString((string)values.Dequeue());
-				appState.Query = (string)values.Dequeue();
-				appState.DataTab = (string)values.Dequeue();
-				appState.MarkupCategory = (string)values.Dequeue();
+      case "2.1":
+        appState.Application = (string)values.Dequeue();
+        appState.MapTab = (string)values.Dequeue();
+        appState.Action = (Action)(Convert.ToInt32((string)values.Dequeue()));
+        appState.TargetLayer = (string)values.Dequeue();
+        appState.TargetIds = StringCollection.FromString((string)values.Dequeue());
+        appState.ActiveMapId = (string)values.Dequeue();
+        appState.ActiveDataId = (string)values.Dequeue();
+        appState.Proximity = (string)values.Dequeue();
+        appState.SelectionLayer = (string)values.Dequeue();
+        appState.SelectionIds = StringCollection.FromString((string)values.Dequeue());
+        appState.Query = (string)values.Dequeue();
+        appState.DataTab = (string)values.Dequeue();
+        appState.MarkupCategory = (string)values.Dequeue();
         appState.MarkupGroups = StringCollection.FromString((string)values.Dequeue());
 
-				tab = Convert.ToInt32((string)values.Dequeue());
-				functionTabs = FunctionTab.All;
+        tab = Convert.ToInt32((string)values.Dequeue());
+        functionTabs = FunctionTab.All;
 
-				switch (tab)
-				{
-					case 0: functionTabs = FunctionTab.None; break;
-					case 1: functionTabs = FunctionTab.Selection; break;
-					case 2: functionTabs = FunctionTab.Markup; break;
-				}
+        switch (tab)
+        {
+          case 0: functionTabs = FunctionTab.None; break;
+          case 1: functionTabs = FunctionTab.Selection; break;
+          case 2: functionTabs = FunctionTab.Markup; break;
+        }
 
-				appState.FunctionTabs = functionTabs;
-				appState.ActiveFunctionTab = functionTabs == FunctionTab.All ? FunctionTab.Selection : functionTabs;
-        appState.Extent = EnvelopeExtensions.FromDelimitedString((string)values.Dequeue(), Separator2);
-        appState.Coordinates = CoordinatesFromString((string)values.Dequeue());
-				break;
+        appState.FunctionTabs = functionTabs;
+        appState.ActiveFunctionTab = functionTabs == FunctionTab.All ? FunctionTab.Selection : functionTabs;
+        appState.Extent = ProjectExtent(EnvelopeExtensions.FromDelimitedString((string)values.Dequeue(), Separator2));
+        appState.Markup = CoordinateMarkupFromString((string)values.Dequeue());
+        break;
 
       case "2.4":
         appState.Application = (string)values.Dequeue();
@@ -223,91 +229,145 @@ public class AppState
         appState.MarkupGroups = StringCollection.FromString((string)values.Dequeue());
         appState.FunctionTabs = (FunctionTab)(Convert.ToInt32((string)values.Dequeue()));
         appState.ActiveFunctionTab = (FunctionTab)(Convert.ToInt32((string)values.Dequeue()));
-        appState.Extent = EnvelopeExtensions.FromDelimitedString((string)values.Dequeue(), Separator2);
-        appState.Coordinates = CoordinatesFromString((string)values.Dequeue());
+        appState.Extent = ProjectExtent(EnvelopeExtensions.FromDelimitedString((string)values.Dequeue(), Separator2));
+        appState.Markup = CoordinateMarkupFromString((string)values.Dequeue());
         break;
 
       case "2.5":
-				appState.Application = (string)values.Dequeue();
-				appState.MapTab = (string)values.Dequeue();
-				appState.Action = (Action)(Convert.ToInt32((string)values.Dequeue()));
-				appState.TargetLayer = (string)values.Dequeue();
-				appState.TargetIds = StringCollection.FromString((string)values.Dequeue());
-				appState.ActiveMapId = (string)values.Dequeue();
-				appState.ActiveDataId = (string)values.Dequeue();
-				appState.Proximity = (string)values.Dequeue();
-				appState.SelectionLayer = (string)values.Dequeue();
-				appState.SelectionIds = StringCollection.FromString((string)values.Dequeue());
-				appState.Query = (string)values.Dequeue();
-				appState.DataTab = (string)values.Dequeue();
-				appState.MarkupCategory = (string)values.Dequeue();
+        appState.Application = (string)values.Dequeue();
+        appState.MapTab = (string)values.Dequeue();
+        appState.Action = (Action)(Convert.ToInt32((string)values.Dequeue()));
+        appState.TargetLayer = (string)values.Dequeue();
+        appState.TargetIds = StringCollection.FromString((string)values.Dequeue());
+        appState.ActiveMapId = (string)values.Dequeue();
+        appState.ActiveDataId = (string)values.Dequeue();
+        appState.Proximity = (string)values.Dequeue();
+        appState.SelectionLayer = (string)values.Dequeue();
+        appState.SelectionIds = StringCollection.FromString((string)values.Dequeue());
+        appState.Query = (string)values.Dequeue();
+        appState.DataTab = (string)values.Dequeue();
+        appState.MarkupCategory = (string)values.Dequeue();
         appState.MarkupGroups = StringCollection.FromString((string)values.Dequeue());
-				appState.FunctionTabs = (FunctionTab)(Convert.ToInt32((string)values.Dequeue()));
-				appState.ActiveFunctionTab = (FunctionTab)(Convert.ToInt32((string)values.Dequeue()));
-        appState.Extent = EnvelopeExtensions.FromDelimitedString((string)values.Dequeue(), Separator2);
-        appState.Coordinates = CoordinatesFromString((string)values.Dequeue());
+        appState.FunctionTabs = (FunctionTab)(Convert.ToInt32((string)values.Dequeue()));
+        appState.ActiveFunctionTab = (FunctionTab)(Convert.ToInt32((string)values.Dequeue()));
+        appState.Extent = ProjectExtent(EnvelopeExtensions.FromDelimitedString((string)values.Dequeue(), Separator2));
+        appState.Markup = CoordinateMarkupFromString((string)values.Dequeue());
         appState.VisibleLayers = LayersFromString((string)values.Dequeue());
         break;
 
       case "3.1":
-				appState.Application = (string)values.Dequeue();
-				appState.MapTab = (string)values.Dequeue();
-				appState.Action = (Action)(Convert.ToInt32((string)values.Dequeue()));
-				appState.TargetLayer = (string)values.Dequeue();
-				appState.TargetIds = StringCollection.FromString((string)values.Dequeue());
-				appState.ActiveMapId = (string)values.Dequeue();
-				appState.ActiveDataId = (string)values.Dequeue();
-				appState.Proximity = (string)values.Dequeue();
-				appState.SelectionLayer = (string)values.Dequeue();
-				appState.SelectionIds = StringCollection.FromString((string)values.Dequeue());
-				appState.Query = (string)values.Dequeue();
-				appState.DataTab = (string)values.Dequeue();
-				appState.MarkupCategory = (string)values.Dequeue();
+        appState.Application = (string)values.Dequeue();
+        appState.MapTab = (string)values.Dequeue();
+        appState.Action = (Action)(Convert.ToInt32((string)values.Dequeue()));
+        appState.TargetLayer = (string)values.Dequeue();
+        appState.TargetIds = StringCollection.FromString((string)values.Dequeue());
+        appState.ActiveMapId = (string)values.Dequeue();
+        appState.ActiveDataId = (string)values.Dequeue();
+        appState.Proximity = (string)values.Dequeue();
+        appState.SelectionLayer = (string)values.Dequeue();
+        appState.SelectionIds = StringCollection.FromString((string)values.Dequeue());
+        appState.Query = (string)values.Dequeue();
+        appState.DataTab = (string)values.Dequeue();
+        appState.MarkupCategory = (string)values.Dequeue();
         appState.MarkupGroups = StringCollection.FromString((string)values.Dequeue());
-				appState.FunctionTabs = (FunctionTab)(Convert.ToInt32((string)values.Dequeue()));
-				appState.ActiveFunctionTab = (FunctionTab)(Convert.ToInt32((string)values.Dequeue()));
-        appState.Extent = EnvelopeExtensions.FromDelimitedString((string)values.Dequeue(), Separator2);
-        appState.Coordinates = CoordinatesFromString((string)values.Dequeue());
+        appState.FunctionTabs = (FunctionTab)(Convert.ToInt32((string)values.Dequeue()));
+        appState.ActiveFunctionTab = (FunctionTab)(Convert.ToInt32((string)values.Dequeue()));
+        appState.Extent = ProjectExtent(EnvelopeExtensions.FromDelimitedString((string)values.Dequeue(), Separator2));
+        appState.Markup = CoordinateMarkupFromString((string)values.Dequeue());
         appState.VisibleLayers = LayersFromString((string)values.Dequeue());
         appState.Level = (string)values.Dequeue();
 
         if (values.Count > 0)
         {
-          appState.CoordinateLabels = StringCollection.FromString((string)values.Dequeue());
+          var text = (string)values.Dequeue();
+
+          if (!String.IsNullOrEmpty(text) && text != "1")
+          {
+            appState.Markup[0].Text = text;
+          }
         }
         break;
-		}
 
-		return appState;
-	}
+      case "4.2":
+        appState.Application = (string)values.Dequeue();
+        appState.MapTab = (string)values.Dequeue();
+        appState.Action = (Action)(Convert.ToInt32((string)values.Dequeue()));
+        appState.TargetLayer = (string)values.Dequeue();
+        appState.TargetIds = StringCollection.FromString((string)values.Dequeue());
+        appState.ActiveMapId = (string)values.Dequeue();
+        appState.ActiveDataId = (string)values.Dequeue();
+        appState.Proximity = (string)values.Dequeue();
+        appState.SelectionLayer = (string)values.Dequeue();
+        appState.SelectionIds = StringCollection.FromString((string)values.Dequeue());
+        appState.Query = (string)values.Dequeue();
+        appState.DataTab = (string)values.Dequeue();
+        appState.MarkupCategory = (string)values.Dequeue();
+        appState.MarkupGroups = StringCollection.FromString((string)values.Dequeue());
+        appState.Markup = FromJson<List<Markup>>((string)values.Dequeue());
+        appState.FunctionTabs = (FunctionTab)(Convert.ToInt32((string)values.Dequeue()));
+        appState.ActiveFunctionTab = (FunctionTab)(Convert.ToInt32((string)values.Dequeue()));
+        appState.Extent = ProjectExtent(EnvelopeExtensions.FromDelimitedString((string)values.Dequeue(), Separator2));
+        appState.VisibleLayers = LayersFromString((string)values.Dequeue());
+        appState.Level = (string)values.Dequeue();
+        break;
 
-	public static AppState FromCompressedString(string stateString)
-	{
-		byte[] compressedData = Convert.FromBase64String(stateString.Replace("!", "/").Replace("*", "+").Replace("$", "="));
-		GZipInputStream zipStream = new GZipInputStream(new MemoryStream(compressedData));
+      case "5.0":
+        appState.Application = (string)values.Dequeue();
+        appState.MapTab = (string)values.Dequeue();
+        appState.Search = (string)values.Dequeue();
+        appState.SearchCriteria = FromJson<Dictionary<String, Object>>((string)values.Dequeue());
+        appState.Action = (Action)(Convert.ToInt32((string)values.Dequeue()));
+        appState.TargetLayer = (string)values.Dequeue();
+        appState.TargetIds = StringCollection.FromString((string)values.Dequeue());
+        appState.ActiveMapId = (string)values.Dequeue();
+        appState.ActiveDataId = (string)values.Dequeue();
+        appState.Proximity = (string)values.Dequeue();
+        appState.SelectionLayer = (string)values.Dequeue();
+        appState.SelectionIds = StringCollection.FromString((string)values.Dequeue());
+        appState.Query = (string)values.Dequeue();
+        appState.DataTab = (string)values.Dequeue();
+        appState.MarkupCategory = (string)values.Dequeue();
+        appState.MarkupGroups = StringCollection.FromString((string)values.Dequeue());
+        appState.Markup = FromJson<List<Markup>>((string)values.Dequeue());
+        appState.FunctionTabs = (FunctionTab)(Convert.ToInt32((string)values.Dequeue()));
+        appState.ActiveFunctionTab = (FunctionTab)(Convert.ToInt32((string)values.Dequeue()));
+        appState.Extent = EnvelopeExtensions.FromDelimitedString((string)values.Dequeue(), Separator2);
+        appState.VisibleLayers = LayersFromString((string)values.Dequeue());
+        appState.VisibleTiles = LayersFromString((string)values.Dequeue());
+        appState.Level = (string)values.Dequeue();
+        break;
+    }
+
+    return appState;
+  }
+
+  public static AppState FromCompressedString(string stateString)
+  {
+    byte[] compressedData = Convert.FromBase64String(stateString.Replace("!", "/").Replace("*", "+").Replace("$", "="));
+    GZipInputStream zipStream = new GZipInputStream(new MemoryStream(compressedData));
 
     int size;
-		byte[] data = new byte[1024];
-		StringBuilder builder = new StringBuilder();
+    byte[] data = new byte[1024];
+    StringBuilder builder = new StringBuilder();
 
-		try
-		{
-			while ((size = zipStream.Read(data, 0, data.Length)) > 0)
-			{
-			  builder.Append(Encoding.UTF8.GetString(data, 0, size));
-			}
-		}
-		catch (Exception ex)
-		{
-			throw new AppException("Could not uncompress the provided application state string", ex);
-		}
-		finally
-		{
-			zipStream.Close();
-		}
+    try
+    {
+      while ((size = zipStream.Read(data, 0, data.Length)) > 0)
+      {
+        builder.Append(Encoding.UTF8.GetString(data, 0, size));
+      }
+    }
+    catch (Exception ex)
+    {
+      throw new AppException("Could not uncompress the provided application state string", ex);
+    }
+    finally
+    {
+      zipStream.Close();
+    }
 
-		return FromString(builder.ToString());
-	}
+    return FromString(builder.ToString());
+  }
 
   private static JavaScriptSerializer GetJsonSerializer()
   {
@@ -337,38 +397,53 @@ public class AppState
     return dict;
   }
 
+  private static Envelope ProjectExtent(Envelope originalExtent)
+  {
+    AppSettings appSettings = AppContext.AppSettings;
+    Envelope projectedExtent = originalExtent;
+
+    if (appSettings.MapCoordinateSystem != null && appSettings.MeasureCoordinateSystem != null && !appSettings.MapCoordinateSystem.Equals(appSettings.MeasureCoordinateSystem))
+    {
+      projectedExtent = appSettings.MapCoordinateSystem.ToProjected(appSettings.MeasureCoordinateSystem.ToGeodetic(originalExtent));
+    }
+
+    return projectedExtent;
+  }
+
   private SelectionManager _selectionManager = null;
 
-	public string Application = "";
-	public string MapTab = "";
+  public string Application = "";
+  public string MapTab = "";
   public string Level = "";
 
-	public Action Action = Action.Select;
+  public string Search = "";
+  public Dictionary<String, Object> SearchCriteria = new Dictionary<String, Object>();
 
-	public string TargetLayer = "";
-	public StringCollection TargetIds = new StringCollection();
-	public string ActiveMapId = "";
-	public string ActiveDataId = "";
+  public Action Action = Action.Select;
 
-	public string Proximity = "";
+  public string TargetLayer = "";
+  public StringCollection TargetIds = new StringCollection();
+  public string ActiveMapId = "";
+  public string ActiveDataId = "";
 
-	public string SelectionLayer = "";
-	public StringCollection SelectionIds = new StringCollection();
+  public string Proximity = "";
 
-	public string Query = "";
-	public string DataTab = "";
+  public string SelectionLayer = "";
+  public StringCollection SelectionIds = new StringCollection();
 
-	public string MarkupCategory = "";
+  public string Query = "";
+  public string DataTab = "";
+
+  public string MarkupCategory = "";
   public StringCollection MarkupGroups = new StringCollection();
+  public List<Markup> Markup = new List<Markup>();
 
-	public FunctionTab FunctionTabs = FunctionTab.None;
-	public FunctionTab ActiveFunctionTab = FunctionTab.None;
-	public Envelope Extent = null;
-
-  public List<Coordinate> Coordinates = new List<Coordinate>();
-  public StringCollection CoordinateLabels = new StringCollection();
+  public FunctionTab FunctionTabs = FunctionTab.None;
+  public FunctionTab ActiveFunctionTab = FunctionTab.None;
+  public Envelope Extent = null;
 
   public Dictionary<String, StringCollection> VisibleLayers = new Dictionary<String, StringCollection>();
+  public Dictionary<String, StringCollection> VisibleTiles = new Dictionary<String, StringCollection>();
 
   public AppState()
   {
@@ -384,15 +459,25 @@ public class AppState
     }
   }
 
-	public void SaveTo(HttpSessionState session)
-	{
-		session[Key] = ToString();
-	}
+  private string MarkupToJson(List<Markup> markup)
+  {
+    return GetJsonSerializer().Serialize(markup);
+  }
 
-	public void SaveTo(StateBag viewState)
-	{
-		viewState[Key] = ToString();
-	}
+  public void SaveTo(HttpSessionState session)
+  {
+    session[Key] = ToString();
+  }
+
+  public void SaveTo(StateBag viewState)
+  {
+    viewState[Key] = ToString();
+  }
+
+  private String ToJson(object obj)
+  {
+    return GetJsonSerializer().Serialize(obj);
+  }
 
   private string CoordinatesToString(List<Coordinate> points)
   {
@@ -414,9 +499,9 @@ public class AppState
     {
       string s = key;
 
-      if (VisibleLayers[key].Count > 0)
+      if (dict[key].Count > 0)
       {
-        s += Separator3.ToString() + VisibleLayers[key].Join(Separator3.ToString());
+        s += Separator3.ToString() + dict[key].Join(Separator3.ToString());
       }
 
       layers.Add(s);
@@ -438,35 +523,37 @@ public class AppState
     return s.Replace("/", "!").Replace("+", "*").Replace("=", "$");
   }
 
-	public override string ToString()
-	{
-		StringBuilder builder = new StringBuilder();
+  public override string ToString()
+  {
+    StringBuilder builder = new StringBuilder();
 
-		builder.Append(VersionMarker + CurrentVersion + Separator);
-		builder.Append(Application + Separator);
-		builder.Append(MapTab + Separator);
-		builder.Append(Action.ToString("d") + Separator);
-		builder.Append(TargetLayer + Separator);
-		builder.Append(TargetIds.ToString() + Separator);
-		builder.Append(ActiveMapId + Separator);
-		builder.Append(ActiveDataId + Separator);
-		builder.Append(Proximity + Separator);
-		builder.Append(SelectionLayer + Separator);
-		builder.Append(SelectionIds.ToString() + Separator);
-		builder.Append(Query + Separator);
-		builder.Append(DataTab + Separator);
-		builder.Append(MarkupCategory + Separator);
-		builder.Append(MarkupGroups.ToString() + Separator);
-		builder.Append(FunctionTabs.ToString("d") + Separator);
-		builder.Append(ActiveFunctionTab.ToString("d") + Separator);
-		builder.Append(Extent.ToDelimitedString(Separator2) + Separator);
-    builder.Append(CoordinatesToString(Coordinates) + Separator);
+    builder.Append(VersionMarker + CurrentVersion + Separator);
+    builder.Append(Application + Separator);
+    builder.Append(MapTab + Separator);
+    builder.Append(Search + Separator);
+    builder.Append(ToJson(SearchCriteria) + Separator);
+    builder.Append(Action.ToString("d") + Separator);
+    builder.Append(TargetLayer + Separator);
+    builder.Append(TargetIds.ToString() + Separator);
+    builder.Append(ActiveMapId + Separator);
+    builder.Append(ActiveDataId + Separator);
+    builder.Append(Proximity + Separator);
+    builder.Append(SelectionLayer + Separator);
+    builder.Append(SelectionIds.ToString() + Separator);
+    builder.Append(Query + Separator);
+    builder.Append(DataTab + Separator);
+    builder.Append(MarkupCategory + Separator);
+    builder.Append(MarkupGroups.ToString() + Separator);
+    builder.Append(ToJson(Markup) + Separator);
+    builder.Append(FunctionTabs.ToString("d") + Separator);
+    builder.Append(ActiveFunctionTab.ToString("d") + Separator);
+    builder.Append(Extent.ToDelimitedString(Separator2) + Separator);
     builder.Append(LayersToString(VisibleLayers) + Separator);
+    builder.Append(LayersToString(VisibleTiles) + Separator);
     builder.Append(Level + Separator);
-    builder.Append(CoordinateLabels.ToString());
 
-		return builder.ToString();
-	}
+    return builder.ToString();
+  }
 
   public string ToJson()
   {
@@ -496,14 +583,6 @@ public class AppState
     {
       Dictionary<String, object> dictionary = new Dictionary<String, object>();
 
-      Coordinate coordinate = obj as Coordinate;
-
-      if (coordinate != null)
-      {
-        dictionary.Add("coordinates", new double[] { coordinate.X, coordinate.Y });
-        return dictionary;
-      }
-
       Envelope envelope = obj as Envelope;
 
       if (envelope != null)
@@ -519,8 +598,9 @@ public class AppState
     {
       get
       {
-        return new Type[] { typeof(Coordinate), typeof(Envelope) };
+        return new Type[] { typeof(Envelope) };
       }
     }
   }
 }
+

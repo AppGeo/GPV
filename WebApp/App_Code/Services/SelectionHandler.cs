@@ -85,20 +85,11 @@ public class SelectionHandler : WebServiceHandler
           throw new AppException("The selection shape was too large; try again with a smaller shape");
         }
 
-        IPolygon polygon = new Polygon(new LinearRing(new Coordinate[] {
-          new Coordinate(box.MinX, box.MinY),
-          new Coordinate(box.MinX, box.MaxY),
-          new Coordinate(box.MaxX, box.MaxY),
-          new Coordinate(box.MaxX, box.MinY),
-          new Coordinate(box.MinX, box.MinY)
-        }));
-
-        table = commonLayer.GetFeatureTable(keyField.Name, levelQuery, polygon);
+        table = commonLayer.GetFeatureTable(keyField.Name, levelQuery, box.ToPolygon());
       }
       else
       {
-        double distance = Convert.ToDouble(Request.Form["distance"]);
-        table = commonLayer.GetFeatureTable(keyField.Name, levelQuery, geo[0], geo[1], distance);
+        table = commonLayer.GetFeatureTable(keyField.Name, levelQuery, geo[0], geo[1], geo[2]);
       }
       
       UpdateMode mode = (UpdateMode)Enum.Parse(typeof(UpdateMode), Request.Form["mode"], true);

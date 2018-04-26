@@ -1,4 +1,4 @@
-﻿//  Copyright 2012 Applied Geographics, Inc.
+﻿//  Copyright 2016 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -14,11 +14,12 @@
 
 var GPV = (function (gpv) {
   $(function () {
+
     // =====  convert the flat configuration JSON into an object graph  =====
 
     var config = gpv.configuration;
 
-    // add IDs to proximities, queries and data tabs from keys
+    // add IDs from keys
 
     $.each([config.proximity, config.query, config.dataTab, config.search], function () {
       $.each(this, function (k, v) {
@@ -47,7 +48,7 @@ var GPV = (function (gpv) {
       sortByProperty(layer.dataTab, "sequenceNo");
     })
 
-    // make map tabs directly reference layers and searches
+    // make map tabs directly reference layers, searches and tile groups
 
     $.each(config.mapTab, function (i, mapTab) {
       $.each(["target", "selection"], function (i, type) {
@@ -60,12 +61,30 @@ var GPV = (function (gpv) {
         return config.search[searchID];
       });
       sortByProperty(mapTab.search, "sequenceNo");
+
+      mapTab.tileGroup = $.each(mapTab.tileGroup, function (i, tileGroup) {
+        var id = tileGroup.group;
+        tileGroup.group = config.tileGroup[id];
+        tileGroup.group.id = id;
+      });
     });
 
     // make searches directly reference layers
 
     $.each(config.search, function (searchID, search) {
-      search.layer = config.layer[search.layer];
+      var key = Object.keys(config.layer).filter(function (k) {
+        return k.toLowerCase() === search.layer.toLowerCase();
+      })[0];
+
+      search.layer = config.layer[key];
+    });
+
+    // make tile groups directly reference tile layers
+
+    $.each(config.tileGroup, function (tileGroupID, tileGroup) {
+      tileGroup.tileLayer = $.map(tileGroup.tileLayer, function (tileLayerID) {
+        return config.tileLayer[tileLayerID];
+      });
     });
 
     function sortByProperty(array, prop) {

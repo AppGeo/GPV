@@ -127,7 +127,7 @@
           settings.showSelector = function () {
             if (settings.enabled && !$selector) {
               var selectorClass = settings.selectorClass;
-              $selector = $('<div style="position: absolute; width: 120px; height: 120px; z-index: 2" />').addClass(selectorClass).addClass(surfaceClass);
+              $selector = $('<div style="position: absolute; width: 123px; height: 130px; z-index: 2" />').addClass(selectorClass).addClass(surfaceClass);
               var p = $button.offset();
               var w = $(window).width();
               var h = $(window).height();
@@ -148,9 +148,9 @@
               $curColorBox = makeColorBox("Current Color", "10px").css(bgc, settings.color);
               $newColorBox = makeColorBox("New Color", "60px").css(bgc, settings.color);
 
-              var $controls = $('<div style="position: absolute; left: 10px; top: 100px" />').appendTo($selector);
+              var $controls = $('<div style="position: absolute; left: 5px; bottom: 0" />').appendTo($selector);
 
-              $('<span style="margin-right: 5px; cursor: default">OK</span>').addClass(settings.commandClass).appendTo($controls).on("touchstart mousedown", function (e) {
+              $('<button style="margin: 4px; color: black; text-decoration: none;">OK</button>').addClass(settings.commandClass).appendTo($controls).on("touchstart mousedown", function (e) {
                 settings.color = toRgb(currentColor);
                 $button.css(bgc, settings.color);
 
@@ -161,7 +161,7 @@
                 disposeSelector(selectorClass);
               });
 
-              $('<span style="cursor: default">Cancel</span>').addClass(settings.commandClass).appendTo($controls).on("touchstart mousedown", function (e) {
+              $('<button style="margin: 4px; color: black; text-decoration: none;">Cancel</button>').addClass(settings.commandClass).appendTo($controls).on("touchstart mousedown", function (e) {
                 disposeSelector(selectorClass);
               });
 
@@ -206,21 +206,15 @@
           $button.on("touchstart." + key + " mousedown." + key, settings.showSelector);
 
           function disposeSelector() {
-            $selector.hide();
-
-            // PIE.htc on IE needs this delay, otherwise an error will occur
-
-            setTimeout(function () {
-              $selector.remove();
-              $selector = null;
-              $saturationBar = null;
-              $hueSlider = null;
-              $saturationSlider = null;
-              $valueSlider = null;
-              $surface = null;
-              $curColorBox = null;
-              $newColorBox = null;
-            }, 100);
+            $selector.remove();
+            $selector = null;
+            $saturationBar = null;
+            $hueSlider = null;
+            $saturationSlider = null;
+            $valueSlider = null;
+            $surface = null;
+            $curColorBox = null;
+            $newColorBox = null;
           }
 
           function makeBar(title, top, colorFunction) {
