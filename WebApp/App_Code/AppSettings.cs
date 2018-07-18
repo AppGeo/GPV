@@ -230,7 +230,7 @@ public class AppSettings
   {
     get
     {
-      return _fullExtent;
+      return new Envelope(_fullExtent);
     }
   }
 
