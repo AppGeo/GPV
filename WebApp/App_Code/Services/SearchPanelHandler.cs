@@ -85,6 +85,9 @@ public class SearchPanelHandler : WebServiceHandler
       switch (searchInputFieldRow.FieldType)
       {
         case "autocomplete":
+         where.Add(searchInputFieldRow.ColumnName + " like ?");
+          parameters.Add("%" + criteria[criteriaID].ToString() + "%");
+          break;
         case "date":
         case "list":
         case "number":
