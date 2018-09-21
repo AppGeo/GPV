@@ -216,9 +216,6 @@ header.main .logo {
 
 .leftNav_panel .leftLinks ul li.active a {
   background-color: #374c5a;
-  background-image: url(../Images/side-arrw.png);
-  background-repeat: no-repeat;
-  background-position: right center;
   text-decoration: none;
 }
 
