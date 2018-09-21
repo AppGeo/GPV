@@ -118,7 +118,7 @@ public partial class Configuration
 
 		// return the number of rows (parameters) that are not procedure return values
 
-		return procSchema.Select("PARAMETER_TYPE <> 4").Count();
+		return procSchema.Rows.Count == 0 ? -1 : procSchema.Select("PARAMETER_TYPE <> 4").Count();
 	}
 
 	public AppSettings AppSettings
