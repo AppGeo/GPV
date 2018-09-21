@@ -878,7 +878,14 @@ var GPV = (function (gpv) {
 
     // =====  finish initialization  =====
 
-    map.fitProjectedBounds(L.Bounds.fromArray(appState.Extent.bbox));
+    var projectedBounds = L.Bounds.fromArray(appState.Extent.bbox);
+
+    if (gpv.initialZoomLevel) {
+      map.setView(map.unprojectBounds(projectedBounds).getCenter(), gpv.initialZoomLevel);
+    }
+    else {
+      map.fitProjectedBounds(projectedBounds);
+    }
 
     //need to add title attribute due to bootstrap overwriting title with popover
     $("#cmdLocation").attr("title", "Current Location");

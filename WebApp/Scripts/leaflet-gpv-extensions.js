@@ -74,17 +74,8 @@
   }
 
   L.Map.prototype.fitProjectedBounds = function (bounds) {   // (Bounds)
-    var sw = unproject(this, L.point(bounds.min.x, bounds.min.y));
-    var nw = unproject(this, L.point(bounds.min.x, bounds.max.y));
-    var ne = unproject(this, L.point(bounds.max.x, bounds.max.y));
-    var se = unproject(this, L.point(bounds.max.x, bounds.min.y));
-
-    var minLat = Math.min(Math.min(Math.min(sw.lat, nw.lat), ne.lat), se.lat);
-    var minLng = Math.min(Math.min(Math.min(sw.lng, nw.lng), ne.lng), se.lng);
-    var maxLat = Math.max(Math.max(Math.max(sw.lat, nw.lat), ne.lat), se.lat);
-    var maxLng = Math.max(Math.max(Math.max(sw.lng, nw.lng), ne.lng), se.lng);
-
-    this.fitBounds(L.latLngBounds(L.latLng(minLat, minLng), L.latLng(maxLat, maxLng)));
+    bounds = this.unprojectBounds(bounds);
+    this.fitBounds(bounds);
   }
 
   L.Map.prototype.getProjectedBounds = function () {   // -> Bounds
@@ -101,6 +92,20 @@
 
   L.Map.prototype.getProjectedPixelSize = function () {   // -> Number
     return this.getProjectedBounds().getSize().x / this.getSize().x;
+  }
+
+  L.Map.prototype.unprojectBounds = function (bounds) {   // (Bounds)
+    var sw = unproject(this, L.point(bounds.min.x, bounds.min.y));
+    var nw = unproject(this, L.point(bounds.min.x, bounds.max.y));
+    var ne = unproject(this, L.point(bounds.max.x, bounds.max.y));
+    var se = unproject(this, L.point(bounds.max.x, bounds.min.y));
+
+    var minLat = Math.min(Math.min(Math.min(sw.lat, nw.lat), ne.lat), se.lat);
+    var minLng = Math.min(Math.min(Math.min(sw.lng, nw.lng), ne.lng), se.lng);
+    var maxLat = Math.max(Math.max(Math.max(sw.lat, nw.lat), ne.lat), se.lat);
+    var maxLng = Math.max(Math.max(Math.max(sw.lng, nw.lng), ne.lng), se.lng);
+
+    return L.latLngBounds(L.latLng(minLat, minLng), L.latLng(maxLat, maxLng));
   }
 
   function fireShapeEvent(map, name, e, mode) {

@@ -254,7 +254,9 @@ public partial class Viewer : CustomStyledPage
 
     ShowLevelSelector(application);
 
-    CreateAppStateScript(application);
+    int? initialZoomLevel = GetInitialZoomLevel(launchParams);
+
+    CreateAppStateScript(application, initialZoomLevel);
     CreateActiveSelectionStyle();
 
     spnVersion.InnerText = Version.ToString();
@@ -286,14 +288,15 @@ public partial class Viewer : CustomStyledPage
     style.InnerHtml = String.Format(".ActiveGridRowSelect, .ActiveGridRowSelect:hover {{ background-color: {0} }}", ColorTranslator.ToHtml(AppContext.AppSettings.ActiveColorUI));
   }
 
-  private void CreateAppStateScript(Configuration.ApplicationRow application)
+  private void CreateAppStateScript(Configuration.ApplicationRow application, int? initialZoomLevel)
   {
-    string script = "var GPV = (function (gpv) {{ gpv.configuration = {0}; gpv.settings = {1}; gpv.appState = {2}; return gpv; }})(GPV || {{}});";
+    string script = "var GPV = (function (gpv) {{ gpv.configuration = {0}; gpv.settings = {1}; gpv.appState = {2}; gpv.initialZoomLevel = {3}; return gpv; }})(GPV || {{}});";
+    string zoomLevel = initialZoomLevel.HasValue ? initialZoomLevel.ToString() : "null";
 
     HtmlGenericControl scriptElem = new HtmlGenericControl("script");
     head.Controls.Add(scriptElem);
     scriptElem.Attributes["type"] = "text/javascript";
-    scriptElem.InnerHtml = String.Format(script, application.ToJson(), AppContext.AppSettings.ToJson(), _appState.ToJson());
+    scriptElem.InnerHtml = String.Format(script, application.ToJson(), AppContext.AppSettings.ToJson(), _appState.ToJson(), zoomLevel);
   }
 
   private string GetCacheControl()
@@ -304,6 +307,20 @@ public partial class Viewer : CustomStyledPage
   private string GetCacheControl(DateTime lastWriteTime)
   {
     return String.Format("?t={0:0}", (lastWriteTime - new DateTime(2000, 1, 1)).TotalSeconds);
+  }
+
+  private int? GetInitialZoomLevel(Dictionary<string, string> launchParams)
+  {
+    // assumes zoomlevel was already validated in LoadStateFromLaunchParams
+
+    int? level = null;
+
+    if (AppContext.AppSettings.MapCoordinateSystem.IsWebMercator && launchParams.ContainsKey("zoomlevel"))
+    {
+      level = Convert.ToInt32(launchParams["zoomlevel"]);
+    }
+
+    return level;
   }
 
   private void LoadStateFromLaunchParams(Dictionary<String, String> launchParams)
@@ -1349,11 +1366,18 @@ public partial class Viewer : CustomStyledPage
         ShowError("When providing a zoom level, 'scale by' is not allowed");
       }
 
-      double level = 1;
+      double level = 0;
 
       try
       {
-        level = Convert.ToDouble(launchParams["zoomlevel"]);
+        if (appSettings.MapCoordinateSystem.IsWebMercator)
+        {
+          level = Convert.ToInt32(launchParams["zoomlevel"]);
+        }
+        else
+        {
+          level = Convert.ToDouble(launchParams["zoomlevel"]);
+        }
       }
       catch
       {
@@ -1362,7 +1386,14 @@ public partial class Viewer : CustomStyledPage
 
       Envelope extent = application.GetFullExtentEnvelope();
       extent.Translate(_appState.Extent.Centre.X - extent.Centre.X, _appState.Extent.Centre.Y - extent.Centre.Y);
-      extent.ScaleBy(1 / Math.Pow(1.414213562373095, level - 1));
+
+      // NOTE: for Web Mercator the zoom level is passed as a JavaScript variable to the map control
+
+      if (!appSettings.MapCoordinateSystem.IsWebMercator)
+      {
+        extent.ScaleBy(1 / Math.Pow(2, level));
+      }
+
       _appState.Extent = extent;
     }
 
