@@ -62,7 +62,7 @@
       </header>
     </div>
     <div id="pnlContent" runat="server" class="Panel">
-      <div runat="server" class="Panel leftNav_panel ">
+      <div id="pnlLeft" runat="server" class="Panel leftNav_panel ">
         <div id="pnlFunctionSidebar" class="inner">
           <div class="topSection">
             <div class="leftCol" id="cmdMenu">

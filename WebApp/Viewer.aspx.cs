@@ -155,6 +155,12 @@ public partial class Viewer : CustomStyledPage
     ucBaseMapPanel.Initialize(_config, _appState, application);
     ucSharePanel.Initialize(_config, application);
 
+    if ((_appState.FunctionTabs & FunctionTab.None) == FunctionTab.None)
+    {
+      pnlLeft.Style["visibility"] = "hidden";
+      pnlMapSizer.Style["left"] = "0px";
+    }
+
     if (_appState.ActiveFunctionTab != FunctionTab.None)
     {
       HtmlControl defaultToolSelect = Page.FindControl("optSelect", false) as HtmlControl;
