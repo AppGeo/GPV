@@ -517,6 +517,8 @@ header.main .logo {
   border-radius: 3px;
   padding: 5px 8px;
   font-size: 13px;
+  resize: vertical;
+  min-height: 50px;
 }
 
 .frmCheckbox {
