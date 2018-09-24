@@ -21,6 +21,20 @@ using System.Web;
 
 public static class AppUser
 {
+  public static bool IsActive
+  {
+    get
+    {
+      if (AppAuthentication.Mode == AuthenticationMode.None)
+      {
+        return false;
+      }
+
+      IPrincipal user = HttpContext.Current.User;
+      return user.Identity != null && user.Identity.IsAuthenticated;
+    }
+  }
+
   public static string Name
   {
     get

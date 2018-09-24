@@ -22,38 +22,49 @@ using System.Security.Cryptography;
 
 public static class AppAuthentication
 {
+  private static bool _hasAuthenticationMode = false;
+  private static AuthenticationMode _authenticationMode = AuthenticationMode.None;
+
   public static AuthenticationMode Mode
   {
     get
     {
-      AuthenticationSection authenticationSection = GetAuthenticationSection();
-
-      if (authenticationSection != null)
+      if (!_hasAuthenticationMode)
       {
-        switch (authenticationSection.Mode)
+        AuthenticationSection authenticationSection = GetAuthenticationSection();
+
+        if (authenticationSection != null)
         {
-          case System.Web.Configuration.AuthenticationMode.Forms:
-            string formsMode = ConfigurationManager.AppSettings["FormsAuthenticationMode"];
+          switch (authenticationSection.Mode)
+          {
+            case System.Web.Configuration.AuthenticationMode.Forms:
+              string formsMode = ConfigurationManager.AppSettings["FormsAuthenticationMode"];
 
-            if (!String.IsNullOrEmpty(formsMode))
-            {
-              switch (formsMode.ToLower())
+              if (!String.IsNullOrEmpty(formsMode))
               {
-                case "database":
-                  return AuthenticationMode.Database;
+                switch (formsMode.ToLower())
+                {
+                  case "database":
+                    _authenticationMode = AuthenticationMode.Database;
+                    break;
 
-                case "certificate":
-                  return AuthenticationMode.Certificate;
+                  case "certificate":
+                    _authenticationMode = AuthenticationMode.Certificate;
+                    break;
+                }
               }
-            }
-            break;
+              break;
 
-          case System.Web.Configuration.AuthenticationMode.Windows:
-            return AuthenticationMode.Windows;
+            case System.Web.Configuration.AuthenticationMode.Windows:
+              _authenticationMode = AuthenticationMode.Windows;
+              break;
+          }
         }
+
+        _hasAuthenticationMode = true;
       }
 
-      return AuthenticationMode.None;
+      return _authenticationMode;
     }
   }
 

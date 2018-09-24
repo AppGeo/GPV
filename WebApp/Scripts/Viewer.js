@@ -876,6 +876,26 @@ var GPV = (function (gpv) {
       zoomToActive: zoomToActive
     };
 
+    // =====  if authentication is required, check if the user is still active (logged in)  =====
+
+    if (gpv.checkActive) {
+      setInterval(function () {
+        var isActive;
+
+        gpv.post({
+          url: "Services/CheckActive.ashx",
+          success: function (result) {
+            isActive = result && result.active;
+          },
+          complete: function () {
+            if (!isActive) {
+              document.location.href = "Login.aspx";
+            }
+          }
+        });
+      }, 30000);
+    }
+
     // =====  finish initialization  =====
 
     var projectedBounds = L.Bounds.fromArray(appState.Extent.bbox);
