@@ -482,7 +482,8 @@
 
     getEvents: function () {
       var events = {
-        dragend: this._dragEnd
+        dragend: this._dragEnd,
+        zoom: this._animateZoom
       };
 
       if (this._zoomAnimated) {
@@ -527,16 +528,18 @@
 
     _animateZoom: function (e) {
       var map = this._map;
+      var zoom = e.zoom || map.getZoom();
+      var center = e.center || map.getCenter();
 
       for (var i = 0; i < this._shingles.length; ++i) {
         var img = this._shingles[i];
-        var scale = Math.pow(2, e.zoom - img.data.level);
+        var scale = Math.pow(2, zoom - img.data.level);
 
         var nw = img.data.bounds.getNorthWest();
         var se = img.data.bounds.getSouthEast();
 
-        var position = map._latLngToNewLayerPoint(nw, e.zoom, e.center);
-        var size = map._latLngToNewLayerPoint(se, e.zoom, e.center)._subtract(position);
+        var position = map._latLngToNewLayerPoint(nw, zoom, center);
+        var size = map._latLngToNewLayerPoint(se, zoom, center)._subtract(position);
 
         L.DomUtil.setTransform(img, position, scale);
       }
