@@ -161,7 +161,7 @@ var GPV = (function (gpv) {
     var $tboMarkupUser = $("#tboMarkupUser").on("keyup", function () {
       var name = $(this).val();
       gpv.store("markupUser", name);
-      $cmdNewMarkup.toggleClass("Disabled", name.length == 0);
+      $cmdNewMarkup.toggleClass("btnControlLock", name.length == 0);
     });
 
     // =====  map tools  =====

@@ -78,7 +78,7 @@ limitations under the License.
           <span>Your Name</span>
         </div>
         <div class="frmField">
-          <input type="text" id="tboMarkupUser" runat="server" title="User Name" class="frmInput" />
+          <gpv:Input type="text" id="tboMarkupUser" runat="server" title="User Name" CssClass="frmInput" />
           <br />
         </div>
       </div>
@@ -96,7 +96,7 @@ limitations under the License.
         </div>
         <div class="frmField">
           <div class="fourCol">
-            <gpv:Button ID="cmdNewMarkup" runat="server" CssClass="btn frmBtn frmBtnFlex" title="Create a new markup group">New</gpv:Button>
+            <gpv:Button ID="cmdNewMarkup" runat="server" CssClass="btn frmBtn frmBtnFlex btnControlLock" title="Create a new markup group">New</gpv:Button>
           </div>
           <div class="fourCol">
             <button id="cmdZoomToMarkup" class="btn frmBtn frmBtnFlex btnfix btnControlLock" title="Zoom to the current markup group">Zoom To</button>
