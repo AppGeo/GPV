@@ -914,20 +914,6 @@ var GPV = (function (gpv) {
     createTileLayers();
     drawTileLayers();
     triggerMapTabChanged();
-    SetDefaultTile();
-    /*$('input').on('change', function () {
-      var dataTile = $(this).attr('data-tilegroup');
-      var isChecked = $(this).is(':checked')
-      var ele = $(document).find($('input[data-tilegroup= "' + dataTile + '"]'));
-      for (var i = 0; i < ele.length; i++) {
-        if (isChecked) {
-          $(ele[i]).prop('checked', true);
-        }
-        else {
-          $(ele[i]).prop('checked', false);
-        }
-      }
-    });*/
 
     // for show Overlay and BaseMap
     var $layerContainer = $("#pnlBaseMap");
@@ -1051,26 +1037,6 @@ var GPV = (function (gpv) {
       }
 
     });
-    //Set Imagery as default baselayer selected Item
-    function SetDefaultTile() {
-      var dataTileGroup = $("#pnlBaseMapScroll").find('input[data-tilegroup]');
-      $(dataTileGroup).each(function (dt) {
-        if (dataTileGroup[dt].attributes['data-tilegroup'].value == "Ortho") {
-          var dataTileGroup1 = appState.MapTab;
-          var $ele = $("#pnlBaseMapScroll").find($('div[data-maptab= "' + appState.MapTab + '"]'));
-          $ele.find('input[data-tilegroup="Ortho"]').trigger('click');
-          toggleTileGroup('Ortho', true);
-        }
-        else if (dataTileGroup[dt].attributes['data-tilegroup'].value == "Imagery") {
-          var $ele = $("#pnlBaseMapScroll").find($('div[data-maptab= "' + appState.MapTab + '"]'));
-          $ele.find('input[data-tilegroup="Imagery"]').trigger('click');
-          toggleTileGroup('Imagery', true);
-          
-        }
-      });
-
-    }
-
   });
   return gpv;
 })(GPV || {});
