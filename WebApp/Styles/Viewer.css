@@ -241,6 +241,9 @@ div.Button.Selected, div.Button.Selected:hover
 	font-size: 20px;
 }
 
+.leaflet-interactive {
+  cursor: unset;
+}
 
 /* Change base layer style */
 .DropdownMainPanel{
