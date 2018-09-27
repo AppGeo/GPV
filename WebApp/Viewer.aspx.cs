@@ -109,41 +109,24 @@ public partial class Viewer : CustomStyledPage
       AddMetaTag("keywords", application.MetaKeywords);
     }
 
-    string tool = launchParams.ContainsKey("tool") ? launchParams["tool"] : (!application.IsDefaultToolNull() ? application.DefaultTool : null);
+    string toolName = launchParams.ContainsKey("tool") ? launchParams["tool"] : (!application.IsDefaultToolNull() ? application.DefaultTool : null);
 
-    if (!String.IsNullOrEmpty(tool))
+    if (String.IsNullOrEmpty(toolName))
     {
-
-      if (tool == "identify" || tool == "select")
-      {
-        HtmlControl defaultTool = Page.FindControl(("opt" + tool), false) as HtmlControl;
-        if (defaultTool != null)
-        {
-          defaultTool.Attributes["class"] += " Selected ";
-
-        }
-
-        HtmlControl MarkupDefaultTool = Page.FindControl(("optDrawLine"), false) as HtmlControl;
-        MarkupDefaultTool.Attributes["class"] += " Selected ";
-      }
-      else
-      {
-        HtmlControl defaultTool = Page.FindControl(("optMarkupTool"), false) as HtmlControl;
-
-        if (defaultTool != null)
-        {
-          defaultTool.Attributes["class"] += " Selected ";
-          HtmlControl markupDefaultTool = Page.FindControl(("opt" + tool), false) as HtmlControl;
-          markupDefaultTool.Attributes["class"] += " Selected ";
-        }
-      }
+      toolName = "identify";
     }
-    else
+
+    toolName = toolName.ToLower();
+
+    HtmlControl tool = Page.FindControl("opt" + toolName, false) as HtmlControl;
+
+    if (tool != null)
     {
-      HtmlControl defaultTool = Page.FindControl(("optIdentify"), false) as HtmlControl;
-      optIdentify.Attributes["class"] += " Selected ";
-      HtmlControl markupDefaultTool = Page.FindControl(("optDrawLine"), false) as HtmlControl;
-      markupDefaultTool.Attributes["class"] += " Selected ";
+      tool.Attributes["class"] += " Selected ";
+
+      toolName = toolName == "identify" || toolName == "select" ? "drawline" : "markuptool";
+      tool = Page.FindControl("opt" + toolName, false) as HtmlControl;
+      tool.Attributes["class"] += " Selected ";
     }
 
     Title = application.DisplayName;
