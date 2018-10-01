@@ -427,12 +427,19 @@ public class MapMaker
 
       if (isMeasured && geometry.OgcGeometryType != OgcGeometryType.Point)
       {
-        DrawMeasure(graphics, geometry);
+        StringCollection text = new StringCollection();
+
+        if (!String.IsNullOrEmpty(markup.Text))
+        {
+          text.Add(markup.Text);
+        }
+
+        DrawMeasure(graphics, geometry, text);
       }
     }
   }
 
-  private void DrawMeasure(Graphics graphics, IGeometry geometry)
+  private void DrawMeasure(Graphics graphics, IGeometry geometry, StringCollection text)
   {
     string measureUnits = _appSettings.MeasureUnits;
     bool inFeet = measureUnits == "feet" || measureUnits == "both";
@@ -448,35 +455,38 @@ public class MapMaker
     format.LineAlignment = StringAlignment.Center;
 
     double convert = 1 / (_appSettings.MapUnits == "feet" ? 1 : Constants.MetersPerFoot);
-    StringCollection text = new StringCollection();
 
     switch (geometry.OgcGeometryType)
     {
       case OgcGeometryType.LineString:
         ILineString lineString = (ILineString)geometry;
-        double d;
 
-        if (_appSettings.MapCoordinateSystem.Equals(_appSettings.MeasureCoordinateSystem))
+        if (text.Count == 0)
         {
-          d = lineString.Length * convert;
-        }
-        else
-        {
-          ILineString measureLineString = _appSettings.MapCoordinateSystem.ToGeodetic(lineString);
-          measureLineString = _appSettings.MeasureCoordinateSystem.ToProjected(measureLineString);
-          convert = 1 / (_appSettings.MeasureCoordinateSystem.MapUnits == "feet" ? 1 : Constants.MetersPerFoot);
-          d = measureLineString.Length * convert;
-        }
+          double d;
 
-        if (inFeet)
-        {
-          text.Add(d < 5280 ? d.ToString("0") + " ft" : (d / 5280).ToString("0.0") + " mi");
-        }
+          if (_appSettings.MapCoordinateSystem.Equals(_appSettings.MeasureCoordinateSystem))
+          {
+            d = lineString.Length * convert;
+          }
+          else
+          {
+            ILineString measureLineString = _appSettings.MapCoordinateSystem.ToGeodetic(lineString);
+            measureLineString = _appSettings.MeasureCoordinateSystem.ToProjected(measureLineString);
+            convert = 1 / (_appSettings.MeasureCoordinateSystem.MapUnits == "feet" ? 1 : Constants.MetersPerFoot);
+            d = measureLineString.Length * convert;
+          }
 
-        if (inMeters)
-        {
-          d *= Constants.MetersPerFoot;
-          text.Add(d < 1000 ? d.ToString("0") + " m" : (d / 1000).ToString("0.0") + " km");
+          if (inFeet)
+          {
+            text.Add(d < 5280 ? d.ToString("0") + " ft" : (d / 5280).ToString("0.0") + " mi");
+          }
+
+          if (inMeters)
+          {
+            d *= Constants.MetersPerFoot;
+            text.Add(d < 1000 ? d.ToString("0") + " m" : (d / 1000).ToString("0.0") + " km");
+          }
         }
 
         IPoint p;

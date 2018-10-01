@@ -143,34 +143,36 @@
   var isMobile = L.Browser.mobile && L.Browser.touch;
 
   function updateDrawingShape(map, latlng, mode, append) {
-    var crs = map.options.crs;
-    var g0, p0, p1;
+    var shape = map._drawing.shape;
+    var latlngs = shape.getLatLngs ? shape.getLatLngs() : [ shape.getLatLng() ];
 
     switch (mode) {
       case 'rectangle':
-        g0 = map._drawing.shape.getLatLngs()[0][0];
-        p0 = crs.project(g0);
-        p1 = crs.project(latlng);
+        var crs = map.options.crs;
+        var p0 = crs.project(latlngs[0][0]);
+        var p1 = crs.project(latlng);
 
-        map._drawing.shape.setLatLngs([
-          g0,
+        shape.setLatLngs([
+          latlngs[0][0],
           crs.unproject(L.point(p0.x, p1.y)),
           crs.unproject(L.point(p1.x, p1.y)),
           crs.unproject(L.point(p1.x, p0.y)),
-          g0
+          latlngs[0][0]
         ]);
 
         break;
 
       case 'circle':
-        g0 = map._drawing.shape.getLatLng();
-        map._drawing.shape.setRadius(g0.distanceTo(latlng));
+        shape.setRadius(latlngs[0].distanceTo(latlng));
+        break;
+
+      case 'line':
+        latlngs[1] = latlng;
+        shape.setLatLngs(latlngs);
         break;
 
       case 'polyline':
       case 'polygon':
-        var latlngs = map._drawing.shape.getLatLngs();
-
         if (!L.Polyline._flat(latlngs)) {
           latlngs = latlngs[0];
         }
@@ -182,7 +184,7 @@
           latlngs[latlngs.length - 1] = latlng;
         }
 
-        map._drawing.shape.setLatLngs(latlngs);
+        shape.setLatLngs(latlngs);
         break;
     }
   };
@@ -204,6 +206,10 @@
       case 'circle':
         map._drawing.shape = L.circle(e.latlng, 0.01, getShapeOptions(map)).addTo(map);
         break;
+
+      case 'line':
+        map._drawing.shape = L.polyline([e.latlng, e.latlng], getShapeOptions(map)).addTo(map);
+        break;
     }
   });
 
@@ -214,7 +220,7 @@
 
     var map = this;
     var mode = getMode(map);
-    var draggable = mode === 'rectangle' || mode === 'circle';
+    var draggable = mode === 'rectangle' || mode === 'circle' || mode === 'line';
     var stretchable = mode === 'polyline' || mode === 'polygon';
 
     if ((e.originalEvent.button === 0 && draggable) || (!isMobile && stretchable)) {
@@ -231,7 +237,7 @@
     var map = this;
     var mode = getMode(map);
 
-    if (mode === 'rectangle' || mode === 'circle') {
+    if (mode === 'rectangle' || mode === 'circle' || mode === 'line') {
       updateDrawingShape(map, e.latlng, mode);
       fireShapeEvent(map, 'shapedrawn', e, mode);
       delete map._drawing.shape;

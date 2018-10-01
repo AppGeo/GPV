@@ -60,6 +60,7 @@ limitations under the License.
             <%--  Measure Tool Start--%>
             <li id="optDrawLength" runat="server" clientidmode="static" class=" MapTool "><a href="#"><span class="imgflag draw-length"></span>Draw Measured Length</a></li>
             <li id="optDrawArea" runat="server" clientidmode="static" class=" MapTool "><a href="#"><span class="imgflag draw-area"></span>Draw Measured Area</a></li>
+            <li id="optDrawBearing" runat="server" clientidmode="static" class=" MapTool "><a href="#"><span class="imgflag draw-bearing"></span>Draw Bearing</a></li>
             <%--  Measure Tool End--%>
           </ul>
         </dd>

@@ -457,6 +457,10 @@ li.MapTool span:not(.glyphicon), #selectedTool span:not(.glyphicon), #selectedMa
   background-position: -216px 0px; /* DrawAreaDisable.gif */
 }
 
+.draw-bearing {
+  background-position: -415px -139px; /* DrawBearing.gif */
+}
+
 .delete-markup {
   background-position: -225px -140px; /* Delete.gif */
 }
@@ -495,7 +499,7 @@ li.MapTool span:not(.glyphicon), #selectedTool span:not(.glyphicon), #selectedMa
 
 #mCSB_6_container {
   height: auto;
-  min-height: 500px;
+  min-height: 530px;
 }
 
 /* ===========================DrowTools Custom DropDown============================= */

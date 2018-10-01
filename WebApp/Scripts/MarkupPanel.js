@@ -183,8 +183,6 @@ var GPV = (function (gpv) {
       $("#pnlMarkupGrid").removeClass("tabMrkp");
     });
 
-
-
     $("#optColorPicker,#optPaintBucket").on("click", function () {
       gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "point" } });
     });
@@ -228,9 +226,14 @@ var GPV = (function (gpv) {
       gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "polygon", style: { color: c, fill: true, fillColor: c } }, doubleClickZoom: false });
     });
 
+    $("#optDrawBearing").on("click", function () {
+      var c = getMarkupColor();
+      gpv.selectTool($(this), map, { cursor: 'crosshair', drawing: { mode: "line", style: { color: c, fill: false } }, dragging: false });
+    });
+
     // =====  private functions  =====
 
-    function addMarkup(e, option) {
+    function addMarkup(e, option, value) {
       if (!isValid(e.shape)) {
         map.removeLayer(e.shape);
         return;
@@ -243,8 +246,8 @@ var GPV = (function (gpv) {
         color: getMarkupColor()
       };
 
-      if (option == "text") {
-        data.text = e.shape.options.value;
+      if (option == "text" || (option == "measured" && value)) {
+        data.text = value || e.shape.options.value;
       }
 
       if (option == "measured") {
@@ -522,7 +525,10 @@ var GPV = (function (gpv) {
     }
 
     function mapShape(e) {
+      var value;
+
       if (measureText) {
+        value = measureText.options.value;
         map.removeLayer(measureText);
         measureText = undefined;
       }
@@ -539,6 +545,10 @@ var GPV = (function (gpv) {
         case "optDrawLength":
         case "optDrawArea":
           addMarkup(e, "measured");
+          return;
+
+        case "optDrawBearing":
+          addMarkup(e, "measured", value);
           return;
 
         case "optDeleteMarkup": deleteMarkup(e); return;
@@ -641,13 +651,13 @@ var GPV = (function (gpv) {
     function shapeDrawing(e) {
       var currentTool = $MapTool.filter(".Selected").attr("id");
 
-      if (currentTool === 'optDrawLength' || currentTool === 'optDrawArea') {
+      if (currentTool === 'optDrawLength' || currentTool === 'optDrawArea' || currentTool === 'optDrawBearing') {
         var units = gpv.settings.measureUnits;
         var inFeet = units == "feet" || units == "both";
         var inMeters = units == "meters" || units == "both";
         var convert = 1 / (gpv.settings.measureCrsUnits == "feet" ? 1 : metersPerFoot);
 
-        var latlngs = currentTool === 'optDrawLength' ? e.shape.getLatLngs() : e.shape.getLatLngs()[0];
+        var latlngs = currentTool === 'optDrawArea' ? e.shape.getLatLngs()[0] : e.shape.getLatLngs();
 
         var points = $.map(latlngs, function (latlng) {
           return measureCrs.project(latlng);
@@ -660,57 +670,102 @@ var GPV = (function (gpv) {
         var value = [];
         var i, j;
 
-        if (currentTool === 'optDrawLength') {
-          var length = getLength(points);
+        switch (currentTool) {
+          case 'optDrawLength':
+            var length = getLength(points);
 
-          if (length > 0) {
-            length *= convert;
+            if (length > 0) {
+              length *= convert;
 
-            if (inFeet) {
-              value.push(length < feetPerMile ? Math.round(length) + " ft" : (length / feetPerMile).toFixed(1) + " mi");
+              if (inFeet) {
+                value.push(length < feetPerMile ? Math.round(length) + " ft" : (length / feetPerMile).toFixed(1) + " mi");
+              }
+
+              if (inMeters) {
+                length *= metersPerFoot;
+                value.push(length < 1000 ? Math.round(length) + " m" : (length / 1000).toFixed(1) + " km");
+              }
+
+              measureText = L.text({
+                latlng: latlngs[latlngs.length - 1],
+                className: "MeasureText",
+                value: value.join("\n"),
+                pointerEvents: 'none'
+              }).addTo(map);
             }
 
-            if (inMeters) {
-              length *= metersPerFoot;
-              value.push(length < 1000 ? Math.round(length) + " m" : (length / 1000).toFixed(1) + " km");
+            break;
+
+          case 'optDrawArea':
+            var ca = getAreaCentroid(points);
+
+            if (ca.area > 0) {
+              var area = ca.area * convert * convert;
+              var acres = area / squareFeetPerAcre;
+
+              if (inFeet) {
+                var squareMile = feetPerMile * feetPerMile;
+                value.push(area <= squareMile ? Math.round(area) + " sq ft" : (area / squareMile).toFixed(2) + " sq mi");
+              }
+
+              if (inMeters) {
+                area *= metersPerFoot * metersPerFoot;
+                value.push(area <= 100000 ? Math.round(area) + " sq m" : (area / 1000000).toFixed(2) + " sq km");
+              }
+
+              if (inFeet) {
+                value.push(acres.toFixed(2) + " acres");
+              }
+
+              measureText = L.text({
+                latlng: measureCrs.unproject(ca.centroid),
+                className: "MeasureText " + (inFeet ? "Area3" : "Area2"),
+                value: value.join("\n"),
+                pointerEvents: 'none'
+              }).addTo(map);
             }
 
-            measureText = L.text({
-              latlng: latlngs[latlngs.length - 1],
-              className: "MeasureText",
-              value: value.join("\n"),
-              pointerEvents: 'none'
-            }).addTo(map);
-          }
-        }
-        else {
-          var ca = getAreaCentroid(points);
+            break;
 
-          if (ca.area > 0) {
-            var area = ca.area * convert * convert;
-            var acres = area / squareFeetPerAcre;
+          case 'optDrawBearing':
+            var length = getLength(points);
 
-            if (inFeet) {
-              var squareMile = feetPerMile * feetPerMile;
-              value.push(area <= squareMile ? Math.round(area) + " sq ft" : (area / squareMile).toFixed(2) + " sq mi");
+            if (length > 0) {
+              length *= convert;
+
+              if (inFeet) {
+                value.push(Math.round(length) + " ft");
+              }
+
+              if (inMeters) {
+                length *= metersPerFoot;
+                value.push(Math.round(length) + " m");
+              }
+
+              var radians = Math.PI / 180;
+              var lat0 = latlngs[0].lat * radians;
+              var lat1 = latlngs[1].lat * radians;
+              var lng0 = latlngs[0].lng * radians;
+              var lng1 = latlngs[1].lng * radians;
+
+              var dy = Math.sin(lng1 - lng0) * Math.cos(lat1);
+              var dx = Math.cos(lat0) * Math.sin(lat1) - Math.sin(lat0) * Math.cos(lat1) * Math.cos(lng1 - lng0);
+              var azimuth = (Math.round(Math.atan2(dy, dx) / radians) + 360) % 360;
+              var quadrant = Math.floor(azimuth / 90);
+              var ns = quadrant == 0 || quadrant == 3 ? 'N' : 'S';
+              var ew = quadrant <= 1 ? 'E' : 'W';
+              var angle = quadrant % 2 == 0 ? azimuth % 90 : 90 - (azimuth % 90);
+              value.push(azimuth + '° ' + ns + angle + '°' + ew);
+
+              measureText = L.text({
+                latlng: latlngs[latlngs.length - 1],
+                className: "MeasureText",
+                value: value.join("\n"),
+                pointerEvents: 'none'
+              }).addTo(map);
             }
 
-            if (inMeters) {
-              area *= metersPerFoot * metersPerFoot;
-              value.push(area <= 100000 ? Math.round(area) + " sq m" : (area / 1000000).toFixed(2) + " sq km");
-            }
-
-            if (inFeet) {
-              value.push(acres.toFixed(2) + " acres");
-            }
-
-            measureText = L.text({
-              latlng: measureCrs.unproject(ca.centroid),
-              className: "MeasureText " + (inFeet ? "Area3" : "Area2"),
-              value: value.join("\n"),
-              pointerEvents: 'none'
-            }).addTo(map);
-          }
+            break;
         }
       }
     }
