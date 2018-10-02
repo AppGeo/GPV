@@ -1,4 +1,4 @@
-﻿//  Copyright 2016 Applied Geographics, Inc.
+﻿//  Copyright 2018 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -24,9 +24,15 @@ public static class TrackingManager
   {
     HttpRequest request = HttpContext.Current.Request;
 
+    string applicationID = AppContext.AppSettings.DefaultApplication;
+
     if (launchParams.Keys.Contains("application"))
     {
-      string applicationID = launchParams["application"];
+      applicationID = launchParams["application"];
+    }
+
+    if (!String.IsNullOrEmpty(applicationID))
+    {
       Configuration.ApplicationRow application = AppContext.GetConfiguration().Application.FindByApplicationID(applicationID);
       applicationID = application.ApplicationID;
 
