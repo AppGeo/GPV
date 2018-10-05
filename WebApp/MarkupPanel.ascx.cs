@@ -33,9 +33,9 @@ public partial class MarkupPanel : System.Web.UI.UserControl
       {
         tboMarkupUser.Attributes["value"] = AppUser.GetDisplayName(connection);
         tboMarkupUser.Attributes["disabled"] = "disabled";
-				chkMarkupLock.Style["visibility"] = "visible";
+        chkMarkupLock.Style["visibility"] = "visible";
         labMarkupLock.Style["visibility"] = "visible";
-        cmdNewMarkup.Attributes["class"] = cmdNewMarkup.Attributes["class"].Replace("btnControlLock", "");
+        cmdNewMarkup.CssClass = cmdNewMarkup.CssClass.Replace("btnControlLock", "");
       }
     }
   }
