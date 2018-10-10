@@ -77,6 +77,8 @@ public partial class BaseMap : UserControl
     parentLegend.Attributes["class"] = "LegendTop";
     parentLegend.Style["display"] = mapTabRow.MapTabID == appState.MapTab ? "block" : "none";
 
+    int n = 0;
+
     foreach (Configuration.MapTabTileGroupRow mapTabTileGroupRow in mapTabRow.GetMapTabTileGroupRows())
     {
       Configuration.TileGroupRow tileGroupRow = mapTabTileGroupRow.TileGroupRow;
@@ -101,26 +103,35 @@ public partial class BaseMap : UserControl
         if (isBaseMap)
         {
           HtmlInputRadioButton radio = new HtmlInputRadioButton();
+          radio.Attributes["id"] = string.Format("baseTile{0}", n);
           radio.Checked = visibleTiles.Contains(tileGroupRow.TileGroupID);
+          radio.Attributes["class"] = "LegendCheck RadioCheck";
           onOffControl = radio;
         }
         else
         {
           HtmlInputCheckBox checkBox = new HtmlInputCheckBox();
+          checkBox.Attributes["id"] = string.Format("overlayTile{0}", n);
           checkBox.Checked = visibleTiles.Contains(tileGroupRow.TileGroupID);
+          checkBox.Attributes["class"] = "LegendCheck OverlaysCheck";
           onOffControl = checkBox;
         }
 
         visibility.Controls.Add(onOffControl);
-        onOffControl.Attributes["class"] = "LegendCheck RadioCheck";
         onOffControl.Attributes["group"] = mapTabRow.MapTabID;
         onOffControl.Attributes["name"] = mapTabRow.MapTabID;
         onOffControl.Attributes["data-tilegroup"] = tileGroupRow.TileGroupID;
 
+        HtmlGenericControl label = new HtmlGenericControl("label");
+        legendHeader.Controls.Add(label);
+        label.Attributes["for"] = onOffControl.Attributes["id"];
+
         HtmlGenericControl name = new HtmlGenericControl("span");
-        legendHeader.Controls.Add(name);
+        label.Controls.Add(name);
         name.Attributes["class"] = "LegendName";
         name.InnerText = tileGroupRow.DisplayName;
+
+        n += 1;
       }
     }
 
@@ -146,14 +157,18 @@ public partial class BaseMap : UserControl
 
 		HtmlInputRadioButton radio = new HtmlInputRadioButton();
 		visibility.Controls.Add(radio);
-		radio.Checked = false;
+    radio.Attributes["id"] = "baseTileNone";
+    radio.Checked = false;
 		radio.Attributes["class"] = "LegendCheck RadioCheck";
-		radio.Attributes["data-tilegroup"] = "None";
 		radio.Attributes["group"] = mapTabRow.MapTabID;
 		radio.Attributes["name"] = mapTabRow.MapTabID;
 
-		HtmlGenericControl name = new HtmlGenericControl("span");
-		legendHeader.Controls.Add(name);
+    HtmlGenericControl label = new HtmlGenericControl("label");
+    legendHeader.Controls.Add(label);
+    label.Attributes["for"] = radio.Attributes["id"];
+
+    HtmlGenericControl name = new HtmlGenericControl("span");
+    label.Controls.Add(name);
 		name.Attributes["class"] = "LegendName";
 		name.InnerText = "None";
 	}

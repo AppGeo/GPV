@@ -14,25 +14,30 @@
 
 var GPV = (function (gpv) {
   $(function () {
-    var previousChecked = null;
     var $container = $(".LegendScroll");
     var $layerContainer = $("#pnlLayerScroll");
     var $tileContainer = $("#pnlBaseMapScroll");
-    // For BaseMaps 
+    var baseMap = $tileContainer.find(".RadioCheck:checked").attr("data-tilegroup");
 
-    $tileContainer.find(".RadioCheck").on("click", function () {
-      if (previousChecked !== null) {
-        gpv.viewer.toggleTileGroup(previousChecked, false);
-      }
+    $tileContainer.on("change", ".RadioCheck", function () {
       var $this = $(this);
-      var isChecked = $this.is(":checked");
-      gpv.viewer.toggleTileGroup($this.attr("data-tilegroup"), isChecked);
-      gpv.appState.VisibleTiles[gpv.appState.MapTab] = getVisibleTiles(gpv.appState.MapTab);
-      previousChecked = $this.attr("data-tilegroup");  
+
+      if ($this.is(":checked")) {
+        if (baseMap) {
+          gpv.viewer.toggleTileGroup(baseMap, false);
+        }
+
+        baseMap = $this.attr("data-tilegroup");
+
+        if (baseMap) {
+          gpv.viewer.toggleTileGroup(baseMap, true);
+        }
+
+        gpv.appState.VisibleTiles[gpv.appState.MapTab] = getVisibleTiles(gpv.appState.MapTab);
+      }
     });
 
-    // For OverLays
-    $tileContainer.find(".OverLaysCheck").on("click", function () {
+    $tileContainer.on("change", ".OverlaysCheck", function () {
       var $this = $(this);
       var isChecked = $this.is(":checked");
       gpv.viewer.toggleTileGroup($this.attr("data-tilegroup"), isChecked);
