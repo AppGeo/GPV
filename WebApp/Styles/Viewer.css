@@ -117,7 +117,7 @@ div.Button.Selected, div.Button.Selected:hover
   right: 0;
   width: 320px;
   resize: none;
-  z-index: 5;
+  z-index: 20;
   display: none;
 }
 
