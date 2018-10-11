@@ -111,7 +111,7 @@ public partial class Viewer : CustomStyledPage
 
     string toolName = launchParams.ContainsKey("tool") ? launchParams["tool"] : (!application.IsDefaultToolNull() ? application.DefaultTool : null);
 
-    if (String.IsNullOrEmpty(toolName))
+    if (String.IsNullOrEmpty(toolName) || toolName.ToLower() == "pan")
     {
       toolName = "identify";
     }
@@ -1530,9 +1530,19 @@ public partial class Viewer : CustomStyledPage
 
     // === tool ==
 
-    if (launchParams.ContainsKey("tool") && Page.FindControl("opt" + launchParams["tool"], false) == null)
+    if (launchParams.ContainsKey("tool"))
     {
-      ShowError("Unknown tool specified");
+      string tool = launchParams["tool"].ToLower();
+
+      if (tool == "pan")
+      {
+        tool = "identify";
+      }
+
+      if (Page.FindControl("opt" + tool, false) == null)
+      {
+        ShowError("Unknown tool specified");
+      }
     }
 
     if (launchParams.ContainsKey("markcenter"))
@@ -1660,19 +1670,6 @@ set DateLastAccessed = ? where StateID = ?";
     }
 
     _appState = AppState.FromCompressedString(state);
-  }
-
-  private bool SetDefaultTool(string name)
-  {
-    HtmlControl defaultTool = Page.FindControl("opt" + name, false) as HtmlControl;
-    bool found = defaultTool != null;
-
-    if (found)
-    {
-      defaultTool.Attributes["class"] += " Selected";
-    }
-
-    return found;
   }
 
   private void SetHelpLink()

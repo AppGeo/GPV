@@ -704,7 +704,7 @@ public partial class Configuration
 
 			if (application.IsValidationErrorNull() && !application.IsDefaultToolNull())
 			{
-				string[] tools = new string[] { "identify", "select", "drawlength", "drawarea", "drawpoint", "drawline", "drawpolygon", "drawcircle", "drawtext", "drawcoordinates", "deletemarkup", "colorpicker", "paintbucket" };
+				string[] tools = new string[] { "pan", "identify", "select", "drawlength", "drawarea", "drawpoint", "drawline", "drawpolygon", "drawcircle", "drawtext", "drawcoordinates", "deletemarkup", "colorpicker", "paintbucket" };
 
 				if (!tools.Contains(application.DefaultTool.ToLower()))
 				{
