@@ -20,52 +20,24 @@ public partial class BaseMap : UserControl
 {
 	public void Initialize(Configuration config, AppState appState, Configuration.ApplicationRow application)
 	{
-		HtmlGenericControl parentLegend = new HtmlGenericControl("div");
-		pnlBaseMapScroll.Controls.Add(parentLegend);
-
-		HtmlGenericControl legendEntry = new HtmlGenericControl("div");
-		parentLegend.Controls.Add(legendEntry);
-		legendEntry.Attributes["class"] = "LegendEntry";
-
-		HtmlGenericControl legendHeader = new HtmlGenericControl("div");
-		legendEntry.Controls.Add(legendHeader);
-		legendHeader.Attributes["class"] = "LegendHeader";
-
-		HtmlGenericControl name = new HtmlGenericControl("span");
-		legendHeader.Controls.Add(name);
-		name.Attributes["class"] = "LegendName";
-		name.InnerText = "BaseMaps";
+    int m = 0;
 
     foreach (Configuration.ApplicationMapTabRow appMapTabRow in application.GetApplicationMapTabRows())
     {
       Configuration.MapTabRow mapTabRow = appMapTabRow.MapTabRow;
-      AddTileGroupsForMapTab(mapTabRow, appState, true);
+      AddTileGroupsForMapTab(mapTabRow, appState, m, true);
+      m += 1;
     }
 
-		HtmlGenericControl parentLegend1 = new HtmlGenericControl("div");
-		pnlBaseMapScroll.Controls.Add(parentLegend1);
+    foreach (Configuration.ApplicationMapTabRow appMapTabRow in application.GetApplicationMapTabRows())
+    {
+      Configuration.MapTabRow mapTabRow = appMapTabRow.MapTabRow;
+      AddTileGroupsForMapTab(mapTabRow, appState, m, false);
+      m += 1;
+    }
+  }
 
-		HtmlGenericControl legendEntry1 = new HtmlGenericControl("div");
-		parentLegend1.Controls.Add(legendEntry1);
-		legendEntry1.Attributes["class"] = "LegendEntry";
-
-		HtmlGenericControl legendHeader1 = new HtmlGenericControl("div");
-		legendEntry1.Controls.Add(legendHeader1);
-		legendHeader1.Attributes["class"] = "LegendHeader";
-
-		HtmlGenericControl name1 = new HtmlGenericControl("span");
-		legendHeader1.Controls.Add(name1);
-		name1.Attributes["class"] = "LegendName";
-		name1.InnerText = "Overlays";
-
-		foreach (Configuration.ApplicationMapTabRow appMapTabRow in application.GetApplicationMapTabRows())
-		{
-			Configuration.MapTabRow mapTabRow = appMapTabRow.MapTabRow;
-      AddTileGroupsForMapTab(mapTabRow, appState, false);
-		}
-	}
-
-  private void AddTileGroupsForMapTab(Configuration.MapTabRow mapTabRow, AppState appState, bool asBaseMap)
+  private void AddTileGroupsForMapTab(Configuration.MapTabRow mapTabRow, AppState appState, int m, bool asBaseMap)
   {
     StringCollection visibleTiles = appState.VisibleTiles[mapTabRow.MapTabID];
 
@@ -77,7 +49,20 @@ public partial class BaseMap : UserControl
     parentLegend.Attributes["class"] = "LegendTop";
     parentLegend.Style["display"] = mapTabRow.MapTabID == appState.MapTab ? "block" : "none";
 
-    int n = 0;
+    HtmlGenericControl typeEntry = new HtmlGenericControl("div");
+    parentLegend.Controls.Add(typeEntry);
+    typeEntry.Attributes["class"] = "LegendEntry";
+
+    HtmlGenericControl typeHeader = new HtmlGenericControl("div");
+    typeEntry.Controls.Add(typeHeader);
+    typeHeader.Attributes["class"] = "LegendHeader";
+
+    HtmlGenericControl typeName = new HtmlGenericControl("span");
+    typeHeader.Controls.Add(typeName);
+    typeName.Attributes["class"] = "LegendName";
+    typeName.InnerText = asBaseMap ? "BaseMaps" : "Overlays";
+
+    int g = 0;
 
     foreach (Configuration.MapTabTileGroupRow mapTabTileGroupRow in mapTabRow.GetMapTabTileGroupRows())
     {
@@ -103,7 +88,7 @@ public partial class BaseMap : UserControl
         if (isBaseMap)
         {
           HtmlInputRadioButton radio = new HtmlInputRadioButton();
-          radio.Attributes["id"] = string.Format("baseTile{0}", n);
+          radio.Attributes["id"] = string.Format("baseTile{0}-{1}", m, g);
           radio.Checked = visibleTiles.Contains(tileGroupRow.TileGroupID);
           radio.Attributes["class"] = "LegendCheck RadioCheck";
           onOffControl = radio;
@@ -111,7 +96,7 @@ public partial class BaseMap : UserControl
         else
         {
           HtmlInputCheckBox checkBox = new HtmlInputCheckBox();
-          checkBox.Attributes["id"] = string.Format("overlayTile{0}", n);
+          checkBox.Attributes["id"] = string.Format("overlayTile{0}-{1}", m, g);
           checkBox.Checked = visibleTiles.Contains(tileGroupRow.TileGroupID);
           checkBox.Attributes["class"] = "LegendCheck OverlaysCheck";
           onOffControl = checkBox;
@@ -131,11 +116,15 @@ public partial class BaseMap : UserControl
         name.Attributes["class"] = "LegendName";
         name.InnerText = tileGroupRow.DisplayName;
 
-        n += 1;
+        g += 1;
       }
     }
 
-    if (asBaseMap)
+    if (g == 0)
+    {
+      parentLegend.Controls.Remove(typeEntry);
+    }
+    else if (asBaseMap)
     {
       AddNoneOption(mapTabRow, parentLegend);
     }
