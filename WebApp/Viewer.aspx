@@ -169,12 +169,12 @@
                   <span class="rightArrw"></span>
                   <span id="selectedTool">
                     <span class="flag mapToolId"></span>
-                    <span class="txt glyphicon">Identify</span></span>
+                    <span class="txt glyphicon">Identify / Pan</span></span>
                 </button>
                 <ul id="selectMapTools" class="dropdown-menu dropdown" aria-labelledby="btnToolMenu">
                   <li id="optIdentify" runat="server" class="Button MapTool"><a href="#">
                     <span class="flag mapToolId"></span>
-                    <span class="txt glyphicon">Identify</span></a></li>
+                    <span class="txt glyphicon">Identify / Pan</span></a></li>
                   <li id="optSelect" runat="server" class="Button MapTool"><a href="#">
                     <span class="flag mapToolSelect"></span>
                     <span class="txt glyphicon">Select</span></a>

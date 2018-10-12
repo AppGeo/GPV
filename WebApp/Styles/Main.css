@@ -848,7 +848,7 @@ label {
 
 .mapNavigation div.selectCol:nth-of-type(1) {
   margin-left: 0;
-  min-width: 110px;
+  min-width: 135px;
 }
 
 .mapNavigation div.selectCol:nth-of-type(2) {
