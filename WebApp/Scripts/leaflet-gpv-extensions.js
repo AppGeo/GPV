@@ -1,4 +1,4 @@
-﻿//  Copyright 2016 Applied Geographics, Inc.
+﻿//  Copyright 2019 Applied Geographics, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -52,10 +52,6 @@
     return L.bounds(L.point(cx - dx, cy - dy), L.point(cx + dx, cy + dy));
   };
 
-  L.Bounds.prototype.getCenter = function () {
-    return L.point((this.min.x + this.max.x) * 0.5, (this.min.y + this.max.y) * 0.5);
-  };
-
   L.Bounds.prototype.toArray = function () {
     return [ this.min.x, this.min.y, this.max.x, this.max.y ];
   };
@@ -63,15 +59,11 @@
 
   // Map extensions
 
-  L.Polygon = L.Polygon.extend({
-    _convertLatLngs: function (latlngs) {
-      return L.Polyline.prototype._convertLatLngs.call(this, latlngs);
-    },
-  });
+  // don't let Polygon strip off repeated LatLng at end, needed for drawing stretchability
 
-  function unproject(map, p) {
-    return map.options.crs.unproject(p);
-  }
+  L.Polygon.prototype._convertLatLngs = function (latlngs) {
+    return L.Polyline.prototype._convertLatLngs.call(this, latlngs);
+  };
 
   L.Map.prototype.fitProjectedBounds = function (bounds) {   // (Bounds)
     bounds = this.unprojectBounds(bounds);
@@ -95,10 +87,11 @@
   }
 
   L.Map.prototype.unprojectBounds = function (bounds) {   // (Bounds)
-    var sw = unproject(this, L.point(bounds.min.x, bounds.min.y));
-    var nw = unproject(this, L.point(bounds.min.x, bounds.max.y));
-    var ne = unproject(this, L.point(bounds.max.x, bounds.max.y));
-    var se = unproject(this, L.point(bounds.max.x, bounds.min.y));
+    var crs = this.options.crs;
+    var sw = crs.unproject(L.point(bounds.min.x, bounds.min.y));
+    var nw = crs.unproject(L.point(bounds.min.x, bounds.max.y));
+    var ne = crs.unproject(L.point(bounds.max.x, bounds.max.y));
+    var se = crs.unproject(L.point(bounds.max.x, bounds.min.y));
 
     var minLat = Math.min(Math.min(Math.min(sw.lat, nw.lat), ne.lat), se.lat);
     var minLng = Math.min(Math.min(Math.min(sw.lng, nw.lng), ne.lng), se.lng);
@@ -173,7 +166,7 @@
 
       case 'polyline':
       case 'polygon':
-        if (!L.Polyline._flat(latlngs)) {
+        if (!L.LineUtil.isFlat(latlngs)) {
           latlngs = latlngs[0];
         }
 
@@ -324,7 +317,7 @@
 
   // TileLayer extension
   
-  // add support for Web Mercator extent and tile size in tile URL template
+  // add support for Web Mercator extent in tile URL template
 
   L.TileLayer.prototype.getTileUrl = function (coords) {
     var d = 20037508.342787;
