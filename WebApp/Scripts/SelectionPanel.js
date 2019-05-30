@@ -425,18 +425,12 @@ var GPV = (function (gpv) {
       gpv.post(args);
     }
 
-    function printData() {
-      if (!$cmdDataPrint.hasClass("Disabled")) {
-        event.stopPropagation();
-        var data = $cmdDataPrint.data("printdata");
-        var windowName = "identify" + (new Date()).getTime();
-        var features = "width=700,height=500,menubar=no,titlebar=no,toolbar=no,status=no,scrollbars=no,location=no,resizable=no";
-        window.open("Identify.aspx?" + data, windowName, features, true);
-      }
+    function printData(e) {
+      var $target = $(e.target);
 
-      if (!$cmdMobDataPrint.hasClass("Disabled")) {
+      if (!$target.hasClass("Disabled")) {
         event.stopPropagation();
-        var data = $cmdMobDataPrint.data("printdata");
+        var data = $target.data("printdata");
         var windowName = "identify" + (new Date()).getTime();
         var features = "width=700,height=500,menubar=no,titlebar=no,toolbar=no,status=no,scrollbars=no,location=no,resizable=no";
         window.open("Identify.aspx?" + data, windowName, features, true);
