@@ -106,7 +106,7 @@ public static class AppAuthentication
 
             if (!authenticated)
             {
-              command.Parameters[2].Value = HashPassword(password);
+              command.Parameters[1].Value = HashPassword(password);
               authenticated = Convert.ToInt32(command.ExecuteScalar()) > 0;
             }
           }
