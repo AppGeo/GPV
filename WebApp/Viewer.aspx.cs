@@ -281,7 +281,7 @@ public partial class Viewer : CustomStyledPage
   {
     string script = "var GPV = (function (gpv) {{ gpv.configuration = {0}; gpv.settings = {1}; gpv.appState = {2}; gpv.initialZoomLevel = {3}; gpv.checkActive = {4}; return gpv; }})(GPV || {{}});";
     string zoomLevel = initialZoomLevel.HasValue ? initialZoomLevel.ToString() : "null";
-    string checkActive = (AppAuthentication.Mode != AuthenticationMode.None).ToString().ToLower();
+    string checkActive = (AppAuthentication.Mode == AuthenticationMode.Database).ToString().ToLower();
 
     HtmlGenericControl scriptElem = new HtmlGenericControl("script");
     head.Controls.Add(scriptElem);
