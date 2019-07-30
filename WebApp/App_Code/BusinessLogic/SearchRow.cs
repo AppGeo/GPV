@@ -72,7 +72,7 @@ public partial class Configuration
         {
           if (ParameterCount > 0)
           {
-            baseCommand.Parameters.AddWithValue("1", AppUser.GetRole());
+            baseCommand.Parameters[0].Value = AppUser.GetRole();
           }
 
           try
@@ -80,7 +80,7 @@ public partial class Configuration
             SelectStatement = baseCommand.ExecuteScalar() as string;
             command = new OleDbCommand(SelectStatement, baseCommand.Connection);
           }
-          catch {}
+          catch { }
         }
       }
 

@@ -960,11 +960,14 @@ public partial class Configuration
 									hasMapId = reader.GetOrdinal("MapID") >= 0;
 								}
 							}
-							catch { }
+							catch (OleDbException ex)
+              {
+                search.ValidationError = ex.Message;
+              }
 
 							command.Connection.Dispose();
 
-							if (!hasMapId)
+							if (!hasMapId && search.IsValidationErrorNull())
 							{
 								search.ValidationError = "Select statement does not return a MapID column";
 							}
