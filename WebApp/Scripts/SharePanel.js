@@ -25,7 +25,7 @@ var GPV = (function (gpv) {
       $(panel).fadeIn(600);
     });
 
-    var $cmdExternalMap = $("#cmdExternalMap").on("click", function(e) {
+    var $cmdExternalMap = $("#cmdExternalMap").on("click", function (e) {
       if (externalMapState === 'posted') {
         externalMapState = 'clicked';
       }
@@ -34,7 +34,7 @@ var GPV = (function (gpv) {
         var url = $(this).attr("href");
         window.open(url, "_blank");
       }
-    })
+    });
 
     $("#cmdPrint").on("click", function () {
       var $form = $("#frmPrint");
@@ -45,7 +45,7 @@ var GPV = (function (gpv) {
 
     $("#cmdSaveMap").on("click", function () {
       var $form = $("#frmSaveMap");
-      $form.find('[name="m"]').val($("#ddlSaveMap").val() == "image" ? "SaveMapImage" : "SaveMapKml");
+      $form.find('[name="m"]').val($("#ddlSaveMap").val() === "image" ? "SaveMapImage" : "SaveMapKml");
       $form.find('[name="state"]').val(gpv.appState.toJson());
       $form.find('[name="width"]').val(map.getSize().x);
       $form.find('[name="height"]').val(map.getSize().y);
@@ -75,19 +75,25 @@ var GPV = (function (gpv) {
     // =====  private functions  =====
 
     function showPrintTemplateInputs() {
-      $(".printInput").hide()
+      $(".printInput").hide();
       $('[data-templateid="' + $ddlPrintTemplate.val() + '"]').fadeIn();
     }
     
     function updatePrintScale() {
       if (map) {
+        var scaleFactor = 1;
+
+        if (map.options.crs.scaleFactorAtLatitude) {
+          scaleFactor = map.options.crs.scaleFactorAtLatitude(map.getCenter().lat);
+        }
+
         var extent = map.getProjectedBounds();
         var extentWidth = (extent.max.x - extent.min.x) / (gpv.settings.mapUnits === "feet" ? 1 : 0.3048);
         var mapWidth = map.getSize().x;
-        $("#labPrintScaleCurrent").text("Current (1\" = " + Math.round(extentWidth * 96 / mapWidth).format() + " ft)");
+        $("#labPrintScaleCurrent").text("Current (1\" = " + Math.round(extentWidth * 96 / (mapWidth * scaleFactor)).format() + " ft)");
 
         mapWidth = ($ddlPrintTemplate.val() && gpv.configuration.printTemplate[$ddlPrintTemplate.val()].mapWidth) || 7;
-        $("#labPrintScaleWidth").text("Preserve extent width (1\" = " + Math.round(extentWidth / mapWidth).format() + " ft)");
+        $("#labPrintScaleWidth").text("Preserve extent width (1\" = " + Math.round(extentWidth / (mapWidth * scaleFactor)).format() + " ft)");
       }
     }
 

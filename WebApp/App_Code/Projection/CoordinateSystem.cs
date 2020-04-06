@@ -76,7 +76,37 @@ public class CoordinateSystem
     return base.GetHashCode();
   }
 
-	public Coordinate ToGeodetic(Coordinate c)
+  public double GetScaleFactorAtLatitude(Coordinate c)
+  {
+    if (IsWebMercator)
+    {
+      return 1 / Math.Cos(c.Y * Math.PI / 180);
+    }
+
+    return 1;
+  }
+
+  public double GetScaleFactorAtLatitude(IPoint p)
+  {
+    return GetScaleFactorAtLatitude(p.Coordinate);
+  }
+
+  public double GetScaleFactorAtY(Coordinate c)
+  {
+    if (IsWebMercator)
+    {
+      return GetScaleFactorAtLatitude(ToGeodetic(c));
+    }
+
+    return 1;
+  }
+
+  public double GetScaleFactorAtY(IPoint p)
+  {
+    return GetScaleFactorAtY(p.Coordinate);
+  }
+
+  public Coordinate ToGeodetic(Coordinate c)
 	{
     double[] p = new double[] { c.X, c.Y };
     double[] z = new double[] { 0 };

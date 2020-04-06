@@ -1604,14 +1604,21 @@ public partial class Viewer : CustomStyledPage
         }
       }
 
-      // set the map scale if specified (a 1 inch [96 pixel] square window is assumed)
+      // set the map scale if specified
+
+      double? preserveScale = null;
 
       if (launchParams.ContainsKey("mapscale"))
       {
-        _appState.Extent.ScaleBy(Convert.ToDouble(launchParams["mapscale"]) / _appState.Extent.Width);
+        double s;
+
+        if (Double.TryParse(launchParams["mapscale"], out s))
+        {
+          preserveScale = s;
+        }
       }
 
-      PdfMap pdfMap = new PdfMap(_appState, templateID, new List<String>(new string[] { title }), PreserveMode.Scale, 96);
+      PdfMap pdfMap = new PdfMap(_appState, templateID, new List<String>(new string[] { title }), preserveScale);
       pdfMap.Write(Response);
       Response.End();
     }

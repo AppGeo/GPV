@@ -30,20 +30,20 @@ public class PdfMap
 	private const float PointsPerInch = 72;
 	private const float PixelsPerInch = 96;
 
+  private AppSettings _appSettings;
 	private AppState _appState;
 	private string _templateId;
 	private List<String> _input;
-	private PreserveMode _preserveMode;
-	private double _originalWidth;
+  private double? _preserveScale;
   private double _pixelSize = -1;
 
-  public PdfMap(AppState appState, string templateId, List<String> input, PreserveMode preserveMode, double originalWidth)
+  public PdfMap(AppState appState, string templateId, List<String> input, double? preserveScale)
 	{
+    _appSettings = AppContext.AppSettings;
 		_appState = appState;
 		_templateId = templateId;
     _input = input;
-		_preserveMode = preserveMode;
-		_originalWidth = originalWidth;
+    _preserveScale = preserveScale;
 	}
 
 	private void CreatePdfBox(PdfContentByte content, Configuration.PrintTemplateContentRow row)
@@ -595,35 +595,27 @@ public class PdfMap
 
     if (mapElement != null)
 		{
-			if (_preserveMode == PreserveMode.Extent)
+      IPoint c = new Point(_appState.Extent.Centre);
+      double scaleFactor = _appSettings.MapCoordinateSystem.GetScaleFactorAtY(c);
+      double conversion = AppContext.AppSettings.MapUnits == "feet" ? 1 : Constants.FeetPerMeter;
+
+      double dx;
+			double dy;
+
+			if (_preserveScale.HasValue)
 			{
-        _appState.Extent.Reaspect(mapElement.Width, mapElement.Height);
-			}
+        mapScale = _preserveScale.Value;
+        dx = (mapScale * mapElement.Width * scaleFactor * 0.5) / conversion;
+        dy = (mapScale * mapElement.Height * scaleFactor * 0.5) / conversion;
+      }
 			else
 			{
-        IPoint c = new Point(_appState.Extent.Centre);
+				dx = _appState.Extent.Width * 0.5;
+        dy = dx * mapElement.Height / mapElement.Width;
+        mapScale = _appState.Extent.Width * conversion / (mapElement.Width * scaleFactor);
+      }
 
-				double dx;
-				double dy;
-
-				if (_preserveMode == PreserveMode.Scale)
-				{
-					double ratio = _appState.Extent.Width * 96 / _originalWidth;
-          dx = mapElement.Width * ratio * 0.5;
-          dy = mapElement.Height * ratio * 0.5;
-				}
-				else
-				{
-					dx = _appState.Extent.Width * 0.5;
-          dy = dx * mapElement.Height / mapElement.Width;
-				}
-
-        _appState.Extent = new Envelope(new Coordinate(c.Coordinate.X - dx, c.Coordinate.Y - dy), new Coordinate(c.Coordinate.X + dx, c.Coordinate.Y + dy));
-			}
-
-      double conversion = AppContext.AppSettings.MapUnits == "feet" ? 1 : Constants.FeetPerMeter;
-      mapScale = _appState.Extent.Width * conversion / mapElement.Width;
-
+      _appState.Extent = new Envelope(new Coordinate(c.Coordinate.X - dx, c.Coordinate.Y - dy), new Coordinate(c.Coordinate.X + dx, c.Coordinate.Y + dy));
       _pixelSize = _appState.Extent.Width / (mapElement.Width * PixelsPerInch);
 		}
 
@@ -760,11 +752,4 @@ public class PdfMap
       NumColumns = Convert.ToInt32(Math.Floor((Width + ColumnSpacing) / (ColumnWidth + ColumnSpacing)));
     }
   }
-}
-
-public enum PreserveMode
-{
-	Extent = 0,
-	Scale = 1,
-	Width = 2
 }

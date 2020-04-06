@@ -12,6 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+using GeoAPI.Geometries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,21 +28,27 @@ public class PrintableMapHandler : IHttpHandler
     AppState appState = AppState.FromJson(context.Request.Form["state"]);
     string templateID = context.Request.Form["template"];
     string scaleMode = context.Request.Form["scalemode"];
-    double originalWidth = Convert.ToDouble(context.Request.Form["width"]);
+    double originalWidthPx = Convert.ToDouble(context.Request.Form["width"]);
+    
+    double? preserveScale = null;
 
-    // if the user entered a feet-per-inch scale, compute the pixel width of the map
-    // for the scale given the extent width
-
-    if (scaleMode == "input")
+    if (scaleMode == "scale" || scaleMode == "input")
     {
-      double extentWidth = appState.Extent.Width * (AppContext.AppSettings.MapUnits == "feet" ? 1 : Constants.FeetPerMeter);
-      double scale = Convert.ToDouble(context.Request.Form["scale"]);
+      Coordinate c = appState.Extent.Centre;
+      double scaleFactor = AppContext.AppSettings.MapCoordinateSystem.GetScaleFactorAtY(c);
+      double conversion = AppContext.AppSettings.MapUnits == "feet" ? 1 : Constants.FeetPerMeter;
+      preserveScale = appState.Extent.Width * conversion * 96 / (originalWidthPx * scaleFactor);
 
-      originalWidth = extentWidth * 96 / scale;
-      scaleMode = "scale";
+      if (scaleMode == "input")
+      {
+        double s;
+
+        if (Double.TryParse(context.Request.Form["scale"], out s))
+        {
+          preserveScale = s;
+        }
+      }
     }
-
-    PreserveMode preserveMode = (PreserveMode)Enum.Parse(typeof(PreserveMode), scaleMode, true);
 
     // read in the user inputs
 
@@ -57,7 +64,7 @@ public class PrintableMapHandler : IHttpHandler
 
     // produce the PDF output
 
-    PdfMap pdfMap = new PdfMap(appState, templateID, input, preserveMode, originalWidth);
+    PdfMap pdfMap = new PdfMap(appState, templateID, input, preserveScale);
     pdfMap.Write(response);
     response.End();
   }
