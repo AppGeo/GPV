@@ -80,7 +80,7 @@ limitations under the License.
             <span class="inlineCol">
               <label id="labPrintScaleInput" for="optPrintScaleInput">1" =</label></span>
             <span class="inlineCol">
-              <input type="text" id="tboPrintScale" name="scale" class="frmInput ratting" placeholder="100" /></span>
+              <input type="text" id="tboPrintScale" name="scale" class="frmInput ratting" value="100" /></span>
             <span class="inlineCol">ft    </span>
           </div>
           <input type="hidden" name="state" />
